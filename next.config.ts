@@ -1,9 +1,7 @@
 import type { NextConfig } from 'next'
-import { withIntlayer } from "next-intlayer/server";
 
 const nextConfig: NextConfig = {
   images: {
-
     domains: ['wsrv.nl', "sklep.carinii.com.pl", "carinii.com.pl", 'images.weserv.nl'],
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
@@ -19,4 +17,4 @@ const nextConfig: NextConfig = {
   }
 }
 
-export default withIntlayer(nextConfig)
+export default nextConfig
