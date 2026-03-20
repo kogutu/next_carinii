@@ -1,0 +1,296 @@
+{
+    "payment_methods": [
+        {
+            "code": "banktransfer",
+            "title": "Przelew tradycyjny na konto",
+            "class": "Mage_Payment_Model_Method_Banktransfer",
+            "description": "Przelew należy wykonać na nr konta:\n\n 08 1240 2728 1111 0010 3041 4579",
+            "html_desc": "Przelew należy wykonać na nr konta:<br> <b>08 1240 2728 1111 0010 3041 4579</b><br><br> <b>W TYTULE PŁATNOŚCI PROSIMY PODAĆ NR ZAMÓWIENIA</b><br><br> Zakład Produkcji Obuwia Carinii Grzegorz Urawski 08-450 Łaskarzew ul. Wolska 80 <br><br> Uwaga! Jeśli płatność nie zostanie wykonana do 3 dni od momentu zamówienia, zamówienie zostanie anulowane.",
+            "shipping_methods": [
+                "*"
+            ],
+            "exclude_hipping_methods": [
+                "flatrate48_flatrate48"
+            ]
+        },
+        {
+            "code": "cashondelivery",
+            "title": "Płatność za pobraniem",
+            "description": "",
+            "class": "Mage_Payment_Model_Method_Cashondelivery",
+            "shipping_methods": [
+                "flatrate48_flatrate48"
+            ],
+            "exclude_hipping_methods": []
+        },
+        {
+            "code": "dialcom_przelewy",
+            "title": "Przelewy24",
+            "description": "Po złożeniu zamówienia zostaniesz przeniesiony na stronę serwisu Przelewy24 w celu dokonania płatności.",
+            "shipping_methods": [
+                "*"
+            ],
+            "exclude_hipping_methods": [
+                "flatrate48_flatrate48"
+            ]
+        },
+        {
+            "code": "dialcom_blik",
+            "title": "Blik",
+            "description": "Wygneruj kod, wprowadź i zapłać",
+            "shipping_methods": [
+                "*"
+            ],
+            "exclude_hipping_methods": [
+                "flatrate48_flatrate48"
+            ]
+        },
+        {
+            "code": "dialcom_gpay",
+            "title": "Google payments",
+            "description": "Szybkie płatności Google payments",
+            "shipping_methods": [
+                "*"
+            ],
+            "exclude_hipping_methods": [
+                "flatrate48_flatrate48"
+            ]
+        }
+    ],
+    "shipping_methods": {
+        "AT": [
+            {
+                "code": "flatrate_",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "BE": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "BG": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "CY": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "CZ": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "DE": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "DK": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "EE": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "ES": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "FI": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "FR": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "GB": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "GR": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "HR": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "HU": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "IE": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "IT": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "LT": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "LU": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "LV": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "NL": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "PL": [
+            {
+                "code": "dhl_dhl24pl_courier",
+                "title": "DHL24",
+                "name": null,
+                "price": 14.99
+            },
+            {
+                "code": "flatrate5_flatrate5",
+                "title": "Inpost Kurier",
+                "name": "Inpost Kurier",
+                "price": 14.99
+            },
+            {
+                "code": "flatrate48_flatrate48",
+                "title": "ZA POBRANIEM- Kurier DHL",
+                "name": "Za pobraniem ",
+                "price": 19.99
+            },
+            {
+                "code": "inpostparcels_inpostparcels",
+                "title": "Paczkomaty",
+                "name": "Paczkomaty",
+                "price": 12.99
+            }
+        ],
+        "PT": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "RO": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "SE": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "SI": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ],
+        "SK": [
+            {
+                "code": "flatrate_flatrate",
+                "title": "DHL",
+                "name": "Fixed",
+                "price": 90
+            }
+        ]
+    }
+}

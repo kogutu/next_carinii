@@ -1,0 +1,23 @@
+[
+  {"code": "50-344", "city": "Wrocław", "powiat": "Wrocław", "woj": "dolnośląskie"},
+  {"code": "50-345", "city": "Wrocław", "powiat": "Wrocław", "woj": "dolnośląskie"},
+  {"code": "50-346", "city": "Wrocław", "powiat": "Wrocław", "woj": "dolnośląskie"},
+  {"code": "50-347", "city": "Wrocław", "powiat": "Wrocław", "woj": "dolnośląskie"},
+  {"code": "50-348", "city": "Wrocław", "powiat": "Wrocław", "woj": "dolnośląskie"},
+  {"code": "80-001", "city": "Gdańsk", "powiat": "Gdańsk", "woj": "pomorskie"},
+  {"code": "80-002", "city": "Gdańsk", "powiat": "Gdańsk", "woj": "pomorskie"},
+  {"code": "80-003", "city": "Gdańsk", "powiat": "Gdańsk", "woj": "pomorskie"},
+  {"code": "80-004", "city": "Gdańsk", "powiat": "Gdańsk", "woj": "pomorskie"},
+  {"code": "60-001", "city": "Poznań", "powiat": "Poznań", "woj": "wielkopolskie"},
+  {"code": "60-002", "city": "Poznań", "powiat": "Poznań", "woj": "wielkopolskie"},
+  {"code": "60-003", "city": "Poznań", "powiat": "Poznań", "woj": "wielkopolskie"},
+  {"code": "31-001", "city": "Kraków", "powiat": "Kraków", "woj": "małopolskie"},
+  {"code": "31-002", "city": "Kraków", "powiat": "Kraków", "woj": "małopolskie"},
+  {"code": "31-003", "city": "Kraków", "powiat": "Kraków", "woj": "małopolskie"},
+  {"code": "00-001", "city": "Warszawa", "powiat": "Warszawa", "woj": "mazowieckie"},
+  {"code": "00-002", "city": "Warszawa", "powiat": "Warszawa", "woj": "mazowieckie"},
+  {"code": "00-003", "city": "Warszawa", "powiat": "Warszawa", "woj": "mazowieckie"},
+  {"code": "87-100", "city": "Toru", "powiat": "Toruń", "woj": "kujawskopomorskie"},
+  {"code": "87-101", "city": "Toruń", "powiat": "Toruń", "woj": "kujawskopomorskie"},
+  {"code": "87-102", "city": "Toruń", "powiat": "Toruń", "woj": "kujawskopomorskie"}
+]

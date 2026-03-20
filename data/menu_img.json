@@ -1,0 +1,478 @@
+{
+    "brand": "CARINII",
+    "baseUrl": "https://sklep.carinii.com.pl",
+    "mainMenu": [
+        {
+            "label": "NOWOŚCI",
+            "href": "/nowosci.html"
+        },
+        {
+            "label": "By Magda Pieczonka",
+            "href": "/by-magda-pieczonka.html",
+            "icon": "https://sklep.carinii.com.pl/media/wysiwyg/pieczonka.png"
+        },
+        {
+            "label": "By Natalia Siwiec",
+            "href": "/by-natalia-siwiec.html",
+            "icon": "https://sklep.carinii.com.pl/media/wysiwyg/znaczek_ns.png"
+        },
+        {
+            "label": "Obuwie",
+            "href": "/obuwie.html",
+            "isMegaMenu": true,
+            "categories": [
+                {
+                    "id": 73,
+                    "name": "Botki",
+                    "href": "/obuwie/botki.html",
+                    "image": "/images/botki.jpg",
+                    "subcategories": [
+                        {
+                            "id": 206,
+                            "name": "Sztyblety",
+                            "href": "/obuwie/botki/sztyblety.html"
+                        },
+                        {
+                            "id": 215,
+                            "name": "Trzewiki",
+                            "href": "/obuwie/botki/trzewiki.html"
+                        },
+                        {
+                            "id": 205,
+                            "name": "Kowbojki",
+                            "href": "/obuwie/botki/kowbojki.html"
+                        },
+                        {
+                            "id": 207,
+                            "name": "Na słupku",
+                            "href": "/obuwie/botki/na-slupku.html"
+                        },
+                        {
+                            "id": 208,
+                            "name": "Na szpilce",
+                            "href": "/obuwie/botki/na-szpilce.html"
+                        },
+                        {
+                            "id": 209,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/botki/na-koturnie.html"
+                        },
+                        {
+                            "id": 210,
+                            "name": "Na platformie",
+                            "href": "/obuwie/botki/na-platformie.html"
+                        },
+                        {
+                            "id": 230,
+                            "name": "Na obcasie",
+                            "href": "/obuwie/botki/na-obcasie.html"
+                        },
+                        {
+                            "id": 227,
+                            "name": "Ażurowe",
+                            "href": "/obuwie/botki/azurowe.html"
+                        },
+                        {
+                            "id": 228,
+                            "name": "Wiosenne",
+                            "href": "/obuwie/botki/wiosenne.html"
+                        },
+                        {
+                            "id": 229,
+                            "name": "Jesienne",
+                            "href": "/obuwie/botki/jesienne.html"
+                        },
+                        {
+                            "id": 266,
+                            "name": "Czarne botki damskie",
+                            "href": "/obuwie/botki/czarne-botki-damskie.html"
+                        },
+                        {
+                            "id": 267,
+                            "name": "Płaskie botki damskie",
+                            "href": "/obuwie/botki/plaskie-botki-damskie.html"
+                        },
+                        {
+                            "id": 268,
+                            "name": "Zimowe botki damskie",
+                            "href": "/obuwie/botki/zimowe-botki-damskie.html"
+                        },
+                        {
+                            "id": 269,
+                            "name": "Beżowe botki damskie",
+                            "href": "/obuwie/botki/bezowe-botki-damskie.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 72,
+                    "name": "Kozaki",
+                    "href": "/obuwie/kozaki.html",
+                    "image": "/placeholder-kozaki.jpg",
+                    "subcategories": [
+                        {
+                            "id": 220,
+                            "name": "Muszkieterki",
+                            "href": "/obuwie/kozaki/muszkieterki.html"
+                        },
+                        {
+                            "id": 223,
+                            "name": "Na słupku",
+                            "href": "/obuwie/kozaki/na-slupku.html"
+                        },
+                        {
+                            "id": 225,
+                            "name": "Na szpilce",
+                            "href": "/obuwie/kozaki/na-szpilce.html"
+                        },
+                        {
+                            "id": 224,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/kozaki/na-koturnie.html"
+                        },
+                        {
+                            "id": 222,
+                            "name": "Na platformie",
+                            "href": "/obuwie/kozaki/na-platformie.html"
+                        },
+                        {
+                            "id": 272,
+                            "name": "Za kolano",
+                            "href": "/obuwie/kozaki/kozaki-damskie-za-kolano.html"
+                        },
+                        {
+                            "id": 273,
+                            "name": "Zamszowe kozaki damskie",
+                            "href": "/obuwie/kozaki/zamszowe-kozaki-damskie.html"
+                        },
+                        {
+                            "id": 274,
+                            "name": "Ażurowe kozaki damskie",
+                            "href": "/obuwie/kozaki/azurowe-kozaki-damskie.html"
+                        },
+                        {
+                            "id": 275,
+                            "name": "Na obcasie",
+                            "href": "/obuwie/kozaki/kozaki-damskie-na-obcasie.html"
+                        },
+                        {
+                            "id": 276,
+                            "name": "Skórzane kozaki damskie",
+                            "href": "/obuwie/kozaki/skorzane-kozaki-damskie.html"
+                        },
+                        {
+                            "id": 277,
+                            "name": "Z szeroką cholewką",
+                            "href": "/obuwie/kozaki/kozaki-damskie-z-szeroka-cholewka.html"
+                        },
+                        {
+                            "id": 278,
+                            "name": "Z elastyczną cholewką",
+                            "href": "/obuwie/kozaki/kozaki-damskie-z-elastyczna-cholewka.html"
+                        },
+                        {
+                            "id": 279,
+                            "name": "Krótkie kozaki damskie",
+                            "href": "/obuwie/kozaki/krotkie-kozaki-damskie.html"
+                        },
+                        {
+                            "id": 280,
+                            "name": "Czarne kozaki damskie",
+                            "href": "/obuwie/kozaki/czarne-kozaki-damskie.html"
+                        },
+                        {
+                            "id": 283,
+                            "name": "Płaskie kozaki damskie",
+                            "href": "/obuwie/kozaki/plaskie-kozaki-damskie.html"
+                        },
+                        {
+                            "id": 284,
+                            "name": "Beżowe kozaki damskie",
+                            "href": "/obuwie/kozaki/bezowe-kozaki-damskie.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 340,
+                    "name": "Kowbojki",
+                    "href": "/obuwie/kowbojki.html",
+                    "image": "/placeholder-kowbojki.jpg",
+                    "subcategories": []
+                },
+                {
+                    "id": 135,
+                    "name": "Mokasyny",
+                    "href": "/obuwie/mokasyny.html",
+                    "image": "/placeholder-mokasyny.jpg",
+                    "subcategories": [
+                        {
+                            "id": 235,
+                            "name": "Na platformie",
+                            "href": "/obuwie/mokasyny/na-platformie.html"
+                        },
+                        {
+                            "id": 236,
+                            "name": "Na obcasie",
+                            "href": "/obuwie/mokasyny/na-obcasie.html"
+                        },
+                        {
+                            "id": 312,
+                            "name": "Skórzane mokasyny damskie",
+                            "href": "/obuwie/mokasyny/skorzane-mokasyny-damskie.html"
+                        },
+                        {
+                            "id": 313,
+                            "name": "Zamszowe mokasyny damskie",
+                            "href": "/obuwie/mokasyny/zamszowe-mokasyny-damskie.html"
+                        },
+                        {
+                            "id": 314,
+                            "name": "Czarne mokasyny damskie",
+                            "href": "/obuwie/mokasyny/czarne-mokasyny-damskie.html"
+                        },
+                        {
+                            "id": 315,
+                            "name": "Beżowe mokasyny damskie",
+                            "href": "/obuwie/mokasyny/bezowe-mokasyny-damskie.html"
+                        },
+                        {
+                            "id": 316,
+                            "name": "Na grubej podeszwie",
+                            "href": "/obuwie/mokasyny/mokasyny-damskie-na-grubej-podeszwie.html"
+                        },
+                        {
+                            "id": 317,
+                            "name": "Na słupku",
+                            "href": "/obuwie/mokasyny/mokasyny-damskie-na-slupku.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 218,
+                    "name": "Czółenka",
+                    "href": "/obuwie/czolenka.html",
+                    "image": "/placeholder-czolenka.jpg",
+                    "subcategories": [
+                        {
+                            "id": 285,
+                            "name": "Na słupku",
+                            "href": "/obuwie/czolenka/czolenka-damskie-na-slupku.html"
+                        },
+                        {
+                            "id": 286,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/czolenka/czolenka-damskie-na-koturnie.html"
+                        },
+                        {
+                            "id": 287,
+                            "name": "Na niskim obcasie",
+                            "href": "/obuwie/czolenka/czolenka-damskie-na-niskim-obcasie.html"
+                        },
+                        {
+                            "id": 288,
+                            "name": "Na platformie",
+                            "href": "/obuwie/czolenka/czolenka-damskie-na-platformie.html"
+                        },
+                        {
+                            "id": 289,
+                            "name": "Beżowe czółenka damskie",
+                            "href": "/obuwie/czolenka/bezowe-czolenka-damskie.html"
+                        },
+                        {
+                            "id": 290,
+                            "name": "Czarne czółenka damskie",
+                            "href": "/obuwie/czolenka/czarne-czolenka-damskie.html"
+                        },
+                        {
+                            "id": 291,
+                            "name": "Z paskiem",
+                            "href": "/obuwie/czolenka/czolenka-damskie-z-paskiem.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 74,
+                    "name": "Półbuty",
+                    "href": "/obuwie/polbuty.html",
+                    "image": "/placeholder-polbuty.jpg",
+                    "subcategories": [
+                        {
+                            "id": 292,
+                            "name": "Skórzane półbuty damskie",
+                            "href": "/obuwie/polbuty/skorzane-polbuty-damskie.html"
+                        },
+                        {
+                            "id": 293,
+                            "name": "Na słupku",
+                            "href": "/obuwie/polbuty/polbuty-damskie-na-slupku.html"
+                        },
+                        {
+                            "id": 294,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/polbuty/polbuty-damskie-na-koturnie.html"
+                        },
+                        {
+                            "id": 295,
+                            "name": "Na platformie",
+                            "href": "/obuwie/polbuty/polbuty-damskie-na-platformie.html"
+                        },
+                        {
+                            "id": 296,
+                            "name": "Na obcasie",
+                            "href": "/obuwie/polbuty/polbuty-damskie-na-obcasie.html"
+                        },
+                        {
+                            "id": 297,
+                            "name": "Eleganckie",
+                            "href": "/obuwie/polbuty/polbuty-damskie-eleganckie.html"
+                        },
+                        {
+                            "id": 298,
+                            "name": "Czarne półbuty damskie",
+                            "href": "/obuwie/polbuty/czarne-polbuty-damskie.html"
+                        },
+                        {
+                            "id": 299,
+                            "name": "Sznurowane półbuty damskie",
+                            "href": "/obuwie/polbuty/sznurowane-polbuty-damskie.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 77,
+                    "name": "Sneakersy",
+                    "href": "/obuwie/sneakersy.html",
+                    "image": "/placeholder-sneakersy.jpg",
+                    "subcategories": [
+                        {
+                            "id": 226,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/sneakersy/na-koturnie.html"
+                        },
+                        {
+                            "id": 300,
+                            "name": "Czarne sneakersy damskie",
+                            "href": "/obuwie/sneakersy/czarne-sneakersy-damskie.html"
+                        },
+                        {
+                            "id": 301,
+                            "name": "Białe sneakersy damskie",
+                            "href": "/obuwie/sneakersy/biale-sneakersy-damskie.html"
+                        },
+                        {
+                            "id": 302,
+                            "name": "Na platformie",
+                            "href": "/obuwie/sneakersy/sneakersy-damskie-na-platformie.html"
+                        },
+                        {
+                            "id": 303,
+                            "name": "Beżowe sneakersy damskie",
+                            "href": "/obuwie/sneakersy/bezowe-sneakersy-damskie.html"
+                        },
+                        {
+                            "id": 304,
+                            "name": "Skórzane sneakersy damskie",
+                            "href": "/obuwie/sneakersy/skorzane-sneakersy-damskie.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 71,
+                    "name": "Klapki",
+                    "href": "/obuwie/klapki.html",
+                    "image": "/placeholder-klapki.jpg",
+                    "subcategories": [
+                        {
+                            "id": 231,
+                            "name": "Eleganckie",
+                            "href": "/obuwie/klapki/eleganckie.html"
+                        },
+                        {
+                            "id": 232,
+                            "name": "Na obcasie",
+                            "href": "/obuwie/klapki/na-obcasie.html"
+                        },
+                        {
+                            "id": 233,
+                            "name": "Na platformie",
+                            "href": "/obuwie/klapki/na-platformie.html"
+                        },
+                        {
+                            "id": 234,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/klapki/na-koturnie.html"
+                        },
+                        {
+                            "id": 305,
+                            "name": "Skórzane klapki damskie",
+                            "href": "/obuwie/klapki/skorzane-klapki-damskie.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 90,
+                    "name": "Sandały",
+                    "href": "/obuwie/sandaly.html",
+                    "image": "/placeholder-sandaly.jpg",
+                    "subcategories": [
+                        {
+                            "id": 306,
+                            "name": "Na słupku",
+                            "href": "/obuwie/sandaly/sandaly-damskie-na-slupku.html"
+                        },
+                        {
+                            "id": 307,
+                            "name": "Na koturnie",
+                            "href": "/obuwie/sandaly/sandaly-damskie-na-koturnie.html"
+                        },
+                        {
+                            "id": 308,
+                            "name": "Na obcasie",
+                            "href": "/obuwie/sandaly/sandaly-damskie-na-obcasie.html"
+                        },
+                        {
+                            "id": 309,
+                            "name": "Na szpilce",
+                            "href": "/obuwie/sandaly/sandaly-damskie-na-szpilce.html"
+                        },
+                        {
+                            "id": 310,
+                            "name": "Płaskie sandały damskie",
+                            "href": "/obuwie/sandaly/plaskie-sandaly-damskie.html"
+                        },
+                        {
+                            "id": 311,
+                            "name": "Skórzane sandały damskie",
+                            "href": "/obuwie/sandaly/skorzane-sandaly-damskie.html"
+                        }
+                    ]
+                },
+                {
+                    "id": 93,
+                    "name": "Baleriny",
+                    "href": "/obuwie/baleriny.html",
+                    "image": "/placeholder-baleriny.jpg",
+                    "subcategories": []
+                }
+            ]
+        },
+        {
+            "label": "TOREBKI",
+            "href": "/torebki.html"
+        },
+        {
+            "label": "Akcesoria",
+            "href": "/akcesoria.html"
+        },
+        {
+            "label": "WYPRZEDAŻ",
+            "href": "/wyprzedaz.html",
+            "highlight": true
+        },
+        {
+            "label": "OSTATNIE PARY",
+            "href": "/ostatnie-pary.html",
+            "highlight": true
+        }
+    ]
+}

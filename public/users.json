@@ -1,0 +1,105 @@
+[
+  {
+    "id": 4,
+    "name": "Blacharski Paweł",
+    "phone": "508 023 948",
+    "email": "pawel.blacharski@hert.pl",
+    "img": "/przedstawiciele_handlowi/Blacharski Paweł.webp",
+    "woj": [
+      "dolnośląskie",
+      "opolskie",
+      "łódzkie"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Boratyn Dominik",
+    "phone": "508 023 949",
+    "email": "dominik.boratyn@hert.pl",
+    "img": "/przedstawiciele_handlowi/Boratyn Dominik.webp",
+    "woj": [
+      "podkarpackie"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Chabrowski Jakub",
+    "phone": "502 297 112",
+    "email": "jakub.chabrowski@hert.pl",
+    "img": "/przedstawiciele_handlowi/Chabrowski Jakub.webp",
+    "woj": [
+      "mazowieckie",
+      "łódzkie"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Lach Jarosław",
+    "phone": "694 499 338",
+    "email": "jaroslaw.lach@hert.pl",
+    "img": "/przedstawiciele_handlowi/Lach Jarosław.webp",
+    "woj": [
+      "śląskie",
+      "świętokrzyskie",
+      "małopolskie"
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Małecki Maciej",
+    "phone": "512 022 120",
+    "email": "maciej.malecki@hert.pl",
+    "img": "/przedstawiciele_handlowi/Małecki Maciej.webp",
+    "woj": [
+      "zachodniopomorskie",
+      "lubuskie"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Mielcarzewicz Barbara",
+    "phone": "507 070 047",
+    "email": "barbara.mielcarzewicz@hert.pl",
+    "img": "/przedstawiciele_handlowi/Mielcarzewicz Barbara.webp",
+    "woj": [
+      "pomorskie",
+      "kujawskopomorskie",
+      "wielkopolskie"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Mielcarzewicz Robert",
+    "phone": "507 088 505",
+    "email": "robert.mielcarzewicz@hert.pl",
+    "img": "/przedstawiciele_handlowi/Mielcarzewicz Robert.webp",
+    "woj": [
+      "pomorskie",
+      "kujawskopomorskie",
+      "wielkopolskie"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Mariusz Ślubowski",
+    "phone": "880 352 142",
+    "email": "mariusz.slubowski@hert.pl ",
+    "img": "/przedstawiciele_handlowi/MariuszSlubowski.webp",
+    "woj": [
+      "lubelskie",
+      "mazowieckie"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Szewczak Andrzej",
+    "phone": "507 070 045",
+    "email": "andrzej.szewczak@hert.pl",
+    "img": "/przedstawiciele_handlowi/Szewczak Andrzej.webp",
+    "woj": [
+      "warmińskomazurskie",
+      "podlaskie",
+      "mazowieckie"
+    ]
+  }
+]

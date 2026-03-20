@@ -1,0 +1,2255 @@
+[
+    {
+        "vis": "1",
+        "id": "6",
+        "label": "Piekarnictwo",
+        "count": 390,
+        "link": "\/piekarnictwo.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "14",
+                "label": "Magazynowanie i nawa\u017canie surowc\u00f3w",
+                "count": 2,
+                "link": "\/piekarnictwo\/magazynowanie-i-nawazanie-surowcow.html"
+            },
+            {
+                "vis": "1",
+                "id": "15",
+                "label": "Zakwas i podm\u0142oda",
+                "count": 9,
+                "link": "\/piekarnictwo\/zakwas-i-podmloda.html"
+            },
+            {
+                "vis": "1",
+                "id": "16",
+                "label": "Woda i l\u00f3d dla ciasta",
+                "count": 47,
+                "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "118",
+                        "label": "Dozowniki i mieszacze wody",
+                        "count": 9,
+                        "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta\/dozowniki-i-mieszacze-wody.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "119",
+                        "label": "Sch\u0142adzacze wody",
+                        "count": 16,
+                        "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta\/schladzacze-wody.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "120",
+                        "label": "Wytwornice",
+                        "count": 25,
+                        "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "121",
+                                "label": "P\u0142atk\u00f3w lodowych",
+                                "count": 13,
+                                "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice\/platkow-lodowych.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "122",
+                                "label": "\u015aniegu lodowego",
+                                "count": 10,
+                                "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice\/sniegu-lodowego.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "123",
+                                "label": "Kostek lodowych",
+                                "count": 8,
+                                "link": "\/piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice\/kostek-lodowych.html"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "17",
+                "label": "Mieszanie ciasta",
+                "count": 7,
+                "link": "\/piekarnictwo\/mieszanie-ciasta.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "99",
+                        "label": "Wydajno\u015bci rzemie\u015blnicze",
+                        "count": 5,
+                        "link": "\/piekarnictwo\/mieszanie-ciasta\/wydajnosci-rzemieslnicze.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "100",
+                        "label": "Wydajno\u015bci przemys\u0142owe",
+                        "count": 2,
+                        "link": "\/piekarnictwo\/mieszanie-ciasta\/wydajnosci-przemyslowe.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "18",
+                "label": "Garowanie ciasta",
+                "count": 10,
+                "link": "\/piekarnictwo\/garowanie-ciasta.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "27",
+                        "label": "Garownie",
+                        "count": 5,
+                        "link": "\/piekarnictwo\/garowanie-ciasta\/garownie.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "28",
+                        "label": "Ch\u0142odnio garownia",
+                        "count": 5,
+                        "link": "\/piekarnictwo\/garowanie-ciasta\/chlodnio-garownia.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "19",
+                "label": "Formowanie chleba",
+                "count": 49,
+                "link": "\/piekarnictwo\/formowanie-chleba.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "33",
+                        "label": "Linie do chleba",
+                        "count": 1,
+                        "link": "\/piekarnictwo\/formowanie-chleba\/linie-do-chleba.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "113",
+                                "label": "Classica",
+                                "count": 5,
+                                "link": "\/piekarnictwo\/formowanie-chleba\/linie-do-chleba\/classica.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "34",
+                        "label": "Dzielarki",
+                        "count": 20,
+                        "link": "\/piekarnictwo\/formowanie-chleba\/dzielarki.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "103",
+                                "label": "Obj\u0119to\u015bciowe",
+                                "count": 17,
+                                "link": "\/piekarnictwo\/formowanie-chleba\/dzielarki\/objetosciowe.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "101",
+                                "label": "Rzemie\u015blnicze",
+                                "count": 1,
+                                "link": "\/piekarnictwo\/formowanie-chleba\/dzielarki\/rzemieslnicze.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "102",
+                                "label": "Grawimetryczne",
+                                "count": 2,
+                                "link": "\/piekarnictwo\/formowanie-chleba\/dzielarki\/grawimetryczne.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "35",
+                        "label": "Zaokr\u0105glarki",
+                        "count": 10,
+                        "link": "\/piekarnictwo\/formowanie-chleba\/zaokraglarki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "36",
+                        "label": "Mi\u0119dzygarownie",
+                        "count": 3,
+                        "link": "\/piekarnictwo\/formowanie-chleba\/miedzygarownie.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "37",
+                        "label": "Wyd\u0142u\u017carki",
+                        "count": 8,
+                        "link": "\/piekarnictwo\/formowanie-chleba\/wydluzarki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "135",
+                        "label": "Linie laminacyjne",
+                        "count": 6,
+                        "link": "\/piekarnictwo\/formowanie-chleba\/linie-laminacyjne.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "20",
+                "label": "Formowanie bu\u0142ek i p\u0105czk\u00f3w",
+                "count": 22,
+                "link": "\/piekarnictwo\/formowanie-bulek-i-paczkow.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "132",
+                        "label": "Dzielarki do bu\u0142ek",
+                        "count": 7,
+                        "link": "\/piekarnictwo\/formowanie-bulek-i-paczkow\/dzielarki-do-bulek.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "133",
+                        "label": "Linie do bu\u0142ek",
+                        "count": 13,
+                        "link": "\/piekarnictwo\/formowanie-bulek-i-paczkow\/linie-do-bulek.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "21",
+                "label": "Nat\u0142uszczanie i czyszczenie blach",
+                "count": 27,
+                "link": "\/piekarnictwo\/natluszczanie-i-czyszczenie-blach.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "106",
+                        "label": "Nat\u0142uszczanie blach i form",
+                        "count": 20,
+                        "link": "\/piekarnictwo\/natluszczanie-i-czyszczenie-blach\/natluszczanie-blach-i-form.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "107",
+                        "label": "Czyszczenie i nat\u0142uszczanie blach",
+                        "count": 7,
+                        "link": "\/piekarnictwo\/natluszczanie-i-czyszczenie-blach\/czyszczenie-i-natluszczanie-blach.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "22",
+                "label": "Piece",
+                "count": 86,
+                "link": "\/piekarnictwo\/piece.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "40",
+                        "label": "Piecyki sklepowe",
+                        "count": 35,
+                        "link": "\/piekarnictwo\/piece\/piecyki-sklepowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "39",
+                        "label": "Piece w\u00f3zkowe",
+                        "count": 4,
+                        "link": "\/piekarnictwo\/piece\/piece-wozkowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "38",
+                        "label": "Piece p\u00f3\u0142kowe",
+                        "count": 32,
+                        "link": "\/piekarnictwo\/piece\/piece-polkowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "104",
+                        "label": "Za\u0142adunki",
+                        "count": 3,
+                        "link": "\/piekarnictwo\/piece\/zaladunki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "105",
+                        "label": "Piece tunelowe",
+                        "count": 1,
+                        "link": "\/piekarnictwo\/piece\/piece-tunelowe.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "256",
+                "label": "Za\u0142adunek i roz\u0142adunek blach",
+                "count": 2,
+                "link": "\/piekarnictwo\/zaladunek-i-rozladunek-blach.html"
+            },
+            {
+                "vis": "1",
+                "id": "24",
+                "label": "Ch\u0142odzenie i mro\u017cenie",
+                "count": 79,
+                "link": "\/piekarnictwo\/chlodzenie-i-mrozenie.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "87",
+                        "label": "Spiralne",
+                        "count": 7,
+                        "link": "\/piekarnictwo\/chlodzenie-i-mrozenie\/spiralne.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "88",
+                        "label": "Komory ch\u0142odnicze",
+                        "count": 72,
+                        "link": "\/piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "95",
+                                "label": "Aroma Cooler",
+                                "count": 1,
+                                "link": "\/piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/aroma-cooler.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "96",
+                                "label": "Mro\u017anie szokowe",
+                                "count": 69,
+                                "link": "\/piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/mroznie-szokowe.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "97",
+                                "label": "G\u0142\u0119bokie mro\u017cenie",
+                                "count": 1,
+                                "link": "\/piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/glebokie-mrozenie.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "98",
+                                "label": "Sk\u0142adowanie",
+                                "count": 1,
+                                "link": "\/piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/skladowanie.html"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "25",
+                "label": "Krojenie i nacinanie",
+                "count": 37,
+                "link": "\/piekarnictwo\/krojenie.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "43",
+                        "label": "Krajalnice sklepowe",
+                        "count": 13,
+                        "link": "\/piekarnictwo\/krojenie\/krajalnice-sklepowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "44",
+                        "label": "Krajalnice wysokowydajne",
+                        "count": 7,
+                        "link": "\/piekarnictwo\/krojenie\/krajalnice-wysokowydajne.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "45",
+                        "label": "Krojenie bu\u0142ek",
+                        "count": 7,
+                        "link": "\/piekarnictwo\/krojenie\/krojenie-bulek.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "255",
+                        "label": "Nacinanie ciasta",
+                        "count": 3,
+                        "link": "\/piekarnictwo\/krojenie\/nacinanie-ciasta.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "26",
+                "label": "Pakowanie",
+                "count": 27,
+                "link": "\/piekarnictwo\/pakowanie.html"
+            },
+            {
+                "vis": "1",
+                "id": "89",
+                "label": "Logistyka wewn\u0105trzzak\u0142adowa",
+                "count": 0,
+                "link": "\/piekarnictwo\/logistyka-wewnatrzzakladowa.html"
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "3",
+        "label": "Cukiernictwo",
+        "count": 444,
+        "link": "\/cukiernictwo.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "48",
+                "label": "Produkcja lod\u00f3w",
+                "count": 21,
+                "link": "\/cukiernictwo\/produkcja-lodow.html"
+            },
+            {
+                "vis": "1",
+                "id": "285",
+                "label": "Granitory i podgrzewacze",
+                "count": 42,
+                "link": "\/cukiernictwo\/granitory-i-podgrzewacze.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "290",
+                        "label": "Granitory",
+                        "count": 21,
+                        "link": "\/cukiernictwo\/granitory-i-podgrzewacze\/granitory.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "293",
+                                "label": "Ch\u0142odzenie powietrzem",
+                                "count": 15,
+                                "link": "\/cukiernictwo\/granitory-i-podgrzewacze\/granitory\/chlodzenie-powietrzem.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "294",
+                                "label": "Ch\u0142odzenie wod\u0105",
+                                "count": 6,
+                                "link": "\/cukiernictwo\/granitory-i-podgrzewacze\/granitory\/chlodzenie-woda.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "291",
+                        "label": "Mro\u017cona kawa i jogurt",
+                        "count": 15,
+                        "link": "\/cukiernictwo\/granitory-i-podgrzewacze\/mrozona-kawa-i-jogurt.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "292",
+                        "label": "Gor\u0105ca czekolada",
+                        "count": 6,
+                        "link": "\/cukiernictwo\/granitory-i-podgrzewacze\/goraca-czekolada.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "52",
+                "label": "Ubijaczki",
+                "count": 281,
+                "link": "\/cukiernictwo\/ubijaczki.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "283",
+                        "label": "Urz\u0105dzenia",
+                        "count": 63,
+                        "link": "\/cukiernictwo\/ubijaczki\/urzadzenia.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "284",
+                        "label": "Akcesoria",
+                        "count": 235,
+                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "297",
+                                "label": "Teddy",
+                                "count": 14,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/teddy.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "298",
+                                "label": "Kodiak10",
+                                "count": 14,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak10.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "299",
+                                "label": "Kodiak20",
+                                "count": 23,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak20.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "300",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 9,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak20\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "301",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 15,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak20\/wyposazenie-b.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "302",
+                                "label": "Kodiak30",
+                                "count": 31,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak30.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "303",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 15,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak30\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "304",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 21,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/kodiak30\/wyposazenie-b.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "305",
+                                "label": "AR30",
+                                "count": 38,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar30.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "306",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 20,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar30\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "307",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 24,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar30\/wyposazenie-b.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "308",
+                                "label": "AR40",
+                                "count": 39,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar40.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "309",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 20,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar40\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "310",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 24,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar40\/wyposazenie-b.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "311",
+                                "label": "AR60 i ERGO60",
+                                "count": 35,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar60-i-ergo60.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "312",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 19,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar60-i-ergo60\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "313",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 21,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar60-i-ergo60\/wyposazenie-b.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "314",
+                                "label": "AR80",
+                                "count": 32,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar80.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "315",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 17,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar80\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "316",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 19,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar80\/wyposazenie-b.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "317",
+                                "label": "AR100 i ERGO100",
+                                "count": 47,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "318",
+                                        "label": "Wyposa\u017cenie A",
+                                        "count": 21,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100\/wyposazenie-a.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "319",
+                                        "label": "Wyposa\u017cenie B",
+                                        "count": 20,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100\/wyposazenie-b.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "320",
+                                        "label": "Wyposa\u017cenie C",
+                                        "count": 18,
+                                        "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100\/wyposazenie-c.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "321",
+                                "label": "ERGO140",
+                                "count": 19,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ergo140.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "322",
+                                "label": "ERGO 200",
+                                "count": 12,
+                                "link": "\/cukiernictwo\/ubijaczki\/akcesoria\/ergo-200.html"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "53",
+                "label": "Ubijaczki do \u015bmietany",
+                "count": 12,
+                "link": "\/cukiernictwo\/ubijaczki-do-smietany.html"
+            },
+            {
+                "vis": "1",
+                "id": "49",
+                "label": "Dozowanie, nadziewanie",
+                "count": 51,
+                "link": "\/cukiernictwo\/dozowanie-nadziewanie.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "108",
+                        "label": "Nadziewanie",
+                        "count": 7,
+                        "link": "\/cukiernictwo\/dozowanie-nadziewanie\/nadziewanie.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "330",
+                                "label": "Urz\u0105dzenia",
+                                "count": 7,
+                                "link": "\/cukiernictwo\/dozowanie-nadziewanie\/nadziewanie\/urzadzenia.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "331",
+                                "label": "Akcesoria i cz\u0119\u015bci zamienne",
+                                "count": 79,
+                                "link": "\/cukiernictwo\/dozowanie-nadziewanie\/nadziewanie\/czesci-zamienne.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "109",
+                        "label": "Dozowanie",
+                        "count": 44,
+                        "link": "\/cukiernictwo\/dozowanie-nadziewanie\/dozowanie.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "50",
+                "label": "Pasteryzacja",
+                "count": 19,
+                "link": "\/cukiernictwo\/pasteryzacja.html"
+            },
+            {
+                "vis": "1",
+                "id": "61",
+                "label": "Wypiek korpus\u00f3w babeczkowych",
+                "count": 2,
+                "link": "\/cukiernictwo\/wypiek-korpusow-babeczkowych.html"
+            },
+            {
+                "vis": "1",
+                "id": "58",
+                "label": "Sma\u017cenie w g\u0142\u0119bokim t\u0142uszczu",
+                "count": 6,
+                "link": "\/cukiernictwo\/smazenie-w-glebokim-tluszczu.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "60",
+                        "label": "Wydajno\u015bci rzemie\u015blnicze",
+                        "count": 4,
+                        "link": "\/cukiernictwo\/smazenie-w-glebokim-tluszczu\/wydajnosci-rzemieslnicze.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "59",
+                        "label": "Wydajno\u015bci przemys\u0142owe",
+                        "count": 3,
+                        "link": "\/cukiernictwo\/smazenie-w-glebokim-tluszczu\/wydajnosci-przemyslowe.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "51",
+                "label": "Dekoracja cukiernicza",
+                "count": 34,
+                "link": "\/cukiernictwo\/dekoracja-cukiernicza.html"
+            },
+            {
+                "vis": "1",
+                "id": "54",
+                "label": "Krojenie",
+                "count": 13,
+                "link": "\/cukiernictwo\/krojenie.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "55",
+                        "label": "Poziome na blaty",
+                        "count": 6,
+                        "link": "\/cukiernictwo\/krojenie\/poziome-na-blaty.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "56",
+                        "label": "Pionowe na sztuki",
+                        "count": 7,
+                        "link": "\/cukiernictwo\/krojenie\/pionowe-na-sztuki.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "62",
+                "label": "Linie do produkcji ciast i tort\u00f3w",
+                "count": 8,
+                "link": "\/cukiernictwo\/linie-do-produkcji-ciast-i-tortow.html"
+            },
+            {
+                "vis": "1",
+                "id": "63",
+                "label": "Magazynowanie i nawa\u017canie surowc\u00f3w",
+                "count": 2,
+                "link": "\/cukiernictwo\/magazynowanie-i-nawazanie-surowcow.html"
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "7",
+        "label": "Gastronomia",
+        "count": 184,
+        "link": "\/gastronomia.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "116",
+                "label": "Obr\u00f3bka wst\u0119pna",
+                "count": 24,
+                "link": "\/gastronomia\/obrobka-wstepna.html"
+            },
+            {
+                "vis": "1",
+                "id": "64",
+                "label": "Obr\u00f3bka termiczna \u017cywno\u015bci",
+                "count": 111,
+                "link": "\/gastronomia\/obrobka-termiczna-zywnosci.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "92",
+                        "label": "Firex",
+                        "count": 32,
+                        "link": "\/gastronomia-i-zywnosc-gotowa\/obrobka-termiczna\/firex.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "93",
+                        "label": "Roboqbo",
+                        "count": 17,
+                        "link": "\/gastronomia-i-zywnosc-gotowa\/obrobka-termiczna\/roboqbo.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "94",
+                        "label": "Hoja",
+                        "count": 7,
+                        "link": "\/gastronomia-i-zywnosc-gotowa\/obrobka-termiczna\/hoja.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "252",
+                        "label": "MKN",
+                        "count": 20,
+                        "link": "\/gastronomia\/obrobka-termiczna-zywnosci\/piece-mkn.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "254",
+                        "label": "Moduline",
+                        "count": 20,
+                        "link": "\/gastronomia\/obrobka-termiczna-zywnosci\/moduline.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "277",
+                        "label": "Berief",
+                        "count": 9,
+                        "link": "\/gastronomia\/obrobka-termiczna-zywnosci\/berief.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "342",
+                        "label": "Glass",
+                        "count": 5,
+                        "link": "\/gastronomia\/obrobka-termiczna-zywnosci\/glass.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "65",
+                "label": "Inkrustacja",
+                "count": 6,
+                "link": "\/gastronomia\/inkrustacja.html"
+            },
+            {
+                "vis": "1",
+                "id": "66",
+                "label": "Dozowanie",
+                "count": 28,
+                "link": "\/gastronomia\/dozowanie.html"
+            },
+            {
+                "vis": "1",
+                "id": "86",
+                "label": "Obr\u00f3bka mi\u0119sna",
+                "count": 31,
+                "link": "\/gastronomia\/obrobka-miesna.html"
+            },
+            {
+                "vis": "1",
+                "id": "67",
+                "label": "Maszyny i linie do produkcji kanapek",
+                "count": 10,
+                "link": "\/gastronomia\/maszyny-i-linie-do-produkcji-kanapek.html"
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "11",
+        "label": "Higiena",
+        "count": 58,
+        "link": "\/higiena.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "76",
+                "label": "Zmywarki kapturowe",
+                "count": 11,
+                "link": "\/higiena\/zmywarki-kapturowe.html"
+            },
+            {
+                "vis": "1",
+                "id": "77",
+                "label": "Zmywarki tunelowe",
+                "count": 4,
+                "link": "\/higiena\/zmywarki-tunelowe.html"
+            },
+            {
+                "vis": "1",
+                "id": "351",
+                "label": "Zmywarko - wyparzarki podblatowe",
+                "count": 10,
+                "link": "\/higiena\/zmywarko-wyparzarki-podblatowe.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "353",
+                        "label": "Bez pompy spustowej",
+                        "count": 2,
+                        "link": "\/higiena\/zmywarko-wyparzarki-podblatowe\/bez-pompy-spustowej.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "354",
+                        "label": "Z pomp\u0105 spustow\u0105",
+                        "count": 8,
+                        "link": "\/higiena\/zmywarko-wyparzarki-podblatowe\/z-pompa-spustowa.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "78",
+                "label": "Czyszczarki blach",
+                "count": 22,
+                "link": "\/higiena\/czyszczarki-blach.html"
+            },
+            {
+                "vis": "1",
+                "id": "79",
+                "label": "\u015arodki chemiczne",
+                "count": 6,
+                "link": "\/higiena\/srodki-chemiczne.html"
+            },
+            {
+                "vis": "1",
+                "id": "80",
+                "label": "Myjnie rotacyjne",
+                "count": 3,
+                "link": "\/higiena\/myjnie-rotacyjne.html"
+            },
+            {
+                "vis": "1",
+                "id": "332",
+                "label": "Cz\u0119\u015bci zamienne - Jeros",
+                "count": 143,
+                "link": "\/higiena\/czesci-zamienne-jeros.html"
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "114",
+        "label": "Przemys\u0142 Spo\u017cywczy",
+        "count": 183,
+        "link": "\/przemysl-spozywczy.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "124",
+                "label": "Obr\u00f3bka wst\u0119pna",
+                "count": 23,
+                "link": "\/przemysl-spozywczy\/obrobka-wstepna.html"
+            },
+            {
+                "vis": "1",
+                "id": "131",
+                "label": "Obr\u00f3bka mi\u0119sna",
+                "count": 31,
+                "link": "\/przemysl-spozywczy\/obrobka-miesna.html"
+            },
+            {
+                "vis": "1",
+                "id": "125",
+                "label": "Obr\u00f3bka termiczna \u017cywno\u015bci",
+                "count": 76,
+                "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "126",
+                        "label": "Firex",
+                        "count": 32,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/firex.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "127",
+                        "label": "Roboqbo",
+                        "count": 17,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/roboqbo.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "128",
+                        "label": "Hoja",
+                        "count": 7,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/hoja.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "276",
+                        "label": "Berief",
+                        "count": 9,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/berief.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "278",
+                        "label": "MKN",
+                        "count": 20,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/mkn.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "279",
+                        "label": "Houno",
+                        "count": 4,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/moduline.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "340",
+                        "label": "Glass",
+                        "count": 5,
+                        "link": "\/przemysl-spozywczy\/obrobka-termiczna-zywnosci\/glass.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "129",
+                "label": "Inkrustacja",
+                "count": 6,
+                "link": "\/przemysl-spozywczy\/inkrustacja.html"
+            },
+            {
+                "vis": "1",
+                "id": "130",
+                "label": "Dozowanie",
+                "count": 28,
+                "link": "\/przemysl-spozywczy\/dozowanie.html"
+            },
+            {
+                "vis": "1",
+                "id": "8",
+                "label": "Pakowanie",
+                "count": 65,
+                "link": "\/przemysl-spozywczy\/pakowanie.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "68",
+                        "label": "Pakowanie do pojemnik\u00f3w szklanych i puszek",
+                        "count": 16,
+                        "link": "\/przemysl-spozywczy\/pakowanie-i-paletyzacja\/pakowanie-do-pojemnikow-szklanych-i-puszek.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "69",
+                        "label": "Pakowanie w kartony",
+                        "count": 27,
+                        "link": "\/przemysl-spozywczy\/pakowanie-i-paletyzacja\/pakowanie-w-kartony.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "70",
+                        "label": "Pakowanie produkt\u00f3w mro\u017conych",
+                        "count": 9,
+                        "link": "\/przemysl-spozywczy\/pakowanie-i-paletyzacja\/pakowanie-produktow-mrozonych.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "71",
+                        "label": "Depaletyzacja i paletyzacja",
+                        "count": 12,
+                        "link": "\/przemysl-spozywczy\/pakowanie-i-paletyzacja\/depaletyzacja-i-paletyzacja.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "85",
+                        "label": "S\u0142oiki",
+                        "count": 28,
+                        "link": "\/przemysl-spozywczy\/pakowanie-i-paletyzacja\/sloiki.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "9",
+                "label": "Kontrola jako\u015bci",
+                "count": 2,
+                "link": "\/przemysl-spozywczy\/kontrola-jakosci.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "72",
+                        "label": "Linie rozlewnicze",
+                        "count": 1,
+                        "link": "\/przemysl-spozywczy\/kontrola-jakosci-na-liniach-produkcyjnych\/linie-rozlewnicze.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "73",
+                        "label": "Linie do da\u0144 gotowych",
+                        "count": 1,
+                        "link": "\/przemysl-spozywczy\/kontrola-jakosci-na-liniach-produkcyjnych\/linie-do-dan-gotowych.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "10",
+                "label": "Przetw\u00f3rstwo",
+                "count": 20,
+                "link": "\/przemysl-spozywczy\/przetworstwo.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "84",
+                        "label": " Maszyny procesowe",
+                        "count": 16,
+                        "link": "\/przemysl-spozywczy\/przetworstwo-owocow-i-warzyw\/maszyny-procesowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "75",
+                        "label": "Maszyny do pakowania",
+                        "count": 4,
+                        "link": "\/przemysl-spozywczy\/przetworstwo-owocow-i-warzyw\/maszyny-do-pakowania.html"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "12",
+        "label": "Wyposa\u017cenie sklep\u00f3w",
+        "count": 1086,
+        "link": "\/wyposazenie-sklepow.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "286",
+                "label": "Granitory i podgrzewacze",
+                "count": 42,
+                "link": "\/wyposazenie-sklepow\/granitory-i-podgrzewacze.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "287",
+                        "label": "Granitory",
+                        "count": 21,
+                        "link": "\/wyposazenie-sklepow\/granitory-i-podgrzewacze\/granitory.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "295",
+                                "label": "Ch\u0142odzenie powietrzem",
+                                "count": 15,
+                                "link": "\/wyposazenie-sklepow\/granitory-i-podgrzewacze\/granitory\/chlodzenie-powietrzem.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "296",
+                                "label": "Ch\u0142odzenie wod\u0105",
+                                "count": 6,
+                                "link": "\/wyposazenie-sklepow\/granitory-i-podgrzewacze\/granitory\/chlodzenie-woda.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "289",
+                        "label": "Gor\u0105ca czekolada",
+                        "count": 6,
+                        "link": "\/wyposazenie-sklepow\/granitory-i-podgrzewacze\/goraca-czekolada.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "288",
+                        "label": "Mro\u017cona kawa i jogurt",
+                        "count": 15,
+                        "link": "\/wyposazenie-sklepow\/granitory-i-podgrzewacze\/mrozona-kawa-i-jogurt.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "112",
+                "label": "Krajalnice sklepowe",
+                "count": 12,
+                "link": "\/wyposazenie-sklepow\/krajalnice-sklepowe.html"
+            },
+            {
+                "vis": "1",
+                "id": "343",
+                "label": "Lod\u00f3wki podblatowe",
+                "count": 15,
+                "link": "\/wyposazenie-sklepow\/lodowki-podblatowe.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "344",
+                        "label": "Ch\u0142odziarki podblatowe",
+                        "count": 12,
+                        "link": "\/wyposazenie-sklepow\/lodowki-podblatowe\/chlodziarki-podblatowe.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "346",
+                                "label": "Ch\u0142odzenie statyczne",
+                                "count": 3,
+                                "link": "\/wyposazenie-sklepow\/lodowki-podblatowe\/chlodziarki-podblatowe\/chlodzenie-statyczne.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "347",
+                                "label": "Ch\u0142odzenie wymuszone",
+                                "count": 9,
+                                "link": "\/wyposazenie-sklepow\/lodowki-podblatowe\/chlodziarki-podblatowe\/chlodzenie-wymuszone.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "348",
+                        "label": "Zamra\u017carki podblatowe",
+                        "count": 3,
+                        "link": "\/wyposazenie-sklepow\/lodowki-podblatowe\/zamrazarki-podblatowe.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "349",
+                                "label": "Ch\u0142odzenie statyczne",
+                                "count": 3,
+                                "link": "\/wyposazenie-sklepow\/lodowki-podblatowe\/zamrazarki-podblatowe\/chlodzenie-statyczne.html"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "81",
+                "label": "O\u015bwietlenie",
+                "count": 1305,
+                "link": "\/wyposazenie-sklepow\/oswietlenie.html"
+            },
+            {
+                "vis": "1",
+                "id": "134",
+                "label": "Sto\u0142y ch\u0142odnicze",
+                "count": 2,
+                "link": "\/wyposazenie-sklepow\/stoly-chlodnicze.html"
+            },
+            {
+                "vis": "1",
+                "id": "91",
+                "label": "Szafy ch\u0142odnicze",
+                "count": 61,
+                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "136",
+                        "label": "Szafy gastronomiczne",
+                        "count": 26,
+                        "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-gastronomiczne.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "139",
+                                "label": "Ch\u0142odnicze",
+                                "count": 13,
+                                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-gastronomiczne\/chlodnicze.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "140",
+                                "label": "Mro\u017anicze",
+                                "count": 12,
+                                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-gastronomiczne\/mroznicze.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "138",
+                        "label": "Szafy na w\u00f3zki wjezdne",
+                        "count": 2,
+                        "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-na-wozki-wjezdne.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "143",
+                                "label": "Ch\u0142odnicze",
+                                "count": 1,
+                                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-na-wozki-wjezdne\/chlodnicze.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "144",
+                                "label": "Mro\u017anicze",
+                                "count": 1,
+                                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-na-wozki-wjezdne\/mroznicze.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "137",
+                        "label": "Szafy piekarnicze",
+                        "count": 26,
+                        "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-piekarnicze.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "141",
+                                "label": "Ch\u0142odnicze",
+                                "count": 12,
+                                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-piekarnicze\/chlodnicze.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "142",
+                                "label": "Mro\u017anicze",
+                                "count": 13,
+                                "link": "\/wyposazenie-sklepow\/szafy-chlodnicze\/szafy-piekarnicze\/mroznicze.html"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "361",
+                "label": "Urz\u0105dzenia do produkcji lod\u00f3w",
+                "count": 4,
+                "link": "\/wyposazenie-sklepow\/urzadzenia-do-lodow.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "358",
+                        "label": "Frezery do lod\u00f3w",
+                        "count": 12,
+                        "link": "\/wyposazenie-sklepow\/urzadzenia-do-lodow\/frezery-do-lodow.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "359",
+                                "label": "Frezery nablatowe",
+                                "count": 6,
+                                "link": "\/wyposazenie-sklepow\/urzadzenia-do-lodow\/frezery-do-lodow\/frezery-nablatowe.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "360",
+                                "label": "Frezery wolnostoj\u0105ce",
+                                "count": 6,
+                                "link": "\/wyposazenie-sklepow\/urzadzenia-do-lodow\/frezery-do-lodow\/frezery-wolnostojace.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "362",
+                        "label": "Maszyny do lod\u00f3w w\u0142oskich",
+                        "count": 4,
+                        "link": "\/wyposazenie-sklepow\/urzadzenia-do-lodow\/maszyny-do-lodow-wloskich.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "149",
+                "label": "Witryny ekspozycyjne",
+                "count": 920,
+                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "152",
+                        "label": "Konserwatory do lod\u00f3w",
+                        "count": 111,
+                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "186",
+                                "label": "Akcesoria do lod\u00f3w",
+                                "count": 23,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/akcesoria-do-lodow.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "156",
+                                "label": "Konserwatory typu pozzetti",
+                                "count": 68,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-typu-pozzetti.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "169",
+                                        "label": "Ch\u0142odzenie po\u015brednie glikolem",
+                                        "count": 29,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-typu-pozzetti\/chlodzenie-posrednie-glikolem.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "170",
+                                        "label": "Wentylowane (powietrzne)",
+                                        "count": 23,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-typu-pozzetti\/wentylowane-powietrzne.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "157",
+                                "label": "Konserwatory przeszklone z otwart\u0105 kuwet\u0105",
+                                "count": 20,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-przeszklone-z-otwarta-kuweta.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "167",
+                                        "label": "Nablatowe",
+                                        "count": 8,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-przeszklone-z-otwarta-kuweta\/nablatowe.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "187",
+                                        "label": "Wolnostoj\u0105ce",
+                                        "count": 12,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-przeszklone-z-otwarta-kuweta\/wolnostojace.html"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "151",
+                        "label": "Lady ekspozycyjne",
+                        "count": 59,
+                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "158",
+                                "label": "Lady ch\u0142odnicze",
+                                "count": 28,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-chlodnicze.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "160",
+                                "label": "Lady grzewcze",
+                                "count": 6,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-grzewcze.html"
+                            },
+                            {
+                                "vis": "1",
+                                "id": "159",
+                                "label": "Lady neutralne",
+                                "count": 25,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-neutralne.html"
+                            }
+                        ]
+                    },
+                    {
+                        "vis": "1",
+                        "id": "150",
+                        "label": "Witryny pionowe",
+                        "count": 751,
+                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe.html",
+                        "child": [
+                            {
+                                "vis": "1",
+                                "id": "153",
+                                "label": "Witryny ch\u0142odnicze",
+                                "count": 263,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-chlodnicze.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "161",
+                                        "label": "Ch\u0142odnie statyczne",
+                                        "count": 121,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-chlodnicze\/chlodnie-statyczne.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "162",
+                                        "label": "Ch\u0142odnie wentylowane",
+                                        "count": 141,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-chlodnicze\/chlodnie-wentylowane.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "155",
+                                "label": "Witryny do mi\u0119sa i wina",
+                                "count": 225,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-do-miesa-i-wina.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "165",
+                                        "label": "Mi\u0119so",
+                                        "count": 119,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-do-miesa-i-wina\/mieso.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "166",
+                                        "label": "Wino",
+                                        "count": 106,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-do-miesa-i-wina\/wino.html"
+                                    }
+                                ]
+                            },
+                            {
+                                "vis": "1",
+                                "id": "154",
+                                "label": "Witryny mro\u017anicze",
+                                "count": 263,
+                                "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-mroznicze.html",
+                                "child": [
+                                    {
+                                        "vis": "1",
+                                        "id": "163",
+                                        "label": "Mro\u017anie statyczne",
+                                        "count": 122,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-mroznicze\/mroznie-statyczne.html"
+                                    },
+                                    {
+                                        "vis": "1",
+                                        "id": "164",
+                                        "label": "Mro\u017anie wentylowane",
+                                        "count": 141,
+                                        "link": "\/wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-mroznicze\/mroznie-wentylowane.html"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "352",
+                "label": "Zmywarko - wyparzarki podblatowe",
+                "count": 10,
+                "link": "\/wyposazenie-sklepow\/zmywarko-wyparzarki-podblatowe.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "355",
+                        "label": "Bez pompy spustowej",
+                        "count": 2,
+                        "link": "\/wyposazenie-sklepow\/zmywarko-wyparzarki-podblatowe\/bez-pompy-spustowej.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "356",
+                        "label": "Z pomp\u0105 spustow\u0105",
+                        "count": 8,
+                        "link": "\/wyposazenie-sklepow\/zmywarko-wyparzarki-podblatowe\/z-pompa-spustowa.html"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "83",
+        "label": "U\u017cywane",
+        "count": 178,
+        "link": "\/uzywane.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "174",
+                "label": "Dzielarki",
+                "count": 35,
+                "link": "\/uzywane\/dzielarki.html"
+            },
+            {
+                "vis": "1",
+                "id": "178",
+                "label": "Krajalnice i pakowaczki",
+                "count": 10,
+                "link": "\/uzywane\/krajalnice-i-pakowaczki.html"
+            },
+            {
+                "vis": "1",
+                "id": "180",
+                "label": "Linie do bu\u0142ek",
+                "count": 7,
+                "link": "\/uzywane\/linie-do-bulek.html"
+            },
+            {
+                "vis": "1",
+                "id": "171",
+                "label": "Miesza\u0142ki i ubijaczki",
+                "count": 26,
+                "link": "\/uzywane\/mieszalki-i-ubijaczki.html"
+            },
+            {
+                "vis": "1",
+                "id": "176",
+                "label": "Mi\u0119dzygarownie",
+                "count": 4,
+                "link": "\/uzywane\/miedzygarownie.html"
+            },
+            {
+                "vis": "1",
+                "id": "173",
+                "label": "Piece",
+                "count": 9,
+                "link": "\/uzywane\/piece.html"
+            },
+            {
+                "vis": "1",
+                "id": "182",
+                "label": "Pozosta\u0142e urz\u0105dzenia",
+                "count": 39,
+                "link": "\/uzywane\/pozostale-urzadzenia.html"
+            },
+            {
+                "vis": "1",
+                "id": "183",
+                "label": "Sma\u017calniki",
+                "count": 10,
+                "link": "\/uzywane\/smazalniki.html"
+            },
+            {
+                "vis": "1",
+                "id": "177",
+                "label": "Wyd\u0142u\u017carki",
+                "count": 5,
+                "link": "\/uzywane\/wydluzarki.html"
+            },
+            {
+                "vis": "1",
+                "id": "172",
+                "label": "Wywrotnice",
+                "count": 1,
+                "link": "\/uzywane\/wywrotnice.html"
+            },
+            {
+                "vis": "1",
+                "id": "175",
+                "label": "Zaokr\u0105glarki",
+                "count": 9,
+                "link": "\/uzywane\/zaokraglarki.html"
+            },
+            {
+                "vis": "1",
+                "id": "181",
+                "label": "Zmywarki i czyszczarki",
+                "count": 12,
+                "link": "\/uzywane\/zmywarki-i-czyszczarki.html"
+            },
+            {
+                "vis": "1",
+                "id": "184",
+                "label": "\u017belownice",
+                "count": 5,
+                "link": "\/uzywane\/zelownice.html"
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "13",
+        "label": "Akcesoria",
+        "count": 470,
+        "link": "\/akcesoria.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "258",
+                "label": "Akcesoria cukiernicze",
+                "count": 9,
+                "link": "\/akcesoria\/akcesoria-cukiernicze.html"
+            },
+            {
+                "vis": "1",
+                "id": "195",
+                "label": "Akcesoria piekarskie",
+                "count": 166,
+                "link": "\/akcesoria\/akcesoria-piekarskie.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "198",
+                        "label": "Dozowniki",
+                        "count": 8,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/dozowniki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "220",
+                        "label": "Klipsy do zamykarek",
+                        "count": 5,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/klipsy-do-zamykarek.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "197",
+                        "label": "\u0141opatki i szpatu\u0142y",
+                        "count": 47,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/lopatki-i-szpatuly.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "216",
+                        "label": "Miarki",
+                        "count": 9,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/miarki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "238",
+                        "label": "Nadziewarki do p\u0105czk\u00f3w",
+                        "count": 8,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/nadziewarki-do-paczkow.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "205",
+                        "label": "No\u017ce",
+                        "count": 34,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/noze.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "204",
+                        "label": "No\u017ce do krajalnic",
+                        "count": 20,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/noze-do-krajalnic.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "209",
+                        "label": "P\u0119dzle",
+                        "count": 14,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/pedzle.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "210",
+                        "label": "Pistolety",
+                        "count": 13,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/pistolety.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "242",
+                        "label": "R\u0119kawice piekarnicze",
+                        "count": 8,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/rekawice-piekarskie.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "211",
+                        "label": "Rolki i wycinaki",
+                        "count": 40,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/rolki-i-wycinaki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "246",
+                        "label": "R\u00f3zgi cukiernicze",
+                        "count": 6,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/rozgi-do-ubijania.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "212",
+                        "label": "Sita",
+                        "count": 29,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/sita.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "213",
+                        "label": "Skrobaki",
+                        "count": 26,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/skrobaki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "214",
+                        "label": "Szufelki",
+                        "count": 22,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/szufelki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "215",
+                        "label": "Termometry",
+                        "count": 8,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/termometry.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "196",
+                        "label": "Torty i akcesoria",
+                        "count": 134,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/torty-i-akcesoria.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "217",
+                        "label": "Pozosta\u0142e",
+                        "count": 13,
+                        "link": "\/akcesoria\/akcesoria-piekarskie\/pozostale.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "227",
+                "label": "Aparaty za\u0142adunkowe",
+                "count": 16,
+                "link": "\/akcesoria\/aparaty-zaladunkowe.html"
+            },
+            {
+                "vis": "1",
+                "id": "221",
+                "label": "Blachy i maty wypiekowe",
+                "count": 30,
+                "link": "\/akcesoria\/maty-i-blachy-wypiekowe.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "228",
+                        "label": "Bagietka francuska",
+                        "count": 19,
+                        "link": "\/akcesoria\/maty-i-blachy-wypiekowe\/bagietka-francuska.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "222",
+                        "label": "Bagietka niemiecka",
+                        "count": 11,
+                        "link": "\/akcesoria\/maty-i-blachy-wypiekowe\/bagietka-niemiecka.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "231",
+                        "label": "Fast food",
+                        "count": 8,
+                        "link": "\/akcesoria\/maty-i-blachy-wypiekowe\/fast-food.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "232",
+                        "label": "Mata silipatowa",
+                        "count": 8,
+                        "link": "\/akcesoria\/maty-i-blachy-wypiekowe\/mata-silipatowa.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "229",
+                        "label": "Pe\u0142ne",
+                        "count": 11,
+                        "link": "\/akcesoria\/maty-i-blachy-wypiekowe\/pelne.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "230",
+                        "label": "Perforowane",
+                        "count": 21,
+                        "link": "\/akcesoria\/maty-i-blachy-wypiekowe\/perforowane.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "199",
+                "label": "Formy wypiekowe, t\u0142oczone",
+                "count": 46,
+                "link": "\/akcesoria\/formy-wypiekowe-tloczone.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "201",
+                        "label": "Do ciast",
+                        "count": 56,
+                        "link": "\/akcesoria\/formy-wypiekowe-tloczone\/do-ciast.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "202",
+                        "label": "Okazjonalne",
+                        "count": 7,
+                        "link": "\/akcesoria\/formy-wypiekowe-tloczone\/okazjonalne.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "223",
+                        "label": "Pojedyncze",
+                        "count": 4,
+                        "link": "\/akcesoria\/formy-wypiekowe-tloczone\/pojedyncze.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "200",
+                        "label": "Zespolone",
+                        "count": 58,
+                        "link": "\/akcesoria\/formy-wypiekowe-tloczone\/zespolone.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "189",
+                "label": "Kasty i koszyki",
+                "count": 46,
+                "link": "\/akcesoria\/kasty-i-koszyki.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "233",
+                        "label": "Kasty drewniane",
+                        "count": 5,
+                        "link": "\/akcesoria\/kasty-i-koszyki\/kasty-drewniane.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "190",
+                        "label": "Kasty z tworzywa",
+                        "count": 13,
+                        "link": "\/akcesoria\/kasty-i-koszyki\/kasty-z-tworzywa.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "237",
+                        "label": "Kosze z tworzywa",
+                        "count": 26,
+                        "link": "\/akcesoria\/kasty-i-koszyki\/kosze-z-tworzywa.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "236",
+                        "label": "Koszyczki rattanowe",
+                        "count": 29,
+                        "link": "\/akcesoria\/kasty-i-koszyki\/koszyczki-rattanowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "203",
+                        "label": "Pokrowce na koszyki",
+                        "count": 13,
+                        "link": "\/akcesoria\/kasty-i-koszyki\/pokrowce-na-koszyki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "234",
+                        "label": "Tkaniny do kast",
+                        "count": 11,
+                        "link": "\/akcesoria\/kasty-i-koszyki\/tkaniny-do-kast.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "206",
+                "label": "Pistolety i \u015brodki nat\u0142uszczaj\u0105ce",
+                "count": 64,
+                "link": "\/akcesoria\/srodki-natluszczajace-hert.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "208",
+                        "label": "D\u00dcB\u00d6R oleje do blach",
+                        "count": 33,
+                        "link": "\/akcesoria\/srodki-natluszczajace-hert\/dubor-oleje-do-blach.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "207",
+                        "label": "D\u00dcB\u00d6R oleje do maszyn",
+                        "count": 14,
+                        "link": "\/akcesoria\/srodki-natluszczajace-hert\/dubor-oleje-do-maszyn.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "333",
+                        "label": "D\u00dcB\u00d6R pistolety natryskowe",
+                        "count": 15,
+                        "link": "\/akcesoria\/srodki-natluszczajace-hert\/dubor-pistolety-natryskowe.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "191",
+                "label": "Utrzymanie czysto\u015bci",
+                "count": 63,
+                "link": "\/akcesoria\/utrzymanie-czystosci.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "192",
+                        "label": "Kije i trzonki",
+                        "count": 43,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/kije-i-trzonki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "193",
+                        "label": "Listwy logistyczne",
+                        "count": 25,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/listwy-logistyczne.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "245",
+                        "label": "P\u0119dzle",
+                        "count": 5,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/pedzle.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "224",
+                        "label": "Skrobaki",
+                        "count": 23,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/skrobaki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "194",
+                        "label": "Szczotki",
+                        "count": 161,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/szczotki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "225",
+                        "label": "Szufelki spo\u017cywcze",
+                        "count": 32,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/szufelki-spozywcze.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "243",
+                        "label": "\u015aci\u0105gacze i zgarniaki",
+                        "count": 37,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/sciagacze-i-zgarniaki.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "226",
+                        "label": "Wiaderka",
+                        "count": 8,
+                        "link": "\/akcesoria\/utrzymanie-czystosci\/wiaderka.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "247",
+                "label": "Wagi OHAUS",
+                "count": 29,
+                "link": "\/akcesoria\/wagi-ohaus.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "248",
+                        "label": "Kompaktowe wagi sto\u0142owe",
+                        "count": 91,
+                        "link": "\/akcesoria\/wagi-ohaus\/kompaktowe-wagi-stolowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "249",
+                        "label": "Wagi platformowe",
+                        "count": 223,
+                        "link": "\/akcesoria\/wagi-ohaus\/wagi-platformowe.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "218",
+                "label": "W\u00f3zki",
+                "count": 17,
+                "link": "\/akcesoria\/wozki.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "235",
+                        "label": "Do transportu koszy",
+                        "count": 4,
+                        "link": "\/akcesoria\/wozki\/do-transportu-koszy.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "240",
+                        "label": "K\u00f3\u0142ka do w\u00f3zk\u00f3w",
+                        "count": 6,
+                        "link": "\/akcesoria\/wozki\/kolka-do-wozkow.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "239",
+                        "label": "Piecowe",
+                        "count": 9,
+                        "link": "\/akcesoria\/wozki\/piecowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "219",
+                        "label": "Pod aparaty za\u0142adunkowe",
+                        "count": 1,
+                        "link": "\/akcesoria\/wozki\/pod-aparaty-zaladunkowe.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "241",
+                        "label": "Pokrowce",
+                        "count": 5,
+                        "link": "\/akcesoria\/wozki\/pokrowce.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "244",
+                        "label": "Rega\u0142y do studzenia",
+                        "count": 3,
+                        "link": "\/akcesoria\/wozki\/regaly-do-studzenia.html"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "vis": "1",
+        "id": "282",
+        "label": "Cz\u0119\u015bci zamienne ",
+        "count": 986,
+        "link": "\/czesci-zamienne.html",
+        "child": [
+            {
+                "vis": "1",
+                "id": "335",
+                "label": "WP Bakery Group",
+                "count": 464,
+                "link": "\/czesci-zamienne\/wp.html",
+                "child": [
+                    {
+                        "vis": "1",
+                        "id": "337",
+                        "label": "Dzielarki WP",
+                        "count": 69,
+                        "link": "\/czesci-zamienne\/wp\/dzielarki-wp.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "338",
+                        "label": "Linie do bu\u0142ek i chleb\u00f3w WP",
+                        "count": 284,
+                        "link": "\/czesci-zamienne\/wp\/linie-do-bulek-i-chlebow-wp.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "339",
+                        "label": "Piece WP",
+                        "count": 100,
+                        "link": "\/czesci-zamienne\/wp\/piece-wp.html"
+                    },
+                    {
+                        "vis": "1",
+                        "id": "357",
+                        "label": "Wyprzeda\u017c",
+                        "count": 14,
+                        "link": "\/czesci-zamienne\/wp\/wyprzedaz.html"
+                    }
+                ]
+            },
+            {
+                "vis": "1",
+                "id": "336",
+                "label": "Hartmann",
+                "count": 308,
+                "link": "\/czesci-zamienne\/hartmann.html"
+            },
+            {
+                "vis": "1",
+                "id": "328",
+                "label": "Edhard",
+                "count": 71,
+                "link": "\/czesci-zamienne\/edhard.html"
+            },
+            {
+                "vis": "1",
+                "id": "327",
+                "label": "Jeros",
+                "count": 143,
+                "link": "\/czesci-zamienne\/jeros.html"
+            }
+        ]
+    }
+]

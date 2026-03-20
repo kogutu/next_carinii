@@ -1,0 +1,3212 @@
+[
+    {
+        "id": "6",
+        "name": "Piekarnictwo",
+        "parent_id": 2,
+        "product_count": 390,
+        "url": "piekarnictwo.html",
+        "level": "2",
+        "path": "1\/2\/6",
+        "is_active": "1"
+    },
+    {
+        "id": "14",
+        "name": "Magazynowanie i naważanie surowców",
+        "parent_id": "6",
+        "product_count": 2,
+        "url": "piekarnictwo\/magazynowanie-i-nawazanie-surowcow.html",
+        "level": "3",
+        "path": "1\/2\/6\/14",
+        "is_active": "1"
+    },
+    {
+        "id": "15",
+        "name": "Zakwas i podmłoda",
+        "parent_id": "6",
+        "product_count": 9,
+        "url": "piekarnictwo\/zakwas-i-podmloda.html",
+        "level": "3",
+        "path": "1\/2\/6\/15",
+        "is_active": "1"
+    },
+    {
+        "id": "16",
+        "name": "Woda i lód dla ciasta",
+        "parent_id": "6",
+        "product_count": 47,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta.html",
+        "level": "3",
+        "path": "1\/2\/6\/16",
+        "is_active": "1"
+    },
+    {
+        "id": "118",
+        "name": "Dozowniki i mieszacze wody",
+        "parent_id": "16",
+        "product_count": 9,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta\/dozowniki-i-mieszacze-wody.html",
+        "level": "4",
+        "path": "1\/2\/6\/16\/118",
+        "is_active": "1"
+    },
+    {
+        "id": "119",
+        "name": "Schładzacze wody",
+        "parent_id": "16",
+        "product_count": 16,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta\/schladzacze-wody.html",
+        "level": "4",
+        "path": "1\/2\/6\/16\/119",
+        "is_active": "1"
+    },
+    {
+        "id": "120",
+        "name": "Wytwornice",
+        "parent_id": "16",
+        "product_count": 25,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice.html",
+        "level": "4",
+        "path": "1\/2\/6\/16\/120",
+        "is_active": "1"
+    },
+    {
+        "id": "121",
+        "name": "Płatków lodowych",
+        "parent_id": "120",
+        "product_count": 13,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice\/platkow-lodowych.html",
+        "level": "5",
+        "path": "1\/2\/6\/16\/120\/121",
+        "is_active": "1"
+    },
+    {
+        "id": "122",
+        "name": "Śniegu lodowego",
+        "parent_id": "120",
+        "product_count": 10,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice\/sniegu-lodowego.html",
+        "level": "5",
+        "path": "1\/2\/6\/16\/120\/122",
+        "is_active": "1"
+    },
+    {
+        "id": "123",
+        "name": "Kostek lodowych",
+        "parent_id": "120",
+        "product_count": 8,
+        "url": "piekarnictwo\/woda-i-lod-dla-ciasta\/wytwornice\/kostek-lodowych.html",
+        "level": "5",
+        "path": "1\/2\/6\/16\/120\/123",
+        "is_active": "1"
+    },
+    {
+        "id": "17",
+        "name": "Mieszanie ciasta",
+        "parent_id": "6",
+        "product_count": 7,
+        "url": "piekarnictwo\/mieszanie-ciasta.html",
+        "level": "3",
+        "path": "1\/2\/6\/17",
+        "is_active": "1"
+    },
+    {
+        "id": "99",
+        "name": "Wydajności rzemieślnicze",
+        "parent_id": "17",
+        "product_count": 5,
+        "url": "piekarnictwo\/mieszanie-ciasta\/wydajnosci-rzemieslnicze.html",
+        "level": "4",
+        "path": "1\/2\/6\/17\/99",
+        "is_active": "1"
+    },
+    {
+        "id": "100",
+        "name": "Wydajności przemysłowe",
+        "parent_id": "17",
+        "product_count": 2,
+        "url": "piekarnictwo\/mieszanie-ciasta\/wydajnosci-przemyslowe.html",
+        "level": "4",
+        "path": "1\/2\/6\/17\/100",
+        "is_active": "1"
+    },
+    {
+        "id": "18",
+        "name": "Garowanie ciasta",
+        "parent_id": "6",
+        "product_count": 10,
+        "url": "piekarnictwo\/garowanie-ciasta.html",
+        "level": "3",
+        "path": "1\/2\/6\/18",
+        "is_active": "1"
+    },
+    {
+        "id": "27",
+        "name": "Garownie",
+        "parent_id": "18",
+        "product_count": 5,
+        "url": "piekarnictwo\/garowanie-ciasta\/garownie.html",
+        "level": "4",
+        "path": "1\/2\/6\/18\/27",
+        "is_active": "1"
+    },
+    {
+        "id": "28",
+        "name": "Chłodnio garownia",
+        "parent_id": "18",
+        "product_count": 5,
+        "url": "piekarnictwo\/garowanie-ciasta\/chlodnio-garownia.html",
+        "level": "4",
+        "path": "1\/2\/6\/18\/28",
+        "is_active": "1"
+    },
+    {
+        "id": "19",
+        "name": "Formowanie chleba",
+        "parent_id": "6",
+        "product_count": 49,
+        "url": "piekarnictwo\/formowanie-chleba.html",
+        "level": "3",
+        "path": "1\/2\/6\/19",
+        "is_active": "1"
+    },
+    {
+        "id": "33",
+        "name": "Linie do chleba",
+        "parent_id": "19",
+        "product_count": 1,
+        "url": "piekarnictwo\/formowanie-chleba\/linie-do-chleba.html",
+        "level": "4",
+        "path": "1\/2\/6\/19\/33",
+        "is_active": "1"
+    },
+    {
+        "id": "113",
+        "name": "Classica",
+        "parent_id": "33",
+        "product_count": 5,
+        "url": "piekarnictwo\/formowanie-chleba\/linie-do-chleba\/classica.html",
+        "level": "5",
+        "path": "1\/2\/6\/19\/33\/113",
+        "is_active": "1"
+    },
+    {
+        "id": "34",
+        "name": "Dzielarki",
+        "parent_id": "19",
+        "product_count": 20,
+        "url": "piekarnictwo\/formowanie-chleba\/dzielarki.html",
+        "level": "4",
+        "path": "1\/2\/6\/19\/34",
+        "is_active": "1"
+    },
+    {
+        "id": "103",
+        "name": "Objętościowe",
+        "parent_id": "34",
+        "product_count": 17,
+        "url": "piekarnictwo\/formowanie-chleba\/dzielarki\/objetosciowe.html",
+        "level": "5",
+        "path": "1\/2\/6\/19\/34\/103",
+        "is_active": "1"
+    },
+    {
+        "id": "101",
+        "name": "Rzemieślnicze",
+        "parent_id": "34",
+        "product_count": 1,
+        "url": "piekarnictwo\/formowanie-chleba\/dzielarki\/rzemieslnicze.html",
+        "level": "5",
+        "path": "1\/2\/6\/19\/34\/101",
+        "is_active": "1"
+    },
+    {
+        "id": "102",
+        "name": "Grawimetryczne",
+        "parent_id": "34",
+        "product_count": 2,
+        "url": "piekarnictwo\/formowanie-chleba\/dzielarki\/grawimetryczne.html",
+        "level": "5",
+        "path": "1\/2\/6\/19\/34\/102",
+        "is_active": "1"
+    },
+    {
+        "id": "35",
+        "name": "Zaokrąglarki",
+        "parent_id": "19",
+        "product_count": 10,
+        "url": "piekarnictwo\/formowanie-chleba\/zaokraglarki.html",
+        "level": "4",
+        "path": "1\/2\/6\/19\/35",
+        "is_active": "1"
+    },
+    {
+        "id": "36",
+        "name": "Międzygarownie",
+        "parent_id": "19",
+        "product_count": 3,
+        "url": "piekarnictwo\/formowanie-chleba\/miedzygarownie.html",
+        "level": "4",
+        "path": "1\/2\/6\/19\/36",
+        "is_active": "1"
+    },
+    {
+        "id": "37",
+        "name": "Wydłużarki",
+        "parent_id": "19",
+        "product_count": 8,
+        "url": "piekarnictwo\/formowanie-chleba\/wydluzarki.html",
+        "level": "4",
+        "path": "1\/2\/6\/19\/37",
+        "is_active": "1"
+    },
+    {
+        "id": "135",
+        "name": "Linie laminacyjne",
+        "parent_id": "19",
+        "product_count": 6,
+        "url": "piekarnictwo\/formowanie-chleba\/linie-laminacyjne.html",
+        "level": "4",
+        "path": "1\/2\/6\/19\/135",
+        "is_active": "1"
+    },
+    {
+        "id": "20",
+        "name": "Formowanie bułek i pączków",
+        "parent_id": "6",
+        "product_count": 22,
+        "url": "piekarnictwo\/formowanie-bulek-i-paczkow.html",
+        "level": "3",
+        "path": "1\/2\/6\/20",
+        "is_active": "1"
+    },
+    {
+        "id": "132",
+        "name": "Dzielarki do bułek",
+        "parent_id": "20",
+        "product_count": 7,
+        "url": "piekarnictwo\/formowanie-bulek-i-paczkow\/dzielarki-do-bulek.html",
+        "level": "4",
+        "path": "1\/2\/6\/20\/132",
+        "is_active": "1"
+    },
+    {
+        "id": "133",
+        "name": "Linie do bułek",
+        "parent_id": "20",
+        "product_count": 13,
+        "url": "piekarnictwo\/formowanie-bulek-i-paczkow\/linie-do-bulek.html",
+        "level": "4",
+        "path": "1\/2\/6\/20\/133",
+        "is_active": "1"
+    },
+    {
+        "id": "21",
+        "name": "Natłuszczanie i czyszczenie blach",
+        "parent_id": "6",
+        "product_count": 27,
+        "url": "piekarnictwo\/natluszczanie-i-czyszczenie-blach.html",
+        "level": "3",
+        "path": "1\/2\/6\/21",
+        "is_active": "1"
+    },
+    {
+        "id": "106",
+        "name": "Natłuszczanie blach i form",
+        "parent_id": "21",
+        "product_count": 20,
+        "url": "piekarnictwo\/natluszczanie-i-czyszczenie-blach\/natluszczanie-blach-i-form.html",
+        "level": "4",
+        "path": "1\/2\/6\/21\/106",
+        "is_active": "1"
+    },
+    {
+        "id": "107",
+        "name": "Czyszczenie i natłuszczanie blach",
+        "parent_id": "21",
+        "product_count": 7,
+        "url": "piekarnictwo\/natluszczanie-i-czyszczenie-blach\/czyszczenie-i-natluszczanie-blach.html",
+        "level": "4",
+        "path": "1\/2\/6\/21\/107",
+        "is_active": "1"
+    },
+    {
+        "id": "22",
+        "name": "Piece",
+        "parent_id": "6",
+        "product_count": 86,
+        "url": "piekarnictwo\/piece.html",
+        "level": "3",
+        "path": "1\/2\/6\/22",
+        "is_active": "1"
+    },
+    {
+        "id": "40",
+        "name": "Piecyki sklepowe",
+        "parent_id": "22",
+        "product_count": 35,
+        "url": "piekarnictwo\/piece\/piecyki-sklepowe.html",
+        "level": "4",
+        "path": "1\/2\/6\/22\/40",
+        "is_active": "1"
+    },
+    {
+        "id": "39",
+        "name": "Piece wózkowe",
+        "parent_id": "22",
+        "product_count": 4,
+        "url": "piekarnictwo\/piece\/piece-wozkowe.html",
+        "level": "4",
+        "path": "1\/2\/6\/22\/39",
+        "is_active": "1"
+    },
+    {
+        "id": "38",
+        "name": "Piece półkowe",
+        "parent_id": "22",
+        "product_count": 32,
+        "url": "piekarnictwo\/piece\/piece-polkowe.html",
+        "level": "4",
+        "path": "1\/2\/6\/22\/38",
+        "is_active": "1"
+    },
+    {
+        "id": "104",
+        "name": "Załadunki",
+        "parent_id": "22",
+        "product_count": 3,
+        "url": "piekarnictwo\/piece\/zaladunki.html",
+        "level": "4",
+        "path": "1\/2\/6\/22\/104",
+        "is_active": "1"
+    },
+    {
+        "id": "105",
+        "name": "Piece tunelowe",
+        "parent_id": "22",
+        "product_count": 1,
+        "url": "piekarnictwo\/piece\/piece-tunelowe.html",
+        "level": "4",
+        "path": "1\/2\/6\/22\/105",
+        "is_active": "1"
+    },
+    {
+        "id": "256",
+        "name": "Załadunek i rozładunek blach",
+        "parent_id": "6",
+        "product_count": 2,
+        "url": "piekarnictwo\/zaladunek-i-rozladunek-blach.html",
+        "level": "3",
+        "path": "1\/2\/6\/256",
+        "is_active": "1"
+    },
+    {
+        "id": "24",
+        "name": "Chłodzenie i mrożenie",
+        "parent_id": "6",
+        "product_count": 79,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie.html",
+        "level": "3",
+        "path": "1\/2\/6\/24",
+        "is_active": "1"
+    },
+    {
+        "id": "87",
+        "name": "Spiralne",
+        "parent_id": "24",
+        "product_count": 7,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie\/spiralne.html",
+        "level": "4",
+        "path": "1\/2\/6\/24\/87",
+        "is_active": "1"
+    },
+    {
+        "id": "88",
+        "name": "Komory chłodnicze",
+        "parent_id": "24",
+        "product_count": 72,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze.html",
+        "level": "4",
+        "path": "1\/2\/6\/24\/88",
+        "is_active": "1"
+    },
+    {
+        "id": "95",
+        "name": "Aroma Cooler",
+        "parent_id": "88",
+        "product_count": 1,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/aroma-cooler.html",
+        "level": "5",
+        "path": "1\/2\/6\/24\/88\/95",
+        "is_active": "1"
+    },
+    {
+        "id": "96",
+        "name": "Mroźnie szokowe",
+        "parent_id": "88",
+        "product_count": 69,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/mroznie-szokowe.html",
+        "level": "5",
+        "path": "1\/2\/6\/24\/88\/96",
+        "is_active": "1"
+    },
+    {
+        "id": "97",
+        "name": "Głębokie mrożenie",
+        "parent_id": "88",
+        "product_count": 1,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/glebokie-mrozenie.html",
+        "level": "5",
+        "path": "1\/2\/6\/24\/88\/97",
+        "is_active": "1"
+    },
+    {
+        "id": "98",
+        "name": "Składowanie",
+        "parent_id": "88",
+        "product_count": 1,
+        "url": "piekarnictwo\/chlodzenie-i-mrozenie\/komory-chlodnicze\/skladowanie.html",
+        "level": "5",
+        "path": "1\/2\/6\/24\/88\/98",
+        "is_active": "1"
+    },
+    {
+        "id": "25",
+        "name": "Krojenie i nacinanie",
+        "parent_id": "6",
+        "product_count": 37,
+        "url": "piekarnictwo\/krojenie.html",
+        "level": "3",
+        "path": "1\/2\/6\/25",
+        "is_active": "1"
+    },
+    {
+        "id": "43",
+        "name": "Krajalnice sklepowe",
+        "parent_id": "25",
+        "product_count": 13,
+        "url": "piekarnictwo\/krojenie\/krajalnice-sklepowe.html",
+        "level": "4",
+        "path": "1\/2\/6\/25\/43",
+        "is_active": "1"
+    },
+    {
+        "id": "44",
+        "name": "Krajalnice wysokowydajne",
+        "parent_id": "25",
+        "product_count": 7,
+        "url": "piekarnictwo\/krojenie\/krajalnice-wysokowydajne.html",
+        "level": "4",
+        "path": "1\/2\/6\/25\/44",
+        "is_active": "1"
+    },
+    {
+        "id": "45",
+        "name": "Krojenie bułek",
+        "parent_id": "25",
+        "product_count": 7,
+        "url": "piekarnictwo\/krojenie\/krojenie-bulek.html",
+        "level": "4",
+        "path": "1\/2\/6\/25\/45",
+        "is_active": "1"
+    },
+    {
+        "id": "255",
+        "name": "Nacinanie ciasta",
+        "parent_id": "25",
+        "product_count": 3,
+        "url": "piekarnictwo\/krojenie\/nacinanie-ciasta.html",
+        "level": "4",
+        "path": "1\/2\/6\/25\/255",
+        "is_active": "1"
+    },
+    {
+        "id": "26",
+        "name": "Pakowanie",
+        "parent_id": "6",
+        "product_count": 27,
+        "url": "piekarnictwo\/pakowanie.html",
+        "level": "3",
+        "path": "1\/2\/6\/26",
+        "is_active": "1"
+    },
+    {
+        "id": "89",
+        "name": "Logistyka wewnątrzzakładowa",
+        "parent_id": "6",
+        "product_count": 0,
+        "url": "piekarnictwo\/logistyka-wewnatrzzakladowa.html",
+        "level": "3",
+        "path": "1\/2\/6\/89",
+        "is_active": "1"
+    },
+    {
+        "id": "3",
+        "name": "Cukiernictwo",
+        "parent_id": 2,
+        "product_count": 444,
+        "url": "cukiernictwo.html",
+        "level": "2",
+        "path": "1\/2\/3",
+        "is_active": "1"
+    },
+    {
+        "id": "48",
+        "name": "Produkcja lodów",
+        "parent_id": "3",
+        "product_count": 21,
+        "url": "cukiernictwo\/produkcja-lodow.html",
+        "level": "3",
+        "path": "1\/2\/3\/48",
+        "is_active": "1"
+    },
+    {
+        "id": "285",
+        "name": "Granitory i podgrzewacze",
+        "parent_id": "3",
+        "product_count": 42,
+        "url": "cukiernictwo\/granitory-i-podgrzewacze.html",
+        "level": "3",
+        "path": "1\/2\/3\/285",
+        "is_active": "1"
+    },
+    {
+        "id": "290",
+        "name": "Granitory",
+        "parent_id": "285",
+        "product_count": 21,
+        "url": "cukiernictwo\/granitory-i-podgrzewacze\/granitory.html",
+        "level": "4",
+        "path": "1\/2\/3\/285\/290",
+        "is_active": "1"
+    },
+    {
+        "id": "293",
+        "name": "Chłodzenie powietrzem",
+        "parent_id": "290",
+        "product_count": 15,
+        "url": "cukiernictwo\/granitory-i-podgrzewacze\/granitory\/chlodzenie-powietrzem.html",
+        "level": "5",
+        "path": "1\/2\/3\/285\/290\/293",
+        "is_active": "1"
+    },
+    {
+        "id": "294",
+        "name": "Chłodzenie wodą",
+        "parent_id": "290",
+        "product_count": 6,
+        "url": "cukiernictwo\/granitory-i-podgrzewacze\/granitory\/chlodzenie-woda.html",
+        "level": "5",
+        "path": "1\/2\/3\/285\/290\/294",
+        "is_active": "1"
+    },
+    {
+        "id": "291",
+        "name": "Mrożona kawa i jogurt",
+        "parent_id": "285",
+        "product_count": 15,
+        "url": "cukiernictwo\/granitory-i-podgrzewacze\/mrozona-kawa-i-jogurt.html",
+        "level": "4",
+        "path": "1\/2\/3\/285\/291",
+        "is_active": "1"
+    },
+    {
+        "id": "292",
+        "name": "Gorąca czekolada",
+        "parent_id": "285",
+        "product_count": 6,
+        "url": "cukiernictwo\/granitory-i-podgrzewacze\/goraca-czekolada.html",
+        "level": "4",
+        "path": "1\/2\/3\/285\/292",
+        "is_active": "1"
+    },
+    {
+        "id": "52",
+        "name": "Ubijaczki",
+        "parent_id": "3",
+        "product_count": 281,
+        "url": "cukiernictwo\/ubijaczki.html",
+        "level": "3",
+        "path": "1\/2\/3\/52",
+        "is_active": "1"
+    },
+    {
+        "id": "283",
+        "name": "Urządzenia",
+        "parent_id": "52",
+        "product_count": 63,
+        "url": "cukiernictwo\/ubijaczki\/urzadzenia.html",
+        "level": "4",
+        "path": "1\/2\/3\/52\/283",
+        "is_active": "1"
+    },
+    {
+        "id": "284",
+        "name": "Akcesoria",
+        "parent_id": "52",
+        "product_count": 235,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria.html",
+        "level": "4",
+        "path": "1\/2\/3\/52\/284",
+        "is_active": "1"
+    },
+    {
+        "id": "297",
+        "name": "Teddy",
+        "parent_id": "284",
+        "product_count": 14,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/teddy.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/297",
+        "is_active": "1"
+    },
+    {
+        "id": "298",
+        "name": "Kodiak10",
+        "parent_id": "284",
+        "product_count": 14,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak10.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/298",
+        "is_active": "1"
+    },
+    {
+        "id": "299",
+        "name": "Kodiak20",
+        "parent_id": "284",
+        "product_count": 23,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak20.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/299",
+        "is_active": "1"
+    },
+    {
+        "id": "300",
+        "name": "Wyposażenie A",
+        "parent_id": "299",
+        "product_count": 9,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak20\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/299\/300",
+        "is_active": "1"
+    },
+    {
+        "id": "301",
+        "name": "Wyposażenie B",
+        "parent_id": "299",
+        "product_count": 15,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak20\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/299\/301",
+        "is_active": "1"
+    },
+    {
+        "id": "302",
+        "name": "Kodiak30",
+        "parent_id": "284",
+        "product_count": 31,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak30.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/302",
+        "is_active": "1"
+    },
+    {
+        "id": "303",
+        "name": "Wyposażenie A",
+        "parent_id": "302",
+        "product_count": 15,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak30\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/302\/303",
+        "is_active": "1"
+    },
+    {
+        "id": "304",
+        "name": "Wyposażenie B",
+        "parent_id": "302",
+        "product_count": 21,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/kodiak30\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/302\/304",
+        "is_active": "1"
+    },
+    {
+        "id": "305",
+        "name": "AR30",
+        "parent_id": "284",
+        "product_count": 38,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar30.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/305",
+        "is_active": "1"
+    },
+    {
+        "id": "306",
+        "name": "Wyposażenie A",
+        "parent_id": "305",
+        "product_count": 20,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar30\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/305\/306",
+        "is_active": "1"
+    },
+    {
+        "id": "307",
+        "name": "Wyposażenie B",
+        "parent_id": "305",
+        "product_count": 24,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar30\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/305\/307",
+        "is_active": "1"
+    },
+    {
+        "id": "308",
+        "name": "AR40",
+        "parent_id": "284",
+        "product_count": 39,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar40.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/308",
+        "is_active": "1"
+    },
+    {
+        "id": "309",
+        "name": "Wyposażenie A",
+        "parent_id": "308",
+        "product_count": 20,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar40\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/308\/309",
+        "is_active": "1"
+    },
+    {
+        "id": "310",
+        "name": "Wyposażenie B",
+        "parent_id": "308",
+        "product_count": 24,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar40\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/308\/310",
+        "is_active": "1"
+    },
+    {
+        "id": "311",
+        "name": "AR60 i ERGO60",
+        "parent_id": "284",
+        "product_count": 35,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar60-i-ergo60.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/311",
+        "is_active": "1"
+    },
+    {
+        "id": "312",
+        "name": "Wyposażenie A",
+        "parent_id": "311",
+        "product_count": 19,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar60-i-ergo60\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/311\/312",
+        "is_active": "1"
+    },
+    {
+        "id": "313",
+        "name": "Wyposażenie B",
+        "parent_id": "311",
+        "product_count": 21,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar60-i-ergo60\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/311\/313",
+        "is_active": "1"
+    },
+    {
+        "id": "314",
+        "name": "AR80",
+        "parent_id": "284",
+        "product_count": 32,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar80.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/314",
+        "is_active": "1"
+    },
+    {
+        "id": "315",
+        "name": "Wyposażenie A",
+        "parent_id": "314",
+        "product_count": 17,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar80\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/314\/315",
+        "is_active": "1"
+    },
+    {
+        "id": "316",
+        "name": "Wyposażenie B",
+        "parent_id": "314",
+        "product_count": 19,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar80\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/314\/316",
+        "is_active": "1"
+    },
+    {
+        "id": "317",
+        "name": "AR100 i ERGO100",
+        "parent_id": "284",
+        "product_count": 47,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/317",
+        "is_active": "1"
+    },
+    {
+        "id": "318",
+        "name": "Wyposażenie A",
+        "parent_id": "317",
+        "product_count": 21,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100\/wyposazenie-a.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/317\/318",
+        "is_active": "1"
+    },
+    {
+        "id": "319",
+        "name": "Wyposażenie B",
+        "parent_id": "317",
+        "product_count": 20,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100\/wyposazenie-b.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/317\/319",
+        "is_active": "1"
+    },
+    {
+        "id": "320",
+        "name": "Wyposażenie C",
+        "parent_id": "317",
+        "product_count": 18,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ar100-i-ergo100\/wyposazenie-c.html",
+        "level": "6",
+        "path": "1\/2\/3\/52\/284\/317\/320",
+        "is_active": "1"
+    },
+    {
+        "id": "321",
+        "name": "ERGO140",
+        "parent_id": "284",
+        "product_count": 19,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ergo140.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/321",
+        "is_active": "1"
+    },
+    {
+        "id": "322",
+        "name": "ERGO 200",
+        "parent_id": "284",
+        "product_count": 12,
+        "url": "cukiernictwo\/ubijaczki\/akcesoria\/ergo-200.html",
+        "level": "5",
+        "path": "1\/2\/3\/52\/284\/322",
+        "is_active": "1"
+    },
+    {
+        "id": "53",
+        "name": "Ubijaczki do śmietany",
+        "parent_id": "3",
+        "product_count": 12,
+        "url": "cukiernictwo\/ubijaczki-do-smietany.html",
+        "level": "3",
+        "path": "1\/2\/3\/53",
+        "is_active": "1"
+    },
+    {
+        "id": "49",
+        "name": "Dozowanie, nadziewanie",
+        "parent_id": "3",
+        "product_count": 51,
+        "url": "cukiernictwo\/dozowanie-nadziewanie.html",
+        "level": "3",
+        "path": "1\/2\/3\/49",
+        "is_active": "1"
+    },
+    {
+        "id": "108",
+        "name": "Nadziewanie",
+        "parent_id": "49",
+        "product_count": 7,
+        "url": "cukiernictwo\/dozowanie-nadziewanie\/nadziewanie.html",
+        "level": "4",
+        "path": "1\/2\/3\/49\/108",
+        "is_active": "1"
+    },
+    {
+        "id": "330",
+        "name": "Urządzenia",
+        "parent_id": "108",
+        "product_count": 7,
+        "url": "cukiernictwo\/dozowanie-nadziewanie\/nadziewanie\/urzadzenia.html",
+        "level": "5",
+        "path": "1\/2\/3\/49\/108\/330",
+        "is_active": "1"
+    },
+    {
+        "id": "331",
+        "name": "Akcesoria i części zamienne",
+        "parent_id": "108",
+        "product_count": 79,
+        "url": "cukiernictwo\/dozowanie-nadziewanie\/nadziewanie\/czesci-zamienne.html",
+        "level": "5",
+        "path": "1\/2\/3\/49\/108\/331",
+        "is_active": "1"
+    },
+    {
+        "id": "109",
+        "name": "Dozowanie",
+        "parent_id": "49",
+        "product_count": 44,
+        "url": "cukiernictwo\/dozowanie-nadziewanie\/dozowanie.html",
+        "level": "4",
+        "path": "1\/2\/3\/49\/109",
+        "is_active": "1"
+    },
+    {
+        "id": "50",
+        "name": "Pasteryzacja",
+        "parent_id": "3",
+        "product_count": 19,
+        "url": "cukiernictwo\/pasteryzacja.html",
+        "level": "3",
+        "path": "1\/2\/3\/50",
+        "is_active": "1"
+    },
+    {
+        "id": "61",
+        "name": "Wypiek korpusów babeczkowych",
+        "parent_id": "3",
+        "product_count": 2,
+        "url": "cukiernictwo\/wypiek-korpusow-babeczkowych.html",
+        "level": "3",
+        "path": "1\/2\/3\/61",
+        "is_active": "1"
+    },
+    {
+        "id": "58",
+        "name": "Smażenie w głębokim tłuszczu",
+        "parent_id": "3",
+        "product_count": 6,
+        "url": "cukiernictwo\/smazenie-w-glebokim-tluszczu.html",
+        "level": "3",
+        "path": "1\/2\/3\/58",
+        "is_active": "1"
+    },
+    {
+        "id": "60",
+        "name": "Wydajności rzemieślnicze",
+        "parent_id": "58",
+        "product_count": 4,
+        "url": "cukiernictwo\/smazenie-w-glebokim-tluszczu\/wydajnosci-rzemieslnicze.html",
+        "level": "4",
+        "path": "1\/2\/3\/58\/60",
+        "is_active": "1"
+    },
+    {
+        "id": "59",
+        "name": "Wydajności przemysłowe",
+        "parent_id": "58",
+        "product_count": 3,
+        "url": "cukiernictwo\/smazenie-w-glebokim-tluszczu\/wydajnosci-przemyslowe.html",
+        "level": "4",
+        "path": "1\/2\/3\/58\/59",
+        "is_active": "1"
+    },
+    {
+        "id": "51",
+        "name": "Dekoracja cukiernicza",
+        "parent_id": "3",
+        "product_count": 34,
+        "url": "cukiernictwo\/dekoracja-cukiernicza.html",
+        "level": "3",
+        "path": "1\/2\/3\/51",
+        "is_active": "1"
+    },
+    {
+        "id": "54",
+        "name": "Krojenie",
+        "parent_id": "3",
+        "product_count": 13,
+        "url": "cukiernictwo\/krojenie.html",
+        "level": "3",
+        "path": "1\/2\/3\/54",
+        "is_active": "1"
+    },
+    {
+        "id": "55",
+        "name": "Poziome na blaty",
+        "parent_id": "54",
+        "product_count": 6,
+        "url": "cukiernictwo\/krojenie\/poziome-na-blaty.html",
+        "level": "4",
+        "path": "1\/2\/3\/54\/55",
+        "is_active": "1"
+    },
+    {
+        "id": "56",
+        "name": "Pionowe na sztuki",
+        "parent_id": "54",
+        "product_count": 7,
+        "url": "cukiernictwo\/krojenie\/pionowe-na-sztuki.html",
+        "level": "4",
+        "path": "1\/2\/3\/54\/56",
+        "is_active": "1"
+    },
+    {
+        "id": "62",
+        "name": "Linie do produkcji ciast i tortów",
+        "parent_id": "3",
+        "product_count": 8,
+        "url": "cukiernictwo\/linie-do-produkcji-ciast-i-tortow.html",
+        "level": "3",
+        "path": "1\/2\/3\/62",
+        "is_active": "1"
+    },
+    {
+        "id": "63",
+        "name": "Magazynowanie i naważanie surowców",
+        "parent_id": "3",
+        "product_count": 2,
+        "url": "cukiernictwo\/magazynowanie-i-nawazanie-surowcow.html",
+        "level": "3",
+        "path": "1\/2\/3\/63",
+        "is_active": "1"
+    },
+    {
+        "id": "7",
+        "name": "Gastronomia",
+        "parent_id": 2,
+        "product_count": 185,
+        "url": "gastronomia.html",
+        "level": "2",
+        "path": "1\/2\/7",
+        "is_active": "1"
+    },
+    {
+        "id": "116",
+        "name": "Obróbka wstępna",
+        "parent_id": "7",
+        "product_count": 24,
+        "url": "gastronomia\/obrobka-wstepna.html",
+        "level": "3",
+        "path": "1\/2\/7\/116",
+        "is_active": "1"
+    },
+    {
+        "id": "64",
+        "name": "Obróbka termiczna żywności",
+        "parent_id": "7",
+        "product_count": 111,
+        "url": "gastronomia\/obrobka-termiczna-zywnosci.html",
+        "level": "3",
+        "path": "1\/2\/7\/64",
+        "is_active": "1"
+    },
+    {
+        "id": "92",
+        "name": "Firex",
+        "parent_id": "64",
+        "product_count": 32,
+        "url": "gastronomia-i-zywnosc-gotowa\/obrobka-termiczna\/firex.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/92",
+        "is_active": "1"
+    },
+    {
+        "id": "93",
+        "name": "Roboqbo",
+        "parent_id": "64",
+        "product_count": 17,
+        "url": "gastronomia-i-zywnosc-gotowa\/obrobka-termiczna\/roboqbo.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/93",
+        "is_active": "1"
+    },
+    {
+        "id": "94",
+        "name": "Hoja",
+        "parent_id": "64",
+        "product_count": 7,
+        "url": "gastronomia-i-zywnosc-gotowa\/obrobka-termiczna\/hoja.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/94",
+        "is_active": "1"
+    },
+    {
+        "id": "252",
+        "name": "MKN",
+        "parent_id": "64",
+        "product_count": 20,
+        "url": "gastronomia\/obrobka-termiczna-zywnosci\/piece-mkn.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/252",
+        "is_active": "1"
+    },
+    {
+        "id": "254",
+        "name": "Moduline",
+        "parent_id": "64",
+        "product_count": 20,
+        "url": "gastronomia\/obrobka-termiczna-zywnosci\/moduline.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/254",
+        "is_active": "1"
+    },
+    {
+        "id": "277",
+        "name": "Berief",
+        "parent_id": "64",
+        "product_count": 9,
+        "url": "gastronomia\/obrobka-termiczna-zywnosci\/berief.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/277",
+        "is_active": "1"
+    },
+    {
+        "id": "342",
+        "name": "Glass",
+        "parent_id": "64",
+        "product_count": 5,
+        "url": "gastronomia\/obrobka-termiczna-zywnosci\/glass.html",
+        "level": "4",
+        "path": "1\/2\/7\/64\/342",
+        "is_active": "1"
+    },
+    {
+        "id": "65",
+        "name": "Inkrustacja",
+        "parent_id": "7",
+        "product_count": 6,
+        "url": "gastronomia\/inkrustacja.html",
+        "level": "3",
+        "path": "1\/2\/7\/65",
+        "is_active": "1"
+    },
+    {
+        "id": "66",
+        "name": "Dozowanie",
+        "parent_id": "7",
+        "product_count": 28,
+        "url": "gastronomia\/dozowanie.html",
+        "level": "3",
+        "path": "1\/2\/7\/66",
+        "is_active": "1"
+    },
+    {
+        "id": "86",
+        "name": "Obróbka mięsna",
+        "parent_id": "7",
+        "product_count": 32,
+        "url": "gastronomia\/obrobka-miesna.html",
+        "level": "3",
+        "path": "1\/2\/7\/86",
+        "is_active": "1"
+    },
+    {
+        "id": "67",
+        "name": "Maszyny i linie do produkcji kanapek",
+        "parent_id": "7",
+        "product_count": 10,
+        "url": "gastronomia\/maszyny-i-linie-do-produkcji-kanapek.html",
+        "level": "3",
+        "path": "1\/2\/7\/67",
+        "is_active": "1"
+    },
+    {
+        "id": "11",
+        "name": "Higiena",
+        "parent_id": 2,
+        "product_count": 58,
+        "url": "higiena.html",
+        "level": "2",
+        "path": "1\/2\/11",
+        "is_active": "1"
+    },
+    {
+        "id": "76",
+        "name": "Zmywarki kapturowe",
+        "parent_id": "11",
+        "product_count": 11,
+        "url": "higiena\/zmywarki-kapturowe.html",
+        "level": "3",
+        "path": "1\/2\/11\/76",
+        "is_active": "1"
+    },
+    {
+        "id": "77",
+        "name": "Zmywarki tunelowe",
+        "parent_id": "11",
+        "product_count": 4,
+        "url": "higiena\/zmywarki-tunelowe.html",
+        "level": "3",
+        "path": "1\/2\/11\/77",
+        "is_active": "1"
+    },
+    {
+        "id": "351",
+        "name": "Zmywarko - wyparzarki podblatowe",
+        "parent_id": "11",
+        "product_count": 10,
+        "url": "higiena\/zmywarko-wyparzarki-podblatowe.html",
+        "level": "3",
+        "path": "1\/2\/11\/351",
+        "is_active": "1"
+    },
+    {
+        "id": "353",
+        "name": "Bez pompy spustowej",
+        "parent_id": "351",
+        "product_count": 2,
+        "url": "higiena\/zmywarko-wyparzarki-podblatowe\/bez-pompy-spustowej.html",
+        "level": "4",
+        "path": "1\/2\/11\/351\/353",
+        "is_active": "1"
+    },
+    {
+        "id": "354",
+        "name": "Z pompą spustową",
+        "parent_id": "351",
+        "product_count": 8,
+        "url": "higiena\/zmywarko-wyparzarki-podblatowe\/z-pompa-spustowa.html",
+        "level": "4",
+        "path": "1\/2\/11\/351\/354",
+        "is_active": "1"
+    },
+    {
+        "id": "78",
+        "name": "Czyszczarki  blach",
+        "parent_id": "11",
+        "product_count": 22,
+        "url": "higiena\/czyszczarki-blach.html",
+        "level": "3",
+        "path": "1\/2\/11\/78",
+        "is_active": "1"
+    },
+    {
+        "id": "79",
+        "name": "Środki chemiczne",
+        "parent_id": "11",
+        "product_count": 6,
+        "url": "higiena\/srodki-chemiczne.html",
+        "level": "3",
+        "path": "1\/2\/11\/79",
+        "is_active": "1"
+    },
+    {
+        "id": "80",
+        "name": "Myjnie rotacyjne",
+        "parent_id": "11",
+        "product_count": 3,
+        "url": "higiena\/myjnie-rotacyjne.html",
+        "level": "3",
+        "path": "1\/2\/11\/80",
+        "is_active": "1"
+    },
+    {
+        "id": "332",
+        "name": "Części zamienne - Jeros",
+        "parent_id": "11",
+        "product_count": 143,
+        "url": "higiena\/czesci-zamienne-jeros.html",
+        "level": "3",
+        "path": "1\/2\/11\/332",
+        "is_active": "1"
+    },
+    {
+        "id": "114",
+        "name": "Przemysł Spożywczy",
+        "parent_id": 2,
+        "product_count": 184,
+        "url": "przemysl-spozywczy.html",
+        "level": "2",
+        "path": "1\/2\/114",
+        "is_active": "1"
+    },
+    {
+        "id": "124",
+        "name": "Obróbka wstępna",
+        "parent_id": "114",
+        "product_count": 23,
+        "url": "przemysl-spozywczy\/obrobka-wstepna.html",
+        "level": "3",
+        "path": "1\/2\/114\/124",
+        "is_active": "1"
+    },
+    {
+        "id": "131",
+        "name": "Obróbka mięsna",
+        "parent_id": "114",
+        "product_count": 32,
+        "url": "przemysl-spozywczy\/obrobka-miesna.html",
+        "level": "3",
+        "path": "1\/2\/114\/131",
+        "is_active": "1"
+    },
+    {
+        "id": "125",
+        "name": "Obróbka termiczna żywności",
+        "parent_id": "114",
+        "product_count": 76,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci.html",
+        "level": "3",
+        "path": "1\/2\/114\/125",
+        "is_active": "1"
+    },
+    {
+        "id": "126",
+        "name": "Firex",
+        "parent_id": "125",
+        "product_count": 32,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/firex.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/126",
+        "is_active": "1"
+    },
+    {
+        "id": "127",
+        "name": "Roboqbo",
+        "parent_id": "125",
+        "product_count": 17,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/roboqbo.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/127",
+        "is_active": "1"
+    },
+    {
+        "id": "128",
+        "name": "Hoja",
+        "parent_id": "125",
+        "product_count": 7,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/hoja.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/128",
+        "is_active": "1"
+    },
+    {
+        "id": "276",
+        "name": "Berief",
+        "parent_id": "125",
+        "product_count": 9,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/berief.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/276",
+        "is_active": "1"
+    },
+    {
+        "id": "278",
+        "name": "MKN",
+        "parent_id": "125",
+        "product_count": 20,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/mkn.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/278",
+        "is_active": "1"
+    },
+    {
+        "id": "279",
+        "name": "Houno",
+        "parent_id": "125",
+        "product_count": 4,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/moduline.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/279",
+        "is_active": "1"
+    },
+    {
+        "id": "340",
+        "name": "Glass",
+        "parent_id": "125",
+        "product_count": 5,
+        "url": "przemysl-spozywczy\/obrobka-termiczna-zywnosci\/glass.html",
+        "level": "4",
+        "path": "1\/2\/114\/125\/340",
+        "is_active": "1"
+    },
+    {
+        "id": "129",
+        "name": "Inkrustacja",
+        "parent_id": "114",
+        "product_count": 6,
+        "url": "przemysl-spozywczy\/inkrustacja.html",
+        "level": "3",
+        "path": "1\/2\/114\/129",
+        "is_active": "1"
+    },
+    {
+        "id": "130",
+        "name": "Dozowanie",
+        "parent_id": "114",
+        "product_count": 28,
+        "url": "przemysl-spozywczy\/dozowanie.html",
+        "level": "3",
+        "path": "1\/2\/114\/130",
+        "is_active": "1"
+    },
+    {
+        "id": "8",
+        "name": "Pakowanie",
+        "parent_id": "114",
+        "product_count": 65,
+        "url": "przemysl-spozywczy\/pakowanie.html",
+        "level": "3",
+        "path": "1\/2\/114\/8",
+        "is_active": "1"
+    },
+    {
+        "id": "68",
+        "name": "Pakowanie do pojemników szklanych i puszek",
+        "parent_id": "8",
+        "product_count": 16,
+        "url": "przemysl-spozywczy\/pakowanie-i-paletyzacja\/pakowanie-do-pojemnikow-szklanych-i-puszek.html",
+        "level": "4",
+        "path": "1\/2\/114\/8\/68",
+        "is_active": "1"
+    },
+    {
+        "id": "69",
+        "name": "Pakowanie w kartony",
+        "parent_id": "8",
+        "product_count": 27,
+        "url": "przemysl-spozywczy\/pakowanie-i-paletyzacja\/pakowanie-w-kartony.html",
+        "level": "4",
+        "path": "1\/2\/114\/8\/69",
+        "is_active": "1"
+    },
+    {
+        "id": "70",
+        "name": "Pakowanie produktów mrożonych",
+        "parent_id": "8",
+        "product_count": 9,
+        "url": "przemysl-spozywczy\/pakowanie-i-paletyzacja\/pakowanie-produktow-mrozonych.html",
+        "level": "4",
+        "path": "1\/2\/114\/8\/70",
+        "is_active": "1"
+    },
+    {
+        "id": "71",
+        "name": "Depaletyzacja i paletyzacja",
+        "parent_id": "8",
+        "product_count": 12,
+        "url": "przemysl-spozywczy\/pakowanie-i-paletyzacja\/depaletyzacja-i-paletyzacja.html",
+        "level": "4",
+        "path": "1\/2\/114\/8\/71",
+        "is_active": "1"
+    },
+    {
+        "id": "85",
+        "name": "Słoiki",
+        "parent_id": "8",
+        "product_count": 28,
+        "url": "przemysl-spozywczy\/pakowanie-i-paletyzacja\/sloiki.html",
+        "level": "4",
+        "path": "1\/2\/114\/8\/85",
+        "is_active": "1"
+    },
+    {
+        "id": "9",
+        "name": "Kontrola jakości",
+        "parent_id": "114",
+        "product_count": 2,
+        "url": "przemysl-spozywczy\/kontrola-jakosci.html",
+        "level": "3",
+        "path": "1\/2\/114\/9",
+        "is_active": "1"
+    },
+    {
+        "id": "72",
+        "name": "Linie rozlewnicze",
+        "parent_id": "9",
+        "product_count": 1,
+        "url": "przemysl-spozywczy\/kontrola-jakosci-na-liniach-produkcyjnych\/linie-rozlewnicze.html",
+        "level": "4",
+        "path": "1\/2\/114\/9\/72",
+        "is_active": "1"
+    },
+    {
+        "id": "73",
+        "name": "Linie do dań gotowych",
+        "parent_id": "9",
+        "product_count": 1,
+        "url": "przemysl-spozywczy\/kontrola-jakosci-na-liniach-produkcyjnych\/linie-do-dan-gotowych.html",
+        "level": "4",
+        "path": "1\/2\/114\/9\/73",
+        "is_active": "1"
+    },
+    {
+        "id": "10",
+        "name": "Przetwórstwo",
+        "parent_id": "114",
+        "product_count": 20,
+        "url": "przemysl-spozywczy\/przetworstwo.html",
+        "level": "3",
+        "path": "1\/2\/114\/10",
+        "is_active": "1"
+    },
+    {
+        "id": "84",
+        "name": " Maszyny procesowe",
+        "parent_id": "10",
+        "product_count": 16,
+        "url": "przemysl-spozywczy\/przetworstwo-owocow-i-warzyw\/maszyny-procesowe.html",
+        "level": "4",
+        "path": "1\/2\/114\/10\/84",
+        "is_active": "1"
+    },
+    {
+        "id": "75",
+        "name": "Maszyny do pakowania",
+        "parent_id": "10",
+        "product_count": 4,
+        "url": "przemysl-spozywczy\/przetworstwo-owocow-i-warzyw\/maszyny-do-pakowania.html",
+        "level": "4",
+        "path": "1\/2\/114\/10\/75",
+        "is_active": "1"
+    },
+    {
+        "id": "12",
+        "name": "Wyposażenie sklepów",
+        "parent_id": 2,
+        "product_count": 1086,
+        "url": "wyposazenie-sklepow.html",
+        "level": "2",
+        "path": "1\/2\/12",
+        "is_active": "1"
+    },
+    {
+        "id": "286",
+        "name": "Granitory i podgrzewacze",
+        "parent_id": "12",
+        "product_count": 42,
+        "url": "wyposazenie-sklepow\/granitory-i-podgrzewacze.html",
+        "level": "3",
+        "path": "1\/2\/12\/286",
+        "is_active": "1"
+    },
+    {
+        "id": "287",
+        "name": "Granitory",
+        "parent_id": "286",
+        "product_count": 21,
+        "url": "wyposazenie-sklepow\/granitory-i-podgrzewacze\/granitory.html",
+        "level": "4",
+        "path": "1\/2\/12\/286\/287",
+        "is_active": "1"
+    },
+    {
+        "id": "295",
+        "name": "Chłodzenie powietrzem",
+        "parent_id": "287",
+        "product_count": 15,
+        "url": "wyposazenie-sklepow\/granitory-i-podgrzewacze\/granitory\/chlodzenie-powietrzem.html",
+        "level": "5",
+        "path": "1\/2\/12\/286\/287\/295",
+        "is_active": "1"
+    },
+    {
+        "id": "296",
+        "name": "Chłodzenie wodą",
+        "parent_id": "287",
+        "product_count": 6,
+        "url": "wyposazenie-sklepow\/granitory-i-podgrzewacze\/granitory\/chlodzenie-woda.html",
+        "level": "5",
+        "path": "1\/2\/12\/286\/287\/296",
+        "is_active": "1"
+    },
+    {
+        "id": "289",
+        "name": "Gorąca czekolada",
+        "parent_id": "286",
+        "product_count": 6,
+        "url": "wyposazenie-sklepow\/granitory-i-podgrzewacze\/goraca-czekolada.html",
+        "level": "4",
+        "path": "1\/2\/12\/286\/289",
+        "is_active": "1"
+    },
+    {
+        "id": "288",
+        "name": "Mrożona kawa i jogurt",
+        "parent_id": "286",
+        "product_count": 15,
+        "url": "wyposazenie-sklepow\/granitory-i-podgrzewacze\/mrozona-kawa-i-jogurt.html",
+        "level": "4",
+        "path": "1\/2\/12\/286\/288",
+        "is_active": "1"
+    },
+    {
+        "id": "112",
+        "name": "Krajalnice sklepowe",
+        "parent_id": "12",
+        "product_count": 12,
+        "url": "wyposazenie-sklepow\/krajalnice-sklepowe.html",
+        "level": "3",
+        "path": "1\/2\/12\/112",
+        "is_active": "1"
+    },
+    {
+        "id": "343",
+        "name": "Lodówki podblatowe",
+        "parent_id": "12",
+        "product_count": 15,
+        "url": "wyposazenie-sklepow\/lodowki-podblatowe.html",
+        "level": "3",
+        "path": "1\/2\/12\/343",
+        "is_active": "1"
+    },
+    {
+        "id": "344",
+        "name": "Chłodziarki podblatowe",
+        "parent_id": "343",
+        "product_count": 12,
+        "url": "wyposazenie-sklepow\/lodowki-podblatowe\/chlodziarki-podblatowe.html",
+        "level": "4",
+        "path": "1\/2\/12\/343\/344",
+        "is_active": "1"
+    },
+    {
+        "id": "346",
+        "name": "Chłodzenie statyczne",
+        "parent_id": "344",
+        "product_count": 3,
+        "url": "wyposazenie-sklepow\/lodowki-podblatowe\/chlodziarki-podblatowe\/chlodzenie-statyczne.html",
+        "level": "5",
+        "path": "1\/2\/12\/343\/344\/346",
+        "is_active": "1"
+    },
+    {
+        "id": "347",
+        "name": "Chłodzenie wymuszone",
+        "parent_id": "344",
+        "product_count": 9,
+        "url": "wyposazenie-sklepow\/lodowki-podblatowe\/chlodziarki-podblatowe\/chlodzenie-wymuszone.html",
+        "level": "5",
+        "path": "1\/2\/12\/343\/344\/347",
+        "is_active": "1"
+    },
+    {
+        "id": "348",
+        "name": "Zamrażarki podblatowe",
+        "parent_id": "343",
+        "product_count": 3,
+        "url": "wyposazenie-sklepow\/lodowki-podblatowe\/zamrazarki-podblatowe.html",
+        "level": "4",
+        "path": "1\/2\/12\/343\/348",
+        "is_active": "1"
+    },
+    {
+        "id": "349",
+        "name": "Chłodzenie statyczne",
+        "parent_id": "348",
+        "product_count": 3,
+        "url": "wyposazenie-sklepow\/lodowki-podblatowe\/zamrazarki-podblatowe\/chlodzenie-statyczne.html",
+        "level": "5",
+        "path": "1\/2\/12\/343\/348\/349",
+        "is_active": "1"
+    },
+    {
+        "id": "81",
+        "name": "Oświetlenie",
+        "parent_id": "12",
+        "product_count": 1305,
+        "url": "wyposazenie-sklepow\/oswietlenie.html",
+        "level": "3",
+        "path": "1\/2\/12\/81",
+        "is_active": "1"
+    },
+    {
+        "id": "134",
+        "name": "Stoły chłodnicze",
+        "parent_id": "12",
+        "product_count": 2,
+        "url": "wyposazenie-sklepow\/stoly-chlodnicze.html",
+        "level": "3",
+        "path": "1\/2\/12\/134",
+        "is_active": "1"
+    },
+    {
+        "id": "91",
+        "name": "Szafy chłodnicze",
+        "parent_id": "12",
+        "product_count": 61,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze.html",
+        "level": "3",
+        "path": "1\/2\/12\/91",
+        "is_active": "1"
+    },
+    {
+        "id": "136",
+        "name": "Szafy gastronomiczne",
+        "parent_id": "91",
+        "product_count": 26,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-gastronomiczne.html",
+        "level": "4",
+        "path": "1\/2\/12\/91\/136",
+        "is_active": "1"
+    },
+    {
+        "id": "139",
+        "name": "Chłodnicze",
+        "parent_id": "136",
+        "product_count": 13,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-gastronomiczne\/chlodnicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/91\/136\/139",
+        "is_active": "1"
+    },
+    {
+        "id": "140",
+        "name": "Mroźnicze",
+        "parent_id": "136",
+        "product_count": 12,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-gastronomiczne\/mroznicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/91\/136\/140",
+        "is_active": "1"
+    },
+    {
+        "id": "138",
+        "name": "Szafy na wózki wjezdne",
+        "parent_id": "91",
+        "product_count": 2,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-na-wozki-wjezdne.html",
+        "level": "4",
+        "path": "1\/2\/12\/91\/138",
+        "is_active": "1"
+    },
+    {
+        "id": "143",
+        "name": "Chłodnicze",
+        "parent_id": "138",
+        "product_count": 1,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-na-wozki-wjezdne\/chlodnicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/91\/138\/143",
+        "is_active": "1"
+    },
+    {
+        "id": "144",
+        "name": "Mroźnicze",
+        "parent_id": "138",
+        "product_count": 1,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-na-wozki-wjezdne\/mroznicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/91\/138\/144",
+        "is_active": "1"
+    },
+    {
+        "id": "137",
+        "name": "Szafy piekarnicze",
+        "parent_id": "91",
+        "product_count": 26,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-piekarnicze.html",
+        "level": "4",
+        "path": "1\/2\/12\/91\/137",
+        "is_active": "1"
+    },
+    {
+        "id": "141",
+        "name": "Chłodnicze",
+        "parent_id": "137",
+        "product_count": 12,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-piekarnicze\/chlodnicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/91\/137\/141",
+        "is_active": "1"
+    },
+    {
+        "id": "142",
+        "name": "Mroźnicze",
+        "parent_id": "137",
+        "product_count": 13,
+        "url": "wyposazenie-sklepow\/szafy-chlodnicze\/szafy-piekarnicze\/mroznicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/91\/137\/142",
+        "is_active": "1"
+    },
+    {
+        "id": "361",
+        "name": "Urządzenia do produkcji lodów",
+        "parent_id": "12",
+        "product_count": 4,
+        "url": "wyposazenie-sklepow\/urzadzenia-do-lodow.html",
+        "level": "3",
+        "path": "1\/2\/12\/361",
+        "is_active": "1"
+    },
+    {
+        "id": "358",
+        "name": "Frezery do lodów",
+        "parent_id": "361",
+        "product_count": 12,
+        "url": "wyposazenie-sklepow\/urzadzenia-do-lodow\/frezery-do-lodow.html",
+        "level": "4",
+        "path": "1\/2\/12\/361\/358",
+        "is_active": "1"
+    },
+    {
+        "id": "359",
+        "name": "Frezery nablatowe",
+        "parent_id": "358",
+        "product_count": 6,
+        "url": "wyposazenie-sklepow\/urzadzenia-do-lodow\/frezery-do-lodow\/frezery-nablatowe.html",
+        "level": "5",
+        "path": "1\/2\/12\/361\/358\/359",
+        "is_active": "1"
+    },
+    {
+        "id": "360",
+        "name": "Frezery wolnostojące",
+        "parent_id": "358",
+        "product_count": 6,
+        "url": "wyposazenie-sklepow\/urzadzenia-do-lodow\/frezery-do-lodow\/frezery-wolnostojace.html",
+        "level": "5",
+        "path": "1\/2\/12\/361\/358\/360",
+        "is_active": "1"
+    },
+    {
+        "id": "362",
+        "name": "Maszyny do lodów włoskich",
+        "parent_id": "361",
+        "product_count": 4,
+        "url": "wyposazenie-sklepow\/urzadzenia-do-lodow\/maszyny-do-lodow-wloskich.html",
+        "level": "4",
+        "path": "1\/2\/12\/361\/362",
+        "is_active": "1"
+    },
+    {
+        "id": "149",
+        "name": "Witryny ekspozycyjne",
+        "parent_id": "12",
+        "product_count": 920,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne.html",
+        "level": "3",
+        "path": "1\/2\/12\/149",
+        "is_active": "1"
+    },
+    {
+        "id": "152",
+        "name": "Konserwatory do lodów",
+        "parent_id": "149",
+        "product_count": 111,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow.html",
+        "level": "4",
+        "path": "1\/2\/12\/149\/152",
+        "is_active": "1"
+    },
+    {
+        "id": "186",
+        "name": "Akcesoria do lodów",
+        "parent_id": "152",
+        "product_count": 23,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/akcesoria-do-lodow.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/152\/186",
+        "is_active": "1"
+    },
+    {
+        "id": "156",
+        "name": "Konserwatory typu pozzetti",
+        "parent_id": "152",
+        "product_count": 68,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-typu-pozzetti.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/152\/156",
+        "is_active": "1"
+    },
+    {
+        "id": "169",
+        "name": "Chłodzenie pośrednie glikolem",
+        "parent_id": "156",
+        "product_count": 29,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-typu-pozzetti\/chlodzenie-posrednie-glikolem.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/152\/156\/169",
+        "is_active": "1"
+    },
+    {
+        "id": "170",
+        "name": "Wentylowane (powietrzne)",
+        "parent_id": "156",
+        "product_count": 23,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-typu-pozzetti\/wentylowane-powietrzne.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/152\/156\/170",
+        "is_active": "1"
+    },
+    {
+        "id": "157",
+        "name": "Konserwatory przeszklone z otwartą kuwetą",
+        "parent_id": "152",
+        "product_count": 20,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-przeszklone-z-otwarta-kuweta.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/152\/157",
+        "is_active": "1"
+    },
+    {
+        "id": "167",
+        "name": "Nablatowe",
+        "parent_id": "157",
+        "product_count": 8,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-przeszklone-z-otwarta-kuweta\/nablatowe.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/152\/157\/167",
+        "is_active": "1"
+    },
+    {
+        "id": "187",
+        "name": "Wolnostojące",
+        "parent_id": "157",
+        "product_count": 12,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/konserwatory-do-lodow\/konserwatory-przeszklone-z-otwarta-kuweta\/wolnostojace.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/152\/157\/187",
+        "is_active": "1"
+    },
+    {
+        "id": "151",
+        "name": "Lady ekspozycyjne",
+        "parent_id": "149",
+        "product_count": 59,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne.html",
+        "level": "4",
+        "path": "1\/2\/12\/149\/151",
+        "is_active": "1"
+    },
+    {
+        "id": "158",
+        "name": "Lady chłodnicze",
+        "parent_id": "151",
+        "product_count": 28,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-chlodnicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/151\/158",
+        "is_active": "1"
+    },
+    {
+        "id": "326",
+        "name": "Lady cukiernicze",
+        "parent_id": "151",
+        "product_count": 31,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-cukiernicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/151\/326",
+        "is_active": "1"
+    },
+    {
+        "id": "325",
+        "name": "Lady do ciasta",
+        "parent_id": "151",
+        "product_count": 31,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-do-ciasta.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/151\/325",
+        "is_active": "1"
+    },
+    {
+        "id": "160",
+        "name": "Lady grzewcze",
+        "parent_id": "151",
+        "product_count": 6,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-grzewcze.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/151\/160",
+        "is_active": "1"
+    },
+    {
+        "id": "159",
+        "name": "Lady neutralne",
+        "parent_id": "151",
+        "product_count": 25,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/lady-ekspozycyjne\/lady-neutralne.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/151\/159",
+        "is_active": "1"
+    },
+    {
+        "id": "324",
+        "name": "Witryny cukiernicze",
+        "parent_id": "149",
+        "product_count": 546,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-cukiernicze.html",
+        "level": "4",
+        "path": "1\/2\/12\/149\/324",
+        "is_active": "1"
+    },
+    {
+        "id": "323",
+        "name": "Witryny do ciasta",
+        "parent_id": "149",
+        "product_count": 543,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-do-ciasta.html",
+        "level": "4",
+        "path": "1\/2\/12\/149\/323",
+        "is_active": "1"
+    },
+    {
+        "id": "150",
+        "name": "Witryny pionowe",
+        "parent_id": "149",
+        "product_count": 751,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe.html",
+        "level": "4",
+        "path": "1\/2\/12\/149\/150",
+        "is_active": "1"
+    },
+    {
+        "id": "153",
+        "name": "Witryny chłodnicze",
+        "parent_id": "150",
+        "product_count": 263,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-chlodnicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/150\/153",
+        "is_active": "1"
+    },
+    {
+        "id": "161",
+        "name": "Chłodnie statyczne",
+        "parent_id": "153",
+        "product_count": 121,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-chlodnicze\/chlodnie-statyczne.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/150\/153\/161",
+        "is_active": "1"
+    },
+    {
+        "id": "162",
+        "name": "Chłodnie wentylowane",
+        "parent_id": "153",
+        "product_count": 141,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-chlodnicze\/chlodnie-wentylowane.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/150\/153\/162",
+        "is_active": "1"
+    },
+    {
+        "id": "155",
+        "name": "Witryny do mięsa i wina",
+        "parent_id": "150",
+        "product_count": 225,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-do-miesa-i-wina.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/150\/155",
+        "is_active": "1"
+    },
+    {
+        "id": "165",
+        "name": "Mięso",
+        "parent_id": "155",
+        "product_count": 119,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-do-miesa-i-wina\/mieso.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/150\/155\/165",
+        "is_active": "1"
+    },
+    {
+        "id": "166",
+        "name": "Wino",
+        "parent_id": "155",
+        "product_count": 106,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-do-miesa-i-wina\/wino.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/150\/155\/166",
+        "is_active": "1"
+    },
+    {
+        "id": "154",
+        "name": "Witryny mroźnicze",
+        "parent_id": "150",
+        "product_count": 263,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-mroznicze.html",
+        "level": "5",
+        "path": "1\/2\/12\/149\/150\/154",
+        "is_active": "1"
+    },
+    {
+        "id": "163",
+        "name": "Mroźnie statyczne",
+        "parent_id": "154",
+        "product_count": 122,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-mroznicze\/mroznie-statyczne.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/150\/154\/163",
+        "is_active": "1"
+    },
+    {
+        "id": "164",
+        "name": "Mroźnie wentylowane",
+        "parent_id": "154",
+        "product_count": 141,
+        "url": "wyposazenie-sklepow\/witryny-ekspozycyjne\/witryny-pionowe\/witryny-mroznicze\/mroznie-wentylowane.html",
+        "level": "6",
+        "path": "1\/2\/12\/149\/150\/154\/164",
+        "is_active": "1"
+    },
+    {
+        "id": "352",
+        "name": "Zmywarko - wyparzarki podblatowe",
+        "parent_id": "12",
+        "product_count": 10,
+        "url": "wyposazenie-sklepow\/zmywarko-wyparzarki-podblatowe.html",
+        "level": "3",
+        "path": "1\/2\/12\/352",
+        "is_active": "1"
+    },
+    {
+        "id": "355",
+        "name": "Bez pompy spustowej",
+        "parent_id": "352",
+        "product_count": 2,
+        "url": "wyposazenie-sklepow\/zmywarko-wyparzarki-podblatowe\/bez-pompy-spustowej.html",
+        "level": "4",
+        "path": "1\/2\/12\/352\/355",
+        "is_active": "1"
+    },
+    {
+        "id": "356",
+        "name": "Z pompą spustową",
+        "parent_id": "352",
+        "product_count": 8,
+        "url": "wyposazenie-sklepow\/zmywarko-wyparzarki-podblatowe\/z-pompa-spustowa.html",
+        "level": "4",
+        "path": "1\/2\/12\/352\/356",
+        "is_active": "1"
+    },
+    {
+        "id": "83",
+        "name": "Używane",
+        "parent_id": 2,
+        "product_count": 180,
+        "url": "uzywane.html",
+        "level": "2",
+        "path": "1\/2\/83",
+        "is_active": "1"
+    },
+    {
+        "id": "174",
+        "name": "Dzielarki",
+        "parent_id": "83",
+        "product_count": 35,
+        "url": "uzywane\/dzielarki.html",
+        "level": "3",
+        "path": "1\/2\/83\/174",
+        "is_active": "1"
+    },
+    {
+        "id": "178",
+        "name": "Krajalnice i pakowaczki",
+        "parent_id": "83",
+        "product_count": 10,
+        "url": "uzywane\/krajalnice-i-pakowaczki.html",
+        "level": "3",
+        "path": "1\/2\/83\/178",
+        "is_active": "1"
+    },
+    {
+        "id": "180",
+        "name": "Linie do bułek",
+        "parent_id": "83",
+        "product_count": 7,
+        "url": "uzywane\/linie-do-bulek.html",
+        "level": "3",
+        "path": "1\/2\/83\/180",
+        "is_active": "1"
+    },
+    {
+        "id": "171",
+        "name": "Mieszałki i ubijaczki",
+        "parent_id": "83",
+        "product_count": 26,
+        "url": "uzywane\/mieszalki-i-ubijaczki.html",
+        "level": "3",
+        "path": "1\/2\/83\/171",
+        "is_active": "1"
+    },
+    {
+        "id": "176",
+        "name": "Międzygarownie",
+        "parent_id": "83",
+        "product_count": 4,
+        "url": "uzywane\/miedzygarownie.html",
+        "level": "3",
+        "path": "1\/2\/83\/176",
+        "is_active": "1"
+    },
+    {
+        "id": "173",
+        "name": "Piece",
+        "parent_id": "83",
+        "product_count": 10,
+        "url": "uzywane\/piece.html",
+        "level": "3",
+        "path": "1\/2\/83\/173",
+        "is_active": "1"
+    },
+    {
+        "id": "182",
+        "name": "Pozostałe urządzenia",
+        "parent_id": "83",
+        "product_count": 40,
+        "url": "uzywane\/pozostale-urzadzenia.html",
+        "level": "3",
+        "path": "1\/2\/83\/182",
+        "is_active": "1"
+    },
+    {
+        "id": "183",
+        "name": "Smażalniki",
+        "parent_id": "83",
+        "product_count": 10,
+        "url": "uzywane\/smazalniki.html",
+        "level": "3",
+        "path": "1\/2\/83\/183",
+        "is_active": "1"
+    },
+    {
+        "id": "177",
+        "name": "Wydłużarki",
+        "parent_id": "83",
+        "product_count": 5,
+        "url": "uzywane\/wydluzarki.html",
+        "level": "3",
+        "path": "1\/2\/83\/177",
+        "is_active": "1"
+    },
+    {
+        "id": "172",
+        "name": "Wywrotnice",
+        "parent_id": "83",
+        "product_count": 1,
+        "url": "uzywane\/wywrotnice.html",
+        "level": "3",
+        "path": "1\/2\/83\/172",
+        "is_active": "1"
+    },
+    {
+        "id": "175",
+        "name": "Zaokrąglarki",
+        "parent_id": "83",
+        "product_count": 9,
+        "url": "uzywane\/zaokraglarki.html",
+        "level": "3",
+        "path": "1\/2\/83\/175",
+        "is_active": "1"
+    },
+    {
+        "id": "181",
+        "name": "Zmywarki i czyszczarki",
+        "parent_id": "83",
+        "product_count": 12,
+        "url": "uzywane\/zmywarki-i-czyszczarki.html",
+        "level": "3",
+        "path": "1\/2\/83\/181",
+        "is_active": "1"
+    },
+    {
+        "id": "184",
+        "name": "Żelownice",
+        "parent_id": "83",
+        "product_count": 5,
+        "url": "uzywane\/zelownice.html",
+        "level": "3",
+        "path": "1\/2\/83\/184",
+        "is_active": "1"
+    },
+    {
+        "id": "13",
+        "name": "Akcesoria",
+        "parent_id": 2,
+        "product_count": 470,
+        "url": "akcesoria.html",
+        "level": "2",
+        "path": "1\/2\/13",
+        "is_active": "1"
+    },
+    {
+        "id": "258",
+        "name": "Akcesoria cukiernicze",
+        "parent_id": "13",
+        "product_count": 9,
+        "url": "akcesoria\/akcesoria-cukiernicze.html",
+        "level": "3",
+        "path": "1\/2\/13\/258",
+        "is_active": "1"
+    },
+    {
+        "id": "266",
+        "name": "Łopatki cukiernicze",
+        "parent_id": "258",
+        "product_count": 9,
+        "url": "akcesoria\/akcesoria-cukiernicze\/lopatki-cukiernicze.html",
+        "level": "4",
+        "path": "1\/2\/13\/258\/266",
+        "is_active": "1"
+    },
+    {
+        "id": "267",
+        "name": "Szpatuły cukiernicze",
+        "parent_id": "258",
+        "product_count": 7,
+        "url": "akcesoria\/akcesoria-cukiernicze\/szpatulki-cukiernicze.html",
+        "level": "4",
+        "path": "1\/2\/13\/258\/267",
+        "is_active": "1"
+    },
+    {
+        "id": "274",
+        "name": "Worki cukiernicze",
+        "parent_id": "258",
+        "product_count": 9,
+        "url": "akcesoria\/akcesoria-cukiernicze\/worki-cukiernicze.html",
+        "level": "4",
+        "path": "1\/2\/13\/258\/274",
+        "is_active": "1"
+    },
+    {
+        "id": "195",
+        "name": "Akcesoria piekarskie",
+        "parent_id": "13",
+        "product_count": 166,
+        "url": "akcesoria\/akcesoria-piekarskie.html",
+        "level": "3",
+        "path": "1\/2\/13\/195",
+        "is_active": "1"
+    },
+    {
+        "id": "198",
+        "name": "Dozowniki",
+        "parent_id": "195",
+        "product_count": 8,
+        "url": "akcesoria\/akcesoria-piekarskie\/dozowniki.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/198",
+        "is_active": "1"
+    },
+    {
+        "id": "220",
+        "name": "Klipsy do zamykarek",
+        "parent_id": "195",
+        "product_count": 5,
+        "url": "akcesoria\/akcesoria-piekarskie\/klipsy-do-zamykarek.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/220",
+        "is_active": "1"
+    },
+    {
+        "id": "197",
+        "name": "Łopatki i szpatuły",
+        "parent_id": "195",
+        "product_count": 47,
+        "url": "akcesoria\/akcesoria-piekarskie\/lopatki-i-szpatuly.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/197",
+        "is_active": "1"
+    },
+    {
+        "id": "216",
+        "name": "Miarki",
+        "parent_id": "195",
+        "product_count": 9,
+        "url": "akcesoria\/akcesoria-piekarskie\/miarki.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/216",
+        "is_active": "1"
+    },
+    {
+        "id": "238",
+        "name": "Nadziewarki do pączków",
+        "parent_id": "195",
+        "product_count": 8,
+        "url": "akcesoria\/akcesoria-piekarskie\/nadziewarki-do-paczkow.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/238",
+        "is_active": "1"
+    },
+    {
+        "id": "205",
+        "name": "Noże",
+        "parent_id": "195",
+        "product_count": 34,
+        "url": "akcesoria\/akcesoria-piekarskie\/noze.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/205",
+        "is_active": "1"
+    },
+    {
+        "id": "204",
+        "name": "Noże do krajalnic",
+        "parent_id": "195",
+        "product_count": 20,
+        "url": "akcesoria\/akcesoria-piekarskie\/noze-do-krajalnic.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/204",
+        "is_active": "1"
+    },
+    {
+        "id": "209",
+        "name": "Pędzle",
+        "parent_id": "195",
+        "product_count": 14,
+        "url": "akcesoria\/akcesoria-piekarskie\/pedzle.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/209",
+        "is_active": "1"
+    },
+    {
+        "id": "210",
+        "name": "Pistolety",
+        "parent_id": "195",
+        "product_count": 13,
+        "url": "akcesoria\/akcesoria-piekarskie\/pistolety.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/210",
+        "is_active": "1"
+    },
+    {
+        "id": "242",
+        "name": "Rękawice piekarnicze",
+        "parent_id": "195",
+        "product_count": 8,
+        "url": "akcesoria\/akcesoria-piekarskie\/rekawice-piekarskie.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/242",
+        "is_active": "1"
+    },
+    {
+        "id": "211",
+        "name": "Rolki i wycinaki",
+        "parent_id": "195",
+        "product_count": 40,
+        "url": "akcesoria\/akcesoria-piekarskie\/rolki-i-wycinaki.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/211",
+        "is_active": "1"
+    },
+    {
+        "id": "246",
+        "name": "Rózgi cukiernicze",
+        "parent_id": "195",
+        "product_count": 6,
+        "url": "akcesoria\/akcesoria-piekarskie\/rozgi-do-ubijania.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/246",
+        "is_active": "1"
+    },
+    {
+        "id": "212",
+        "name": "Sita",
+        "parent_id": "195",
+        "product_count": 29,
+        "url": "akcesoria\/akcesoria-piekarskie\/sita.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/212",
+        "is_active": "1"
+    },
+    {
+        "id": "213",
+        "name": "Skrobaki",
+        "parent_id": "195",
+        "product_count": 26,
+        "url": "akcesoria\/akcesoria-piekarskie\/skrobaki.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/213",
+        "is_active": "1"
+    },
+    {
+        "id": "214",
+        "name": "Szufelki",
+        "parent_id": "195",
+        "product_count": 22,
+        "url": "akcesoria\/akcesoria-piekarskie\/szufelki.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/214",
+        "is_active": "1"
+    },
+    {
+        "id": "215",
+        "name": "Termometry",
+        "parent_id": "195",
+        "product_count": 8,
+        "url": "akcesoria\/akcesoria-piekarskie\/termometry.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/215",
+        "is_active": "1"
+    },
+    {
+        "id": "268",
+        "name": "Termometry do ciasta",
+        "parent_id": "215",
+        "product_count": 6,
+        "url": "akcesoria\/akcesoria-piekarskie\/termometry\/termometry-do-ciasta.html",
+        "level": "5",
+        "path": "1\/2\/13\/195\/215\/268",
+        "is_active": "1"
+    },
+    {
+        "id": "196",
+        "name": "Torty i akcesoria",
+        "parent_id": "195",
+        "product_count": 134,
+        "url": "akcesoria\/akcesoria-piekarskie\/torty-i-akcesoria.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/196",
+        "is_active": "1"
+    },
+    {
+        "id": "269",
+        "name": "Tylki do tortów",
+        "parent_id": "196",
+        "product_count": 10,
+        "url": "akcesoria\/akcesoria-piekarskie\/torty-i-akcesoria\/tylki.html",
+        "level": "5",
+        "path": "1\/2\/13\/195\/196\/269",
+        "is_active": "1"
+    },
+    {
+        "id": "217",
+        "name": "Pozostałe",
+        "parent_id": "195",
+        "product_count": 13,
+        "url": "akcesoria\/akcesoria-piekarskie\/pozostale.html",
+        "level": "4",
+        "path": "1\/2\/13\/195\/217",
+        "is_active": "1"
+    },
+    {
+        "id": "227",
+        "name": "Aparaty załadunkowe",
+        "parent_id": "13",
+        "product_count": 16,
+        "url": "akcesoria\/aparaty-zaladunkowe.html",
+        "level": "3",
+        "path": "1\/2\/13\/227",
+        "is_active": "1"
+    },
+    {
+        "id": "221",
+        "name": "Blachy i maty wypiekowe",
+        "parent_id": "13",
+        "product_count": 30,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe.html",
+        "level": "3",
+        "path": "1\/2\/13\/221",
+        "is_active": "1"
+    },
+    {
+        "id": "228",
+        "name": "Bagietka francuska",
+        "parent_id": "221",
+        "product_count": 19,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/bagietka-francuska.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/228",
+        "is_active": "1"
+    },
+    {
+        "id": "222",
+        "name": "Bagietka niemiecka",
+        "parent_id": "221",
+        "product_count": 11,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/bagietka-niemiecka.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/222",
+        "is_active": "1"
+    },
+    {
+        "id": "259",
+        "name": "Blachy do bagietki",
+        "parent_id": "221",
+        "product_count": 17,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/do-bagietek.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/259",
+        "is_active": "1"
+    },
+    {
+        "id": "260",
+        "name": "Blachy piekarnicze",
+        "parent_id": "221",
+        "product_count": 18,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/blachy-piekarnicze.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/260",
+        "is_active": "1"
+    },
+    {
+        "id": "231",
+        "name": "Fast food",
+        "parent_id": "221",
+        "product_count": 8,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/fast-food.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/231",
+        "is_active": "1"
+    },
+    {
+        "id": "232",
+        "name": "Mata silipatowa",
+        "parent_id": "221",
+        "product_count": 8,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/mata-silipatowa.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/232",
+        "is_active": "1"
+    },
+    {
+        "id": "229",
+        "name": "Pełne",
+        "parent_id": "221",
+        "product_count": 11,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/pelne.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/229",
+        "is_active": "1"
+    },
+    {
+        "id": "230",
+        "name": "Perforowane",
+        "parent_id": "221",
+        "product_count": 21,
+        "url": "akcesoria\/maty-i-blachy-wypiekowe\/perforowane.html",
+        "level": "4",
+        "path": "1\/2\/13\/221\/230",
+        "is_active": "1"
+    },
+    {
+        "id": "199",
+        "name": "Formy wypiekowe, tłoczone",
+        "parent_id": "13",
+        "product_count": 46,
+        "url": "akcesoria\/formy-wypiekowe-tloczone.html",
+        "level": "3",
+        "path": "1\/2\/13\/199",
+        "is_active": "1"
+    },
+    {
+        "id": "201",
+        "name": "Do ciast",
+        "parent_id": "199",
+        "product_count": 56,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/do-ciast.html",
+        "level": "4",
+        "path": "1\/2\/13\/199\/201",
+        "is_active": "1"
+    },
+    {
+        "id": "262",
+        "name": "Formy keksowe",
+        "parent_id": "201",
+        "product_count": 8,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/do-ciast\/forma-keksowa.html",
+        "level": "5",
+        "path": "1\/2\/13\/199\/201\/262",
+        "is_active": "1"
+    },
+    {
+        "id": "261",
+        "name": "Foremki do chleba",
+        "parent_id": "199",
+        "product_count": 9,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/do-chleba.html",
+        "level": "4",
+        "path": "1\/2\/13\/199\/261",
+        "is_active": "1"
+    },
+    {
+        "id": "263",
+        "name": "Formy do muffinek",
+        "parent_id": "199",
+        "product_count": 1,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/do-muffinek.html",
+        "level": "4",
+        "path": "1\/2\/13\/199\/263",
+        "is_active": "1"
+    },
+    {
+        "id": "202",
+        "name": "Okazjonalne",
+        "parent_id": "199",
+        "product_count": 7,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/okazjonalne.html",
+        "level": "4",
+        "path": "1\/2\/13\/199\/202",
+        "is_active": "1"
+    },
+    {
+        "id": "223",
+        "name": "Pojedyncze",
+        "parent_id": "199",
+        "product_count": 4,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/pojedyncze.html",
+        "level": "4",
+        "path": "1\/2\/13\/199\/223",
+        "is_active": "1"
+    },
+    {
+        "id": "200",
+        "name": "Zespolone",
+        "parent_id": "199",
+        "product_count": 58,
+        "url": "akcesoria\/formy-wypiekowe-tloczone\/zespolone.html",
+        "level": "4",
+        "path": "1\/2\/13\/199\/200",
+        "is_active": "1"
+    },
+    {
+        "id": "189",
+        "name": "Kasty i koszyki",
+        "parent_id": "13",
+        "product_count": 46,
+        "url": "akcesoria\/kasty-i-koszyki.html",
+        "level": "3",
+        "path": "1\/2\/13\/189",
+        "is_active": "1"
+    },
+    {
+        "id": "264",
+        "name": "Kasty do garowania",
+        "parent_id": "189",
+        "product_count": 9,
+        "url": "akcesoria\/kasty-i-koszyki\/do-garowania.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/264",
+        "is_active": "1"
+    },
+    {
+        "id": "233",
+        "name": "Kasty drewniane",
+        "parent_id": "189",
+        "product_count": 5,
+        "url": "akcesoria\/kasty-i-koszyki\/kasty-drewniane.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/233",
+        "is_active": "1"
+    },
+    {
+        "id": "190",
+        "name": "Kasty z tworzywa",
+        "parent_id": "189",
+        "product_count": 13,
+        "url": "akcesoria\/kasty-i-koszyki\/kasty-z-tworzywa.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/190",
+        "is_active": "1"
+    },
+    {
+        "id": "237",
+        "name": "Kosze z tworzywa",
+        "parent_id": "189",
+        "product_count": 26,
+        "url": "akcesoria\/kasty-i-koszyki\/kosze-z-tworzywa.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/237",
+        "is_active": "1"
+    },
+    {
+        "id": "236",
+        "name": "Koszyczki rattanowe",
+        "parent_id": "189",
+        "product_count": 29,
+        "url": "akcesoria\/kasty-i-koszyki\/koszyczki-rattanowe.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/236",
+        "is_active": "1"
+    },
+    {
+        "id": "265",
+        "name": "Koszyki do chleba",
+        "parent_id": "189",
+        "product_count": 12,
+        "url": "akcesoria\/kasty-i-koszyki\/koszyki-do-chleba.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/265",
+        "is_active": "1"
+    },
+    {
+        "id": "203",
+        "name": "Pokrowce na koszyki",
+        "parent_id": "189",
+        "product_count": 13,
+        "url": "akcesoria\/kasty-i-koszyki\/pokrowce-na-koszyki.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/203",
+        "is_active": "1"
+    },
+    {
+        "id": "234",
+        "name": "Tkaniny do kast",
+        "parent_id": "189",
+        "product_count": 11,
+        "url": "akcesoria\/kasty-i-koszyki\/tkaniny-do-kast.html",
+        "level": "4",
+        "path": "1\/2\/13\/189\/234",
+        "is_active": "1"
+    },
+    {
+        "id": "206",
+        "name": "Pistolety i środki natłuszczające",
+        "parent_id": "13",
+        "product_count": 64,
+        "url": "akcesoria\/srodki-natluszczajace-hert.html",
+        "level": "3",
+        "path": "1\/2\/13\/206",
+        "is_active": "1"
+    },
+    {
+        "id": "208",
+        "name": "DÜBÖR oleje do blach",
+        "parent_id": "206",
+        "product_count": 33,
+        "url": "akcesoria\/srodki-natluszczajace-hert\/dubor-oleje-do-blach.html",
+        "level": "4",
+        "path": "1\/2\/13\/206\/208",
+        "is_active": "1"
+    },
+    {
+        "id": "207",
+        "name": "DÜBÖR oleje do maszyn",
+        "parent_id": "206",
+        "product_count": 14,
+        "url": "akcesoria\/srodki-natluszczajace-hert\/dubor-oleje-do-maszyn.html",
+        "level": "4",
+        "path": "1\/2\/13\/206\/207",
+        "is_active": "1"
+    },
+    {
+        "id": "333",
+        "name": "DÜBÖR pistolety natryskowe",
+        "parent_id": "206",
+        "product_count": 15,
+        "url": "akcesoria\/srodki-natluszczajace-hert\/dubor-pistolety-natryskowe.html",
+        "level": "4",
+        "path": "1\/2\/13\/206\/333",
+        "is_active": "1"
+    },
+    {
+        "id": "191",
+        "name": "Utrzymanie czystości",
+        "parent_id": "13",
+        "product_count": 63,
+        "url": "akcesoria\/utrzymanie-czystosci.html",
+        "level": "3",
+        "path": "1\/2\/13\/191",
+        "is_active": "1"
+    },
+    {
+        "id": "192",
+        "name": "Kije i trzonki",
+        "parent_id": "191",
+        "product_count": 43,
+        "url": "akcesoria\/utrzymanie-czystosci\/kije-i-trzonki.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/192",
+        "is_active": "1"
+    },
+    {
+        "id": "193",
+        "name": "Listwy logistyczne",
+        "parent_id": "191",
+        "product_count": 25,
+        "url": "akcesoria\/utrzymanie-czystosci\/listwy-logistyczne.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/193",
+        "is_active": "1"
+    },
+    {
+        "id": "245",
+        "name": "Pędzle",
+        "parent_id": "191",
+        "product_count": 5,
+        "url": "akcesoria\/utrzymanie-czystosci\/pedzle.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/245",
+        "is_active": "1"
+    },
+    {
+        "id": "224",
+        "name": "Skrobaki",
+        "parent_id": "191",
+        "product_count": 23,
+        "url": "akcesoria\/utrzymanie-czystosci\/skrobaki.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/224",
+        "is_active": "1"
+    },
+    {
+        "id": "194",
+        "name": "Szczotki",
+        "parent_id": "191",
+        "product_count": 161,
+        "url": "akcesoria\/utrzymanie-czystosci\/szczotki.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/194",
+        "is_active": "1"
+    },
+    {
+        "id": "225",
+        "name": "Szufelki spożywcze",
+        "parent_id": "191",
+        "product_count": 32,
+        "url": "akcesoria\/utrzymanie-czystosci\/szufelki-spozywcze.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/225",
+        "is_active": "1"
+    },
+    {
+        "id": "243",
+        "name": "Ściągacze i zgarniaki",
+        "parent_id": "191",
+        "product_count": 37,
+        "url": "akcesoria\/utrzymanie-czystosci\/sciagacze-i-zgarniaki.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/243",
+        "is_active": "1"
+    },
+    {
+        "id": "226",
+        "name": "Wiaderka",
+        "parent_id": "191",
+        "product_count": 8,
+        "url": "akcesoria\/utrzymanie-czystosci\/wiaderka.html",
+        "level": "4",
+        "path": "1\/2\/13\/191\/226",
+        "is_active": "1"
+    },
+    {
+        "id": "247",
+        "name": "Wagi OHAUS",
+        "parent_id": "13",
+        "product_count": 29,
+        "url": "akcesoria\/wagi-ohaus.html",
+        "level": "3",
+        "path": "1\/2\/13\/247",
+        "is_active": "1"
+    },
+    {
+        "id": "248",
+        "name": "Kompaktowe wagi stołowe",
+        "parent_id": "247",
+        "product_count": 91,
+        "url": "akcesoria\/wagi-ohaus\/kompaktowe-wagi-stolowe.html",
+        "level": "4",
+        "path": "1\/2\/13\/247\/248",
+        "is_active": "1"
+    },
+    {
+        "id": "270",
+        "name": "Wagi do mięsa",
+        "parent_id": "247",
+        "product_count": 19,
+        "url": "akcesoria\/wagi-ohaus\/wagi-do-miesa.html",
+        "level": "4",
+        "path": "1\/2\/13\/247\/270",
+        "is_active": "1"
+    },
+    {
+        "id": "271",
+        "name": "Wagi do piekarni",
+        "parent_id": "247",
+        "product_count": 25,
+        "url": "akcesoria\/wagi-ohaus\/wagi-piekarnicze.html",
+        "level": "4",
+        "path": "1\/2\/13\/247\/271",
+        "is_active": "1"
+    },
+    {
+        "id": "272",
+        "name": "Wagi do ryb",
+        "parent_id": "247",
+        "product_count": 19,
+        "url": "akcesoria\/wagi-ohaus\/wagi-do-ryb.html",
+        "level": "4",
+        "path": "1\/2\/13\/247\/272",
+        "is_active": "1"
+    },
+    {
+        "id": "249",
+        "name": "Wagi platformowe",
+        "parent_id": "247",
+        "product_count": 223,
+        "url": "akcesoria\/wagi-ohaus\/wagi-platformowe.html",
+        "level": "4",
+        "path": "1\/2\/13\/247\/249",
+        "is_active": "1"
+    },
+    {
+        "id": "218",
+        "name": "Wózki",
+        "parent_id": "13",
+        "product_count": 17,
+        "url": "akcesoria\/wozki.html",
+        "level": "3",
+        "path": "1\/2\/13\/218",
+        "is_active": "1"
+    },
+    {
+        "id": "235",
+        "name": "Do transportu koszy",
+        "parent_id": "218",
+        "product_count": 4,
+        "url": "akcesoria\/wozki\/do-transportu-koszy.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/235",
+        "is_active": "1"
+    },
+    {
+        "id": "240",
+        "name": "Kółka do wózków",
+        "parent_id": "218",
+        "product_count": 6,
+        "url": "akcesoria\/wozki\/kolka-do-wozkow.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/240",
+        "is_active": "1"
+    },
+    {
+        "id": "239",
+        "name": "Piecowe",
+        "parent_id": "218",
+        "product_count": 9,
+        "url": "akcesoria\/wozki\/piecowe.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/239",
+        "is_active": "1"
+    },
+    {
+        "id": "219",
+        "name": "Pod aparaty załadunkowe",
+        "parent_id": "218",
+        "product_count": 1,
+        "url": "akcesoria\/wozki\/pod-aparaty-zaladunkowe.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/219",
+        "is_active": "1"
+    },
+    {
+        "id": "241",
+        "name": "Pokrowce",
+        "parent_id": "218",
+        "product_count": 5,
+        "url": "akcesoria\/wozki\/pokrowce.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/241",
+        "is_active": "1"
+    },
+    {
+        "id": "244",
+        "name": "Regały do studzenia",
+        "parent_id": "218",
+        "product_count": 3,
+        "url": "akcesoria\/wozki\/regaly-do-studzenia.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/244",
+        "is_active": "1"
+    },
+    {
+        "id": "275",
+        "name": "Wózki piekarnicze",
+        "parent_id": "218",
+        "product_count": 10,
+        "url": "akcesoria\/wozki\/piekarnicze.html",
+        "level": "4",
+        "path": "1\/2\/13\/218\/275",
+        "is_active": "1"
+    },
+    {
+        "id": "282",
+        "name": "Części zamienne ",
+        "parent_id": 2,
+        "product_count": 986,
+        "url": "czesci-zamienne.html",
+        "level": "2",
+        "path": "1\/2\/282",
+        "is_active": "1"
+    },
+    {
+        "id": "335",
+        "name": "WP Bakery Group",
+        "parent_id": "282",
+        "product_count": 464,
+        "url": "czesci-zamienne\/wp.html",
+        "level": "3",
+        "path": "1\/2\/282\/335",
+        "is_active": "1"
+    },
+    {
+        "id": "337",
+        "name": "Dzielarki WP",
+        "parent_id": "335",
+        "product_count": 69,
+        "url": "czesci-zamienne\/wp\/dzielarki-wp.html",
+        "level": "4",
+        "path": "1\/2\/282\/335\/337",
+        "is_active": "1"
+    },
+    {
+        "id": "338",
+        "name": "Linie do bułek i chlebów WP",
+        "parent_id": "335",
+        "product_count": 284,
+        "url": "czesci-zamienne\/wp\/linie-do-bulek-i-chlebow-wp.html",
+        "level": "4",
+        "path": "1\/2\/282\/335\/338",
+        "is_active": "1"
+    },
+    {
+        "id": "339",
+        "name": "Piece WP",
+        "parent_id": "335",
+        "product_count": 100,
+        "url": "czesci-zamienne\/wp\/piece-wp.html",
+        "level": "4",
+        "path": "1\/2\/282\/335\/339",
+        "is_active": "1"
+    },
+    {
+        "id": "357",
+        "name": "Wyprzedaż",
+        "parent_id": "335",
+        "product_count": 14,
+        "url": "czesci-zamienne\/wp\/wyprzedaz.html",
+        "level": "4",
+        "path": "1\/2\/282\/335\/357",
+        "is_active": "1"
+    },
+    {
+        "id": "336",
+        "name": "Hartmann",
+        "parent_id": "282",
+        "product_count": 308,
+        "url": "czesci-zamienne\/hartmann.html",
+        "level": "3",
+        "path": "1\/2\/282\/336",
+        "is_active": "1"
+    },
+    {
+        "id": "328",
+        "name": "Edhard",
+        "parent_id": "282",
+        "product_count": 71,
+        "url": "czesci-zamienne\/edhard.html",
+        "level": "3",
+        "path": "1\/2\/282\/328",
+        "is_active": "1"
+    },
+    {
+        "id": "327",
+        "name": "Jeros",
+        "parent_id": "282",
+        "product_count": 143,
+        "url": "czesci-zamienne\/jeros.html",
+        "level": "3",
+        "path": "1\/2\/282\/327",
+        "is_active": "1"
+    }
+]
