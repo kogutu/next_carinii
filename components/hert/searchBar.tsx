@@ -304,7 +304,7 @@ const popularSearches = [
     { term: "torebka", icon: "❤️" },
 ];
 
-const promoProducts = await fetch('http://localhost:3000/api/home/products_category?cid=190&t=1', {
+const promoProducts = await fetch(`${process.NEXT_PUBLIC_API_URL}/api/home/products_category?cid=190&t=1`, {
     cache: 'force-cache',
     next: {
         revalidate: 60 * 60 * 24,

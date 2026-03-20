@@ -21,7 +21,7 @@ interface BoxHeroPrsProps {
 
 async function getPrCat(cid) {
     try {
-        const res = await fetch('http://localhost:3000/api/home/products_category?cid=' + cid, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/products_category?cid=` + cid, {
             next: { reactivate: 3600 }
         });
 

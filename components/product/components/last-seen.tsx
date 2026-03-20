@@ -17,7 +17,7 @@ export async function LastSeen({ pid }: LastSeenProps) {
     // Funkcja do pobierania najnowszych produktów
     async function getNewestProducts() {
         try {
-            const res = await fetch('http://localhost:3000/api/home/new_products', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/new_products`, {
                 next: { revalidate: 3600 }
             });
 
