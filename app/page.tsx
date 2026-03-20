@@ -11,7 +11,7 @@ import { cp } from "fs"
 // Funkcja do pobierania najnowszych produktów
 async function getNewestProducts() {
   try {
-    const res = await fetch(`${process.NEXT_PUBLIC_API_URL}/api/home/new_products`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/new_products`, {
       next: { revalidate: 3600 }
     });
 
