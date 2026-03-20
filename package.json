@@ -2,6 +2,7 @@
   "name": "Carinii",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "set NEXT_ESLINT_IGNORE_DURING_BUILDS=true && next build",
