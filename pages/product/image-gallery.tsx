@@ -156,7 +156,7 @@ export default function ProductGallery({ imgs = [] }) {
         .pg-slide img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
           display: block;
           pointer-events: none;
     filter: brightness(0.96);
