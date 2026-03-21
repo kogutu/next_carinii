@@ -87,56 +87,59 @@ export default function Header({ currency }: Props) {
   }
 
   return (
-    <header className="w-ful   bg-white relative z-[30]">
-      {/* Top bar */}
-      <TopHeader />
+    <>      <TopHeader />
+      <header className="w-ful sticky top-0  bg-white relative z-[30]">
+        {/* Top bar */}
 
-      {/* Main header */}
-      <div className="bg-white  py-5 sticky top-0 z-50 ">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-          {/* Logo */}
-          {/* Mobile menu toggle */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden flex items-center"
-            >
-              {isMenuOpen ? <X size={34} /> : <Menu size={34} />}
-            </button>
-            <div className="text-3xl font-black text-hert tracking-tight">
-              <Link href="/">
-                <Logo color="#00000" width={350} height={175} ></Logo>
-              </Link>
+
+
+        {/* Main header */}
+        <div className="bg-white  py-5 sticky top-0 z-50 ">
+          <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            {/* Logo */}
+            {/* Mobile menu toggle */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden flex items-center"
+              >
+                {isMenuOpen ? <X size={34} /> : <Menu size={34} />}
+              </button>
+              <div className="text-3xl font-black text-hert tracking-tight">
+                <Link href="/">
+                  <Logo color="#00000" width={350} height={175} ></Logo>
+                </Link>
+              </div>
+            </div>
+
+            {/* Search bar - Hidden on mobile */}
+            <SearchBar type={'desktop'} />
+
+            {/* Right section - Icons and account */}
+            <div className="flex items-center space-x-1">
+
+
+              {/* Account Modal */}
+              <AccountModal />
+
+              {/* Support Modal */}
+              <SupportModal />
+
+              {/* Mini Cart Drawer */}
+              <CartIcon />
+              <CartDrawerContent />
             </div>
           </div>
+          <SearchBar type={'mobile'} />
 
-          {/* Search bar - Hidden on mobile */}
-          <SearchBar type={'desktop'} />
-
-          {/* Right section - Icons and account */}
-          <div className="flex items-center space-x-1">
-
-
-            {/* Account Modal */}
-            <AccountModal />
-
-            {/* Support Modal */}
-            <SupportModal />
-
-            {/* Mini Cart Drawer */}
-            <CartIcon />
-            <CartDrawerContent />
-          </div>
         </div>
-        <SearchBar type={'mobile'} />
-
-      </div>
 
 
-      <CariniiMegaMenu isMobileMenuOpen={isMenuOpen} onMobileMenuToggle={() => handeMobileMenuToggle()}></CariniiMegaMenu>
+        <CariniiMegaMenu isMobileMenuOpen={isMenuOpen} onMobileMenuToggle={() => handeMobileMenuToggle()}></CariniiMegaMenu>
 
-      {/* <HMenu isMobileMenuOpen={isMenuOpen} onMobileMenuToggle={setIsMenuOpen} /> */}
+        {/* <HMenu isMobileMenuOpen={isMenuOpen} onMobileMenuToggle={setIsMenuOpen} /> */}
 
-    </header>
+      </header>
+    </>
   );
 }
