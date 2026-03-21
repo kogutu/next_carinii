@@ -20,6 +20,7 @@ export async function detectPageType(slug: string[]): Promise<PageMetadata | nul
     try {
         // Pobierz informacje o slug z API
         const res = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=3", {
+            cache: 'force-cache',
             next: { revalidate: 3600 }, // Cache na 1 godzinę
         })
 

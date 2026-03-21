@@ -115,6 +115,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
       // const productsResponse = await searchProductsNew(tsQuery)
       const rawSearchParams: any = await searchParams
+
       const decoded: any = decodeFiltersFromUrl(rawSearchParams)
       decoded.filters = decoded.filters ?? {}
       decoded.filters.cids = [category.cid]
@@ -145,7 +146,6 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         fetch(CATS_TREE_URL, { cache: "force-cache" }).then(r => r.json()),
       ])
       const products = transformDataProduct(productsResponse)
-
       const facets = productsResponse.facet_counts
 
       const mockCategories: CategoryNode[] = []
@@ -156,6 +156,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         mockCategories.push(result.category)
         categoryPath = result.path
       }
+
 
       return (
         <CategoryTemplate

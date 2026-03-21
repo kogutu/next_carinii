@@ -249,8 +249,9 @@ export async function searchCategories(
                 headers: {
                     "Content-Type": "application/json",
                 },
+                cache: 'force-cache',
                 next: { revalidate: CACHE_TTL.CATEGORIES },
-            }
+            },
         )
 
         if (!response.ok) {

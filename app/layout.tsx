@@ -12,6 +12,7 @@ import Script from "next/script"
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
 import { Outfit } from 'next/font/google'
+import RouteListener, { NavigationButton } from "@/components/loader_page"
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -80,6 +81,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }
           `}
         </Script>
+        <RouteListener></RouteListener>
       </body>
     </html>
   )
