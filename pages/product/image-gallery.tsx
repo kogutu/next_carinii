@@ -159,6 +159,7 @@ export default function ProductGallery({ imgs = [] }) {
           object-fit: cover;
           display: block;
           pointer-events: none;
+    filter: brightness(0.96);
         }
 
         /* dots */
