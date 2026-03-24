@@ -10,6 +10,8 @@ import { SessionProvider } from "next-auth/react"
 import { Providers } from "./providers"
 import Script from "next/script"
 
+import { useStablePreventZoom } from '@kimhongyeon/use-stable-prevent-zoom';
+
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
 import { Outfit } from 'next/font/google'
 import RouteListener, { NavigationButton } from "@/components/loader_page"
@@ -106,7 +108,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-
+  useStablePreventZoom(); // Wystarczy dodać tę linię
   const cookieStore = await cookies()
   const currency_cookies = cookieStore.get('currency')?.value ?? 'PLN'
   return (
