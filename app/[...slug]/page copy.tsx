@@ -1,5 +1,7 @@
-// app/[slug]/page.tsx
+import { detectPageType } from "@/lib/page-type-detector"
 import {
+  getCategoryBySlug,
+  getProduct,
   transformDataProduct,
   searchProductsNew,
 } from "@/lib/typesense"
@@ -15,12 +17,8 @@ import {
   buildTypesenseSearchParams,
   decodeFiltersFromUrl,
 } from "@/stores/categoryZustand"
-import {
-  getCachedCategory,
-  getCachedProduct,
-  getCachedCMSData,
-  getCachedPageType,
-} from "./metadata"
+
+import { Metadata } from 'next'
 import { generatePageMetadata } from "./metadata"
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -39,16 +37,17 @@ interface CategoryTreeResult {
   path: string[]
 }
 
+
 // ─── Export metadata ─────────────────────────────────────────────────
 
 export async function generateMetadata({ params, searchParams }: PageProps) {
   return generatePageMetadata({ params, searchParams })
 }
-
 // ─── Helpers ─────────────────────────────────────────────────────────
 
 const CATS_TREE_URL =
   "https://sklep.carinii.com.pl/directseo/nextjs/typesense/categories/cats_tree.json?t=2"
+const CMS_URL = "http://sklep.carinii.com.pl/directseo/nextjs//cms.php"
 const SLUGS_URL = "https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=2"
 
 async function getSeeMoreProducts(product: any) {
@@ -108,8 +107,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
   const { slug } = await params
   const { page } = await searchParams
 
-  // Użyj cache'owanej funkcji do wykrycia typu strony
-  const pageMetadata = await getCachedPageType(slug)
+  const pageMetadata = await detectPageType(slug)
 
   if (!pageMetadata) {
     notFound()
@@ -118,13 +116,13 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
   switch (pageMetadata.type) {
     // ── Category ───────────────────────────────────────────────────
     case "category": {
-      // Użyj cache'owanej funkcji do pobrania kategorii
-      const category = await getCachedCategory(pageMetadata.identifier)
+      const category = await getCategoryBySlug(pageMetadata.identifier)
 
       if (!category) {
         notFound()
       }
 
+      // const productsResponse = await searchProductsNew(tsQuery)
       const rawSearchParams: any = await searchParams
 
       const decoded: any = decodeFiltersFromUrl(rawSearchParams)
@@ -151,6 +149,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
       ].join(',')
       console.log(tsQuery);
 
+      // Lepiej (parallel):
       const [productsResponse, catsTree] = await Promise.all([
         searchProductsNew(tsQuery),
         fetch(CATS_TREE_URL, { cache: "force-cache" }).then(r => r.json()),
@@ -166,6 +165,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         mockCategories.push(result.category)
         categoryPath = result.path
       }
+
 
       return (
         <CategoryTemplate
@@ -186,8 +186,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
     // ── Product ────────────────────────────────────────────────────
     case "product": {
-      // Użyj cache'owanej funkcji do pobrania produktu
-      const product = await getCachedProduct(slug[0])
+      const product = await getProduct(slug[0])
 
       if (!product) {
         notFound()
@@ -242,8 +241,8 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         )
       }
 
-      // Użyj cache'owanej funkcji do pobrania CMS danych
-      const cmsData = await getCachedCMSData()
+      const cmsRes = await fetch(CMS_URL, { cache: "force-cache" })
+      const cmsData = await cmsRes.json()
       const slugKey = slug.join("/")
 
       return (

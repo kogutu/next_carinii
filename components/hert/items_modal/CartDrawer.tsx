@@ -3,9 +3,10 @@
 
 import { Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Drawer, DrawerContent } from '@/components/ui/drawer'
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { useCartStore } from '@/stores/cartZustand'
 import { useIsMobile } from '@/hooks/use-mobile'
+import DiscountCode from '@/components/checkout/DiscountCode'
 
 export function CartDrawerContent() {
   const open = useCartStore((state: any) => state.showMiniCart)
@@ -67,7 +68,7 @@ export function CartDrawerContent() {
                   <div className="flex justify-between">
                     <p className="text-sm font-semibold">
                       {item.name.split("CARINII--")[0]}
-                      <div className="text-xs text-gray-500 font-normal"> {item.sku}</div>
+                      <span className="text-xs text-gray-500 font-normal"> {item.sku}</span>
                     </p>
 
                     <button
@@ -143,6 +144,10 @@ export function CartDrawerContent() {
       {/* PODSUMOWANIE */}
       {items.length > 0 && (
         <div className="p-4 border-t space-y-3">
+          <div className="border-b pb-4">
+            <DiscountCode />
+          </div>
+
           <div className="flex justify-between font-semibold text-lg">
             <span>Suma:</span>
             <span>
@@ -167,12 +172,15 @@ export function CartDrawerContent() {
     </div>
   )
 
+
+
   return (
     <>
       {isMobile ? (
         // 📱 MOBILE DRAWER
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerContent>
+            <DrawerTitle className="sr-only">Koszyk Zakupów</DrawerTitle>
             <CartContent />
           </DrawerContent>
         </Drawer>

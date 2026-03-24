@@ -22,25 +22,86 @@ const outfit = Outfit({
 
 export const dynamic = 'force-dynamic' // 👈 Add this
 export const metadata: Metadata = {
-  title: 'HERT | Profesjonalne Wyposażenie dla Branży Spożywczej',
-  description: 'Wyposażenie piekarni, cukierni i gastronomii. Maszyny do branży spożywczej od sprawdzonych producentów. Serwis i projekty przemysłowe.',
+  title: 'Carinii - Obuwie Damskie i Torebki | Sklep Online',
+  description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
+  keywords: 'baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy, Carinii, Obuwie Damskie',
+  viewport: 'width=device-width, initial-scale=1.0',
+  referrer: 'no-referrer-when-downgrade',
   generator: 'v0.app',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: '/fav/favicon-16x16.png',
+        sizes: '16x16',
+        type: 'image/png',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
+        url: '/fav/favicon-32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
       },
       {
-        url: '/icon.svg',
+        url: '/fav/favicon.ico',
+        sizes: 'any',
+      },
+      {
+        url: '/fav/znaczek.svg',
         type: 'image/svg+xml',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: [
+      {
+        url: '/fav/aapple-touch-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
+    shortcut: ['/fav/favicon.ico'],
+  },
+  manifest: '/fav/site.webmanifest',
+  openGraph: {
+    title: 'Carinii - buty damskie i torebki | sklep.carinii.com.pl',
+    description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
+    url: '/fav/',
+    type: 'website',
+    siteName: 'Carinii',
+    images: [
+      {
+        url: '/fav/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Carinii - Obuwie Damskie i Torebki',
+      },
+    ],
+    locale: 'pl_PL',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Carinii - buty damskie i torebki',
+    description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
+    images: ['/fav/og-image.jpg'],
+  },
+  alternates: {
+    canonical: '/fav/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    // Add your verification codes here if needed
+    // google: 'your-google-verification-code',
+    // yandex: 'your-yandex-verification-code',
+  },
+  other: {
+    'yandex-verification': 'your-yandex-verification-code', // Add your Yandex Metrika verification
   },
 }
 

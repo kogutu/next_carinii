@@ -510,7 +510,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
 
 
     return (
-        <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8" style={{ '--primary-color': PRIMARY_COLOR, '--accent-color': ACCENT_COLOR } as React.CSSProperties}>
+        <main className="min-h-screen  py-8" style={{ '--primary-color': PRIMARY_COLOR, '--accent-color': ACCENT_COLOR } as React.CSSProperties}>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid gap-8 lg:grid-cols-[1fr_350px]">
                     {/* Product Gallery Section */}

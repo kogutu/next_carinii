@@ -6,6 +6,7 @@ import CTASections from "@/components/hert/cta-sections"
 import Brands from "@/components/hert/brands"
 import SEOText from "@/components/hert/home-seo"
 import { cp } from "fs"
+import ProductsCarouselProducts from "@/components/hert/products-carouse-products"
 
 
 // Funkcja do pobierania najnowszych produktów
@@ -25,16 +26,7 @@ async function getNewestProducts() {
       return data.hits.map((hit: any) => {
         const product = hit.document || hit;
 
-        return {
-          id: product.id || product.pid,
-          image: product.image_main,
-          name: product.name,
-          url: product.slug,
-          price: product.price,
-          hidePrice: product.hide_price,
-          sizes_qty: product.size_qty,
-          tag: product.new === '1' ? 'NOWOŚĆ' : ''
-        };
+        return product;
       });
     }
 
@@ -72,8 +64,8 @@ export default async function HomePage() {
           href="https://sklep.carinii.com.pl/nowosci.html"
         ></a>
       </div>
-      <ProductsCarousel title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} />
-
+      {/* <ProductsCarousel title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} /> */}
+      <ProductsCarouselProducts title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} />
       <div className="relative">
         <img
           className="vmob hidden max-md:block"

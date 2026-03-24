@@ -8,7 +8,7 @@ export default function TopHeader() {
 
   useEffect(() => {
     // Ustawienie docelowej daty na 2026-03-22 godzina 23:59:59
-    const targetDate = new Date('2026-03-22T23:59:59')
+    const targetDate = new Date('2026-03-29T23:59:59')
 
     const timer = setInterval(() => {
       const now = new Date()
