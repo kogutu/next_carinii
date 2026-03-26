@@ -64,13 +64,14 @@ export async function POST(req: NextRequest) {
     }) as P24TransactionResponse;
 
 
+    console.log("0-++d++ds+f+sd+f+sd+f+");
 
     const result: any = await blikChargeByCode(res.token, blikCode);
     console.log("---blikChargeByCode---");
     console.log(result);
     console.log("---END blikChargeByCode---");
 
-    await setSessionIdPayment(oid, sessionId, amount + "", result.data.orderId)
+    // await setSessionIdPayment(oid, sessionId, amount + "", result.data.orderId)
 
     return NextResponse.json({
       success: true,

@@ -14,26 +14,29 @@ export interface P24TransactionResponse {
 }
 // ─── Configuration ───────────────────────────────────────────────
 var prod_P24_CONFIG = {
-    merchantId: parseInt('125840'),
-    posId: parseInt('125840'),
-    crcKey: 'be058f2b5a885ed6',
-    apiKey: process.env.P24_API_KEY || 'f0d3213a2591b9fd232fd93fbc8a874a',
-    sandbox: process.env.P24_SANDBOX === 'false',
-    merchantName: "Sklep Hert.pl"
+    merchantId: parseInt(process.env.NEXT_PUBLIC_P24_MERCHANT_ID || ''),
+    posId: parseInt(process.env.P24_POS_ID || ''),
+    crcKey: process.env.P24_CRC_KEY || '',
+    apiKey: process.env.P24_API_KEY || '',
+    sandbox: process.env.P24_SANDBOX === 'true',
+    merchantName: process.env.P24_MERCHANT_NAME || "Sklep ",
+    urlStatus: process.env.P24_URLSTATUS || ''
 };
+
 var sand_P24_CONFIG = {
-    merchantId: parseInt('125840'),
-    posId: parseInt('125840'),
-    crcKey: 'b52ee869fd901983',
-    apiKey: 'a7046dac8c999747bffe8e9b09c9da43',
+    merchantId: parseInt(process.env.NEXT_PUBLIC_P24_MERCHANT_ID || ''),
+    posId: parseInt(process.env.NEXT_PUBLIC_P24_MERCHANT_ID || ''),
+    crcKey: process.env.P24_SANDBOX_CRC_KEY || '',
+    apiKey: process.env.P24_SANDBOX_API_KEY || '',
     sandbox: true,
-    merchantName: "Sklep Hert.pl -SANDBOX-"
-
+    merchantName: process.env.P24_SANDBOX_MERCHANT_NAME || "Sklep -SANDBOX-",
+    urlStatus: process.env.P24_URLSTATUS || ''
 };
-
+console.clear();
 var attempts: number = 0;
+var P24_CONFIG = prod_P24_CONFIG;
+if (prod_P24_CONFIG.sandbox) P24_CONFIG = sand_P24_CONFIG;
 
-const P24_CONFIG = sand_P24_CONFIG;
 
 
 const BASE_URL = P24_CONFIG.sandbox
@@ -44,7 +47,7 @@ const API_URL = `${BASE_URL}/api/v1`;
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 var urlReturn = `${appUrl}/success/oid?sessionId=`
 var urlStatus = `${appUrl}/api/p24/verify`
-urlStatus = `https://hert.pl/devback/Nextjs-api/payment/statusp24/index.php`
+urlStatus = P24_CONFIG.urlStatus || `https://hert.pl/devback/Nextjs-api/payment/statusp24/index.php`
 var oid = "";
 
 // ─── SHA-384 Sign Calculation ────────────────────────────────────
@@ -57,6 +60,7 @@ export function calculateSign(params: Record<string, string | number>): string {
 // ─── Auth Header (Basic Auth: posId:apiKey) ──────────────────────
 function getAuthHeader(): string {
     const credentials = `${P24_CONFIG.posId}:${P24_CONFIG.apiKey}`;
+    console.log(BASE_URL, credentials);
     return `Basic ${Buffer.from(credentials).toString('base64')}`;
 }
 
@@ -79,7 +83,10 @@ async function p24Request(endpoint: string, body: Record<string, unknown>) {
 
 
     const data = await response.json();
-
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
     if (!response.ok) {
 
 

@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
 export interface ValidationErrors {
-    billing: Record<string, string>
-    shipping: Record<string, string>
-    shippingMethod: string
-    paymentMethod: string
-    terms: string
+    billing?: Record<string, string>
+    shipping?: Record<string, string>
+    shippingMethod?: string
+    paymentMethod?: string
+    terms?: string
 }
 
 export type SectionStatusType = 'complete' | 'incomplete' | 'error'
@@ -64,13 +64,19 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
     billingTouched: false,
     shippingTouched: false,
     shippingMethod: 'dhl_dhl24pl_courier',
-    paymentMethod: 'checkmo',
+    paymentMethod: 'banktransfer',
     sameAddress: true,
     isExpanded: false,
     expandedSection: null,
     shippingTotal: 0,
 
-    setErrors: (errors) => set({ errors }),
+    setErrors: (updates) => set((state) => ({
+        errors: {
+            ...state.errors,
+            ...updates
+        }
+    })),
+
     setStatus: (status) => set({ status }),
     setBillingTouched: (touched) => {
         console.log('setBillingTouched', touched)

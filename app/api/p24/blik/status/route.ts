@@ -124,7 +124,7 @@ export async function GET(req: NextRequest) {
 function getStatusMessage(status: string): string {
   const messages: { [key: string]: string } = {
     pending: 'Oczekiwanie na potwierdzenie w aplikacji bankowej',
-    processing: 'Transakcja jest przetwarzana',
+    processing: 'Oczekiwanie na zatwierdzenie transakcji- sprawdź telefon',
     success: 'Transakcja zakończona sukcesem',
     failed: 'Transakcja nie powiodła się',
     expired: 'Transakcja wygasła - limit czasu przekroczony',

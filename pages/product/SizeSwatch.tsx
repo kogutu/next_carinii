@@ -96,8 +96,8 @@ function Tooltip({ children, content }) {
       {show && (
         <span
           ref={tipRef}
-          className="fixed z-50 px-3 py-1.5 rounded-md bg-black text-white text-xs whitespace-nowrap pointer-events-none animate-tooltipIn"
-          style={{ top: pos.top, left: pos.left }}
+          className="absolute z-1 px-3 py-1.5 rounded-md bg-black text-white text-xs whitespace-nowrap pointer-events-none animate -top-8 right-0 left-0 text-center "
+
         >
           {content}
 

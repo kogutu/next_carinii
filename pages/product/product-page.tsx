@@ -243,7 +243,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
         if (!product) return { badge: "", by: "" }
         console.log(product);
 
-        let badge = "SERIA";
+        let badge = "";
         let by = "";
 
         if (product.cids?.includes("190")) {
@@ -251,8 +251,12 @@ export default function ProductPage({ product, seemore }: { product: Product, se
         }
 
         if (product.cids?.includes("200")) {
+
+            let badge = "SERIA";
             by = "by MAGDALENA PIECZONKA";
         } else if (product.cids?.includes("137")) {
+
+            let badge = "SERIA";
             by = "by NATALIA SIWIEC";
         }
 
@@ -445,7 +449,6 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             return;
         }
         setErorrVariant(false);
-        console.clear();
 
         console.log('Added to cart:', {
             pid: product.pid,
@@ -582,7 +585,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
 
                         </div>
                         <div className="mt-4">
-                            <PromoBadge />
+                            <PromoBadge product={product} />
                         </div>
                         <div className="mt-4">
                             <SizeSwatch

@@ -44,11 +44,11 @@ function calcShippingPrice(method: any, weight: number, cashOnDelivery: boolean)
 }
 
 const ICONS: Record<string, React.ReactNode> = {
-    flatrate: <img className='h-12' alt="" src="/shipping_methods/dhl.jpg" />,
+    flatrate_flatrate: <img className='h-12' alt="" src="/shipping_methods/dhl.jpg" />,
     dhl_dhl24pl_courier: <img className='h-12' alt="" src="/shipping_methods/dhl.jpg" />,
-    flatrate48: <img className='h-12' alt="" src="/shipping_methods/dhl.jpg" />,
-    inpostparcels: <img className='h-12' alt="" src="/shipping_methods/paczkomaty.jpg" />,
-    flatrate5: <img className='h-12' alt="" src="/shipping_methods/inpost-kurier.jpg" />,
+    flatrate48_flatrate48: <img className='h-12' alt="" src="/shipping_methods/dhl.jpg" />,
+    inpostparcels_inpostparcels: <img className='h-12' alt="" src="/shipping_methods/paczkomaty.jpg" />,
+    flatrate5_flatrate5: <img className='h-12' alt="" src="/shipping_methods/inpost-kurier.jpg" />,
 }
 
 export default function ShippingMethod({ onMethodChange, init, status }: ShippingMethodProps) {
@@ -107,7 +107,7 @@ export default function ShippingMethod({ onMethodChange, init, status }: Shippin
                 }}
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-1">
                 {shippingMethods.map((method, index) => {
                     const price = shippingPrices[index]['price']
                     const icon = ICONS[method.code] ?? <Truck className="w-5 h-5 text-[#441c49]" />

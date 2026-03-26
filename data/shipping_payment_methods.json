@@ -2,6 +2,7 @@
     "payment_methods": [
         {
             "code": "banktransfer",
+            "mcode": "banktransfer",
             "title": "Przelew tradycyjny na konto",
             "class": "Mage_Payment_Model_Method_Banktransfer",
             "description": "Przelew należy wykonać na nr konta:\n\n 08 1240 2728 1111 0010 3041 4579",
@@ -15,6 +16,7 @@
         },
         {
             "code": "cashondelivery",
+            "mcode": "cashondelivery",
             "title": "Płatność za pobraniem",
             "description": "",
             "class": "Mage_Payment_Model_Method_Cashondelivery",
@@ -25,6 +27,7 @@
         },
         {
             "code": "dialcom_przelewy",
+            "mcode": "dialcom_przelewy",
             "title": "Przelewy24",
             "description": "Po złożeniu zamówienia zostaniesz przeniesiony na stronę serwisu Przelewy24 w celu dokonania płatności.",
             "shipping_methods": [
@@ -35,7 +38,8 @@
             ]
         },
         {
-            "code": "dialcom_blik",
+            "code": "devbackblik",
+            "mcode": "dialcom_przelewy",
             "title": "Blik",
             "description": "Wygneruj kod, wprowadź i zapłać",
             "shipping_methods": [
@@ -46,7 +50,8 @@
             ]
         },
         {
-            "code": "dialcom_gpay",
+            "code": "carinii_sklep",
+            "mcode": "dialcom_przelewy",
             "title": "Google payments",
             "description": "Szybkie płatności Google payments",
             "shipping_methods": [

@@ -1,7 +1,7 @@
 import { Copy } from "lucide-react";
 import { useState } from "react";
 
-const PromoBadge = ({ code = "WOMAN", discount = "20%" }) => {
+const PromoBadge = ({ product, code = "WOMAN", discount = 20 }: { product: any, code: string, discount: number }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -21,16 +21,19 @@ const PromoBadge = ({ code = "WOMAN", discount = "20%" }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+
+  const percent = (product.save_percent ?? 0) + discount
+
   return (
     <div className="bg-black text-white inline-block p-2.5 rounded text-[11px] leading-tight">
       Ten produkt kupisz teraz<br />
       <span className="text-xl font-bold tracking-[3px] block mt-1">
-        20% taniej
+        {percent}% taniej
       </span>
       <span className="block text-xs text-gray-300 mt-0.5">
         z kodem:
         <span className="text-xl font-bold tracking-[3px] text-white">
-          WOMAN
+          {code}
         </span>
         <span >
           <Copy onClick={handleCopy} className="text-red-200 h-6 inline ml-2 relative -top-1" />

@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 const P24_CONFIG = {
-  merchantId: 125840,
-  crcKey: 'be058f2b5a885ed6',
+  merchantId: parseInt(process.env.NEXT_PUBLIC_P24_MERCHANT_ID || "2") || '22222',
+  crcKey: process.env.P24_CRC_KEY || 'be058f2b5a885ed6',
 };
 
 /**

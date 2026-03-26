@@ -65,7 +65,7 @@ export default function CheckoutLayout() {
             phoneCode: '+48'
         },
         shippingMethod: 'dhl_dhl24pl_courier' as any,
-        paymentMethod: 'checkmo' as any,
+        paymentMethod: 'banktransfer' as any,
         agreeToTerms: false,
         agreeToNewsletter: false
     })
@@ -285,10 +285,6 @@ export default function CheckoutLayout() {
 
         // Aktualizuj błędy w store
         setZustandErrors({
-            billing: {},
-            shipping: {},
-            shippingMethod: '',
-            paymentMethod: '',
             terms: agree ? '' : 'Musisz zaakceptować regulamin'
         })
 
@@ -351,7 +347,7 @@ export default function CheckoutLayout() {
                             </div>
                         )}
 
-                        <div className="bg-white rounded-lg border  p-8 shadow-sm">
+                        <div className="bg-white rounded-lg border  py-8 px-8 shadow-sm">
                             <ShippingMethod
                                 onMethodChange={handleShippingMethodChange}
                                 init={shippingMethod}

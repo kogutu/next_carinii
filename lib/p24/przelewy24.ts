@@ -2,10 +2,10 @@ import crypto from 'crypto';
 
 // Dane konfiguracyjne Przelewy24
 const P24_CONFIG = {
-  merchantId: 125840,
-  orderKey: '0b98e5f4',
-  crcKey: 'be058f2b5a885ed6',
-  apiKey: 'f0d3213a2591b9fd232fd93fbc8a874a',
+  merchantId: parseInt(process.env.NEXT_PUBLIC_P24_MERCHANT_ID || "3") || '3333-3',
+  orderKey: process.env.P24_ORDER_KEY || '0b98e5f4',
+  crcKey: process.env.P24_CRC_KEY || 'be058f2b5a885ed6',
+  apiKey: process.env.P24_API_KEY || 'f0d3213a2591b9fd232fd93fbc8a874a',
 };
 
 // Przelewy24 API endpoints

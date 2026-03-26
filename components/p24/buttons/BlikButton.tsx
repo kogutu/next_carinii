@@ -68,7 +68,7 @@ export function BlikButton({
   const [errorMessage, setErrorMessage] = useState('');
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const successTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const maxPollingAttempts = 30;
+  const maxPollingAttempts = 60;
 
   const fetchBlikStatus = async (oidP24: string) => {
     try {
@@ -96,17 +96,25 @@ export function BlikButton({
   const startPolling = async (oidP24: string) => {
     setIsPolling(true);
     setPollingCount(0);
+    console.log("Start poool");
+
+    var poolnr = 0;
 
     pollingIntervalRef.current = setInterval(async () => {
       try {
         const currentStatus = await fetchBlikStatus(oidP24);
+        console.clear();
+
+        console.log(currentStatus);
+
         setBlikStatus(
           {
             transactionId: sessionId,
             code: blikCode,
             status: currentStatus.status,
-            message: 'Zamówienie zostało opłacone, dziękujemy',
+            message: currentStatus.message,
           }
+
 
         );
         logger.success("Blik status", currentStatus);
@@ -114,8 +122,10 @@ export function BlikButton({
 
 
         console.log(`[v0] BLIK Status Poll #${pollingCount + 1}:`, currentStatus.status);
+        poolnr++;
+        setPollingCount(poolnr);
 
-        setPollingCount((prev) => prev + 1);
+        console.log(poolnr, 'poolnr', maxPollingAttempts, poolnr >= maxPollingAttempts);
 
         if (currentStatus.status === 'success') {
 
@@ -134,8 +144,9 @@ export function BlikButton({
           setErrorMessage(currentStatus.message);
           if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
           onPaymentFailed?.(currentStatus.message);
-        } else if (pollingCount >= maxPollingAttempts) {
+        } else if (poolnr >= maxPollingAttempts) {
           setIsPolling(false);
+          setIsSubmitting(false);
           setErrorMessage('Transakcja BLIK przekroczyła limit czasu');
           if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
           onPaymentFailed?.('Timeout');
@@ -143,6 +154,7 @@ export function BlikButton({
       } catch (error) {
         console.error('[v0] BLIK polling error:', error);
         setIsPolling(false);
+        setIsSubmitting(false);
         setErrorMessage('Błąd podczas pobierania statusu BLIK');
         if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
       }
@@ -402,7 +414,7 @@ export function BlikButton({
 
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-                    <span>Próba {pollingCount + 1}/{maxPollingAttempts}</span>
+                    <span>Próba {pollingCount}/{maxPollingAttempts}</span>
                     <span>{Math.round((pollingCount / maxPollingAttempts) * 100)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">

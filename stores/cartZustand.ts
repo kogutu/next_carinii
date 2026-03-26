@@ -3,6 +3,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import methods from '../data/shipping_payment_methods.json'
+import { set } from 'lodash'
 
 
 export type CartItem = {
@@ -62,6 +63,20 @@ export const useCartStore = create<CartStore>()(
 
             setHydratedCart: (state) => set({ isHydrated: state }),
             setCouponData: (state) => set({ couponData: state }),
+            setProductCoupon: (data) => {
+                const updatedItems = get().items.map(item => {
+                    const match = data.products.find(
+                        (p: any) => p.product_id.toString() === item.pid || p.sku === item.sku
+                    )
+                    if (match && match.eligible) {
+                        return { ...item, final_price: match.final_price, discont_percent: match, discount_value: match.discount_value }
+                    }
+                    console.log(item);
+                    return item
+                })
+
+                set({ items: updatedItems });
+            },
             setCoupon: (code, data) => {
                 if (!data?.success) {
 

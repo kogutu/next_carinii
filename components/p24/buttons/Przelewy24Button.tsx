@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { CheckoutData } from '@/lib/p24/checkout-types';
-import { p24Client } from '@/lib/p24/p24-client';
-import { P24TransactionResponse, registerTransaction, setUrlsP24 } from '@/lib/p24/p24-sdk';
 
 const P24Logo = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 -9 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,28 +34,34 @@ export function Przelewy24Button({
     onPaymentStart?.();
 
     try {
-
-
       const description = "Zam #" + checkoutData.incrementId;
       const client = checkoutData.customer.firstName + " " + checkoutData.customer.lastName;
-      const phone = checkoutData.customer.phone;
 
-      const response = await registerTransaction({
-        sessionId,
-        amount: (checkoutData.grandTotal * 100),
-        description,
-        oid: checkoutData.incrementId,
-        email: checkoutData.customer.email,
-        client,
-        method: 266, // Google Pay method ID w P24
-      }) as P24TransactionResponse;
+      const response = await fetch('/api/p24/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId,
+          amount: checkoutData.grandTotal * 100,
+          description,
+          oid: checkoutData.incrementId,
+          email: checkoutData.customer.email,
+          client,
+          method: 266,
+        }),
+      });
 
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Błąd rejestracji transakcji');
+      }
 
+      const result = await response.json();
 
-      console.log('[v0] Przelewy24 Gateway Response:', response);
+      console.log('[v0] Przelewy24 Gateway Response:', result);
 
-      if (response.redirectUrl) {
-        window.location.href = response.redirectUrl;
+      if (result.redirectUrl) {
+        window.location.href = result.redirectUrl;
       } else {
         throw new Error('Brak URL bramki w odpowiedzi');
       }

@@ -4,7 +4,7 @@ export const pool = mysql.createPool({
     host: "hd-026.stpl.net.pl",
     user: "jsk_nextjs",
     password: "fQMHSbHXaAtJ6rup9ACe",
-    database: "jsk_nextjs",
+    database: "jsk_carnetxjs",
     connectionLimit: 10,
     connectTimeout: 10000, // 10 sekund timeout
 
@@ -26,7 +26,6 @@ export async function testConnection(): Promise<{ success: boolean; message: str
         // Wykonaj proste zapytanie testowe
         const [result] = await connection.query('SELECT 1 + 1 AS solution');
 
-        console.log(result);
         // Zwolnij połączenie z powrotem do puli
         connection.release();
 
@@ -55,7 +54,7 @@ export async function executeSQL(
 
         const allowedCommands = ["SELECT", "INSERT", "UPDATE", "DELETE"];
 
-        // console.log(await testConnection());
+        console.log(await testConnection());
         if (!allowedCommands.includes(command)) {
 
 

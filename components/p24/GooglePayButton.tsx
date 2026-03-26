@@ -34,14 +34,14 @@ const GOOGLE_PAY_CONFIG = {
         type: 'PAYMENT_GATEWAY',
         parameters: {
           gateway: 'przelewy24',
-          gatewayMerchantId: '125840',
+          gatewayMerchantId: process.env.NEXT_PUBLIC_P24_MERCHANT_ID || '',
         },
       },
     },
   ],
   merchantInfo: {
-    merchantId: '125840',
-    merchantName: 'Sklep Demo',
+    merchantId: process.env.NEXT_PUBLIC_P24_MERCHANT_ID || '',
+    merchantName: process.env.P24_MERCHANT_NAME || 'SKLEP',
   },
   transactionInfo: {
     totalPriceStatus: 'FINAL',

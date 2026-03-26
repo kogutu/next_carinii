@@ -66,6 +66,8 @@ export default function OrderSummary({
 
 
     useEffect(() => {
+        console.clear();
+        console.log(errors)
         let t = Object.values(errors).reduce((sum, sectionErrors) => {
 
             return sum + (Object.values(sectionErrors).length || 0)
@@ -209,20 +211,44 @@ export default function OrderSummary({
             }
             console.clear();
 
-            console.log(orderData);
 
+            console.log("@22");
             const response = await fetch('/api/magento/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
             })
+
+
             if (!response.ok) {
                 const error = await response.json()
                 throw new Error(error.message || 'Błąd podczas wysyłania zamówienia')
             }
 
+
             const result = await response.json()
-            console.log('[v0] Order submitted successfully:', result)
+            console.log("-----------11");
+            console.log(result);
+            if (!result.success) {
+                console.log('[v0] Order error unsuccessfully2:', result)
+                let errMsg = result.message;
+                if (result.errItemId > 0) {
+                    let errIts: any = items.filter(e => {
+                        if (e.variantId == result.errItemId)
+                            return e;
+                        return false;
+
+                    });
+                    let errIt = errIts[0];
+                    console.log(errIt);
+
+                    errMsg = errMsg + `: 
+                    ` + errIt.name;
+                    if (errIt.variant) errMsg = errMsg + " roz." + errIt.variant.size
+                }
+                throw new Error(errMsg || 'Błąd podczas wysyłania zamówienia')
+            }
+            console.log("-----------122");
 
             onOrderSubmit?.()
 
@@ -267,7 +293,7 @@ export default function OrderSummary({
                 </div>
             )}
 
-            <div className="border border-hborder rounded-lg p-6 space-y-6 bg-white">
+            <div className="border border-hborder rounded-lg p-6 space-y-6 bg-white mt-8 md:mt-0">
                 <h2 className="text-xl font-bold text-[#441c49]">
                     Podsumowanie zamówienia
                 </h2>
@@ -284,8 +310,15 @@ export default function OrderSummary({
                                 />
                             )}
                             <div className="flex-1">
-                                <p className="font-semibold text-sm text-[#441c49]">{item.name}</p>
+                                <p className="font-semibold text-sm text-[#441c49]">   {item.name.split("CARINII--")[0]} <br /> {item.sku}</p>
+                                {item.variant.size && (
+                                    <div className="text-xs text-gray-600 mb-2 flex gap-4 justify-between">
+                                        Rozmiar : {item.variant.size}
+
+                                    </div>
+                                )}
                                 <div className="text-xs text-gray-600 mb-2 flex gap-4 justify-between">
+
                                     <div className="flex gap-4">
                                         Cena : {formatPLN((item.price))}
 
@@ -360,17 +393,18 @@ export default function OrderSummary({
                             {formatPLN(sumRegularPrice)}
                         </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                        <span className="text-red-700">Rabat:</span>
-                        <span className="font-medium">
-                            - {formatPLN(sumDiscount)}
-                        </span>
-                    </div>
-
+                    {sumDiscount > 0 && (
+                        <div className="flex justify-between text-sm">
+                            <span className="text-red-700">Rabat:</span>
+                            <span className="font-medium">
+                                - {formatPLN(sumDiscount)}
+                            </span>
+                        </div>
+                    )}
                     <div className="flex justify-between text-sm">
                         <span className="text-gray-700">Wysyłka:</span>
                         <span className="font-medium">
-                            {formatPLN(shippingBrutto)} brutto
+                            {formatPLN(shippingBrutto)}
                         </span>
                     </div>
 

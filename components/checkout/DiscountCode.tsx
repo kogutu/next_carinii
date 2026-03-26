@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useCartStore } from '@/stores/cartZustand'
-
+var userCoupon = 0;
 export default function DiscountCode() {
     const items = useCartStore(state => state.items)
+    const setProductCoupon = useCartStore(state => state.setProductCoupon)
     const setZustandCoupon = useCartStore(state => state.setCoupon)
     const ZustandCouponData = useCartStore(state => state.setCouponData)
     const ZustandCoupon = useCartStore(state => state.coupon)
@@ -15,11 +16,32 @@ export default function DiscountCode() {
     const [isCouponLoading, setIsCouponLoading] = useState(false)
 
     useEffect(() => {
+
         if (ZustandCoupon !== '') {
             setCouponCode(ZustandCoupon)
             setCouponState(true)
+            console.log(userCoupon);
+            console.log("userCoupon", userCoupon)
+            if (items.length != userCoupon)
+                getDisc().then(e => {
+                    setProductCoupon(e)
+                    userCoupon = items.length
+                });
+
         }
-    }, [])
+    })
+
+    const getDisc = async () => {
+        const res = await fetch('/api/magento/discount', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                oids: items.map(e => e.pid).join(','),
+                coupon: couponCode,
+            }),
+        })
+        return await res.json()
+    }
 
     const handleCoupon = async () => {
         if (!couponCode.trim()) return

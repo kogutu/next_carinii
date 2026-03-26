@@ -61,7 +61,26 @@ export async function POST(request: NextRequest) {
 
         // Tutaj wysyłasz dane do Magento 2
         const magentoResponse = await sendToMagento(orderData)
-        console.log(magentoResponse);
+        if (!magentoResponse.success) {
+
+            // console.log(Not all products are available in the requested quantity - +-81214);
+            let err = JSON.parse(magentoResponse.error) ?? { message: "" };
+            let errItemId = "";
+            if (err.message.length > 0) {
+                errItemId = err.message.split("-+-")[1] ?? 0;
+            }
+            let errMsg = "";
+            if (err.message.includes("Not all products are available")) errMsg = "Produkt już niedostępny";
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: errMsg,
+                    message_org: JSON.parse(magentoResponse.error),
+                    errItemId: errItemId
+                },
+                { status: 200 }
+            )
+        }
         return NextResponse.json(
             {
                 success: true,
@@ -163,7 +182,11 @@ async function sendToMagento(orderData: OrderData) {
 
         if (!response.ok) {
             const error = await response.text()
-            throw new Error(`Magento error: ${error}`)
+            return {
+                success: false,
+                type: "not ok",
+                error: error
+            }
         }
 
         const result = await response.json()
@@ -180,9 +203,8 @@ async function sendToMagento(orderData: OrderData) {
         console.error('[v0] Magento API error:', error)
         // Fallback - zwróć wewnętrzne ID
         return {
-            success: true,
-            orderId: `H-${Date.now()}`,
-            externalOrderId: `H-${Date.now()}`
+            success: false,
+            error: error
         }
     }
 }
