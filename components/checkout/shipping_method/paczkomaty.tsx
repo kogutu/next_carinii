@@ -53,7 +53,7 @@ export default function Paczkomaty() {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button className='text-xs bg-black/70 '>
-                        Wybierz paczkomat
+                        Wybierz paczkomat+++
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[800px]">
@@ -70,14 +70,14 @@ export default function Paczkomaty() {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <Button variant="outline">
-                    Wybierz paczkomat
+                    Wybierz paczkomat+++
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle>Wybierz paczkomat</DrawerTitle>
                 </DrawerHeader>
-                <div className="px-4 pb-4">
+                <div className="px-4 pb-4">+++
                     <PaczkomatyContent />
                 </div>
             </DrawerContent>

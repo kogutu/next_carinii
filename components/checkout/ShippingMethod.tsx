@@ -133,7 +133,7 @@ export default function ShippingMethod({ onMethodChange, init, status }: Shippin
                                     <p className="font-semibold text-[#441c49]">
                                         {method.title}
                                     </p>
-                                    {method.code == "inpostparcels" && (
+                                    {method.code == "inpostparcels_inpostparcels" && (
                                         <Paczkomaty />
                                     )}
                                 </div>
