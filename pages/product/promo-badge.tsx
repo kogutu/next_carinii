@@ -22,7 +22,7 @@ const PromoBadge = ({ product, code = "WOMAN", discount = 20 }: { product: any, 
   };
 
 
-  const percent = (product.save_percent ?? 0) + discount
+  const percent = (product?.save_percent ?? 0) + discount
 
   return (
     <div className="bg-black text-white inline-block p-2.5 rounded text-[11px] leading-tight">
