@@ -38,6 +38,30 @@
             ]
         },
         {
+            "code": "payu_account",
+            "mcode": "payu_account",
+            "title": "Payu",
+            "description": "Płatność dokonasz korzystajać z bramki płatniczej PayU",
+            "shipping_methods": [
+                "*"
+            ],
+            "exclude_hipping_methods": [
+                "flatrate48_flatrate48"
+            ]
+        },
+        {
+            "code": "purchaseorder",
+            "mcode": "paypaypo",
+            "title": "PayPo",
+            "description": "Zamów a zapłać później.",
+            "shipping_methods": [
+                "*"
+            ],
+            "exclude_hipping_methods": [
+                "flatrate48_flatrate48"
+            ]
+        },
+        {
             "code": "devbackblik",
             "mcode": "dialcom_przelewy",
             "title": "Blik",

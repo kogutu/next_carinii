@@ -40,6 +40,7 @@ interface OrderData {
         variant: any
     }>
     couponCode?: string
+    Inpost?: any
     notes?: string
     agreeToNewsletter: boolean
     subtotal: number
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('[v0] Error processing order:', error)
         return NextResponse.json(
-            { message: error instanceof Error ? error.message : 'Błąd serwera' },
+            { message: error },
             { status: 500 }
         )
     }
@@ -152,6 +153,13 @@ async function sendToMagento(orderData: OrderData) {
                 country_id: 'PL',
                 address_type: 'shipping'
             },
+            inpost:
+            {
+                parcel_target_machine_id: orderData.Inpost.name,
+                receiver_phone: orderData.shippingAddress.phone,
+                parcel_size: 'A',
+                parcel_target_machine_detail: { "description": "Order Magento", "receiver": { "email": orderData.customer.email, "phone": orderData.shippingAddress.phone }, "size": "A", "tmp_id": "780566902252121", "target_machine": orderData.Inpost.name, "cod_amount": "" }
+            },
             shipping_method: orderData.shippingMethod,
             items: orderData.items.map(item => ({
                 sku: item.sku,
@@ -166,7 +174,10 @@ async function sendToMagento(orderData: OrderData) {
                 base_row_total: item.price * item.quantity
             }))
         }
+
+
     }
+
     const filePath = path.join(process.cwd(), 'public', 'my-data.json');
     await fs.writeFile(filePath, JSON.stringify(magentoOrderPayload), 'utf-8');
 

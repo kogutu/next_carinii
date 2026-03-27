@@ -199,6 +199,7 @@ export default function OrderSummary({
                     quantity: item.qty
                 })),
                 priceType,
+                Inpost: checkoutData.inpost,
                 couponCode,
                 notes,
                 agreeToNewsletter,

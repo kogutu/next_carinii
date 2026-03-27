@@ -9,8 +9,8 @@ interface SuccessPageProps {
 }
 
 async function getOrderData(orderId: string) {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_API_URL
+        ? `${process.env.NEXT_PUBLIC_API_URL}`
         : 'http://localhost:3000'
 
     console.log(`${baseUrl}/api/orders/${orderId}`);

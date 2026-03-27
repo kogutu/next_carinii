@@ -67,7 +67,8 @@ export default function CheckoutLayout() {
         shippingMethod: 'dhl_dhl24pl_courier' as any,
         paymentMethod: 'banktransfer' as any,
         agreeToTerms: false,
-        agreeToNewsletter: false
+        agreeToNewsletter: false,
+        inpost: {}
     })
 
 
@@ -248,7 +249,15 @@ export default function CheckoutLayout() {
 
     }, [validateShippingForm, setZustandSectionStatus, setZustandErrors])
 
+    const handleShippingMethodFieldsCheck = useCallback((data: any) => {
 
+        setCheckoutData(prev => ({
+            ...prev,
+            ...data
+        }))
+
+
+    }, [])
     const handleShippingMethodChange = useCallback((method: any) => {
         setCheckoutData(prev => ({
             ...prev,
@@ -350,6 +359,7 @@ export default function CheckoutLayout() {
                         <div className="bg-white rounded-lg border  py-8 px-8 shadow-sm">
                             <ShippingMethod
                                 onMethodChange={handleShippingMethodChange}
+                                setCheckoutData={handleShippingMethodFieldsCheck}
                                 init={shippingMethod}
                             />
                         </div>

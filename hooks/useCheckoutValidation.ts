@@ -35,6 +35,11 @@ export interface CheckoutData {
     paymentMethod: 'transfer' | 'cod'
     agreeToTerms: boolean
     agreeToNewsletter: boolean
+    inpost: {  // <-- DODAJ TO
+        name?: string
+        address?: any
+        img?: string
+    }
 }
 
 export interface ValidationErrors {

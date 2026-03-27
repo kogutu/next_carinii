@@ -10,6 +10,7 @@ import Paczkomaty from './shipping_method/paczkomaty'
 
 interface ShippingMethodProps {
     onMethodChange?: (method: string) => void
+    setCheckoutData?: (data: any) => void
     init?: string
     status?: SectionStatus
 }
@@ -51,7 +52,7 @@ const ICONS: Record<string, React.ReactNode> = {
     flatrate5_flatrate5: <img className='h-12' alt="" src="/shipping_methods/inpost-kurier.jpg" />,
 }
 
-export default function ShippingMethod({ onMethodChange, init, status }: ShippingMethodProps) {
+export default function ShippingMethod({ onMethodChange, setCheckoutData, init, status }: ShippingMethodProps) {
     const shippingMethods = methods.shipping_methods['PL']
     const [selected, setSelected] = useState(init ?? shippingMethods[0]?.code ?? '')
     const items = useCartStore(state => state.items)
@@ -129,12 +130,12 @@ export default function ShippingMethod({ onMethodChange, init, status }: Shippin
                                 />
 
                                 {icon}
-                                <div>
+                                <div onClick={() => handleChange(method.code)}>
                                     <p className="font-semibold text-[#441c49]">
                                         {method.title}
                                     </p>
                                     {method.code == "inpostparcels_inpostparcels" && (
-                                        <Paczkomaty />
+                                        <Paczkomaty onSetPoint={(point: any) => setCheckoutData(point)} />
                                     )}
                                 </div>
 
