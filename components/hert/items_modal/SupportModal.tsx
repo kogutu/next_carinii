@@ -281,22 +281,28 @@ export function SupportModal() {
 
   if (!isDesktop) {
     return (
-      <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>
-          <button
-            key="support"
-            className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition"
-          >
-            <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
-          </button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Kontakt</DrawerTitle>
-          </DrawerHeader>
-          <div className="px-4 pb-6 overflow-y-auto max-h-[70vh]">{content}</div>
-        </DrawerContent>
-      </Drawer>
+      <div className="flex gap-2">
+        <div className="w-[55px] flex">
+          <LanguageSelector></LanguageSelector>
+        </div>
+
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
+            <button
+              key="support"
+              className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition"
+            >
+              <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
+            </button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Kontakt</DrawerTitle>
+            </DrawerHeader>
+            <div className="px-4 pb-6 overflow-y-auto max-h-[70vh]">{content}</div>
+          </DrawerContent>
+        </Drawer>
+      </div>
     );
   }
 
