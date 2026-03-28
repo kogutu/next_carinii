@@ -22,6 +22,7 @@ import { Przelewy24Button } from '../p24/buttons/Przelewy24Button'
 
 import { setLogPayment } from '@/lib/p24/payment_calbacks'
 import logger from '@/lib/logger'
+import { PayPoButton } from '../payu/paybutton'
 
 
 
@@ -193,11 +194,22 @@ export function SuccessStatus({ status, orderData, setOrderData, paymentMethod, 
             </p>
             {!isPaid && (
               <div className='mt-6'>
-
                 {paymentMethodCode == "dialcom_przelewy" && (
                   <div>                <b className='text-gray-500 text-sm'>              OPŁAĆ ZAMÓWIENIE:</b>
                     <Przelewy24Button checkoutData={o} sessionId={sessionId}></Przelewy24Button>
                   </div>
+                )}
+                {paymentMethodCode == "devbackblik" && (
+                  <div>                <b className='text-gray-500 text-sm'>              OPŁAĆ ZAMÓWIENIE:</b>
+                    <BlikButton checkoutData={o} sessionId={sessionId} />
+                  </div>
+
+                )}
+                {paymentMethodCode == "purchaseorder" && (
+                  <div>                <b className='text-gray-500 text-sm'>              OPŁAĆ ZAMÓWIENIE:</b>
+                    <PayPoButton checkoutData={o} sessionId={sessionId} />
+                  </div>
+
                 )}
                 {paymentMethodCode == "devbackblik" && (
                   <div>                <b className='text-gray-500 text-sm'>              OPŁAĆ ZAMÓWIENIE:</b>

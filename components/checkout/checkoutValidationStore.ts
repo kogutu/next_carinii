@@ -1,3 +1,4 @@
+import { useCartStore } from '@/stores/cartZustand'
 import { create } from 'zustand'
 
 export interface ValidationErrors {
@@ -45,6 +46,19 @@ export interface CheckoutValidationStore {
     updateFieldError: (section: string, field: string, error: string) => void
     clearFieldError: (section: string, field: string) => void
 }
+// Funkcja pomocnicza do inicjalizacji paymentMethod
+const getInitialPaymentMethod = (): string => {
+    try {
+        const items = useCartStore.getState().items
+        let p = "banktransfer"
+        items.forEach(e => {
+            if (e.payment_method) p = e.payment_method
+        })
+        return p
+    } catch {
+        return "banktransfer"
+    }
+}
 
 export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) => ({
     errors: {
@@ -64,7 +78,7 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
     billingTouched: false,
     shippingTouched: false,
     shippingMethod: 'dhl_dhl24pl_courier',
-    paymentMethod: 'banktransfer',
+    paymentMethod: getInitialPaymentMethod(),
     sameAddress: true,
     isExpanded: false,
     expandedSection: null,
@@ -92,7 +106,9 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
     setShippingMethod: (method) => set({ shippingMethod: method }),
     setShippingTotal: (total: number) => set({ shippingTotal: total }),
     setPaymentMethod: (method) => set({ paymentMethod: method }),
+    test: (t) => {
 
+    },
     updateSectionStatus: (section, status) =>
         set((state) => ({
             status: {

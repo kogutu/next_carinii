@@ -12,6 +12,7 @@ export type CartItem = {
     variant: any;
     qty: number
     attrs: Record<string, string>
+    payment_method?: string
     name: string
     image: string
     price: number
@@ -34,6 +35,7 @@ type CartStore = {
     addItemToCart: (item: CartItem) => void
     removeItemCart: (id: string) => void
     setShowMiniCart: (state: boolean) => void
+    setProductCoupon: (data: any) => void
     setCoupon: (state: string, data: any) => void
     clearCart: () => void
     setHydratedCart: (state: boolean) => void

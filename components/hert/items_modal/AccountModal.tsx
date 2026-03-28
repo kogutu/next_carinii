@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Apple, Chrome, Eye, EyeOff, FacebookIcon } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react"
 import Facebook from "next-auth/providers/facebook";
+import LanguageSelector from "../language-selector";
 
 
 export function AccountModal() {
@@ -505,6 +506,7 @@ export function AccountModal() {
 
   return (
     <div className="flex items-center">
+
       <div className="hidden sm:flex flex-col items-end leading-tight mr-2">
         {status === "authenticated" ? (
           <span>          <div onClick={() => handleLogout()} className="cursor-pointer text-[10px] text-gray-400 uppercase font-bold">Wyloguj się</div>
@@ -513,7 +515,9 @@ export function AccountModal() {
         ) : (
           <span onClick={() => handleOpenChange(true)} className="cursor-pointer text-xs font-bold text-hert">ZALOGUJ SIĘ</span>
         )}
+
       </div>
+
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">

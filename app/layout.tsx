@@ -1,5 +1,5 @@
 import React from "react"
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from "@/components/hert/header"
@@ -21,11 +21,15 @@ const outfit = Outfit({
 })
 
 export const dynamic = 'force-dynamic' // 👈 Add this
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+}
 export const metadata: Metadata = {
   title: 'Carinii - Obuwie Damskie i Torebki | Sklep Online',
   description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
   keywords: 'baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy, Carinii, Obuwie Damskie',
-  viewport: 'width=device-width, initial-scale=1.0',
   referrer: 'no-referrer-when-downgrade',
   generator: 'v0.app',
   icons: {

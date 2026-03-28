@@ -73,7 +73,7 @@ export default function LanguageSelector() {
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <button className="flex items-center space-x-1 border-l pl-4 ml-2 text-[11px] font-medium text-gray-600 hover:text-hert transition">
+                <button className="flex items-center space-x-1  ml-2 text-[11px] font-medium text-gray-600 hover:text-hert transition">
                     <img
                         src={`/images/flags/${selectedLanguage?.code}.webp`}
                         alt={selectedLanguage?.label}

@@ -312,6 +312,14 @@ export function ProductAddToCart({
           >
             <ShoppingCart className="mr-2 h-5 w-5" /> DODAJ DO KOSZYKA
           </Button>
+          <Button
+            disabled
+            className="w-auto bg-[#00C853] hover:bg-[#00B848] cursor-not-allowed text-white"
+            size="lg"
+          >
+
+            Przetwarzanie...
+          </Button>
         </div>
       )}
       <CartPanel isOpenExternal={isCartOpen} onCloseExternal={() => setIsCartOpen(false)} hideButton />

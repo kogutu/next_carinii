@@ -20,7 +20,7 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Minus, Plus, ShoppingCart, HelpCircle, DollarSign, X, ChevronLeft, ChevronRight, User, Briefcase, Mail, Phone, Heart } from 'lucide-react'
+import { Minus, Plus, ShoppingCart, HelpCircle, DollarSign, X, ChevronLeft, ChevronRight, User, Briefcase, Mail, Phone, Heart, ExternalLink } from 'lucide-react'
 import ManagerSection from "./manager_section"
 import TabList from "./TabList";
 import { useCartStore } from "@/stores/cartZustand";
@@ -37,6 +37,7 @@ import SizeSwatch from "./SizeSwatch";
 import ReletaedProducts from "./related-products";
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products";
 import _ from "lodash";
+import { useCheckoutValidationStore } from "@/components/checkout/checkoutValidationStore";
 
 interface ConfigurableAttribute {
     id: string
@@ -207,6 +208,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
     const [eurRateLoading, setEurRateLoading] = useState<boolean>(true)
     const [eurRateError, setEurRateError] = useState<string | null>(null)
     const [eurRateDate, setEurRateDate] = useState<string | null>(null)
+
 
     // Fetch EUR exchange rate from NBP API
     useEffect(() => {
@@ -442,7 +444,25 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             setPriceForm(INITIAL_FORM)
         }, 2000)
     }
+    const handleAddToCartPaypo = (): void => {
+        setShowMiniCart(true);
+        addItemToCart({
+            pid: product.pid + "_" + variant?.size,
+            variantId: product.childProducts[variant.size] ?? 0,
+            variant: variant,
+            qty: 1,
+            payment_method: "purchaseorder",
+            attrs: {},
+            name: product.name,
+            image: product?.image_main,
+            price: product.price,
+            final_price: product.final_price,
+            sku: product.sku,
+        })
 
+
+
+    }
     const handleAddToCart = (): void => {
         if (_.isEmpty(variant) && hasVariant) {
             setErorrVariant(true);
@@ -466,6 +486,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             variantId: product.childProducts[variant.size] ?? 0,
             variant: variant,
             qty: 1,
+            payment_method: "",
             attrs: {},
             name: product.name,
             image: product?.image_main,
@@ -653,8 +674,31 @@ export default function ProductPage({ product, seemore }: { product: Product, se
                                             <ShoppingCart className="mr-2 h-5 w-5" />
                                             Dodaj do koszyka
                                         </Button>
+
                                     </div>
 
+                                    <Button
+
+                                        className="w-full bg-[#00C853] hover:bg-[#00B848] text-white font-semibold p-0 mt-2"
+                                        disabled={product.is_configurable && getAttributesArray().some((attr) => !selectedAttributes[attr.code])}
+                                        size="lg"
+                                        onClick={handleAddToCartPaypo}
+                                    >
+
+
+                                        <svg className="!h-[70px] !w-[78px]" viewBox="0 0 141 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.1953 30.8863V22.751H11.9842V30.8863H20.1953Z" fill="#A60585" />
+                                            <path d="M20.1602 19.9158V11.7135H11.9491V19.9158H20.1602Z" fill="#36B587" />
+                                            <path d="M9.21094 30.8523V22.65H0.999872V30.8523H9.21094Z" fill="#FAD15C" />
+                                            <path d="M44.6722 11.1995C44.6722 16.8537 40.1178 21.4046 34.2441 21.4046H29.7745V30.7579H22.9648V1H34.2441C40.1178 1 44.6722 5.54954 44.6722 11.1995ZM37.8624 11.1995C37.8624 9.03004 36.3297 7.37181 34.2441 7.37181H29.7745V15.0273H34.2441C36.3297 15.0273 37.8624 13.3732 37.8624 11.1995Z" fill="black" />
+                                            <path d="M68.4263 8.92355V30.7485H61.8725V28.6979C60.43 30.3561 58.2897 31.3609 55.3611 31.3609C49.638 31.3609 44.918 26.3411 44.918 19.8367C44.918 13.3323 49.638 8.31384 55.3611 8.31384C58.2897 8.31384 60.4246 9.31726 61.8725 10.9769V8.92628L68.4263 8.92355ZM61.8725 19.8353C61.8725 16.5626 59.6828 14.5107 56.6721 14.5107C53.6614 14.5107 51.4718 16.5612 51.4718 19.8353C51.4718 23.1094 53.6614 25.1668 56.6721 25.1668C59.6828 25.1668 61.8725 23.1094 61.8725 19.8353Z" fill="black" />
+                                            <path d="M93.323 8.92334L85.9057 29.9472C83.4752 36.8398 79.6105 39.5712 73.5385 39.2677V33.198C76.5752 33.198 78.008 32.2411 78.9632 29.6013L70.332 8.92334H77.4921L82.3092 22.1837L86.3888 8.92334H93.323Z" fill="black" />
+                                            <path d="M117.588 11.1995C117.588 16.8537 113.032 21.4046 107.158 21.4046H102.689V30.7579H95.8789V1H107.158C113.028 1 117.588 5.54954 117.588 11.1995ZM110.777 11.1995C110.777 9.03004 109.244 7.37181 107.158 7.37181H102.689V15.0273H107.158C109.244 15.0273 110.777 13.3732 110.777 11.1995Z" fill="black" />
+                                            <path d="M118.441 20.1333C118.441 13.7984 123.464 8.90845 129.721 8.90845C135.977 8.90845 141.001 13.7984 141.001 20.1333C141.001 26.4682 135.977 31.3595 129.721 31.3595C123.464 31.3595 118.441 26.4695 118.441 20.1333ZM134.616 20.1333C134.616 17.1148 132.488 15.1162 129.721 15.1162C126.954 15.1162 124.826 17.1148 124.826 20.1333C124.826 23.1517 126.954 25.1517 129.721 25.1517C132.488 25.1517 134.616 23.1531 134.616 20.1333Z" fill="black" />
+                                        </svg>
+
+                                        Kup i zapłać za 30 dni
+                                    </Button>
                                 </div></>
                         )}
 

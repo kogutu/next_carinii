@@ -61,7 +61,7 @@ export default function TopHeader() {
         <button
           onClick={handleCopy}
           className="inline-flex items-center gap-1 font-bold border border-stone-500 rounded px-1.5 py-0.5 hover:bg-stone-800 transition-colors cursor-pointer"
-          title="Kliknij aby skopiować kod"
+          title="Kliknij aby skopiować kod" translate="no"
         >
           WOMAN
           <svg

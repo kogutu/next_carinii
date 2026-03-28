@@ -37,7 +37,7 @@ export default function CheckoutLayout() {
         paymentMethod,
         setSameAddress
     } = useCheckoutValidationStore()
-
+    console.log(paymentMethod)
     const [checkoutData, setCheckoutData] = useState<CheckoutData>({
         billing: {
             type: 'private',
@@ -64,8 +64,8 @@ export default function CheckoutLayout() {
             phone: '',
             phoneCode: '+48'
         },
-        shippingMethod: 'dhl_dhl24pl_courier' as any,
-        paymentMethod: 'banktransfer' as any,
+        shippingMethod: shippingMethod,
+        paymentMethod: paymentMethod,
         agreeToTerms: false,
         agreeToNewsletter: false,
         inpost: {}
@@ -277,6 +277,11 @@ export default function CheckoutLayout() {
             ...prev,
             paymentMethod: method
         }))
+
+        console.clear();
+
+
+
 
         setZustandPaymentMethod(method)
 

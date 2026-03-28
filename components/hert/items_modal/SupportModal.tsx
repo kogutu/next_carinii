@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Phone, Mail, MapPin, Clock, Building2, Send, CheckCircle, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import LanguageSelector from '../language-selector';
 
 export function SupportModal() {
   const [open, setOpen] = useState(false);
@@ -300,18 +301,26 @@ export function SupportModal() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">
-          <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
-        </button>
-      </DialogTrigger>
-      <DialogContent className="w-[420px] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Kontakt</DialogTitle>
-        </DialogHeader>
-        {content}
-      </DialogContent>
-    </Dialog>
+    <div className="flex gap-2">
+      <LanguageSelector></LanguageSelector>
+
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <div className="flex gap-2">
+
+            <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">
+              <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
+            </button>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="w-[420px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Kontakt</DialogTitle>
+          </DialogHeader>
+          {content}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
