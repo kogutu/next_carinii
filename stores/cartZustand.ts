@@ -144,7 +144,7 @@ export const useCartStore = create<CartStore>()(
         }),
         {
             //change this name to refresh cart!!
-            name: 'carinii-cstorege',
+            name: 'carinii-cstoreges',
             storage: createJSONStorage(() =>
                 typeof window !== 'undefined'
                     ? localStorage
