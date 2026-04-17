@@ -1,3 +1,4 @@
+import { getDataTypesense } from '@/lib/typesense'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -6,20 +7,34 @@ export async function GET(request: Request) {
         const query = searchParams.get('q') || ''
         const page = searchParams.get('page') || '1'
 
-        const response = await fetch(
-            `https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/carinii_prs/documents/search?q=*&filter_by=new:%3D1&page=1&per_page=10&exhaustive_search=true`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-TYPESENSE-API-KEY': 'xyz'
+        const response = await getDataTypesense({
+            "searches": [
+                {
+                    "collection": "sobianek_prs",
+                    "q": "*",
+                    "query_by": "name",
+                    "filter_by": "in_stock:=true",
+                    "sort_by": "created_at:desc",
+                    "per_page": 20,
+                    "page": 1
                 }
+            ]
+        })
 
-            }
-        )
+        //     await fetch(
+        //     `https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/sobianek_prs/documents/search?q=*&filter_by=new:%3D1&page=1&per_page=10&exhaustive_search=true`,
+        //     {
+        //         method: 'GET',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-TYPESENSE-API-KEY': 'xyz'
+        //         }
 
-        const data = await response.json()
-        return NextResponse.json(data)
+        //     }
+        // )
+
+
+        return NextResponse.json(response)
 
     } catch (error) {
         return NextResponse.json(

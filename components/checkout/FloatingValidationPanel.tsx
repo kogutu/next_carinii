@@ -43,6 +43,16 @@ export default function FloatingValidationPanel() {
             messages: errors.paymentMethod ? [errors.paymentMethod] : [],
         },
         {
+            id: 'additionalFields',
+            label: 'Pola dodatkowe',
+            status: status.additionalFields,
+            errors: Object.entries(errors.additionalFields || {}).filter(([_, message]) => message).map(([field, message]) => ({
+                field,
+                message
+            })),
+            show: true
+        },
+        {
             id: 'terms',
             label: 'Zgody i warunki',
             anchorId: 'checkout-terms',
