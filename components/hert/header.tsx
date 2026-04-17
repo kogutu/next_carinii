@@ -35,7 +35,7 @@ export default function Header({ currency }: Props) {
     { name: 'Promocje %', submenu: [], className: 'text-orange-600' },
     { name: 'Serwis', submenu: [] },
   ];
-  const Logo = ({ width = 160, height = 40, color = "#441C49" }) => {
+  const Logo = ({ width = 160, height = 40, color = "#441c49" }) => {
     return (
       <svg
         width={width}
@@ -104,7 +104,7 @@ export default function Header({ currency }: Props) {
                 className="md:hidden flex items-center"
               >
                 {isMenuOpen ? <X size={34} /> : <Menu size={34} />}
-              </button>
+              </button>P
               <div className="text-3xl font-black text-hert tracking-tight">
                 <Link href="/">
                   <Logo color="#00000" width={350} height={175} ></Logo>

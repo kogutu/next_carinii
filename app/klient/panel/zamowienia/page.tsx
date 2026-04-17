@@ -806,7 +806,7 @@ export default function OrdersPage() {
             <div className="flex items-end">
               <Button
                 variant={showOnlyWithMessages ? "default" : "outline"}
-                className={showOnlyWithMessages ? "bg-hert hover:bg-hert/90" : ""}
+                className={showOnlyWithMessages ? "bg-sobianek hover:bg-sobianek/90" : ""}
                 onClick={() => setShowOnlyWithMessages(!showOnlyWithMessages)}
               >
                 <MessageCircle className="h-4 w-4 mr-2" />
@@ -851,7 +851,7 @@ export default function OrdersPage() {
                                   <span className="ml-1">{order.status_label}</span>
                                 </Badge>
                                 {order.messageCount && order.messageCount > 0 && (
-                                  <Badge className="bg-hert text-white hover:bg-hert/90 shadow-md">
+                                  <Badge className="bg-sobianek text-white hover:bg-sobianek/90 shadow-md">
                                     <MessageCircle className="h-3 w-3 mr-1" />
                                     {order.messageCount}
                                     {order.hasUnreadFromBOK && <span className="ml-1">🔥</span>}
@@ -979,7 +979,7 @@ export default function OrdersPage() {
                     <TabsTrigger value="chat">
                       Informacje / Pomoc
                       {selectedOrder.messageCount && selectedOrder.messageCount > 0 && (
-                        <Badge className="ml-2 bg-hert text-white">
+                        <Badge className="ml-2 bg-sobianek text-white">
                           {selectedOrder.messageCount}
                           {selectedOrder.hasUnreadFromBOK && <span className="ml-1">🔥</span>}
                         </Badge>
@@ -1163,12 +1163,12 @@ export default function OrdersPage() {
                         chatMessages.map((msg, index) => (
                           <div key={index} className={`flex gap-3 ${msg.isStaff ? "flex-row" : "flex-row-reverse"}`}>
                             <div
-                              className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.isStaff ? "bg-hgold text-white" : "bg-hert text-white"}`}
+                              className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.isStaff ? "bg-hgold text-white" : "bg-sobianek text-white"}`}
                             >
                               {msg.isStaff ? <Headphones className="h-4 w-4" /> : <User className="h-4 w-4" />}
                             </div>
                             <div
-                              className={`flex-1 ${msg.isStaff ? "bg-white" : "bg-hert/10"} rounded-lg p-3 shadow-sm`}
+                              className={`flex-1 ${msg.isStaff ? "bg-white" : "bg-sobianek/10"} rounded-lg p-3 shadow-sm`}
                             >
                               <div className="flex items-center justify-between mb-1">
                                 <span className="font-semibold text-sm">{msg.name}</span>
@@ -1209,7 +1209,7 @@ export default function OrdersPage() {
                       <Button
                         onClick={handleSendMessage}
                         disabled={isSendingMessage || !newMessage.trim()}
-                        className="bg-hert hover:bg-hert/90 text-white w-full"
+                        className="bg-sobianek hover:bg-sobianek/90 text-white w-full"
                       >
                         {isSendingMessage ? (
                           <>
@@ -1268,7 +1268,7 @@ export default function OrdersPage() {
                       <X className="mr-2 h-4 w-4" />
                       Wstecz
                     </Button>
-                    <Button onClick={handleNextStep} disabled={!canProceedToNextStep()} className="flex-1 bg-hert">
+                    <Button onClick={handleNextStep} disabled={!canProceedToNextStep()} className="flex-1 bg-sobianek">
                       Dalej
                     </Button>
                   </div>
@@ -1290,7 +1290,7 @@ export default function OrdersPage() {
                         return (
                           <div
                             key={item.item_id}
-                            className={`border rounded-lg p-4 ${isSelected ? "border-mpgreen bg-hert/5" : "border-gray-200"}`}
+                            className={`border rounded-lg p-4 ${isSelected ? "border-mpgreen bg-sobianek/5" : "border-gray-200"}`}
                           >
                             <div className="flex items-start gap-4">
                               <Checkbox
@@ -1435,7 +1435,7 @@ export default function OrdersPage() {
                     <Button
                       onClick={handleNextStep}
                       disabled={!canProceedToNextStep()}
-                      className="flex-1 bg-hert hover:bg-hert/90"
+                      className="flex-1 bg-sobianek hover:bg-sobianek/90"
                     >
                       Dalej
                       <ChevronDown className="ml-2 h-4 w-4 rotate-[-90deg]" />
@@ -1476,7 +1476,7 @@ export default function OrdersPage() {
                     <Button
                       onClick={handleNextStep}
                       disabled={!canProceedToNextStep()}
-                      className="flex-1 bg-hert text-white hover:bg-hert/90"
+                      className="flex-1 bg-sobianek text-white hover:bg-sobianek/90"
                     >
                       Dalej
                       <ChevronDown className="ml-2 h-4 w-4 rotate-[-90deg]" />
@@ -1548,7 +1548,7 @@ export default function OrdersPage() {
                       <X className="mr-2 h-4 w-4" />
                       Wstecz
                     </Button>
-                    <Button onClick={handleNextStep} className="bg-hert text-white hover:bg-hert/90">
+                    <Button onClick={handleNextStep} className="bg-sobianek text-white hover:bg-sobianek/90">
                       Dalej
                       <ChevronDown className="ml-2 h-4 w-4" />
                     </Button>

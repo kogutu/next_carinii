@@ -1,7 +1,7 @@
 // Główny plik z funkcjami Typesense - łączy kategorie i produkty
 const TYPESENSE_API_URL = "https://sklep.carinii.com.pl/directseo/nextjs/api"
 
-const COLLECTION_MEBLE = "carinii_prs"
+const COLLECTION_MEBLE = "sobianek_prs"
 const COLLECTION_CATEGORIES = "carinii_cats"
 
 export const query_by = "name,sku,slug,url,categories,cids"

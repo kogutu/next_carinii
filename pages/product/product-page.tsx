@@ -1,17 +1,8 @@
 'use client'
 
-import React, { useState, useEffect, useMemo } from "react"
-import DOMPurify from 'isomorphic-dompurify';
-import Image from 'next/image'
+import React, { useState, useMemo, useEffect, useRef } from "react"
+import DOMPurify from 'isomorphic-dompurify'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
 import {
     Select,
     SelectContent,
@@ -19,483 +10,279 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { Minus, Plus, ShoppingCart, HelpCircle, DollarSign, X, ChevronLeft, ChevronRight, User, Briefcase, Mail, Phone, Heart, ExternalLink } from 'lucide-react'
-import ManagerSection from "./manager_section"
-import TabList from "./TabList";
-import { useCartStore } from "@/stores/cartZustand";
-import ProductCarousel from "@/components/product/ProductsCarusel";
-import ProductsCarousel from "@/components/hert/products-carousel";
-import ProductsCarouselTypesense from "@/components/hert/products-carousel-typesense";
-import { createSlug } from "@/utils/slugify";
-import Link from "next/link";
-import ProductGallery from "./image-gallery";
-import { getLogo } from "@/data/brand/getBrand";
-import ShareIt from "./shareIt";
-import PromoBadge from "./promo-badge";
-import SizeSwatch from "./SizeSwatch";
-import ReletaedProducts from "./related-products";
-import ProductsCarouselProducts from "@/components/hert/products-carouse-products";
-import _ from "lodash";
-import { useCheckoutValidationStore } from "@/components/checkout/checkoutValidationStore";
+import { ShoppingCart, Heart, Star, StarHalf, Truck, Shield, Leaf } from 'lucide-react'
+import ProductGallery from "./productGallery"
+import TabList from "./TabList"
+import { ProductReviews } from "./ProductReviews"
+import _ from "lodash"
+import { useCartStore } from "@/stores/cartZustand"
 
-interface ConfigurableAttribute {
-    id: string
-    code: string
-    label: string
-    options: Array<{
-        id: string
-        label: string
-        value: string
-    }>
-    position: string
+// ============ TYPES ============
+
+interface ProductAttribute {
+    [key: string]: string
 }
 
-interface ConfigurableProduct {
-    id: string
+interface Variation {
+    id: number
+    attrs: {
+        kupujący?: string
+        [key: string]: string | undefined
+    }
     price: number
+    sale_price: number
     final_price: number
-    sku: string
-    is_in_stock: null | boolean
+    in_stock: boolean
     qty: number
-}
-
-interface ConfigurableOptions {
-    attributes: Record<string, ConfigurableAttribute>
-    combinations: Record<string, string>
-    products: Record<string, ConfigurableProduct>
-}
-
-interface Attachment {
-    id: string | number
-    url: string
-    filename: string
-}
-
-interface RelatedProduct {
-    id: string
-    name: string
-    price: number
-    final_price: number
-    image_main?: string
-    slug: string
+    sku: string
+    image: string
 }
 
 interface Product {
     id: string
-    pid: string
-    hidePrice: boolean
+    pid: number
     name: string
     sku: string
     price: number
-    short_description: string
-    final_price_netto_pln: number
-    image_medium: string
-    image_main?: string
-    description: string
-    dim_width: string
-    dim_height: string
-    attachments_tab: Attachment[]
-    url: string
-    manufacturer: string
-    slug: string
-    dim_length: string
-    size_qty?: string[],
-    childProducts?: any[],
-    weight?: string
-    Paleta?: boolean
-    'Czas realizacji'?: string
-    'Grupa klientów 1'?: string
-    configurable_options?: ConfigurableOptions
-    is_configurable: boolean
-    width: number
-    hide_price: boolean
-    type_id: string
-    paleta: boolean
-    imgs?: Array<{ src: string; alt: string }>
-    cids?: string[]
-    final_price?: number
-    h_palette?: any
-    kolor?: string
-    cholewka?: string
-    wnętrze?: string
-    wkładka?: string
-    'materiał obcasa'?: string
-    'wysokość obcasa'?: string
-    'rodzaj podeszwy'?: string
-    'podeszwa materiał'?: string
-    'wysokość całkowita buta'?: string
-    tęgość?: string
-    typ?: string
-    model?: string
-    has_special_price?: boolean
-    save_percent?: number
-    omnibus?: number
-    rel?: RelatedProduct[]
-}
-
-interface FormData {
-    name: string
-    company: string
-    nip: string
-    phone_mobile: string
-    phone_stationary: string
-    email: string
-    message: string
-}
-
-interface Variant {
-    size: string
-    qty: number
-    [key: string]: any
-}
-
-interface PriceInfo {
-    price: number
+    price_min: number
+    price_max: number
     final_price: number
-    sku: string
-    variantId?: string
+    special_price: number
+    has_special_price: boolean
+    save_percent: number
+    omnibus_price: string
+    short_description: string
+    description: string
+    image_main: string
+    image_medium: string
+    image_large: string
+    image_thumbnail: string
+    images: string[]
+    url: string
+    slug: string
+    basename: string
+    type: string
+    status: string
+    in_stock: boolean
+    stock_status: string
+    qty: number
+    weight: number
+    attributes: ProductAttribute
+    variation_attributes: {
+        [key: string]: string[]
+    }
+    variations: Variation[]
+    variation_count: number
+    categories: number[]
+    category_ids: number[]
+    category_names: string[]
+    category_slugs: string[]
+    category_hierarchy: string[]
+    tag_ids: number[]
+    tag_names: string[]
+    average_rating: number
+    review_count: number
+    total_sales: number
+    featured: boolean
+    meta_title: string
+    meta_description: string
+    shipping_class: string
+    cross_sell_ids: number[]
+    upsell_ids: number[]
 }
 
-interface NbpApiResponse {
-    rates: Array<{
-        mid: number
-        effectiveDate: string
-    }>
+interface ProductPageProps {
+    product: Product
+    relatedProducts?: Product[]
 }
 
-const INITIAL_FORM: FormData = {
-    name: '',
-    company: '',
-    nip: '',
-    phone_mobile: '',
-    phone_stationary: '',
-    email: '',
-    message: '',
-}
+// ============ COMPONENT ============
 
-const PRIMARY_COLOR = '#431c49'
-const ACCENT_COLOR = '#e2b87f'
-
-export default function ProductPage({ product, seemore }: { product: Product, seemore: Product[] }) {
-
-    // === ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURN ===
+export default function ProductPage({ product, relatedProducts = [] }: ProductPageProps) {
 
     const addItemToCart = useCartStore(state => state.addItemToCart)
     const setShowMiniCart = useCartStore(state => state.setShowMiniCart)
     const items = useCartStore(state => state.items)
 
-    const [quantity, setQuantity] = useState<number>(1)
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({})
-    const [currentProduct, setCurrentProduct] = useState<ConfigurableProduct | null>(null)
-    const [variant, setVariant] = useState<Variant>({} as Variant)
-    // Zabezpieczenie przed undefined - jeśli product nie istnieje, używamy pustej tablicy
-    const [hasVariant] = useState<boolean>(() =>
-        !_.isEmpty(product?.size_qty) ? true : false
-    )
-    const [errorVariant, setErorrVariant] = useState<boolean>(false)
-    const [inquiryForm, setInquiryForm] = useState<FormData>(INITIAL_FORM)
-    const [priceForm, setPriceForm] = useState<FormData>(INITIAL_FORM)
-    const [submittedInquiry, setSubmittedInquiry] = useState<boolean>(false)
-    const [submittedPrice, setSubmittedPrice] = useState<boolean>(false)
-    const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false)
-    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
-    const [isInquiryOpen, setIsInquiryOpen] = useState<boolean>(false)
-    const [isPriceOpen, setIsPriceOpen] = useState<boolean>(false)
-
-    // EUR exchange rate state
-    const [eurRate, setEurRate] = useState<number | null>(null)
-    const [eurRateLoading, setEurRateLoading] = useState<boolean>(true)
-    const [eurRateError, setEurRateError] = useState<string | null>(null)
-    const [eurRateDate, setEurRateDate] = useState<string | null>(null)
-
-
-    // Fetch EUR exchange rate from NBP API
-    useEffect(() => {
-        const fetchEurRate = async (): Promise<void> => {
-            try {
-                setEurRateLoading(true)
-                setEurRateError(null)
-
-                const response = await fetch('https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json')
-
-                if (!response.ok) {
-                    throw new Error('Nie udało się pobrać kursu EUR')
-                }
-
-                const data: NbpApiResponse = await response.json()
-                const rate = data.rates[0].mid
-                setEurRate(rate + 0.17)
-                setEurRateDate(data.rates[0].effectiveDate);
-            } catch (error) {
-                console.error('Error fetching EUR rate:', error)
-                setEurRateError('Błąd pobierania kursu')
-                // Fallback rate in case of error
-                setEurRate(4.30) // approximate fallback
-            } finally {
-                setEurRateLoading(false)
-            }
+    // State for selected variation
+    // const [selectedVariation, setSelectedVariation] = useState<Variation | null>(null)
+    const [selectedBuyer, setSelectedBuyer] = useState<string>("")
+    const [isAddingToCart, setIsAddingToCart] = useState(false)
+    const [descLoad, setDescLoaded] = useState(false)
+    const [qtySelectedVariant, setQtySelectedVariant] = useState(product.qty);
+    const [selectedVariation, setSelectedVariation] = useState(() => {
+        // Zabezpieczenie 1: sprawdź czy product istnieje i ma variations
+        if (!product?.variations?.length) {
+            return {}; // lub null, w zależności od potrzeb
         }
 
-        fetchEurRate()
-    }, [])
-
-    // Badge i "by" - useMemo PRZED conditional return
-    const { badge, by } = useMemo((): { badge: string; by: string } => {
-        if (!product) return { badge: "", by: "" }
-        console.log(product);
-
-        let badge = "";
-        let by = "";
-
-        if (product.cids?.includes("190")) {
-            badge = "Nowość";
-        }
-
-        if (product.cids?.includes("200")) {
-
-            let badge = "SERIA";
-            by = "by MAGDALENA PIECZONKA";
-        } else if (product.cids?.includes("137")) {
-
-            let badge = "SERIA";
-            by = "by NATALIA SIWIEC";
-        }
-
-        if (product.final_price !== product.price && !badge) {
-            badge = "OKAZJA";
-        }
-
-        return { badge, by };
-    }, [product?.cids, product?.final_price, product?.price])
-
-    // Sanitized HTML - useMemo for stability
-    const cleanHTML = useMemo((): string => {
-        if (!product?.description) return ""
-        return DOMPurify.sanitize(product.description).replace(/\r\n/g, '<br />');
-    }, [product?.description])
-
-    const short_cleanHTML = useMemo((): string => {
-        if (!product?.short_description) return ""
-        return DOMPurify.sanitize(product.short_description).replace(/\r\n/g, '<br />');
-    }, [product?.short_description])
-
-    // Attachments HTML - useMemo for stability
-    const attachs_html = useMemo((): string => {
-        if (!product?.attachments_tab) return ""
-        let html = ""
-        product.attachments_tab.forEach((attach: Attachment) => {
-            html += `<div key="${attach.id}"  >
-            <a href="${attach.url}"  class="flex gap-2 mb-2 block" target="_blank" rel="noopener noreferrer">
-<svg width="24px" height="24px" viewBox="-4 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M25.6686 26.0962C25.1812 26.2401 24.4656 26.2563 23.6984 26.145C22.875 26.0256 22.0351 25.7739 21.2096 25.403C22.6817 25.1888 23.8237 25.2548 24.8005 25.6009C25.0319 25.6829 25.412 25.9021 25.6686 26.0962ZM17.4552 24.7459C17.3953 24.7622 17.3363 24.7776 17.2776 24.7939C16.8815 24.9017 16.4961 25.0069 16.1247 25.1005L15.6239 25.2275C14.6165 25.4824 13.5865 25.7428 12.5692 26.0529C12.9558 25.1206 13.315 24.178 13.6667 23.2564C13.9271 22.5742 14.193 21.8773 14.468 21.1894C14.6075 21.4198 14.7531 21.6503 14.9046 21.8814C15.5948 22.9326 16.4624 23.9045 17.4552 24.7459ZM14.8927 14.2326C14.958 15.383 14.7098 16.4897 14.3457 17.5514C13.8972 16.2386 13.6882 14.7889 14.2489 13.6185C14.3927 13.3185 14.5105 13.1581 14.5869 13.0744C14.7049 13.2566 14.8601 13.6642 14.8927 14.2326ZM9.63347 28.8054C9.38148 29.2562 9.12426 29.6782 8.86063 30.0767C8.22442 31.0355 7.18393 32.0621 6.64941 32.0621C6.59681 32.0621 6.53316 32.0536 6.44015 31.9554C6.38028 31.8926 6.37069 31.8476 6.37359 31.7862C6.39161 31.4337 6.85867 30.8059 7.53527 30.2238C8.14939 29.6957 8.84352 29.2262 9.63347 28.8054ZM27.3706 26.1461C27.2889 24.9719 25.3123 24.2186 25.2928 24.2116C24.5287 23.9407 23.6986 23.8091 22.7552 23.8091C21.7453 23.8091 20.6565 23.9552 19.2582 24.2819C18.014 23.3999 16.9392 22.2957 16.1362 21.0733C15.7816 20.5332 15.4628 19.9941 15.1849 19.4675C15.8633 17.8454 16.4742 16.1013 16.3632 14.1479C16.2737 12.5816 15.5674 11.5295 14.6069 11.5295C13.948 11.5295 13.3807 12.0175 12.9194 12.9813C12.0965 14.6987 12.3128 16.8962 13.562 19.5184C13.1121 20.5751 12.6941 21.6706 12.2895 22.7311C11.7861 24.0498 11.2674 25.4103 10.6828 26.7045C9.04334 27.3532 7.69648 28.1399 6.57402 29.1057C5.8387 29.7373 4.95223 30.7028 4.90163 31.7107C4.87693 32.1854 5.03969 32.6207 5.37044 32.9695C5.72183 33.3398 6.16329 33.5348 6.6487 33.5354C8.25189 33.5354 9.79489 31.3327 10.0876 30.8909C10.6767 30.0029 11.2281 29.0124 11.7684 27.8699C13.1292 27.3781 14.5794 27.011 15.985 26.6562L16.4884 26.5283C16.8668 26.4321 17.2601 26.3257 17.6635 26.2153C18.0904 26.0999 18.5296 25.9802 18.976 25.8665C20.4193 26.7844 21.9714 27.3831 23.4851 27.6028C24.7601 27.7883 25.8924 27.6807 26.6589 27.2811C27.3486 26.9219 27.3866 26.3676 27.3706 26.1461ZM30.4755 36.2428C30.4755 38.3932 28.5802 38.5258 28.1978 38.5301H3.74486C1.60224 38.5301 1.47322 36.6218 1.46913 36.2428L1.46884 3.75642C1.46884 1.6039 3.36763 1.4734 3.74457 1.46908H20.263L20.2718 1.4778V7.92396C20.2718 9.21763 21.0539 11.6669 24.0158 11.6669H30.4203L30.4753 11.7218L30.4755 36.2428ZM28.9572 10.1976H24.0169C21.8749 10.1976 21.7453 8.29969 21.7424 7.92417V2.95307L28.9572 10.1976ZM31.9447 36.2428V11.1157L21.7424 0.871022V0.823357H21.6936L20.8742 0H3.74491C2.44954 0 0 0.785336 0 3.75711V36.2435C0 37.5427 0.782956 40 3.74491 40H28.2001C29.4952 39.9997 31.9447 39.2143 31.9447 36.2428Z" fill="#EB5757"></path> </g></svg>
-                ${attach.filename}
-            </a>
-        </div>`;
-        });
-        return html
-    }, [product?.attachments_tab])
-
-    // Zabezpieczenie przed undefined dla productSpecs
-    const productSpecsFull = {
-        "Kolor": product?.kolor ? product.kolor.charAt(0).toUpperCase() + product.kolor.slice(1) : "",
-        "Materiał cholewki": product?.cholewka || "",
-        "Materiał wnętrza": product?.wnętrze || "",
-        "Materiał wkładki": product?.wkładka || "",
-        "Materiał obcasa": product?.["materiał obcasa"] || "",
-        "Wysokość obcasa": product?.["wysokość obcasa"] || "",
-        "Rodzaj podeszwy": product?.["rodzaj podeszwy"] || "",
-        "Materiał podeszwy": product?.["podeszwa materiał"] || "",
-        "Wysokość całkowita": product?.["wysokość całkowita buta"] || "",
-        "Tęgość": product?.tęgość ? product.tęgość.toUpperCase() + " (standardowa)" : "",
-        "Typ buta": product?.typ || "",
-        "Model": product?.model || ""
-    };
-
-    // Filtrujemy - usuwamy puste wartości
-    const productSpecs: Record<string, string> = {};
-
-    Object.keys(productSpecsFull).forEach(key => {
-        if (productSpecsFull[key as keyof typeof productSpecsFull] && productSpecsFull[key as keyof typeof productSpecsFull] !== "") {
-            productSpecs[key] = productSpecsFull[key as keyof typeof productSpecsFull];
-        }
+        // Zabezpieczenie 2: upewnij się, że zwracasz kopię, a nie referencję
+        return { ...product.variations[0] };
     });
 
-    // Product tabs - useMemo for stability
-    const productTabs = useMemo(() => {
-        const tabs = [
-            { name: "Opis produktu", type: 'html', html: cleanHTML },
-            { name: "Specyfikacja", type: 'table', obj: productSpecsFull }
-        ]
 
-        return tabs
-    }, [cleanHTML, productSpecsFull])
+    const stock_anv = product.qty > 0 ? true : false;
 
-    // Gallery images
-    const galleryImages = product?.imgs
+    // Get variation attribute options
+    const buyerCoalOptions = useMemo(() => {
+        return product.variation_attributes?.["kupujący"] || []
+    }, [product.variation_attributes])
 
-    // Get attributes in correct order
-    const getAttributesArray = (): ConfigurableAttribute[] => {
-        if (!product?.configurable_options?.attributes) return []
-        return Object.values(product.configurable_options.attributes).sort(
-            (a, b) => parseInt(a.position) - parseInt(b.position)
-        )
+    // Find variation by selected buyer type
+    const findVariation = (buyerType: string): Variation | undefined => {
+        return product.variations?.find(v => v.attrs.kupujący === buyerType)
     }
 
-    // Get current variant price based on selected attributes
-    const getCurrentPrice = (): PriceInfo => {
-        if (!product) return { price: 0, final_price: 0, sku: '' }
+    // Handle buyer selection
+    const handleBuyerChange = (value: string) => {
+        setSelectedBuyer(value)
+        const variation = findVariation(value)
+        setSelectedVariation(variation || null)
+    }
 
-        if (!product.is_configurable) {
+
+    const [quantity, setQuantity] = useState(1);
+
+    const handleQuantityChange = (newQuantity) => {
+        if (newQuantity >= 1 && newQuantity <= qtySelectedVariant) {
+
+
+            setQuantity(newQuantity);
+        }
+    };
+
+
+
+    // const setVariant = (newQuantity) => {
+    //     if (newQuantity >= 1 && newQuantity <= qtySelectedVariant) {
+
+
+    //         setQuantity(newQuantity);
+    //     }
+    // };
+
+
+    const handleVariationSelect = (v) => {
+        console.log(v.qty);
+        setQtySelectedVariant(v.qty);
+        if (quantity > v.qty) setQuantity(v.qty);
+        if (v.qty > 0) {
+            setSelectedVariation(v || null)
+        }
+    }
+
+
+
+    // Get current price info
+    const currentPrice = useMemo(() => {
+
+        if (selectedVariation && !_.isEmpty(selectedVariation)) {
+
+
             return {
-                price: product.price,
-                final_price: product.final_price_netto_pln,
-                sku: product.sku,
+                price: selectedVariation.price,
+                finalPrice: selectedVariation.final_price,
+                hasDiscount: selectedVariation.price !== selectedVariation.final_price
             }
         }
-
-        if (!product.configurable_options) return { price: product.price, final_price: product.final_price_netto_pln, sku: product.sku }
-
-        const attributes = getAttributesArray()
-        if (attributes.length === 0) return { price: product.price, final_price: product.final_price_netto_pln, sku: product.sku }
-
-        // Check if all attributes are selected
-        const allSelected = attributes.every((attr) => selectedAttributes[attr.code])
-        if (!allSelected) return { price: product.price, final_price: product.final_price_netto_pln, sku: product.sku }
-
-        // Build combination key
-        const combinationKey = attributes
-            .map((attr) => `${attr.code}:${selectedAttributes[attr.code]}`)
-            .join('|')
-
-        const variantId: string | undefined = product.configurable_options.combinations[combinationKey]
-        if (!variantId) return { price: product.price, final_price: product.final_price_netto_pln, sku: product.sku }
-
-        const variant: ConfigurableProduct | undefined = product.configurable_options.products[variantId]
-        if (!variant) return { price: product.price, final_price: product.final_price_netto_pln, sku: product.sku }
-
         return {
-            price: parseFloat(String(variant.price)),
-            final_price: parseFloat(String(variant.final_price)),
-            sku: variant.sku,
-            variantId: variant.id,
+            price: product.price,
+            finalPrice: product.final_price,
+            hasDiscount: product.has_special_price
         }
-    }
+    }, [selectedVariation, product])
 
-    const priceInfo = getCurrentPrice()
 
-    // Update currentProduct when variant changes
+
+    // Uruchom funkcję po załadowaniu strony
+    // Możesz wywołać ją ręcznie: replaceYouTubeLinksWithIframes();
+    // Sanitized HTML
+    const cleanDescription = useMemo(() => {
+
+        if (!product?.description) return ""
+        return DOMPurify.sanitize(product.description).replace(/\r\n/g, '<br />')
+    }, [product?.description])
+
+    const cleanShortDescription = useMemo(() => {
+        if (!product?.short_description) return ""
+        return DOMPurify.sanitize(product.short_description).replace(/\r\n/g, '<br />')
+    }, [product?.short_description])
+
+    // Product specs from attributes
+    const productSpecs = useMemo(() => {
+        if (!product?.attributes) return {}
+        const specs: Record<string, string> = {}
+
+        const labelMap: Record<string, string> = {
+            "granulacja": "Granulacja",
+            "kaloryczność": "Kaloryczność",
+            "kategoria": "Kategoria",
+            "opakowanie": "Opakowanie",
+            "paliwo": "Rodzaj paliwa",
+            "popiół": "Zawartość popiołu",
+            "producent": "Producent",
+            "wilgoć całkowita": "Wilgotność"
+        }
+
+        Object.entries(product.attributes).forEach(([key, value]) => {
+            if (value) {
+                const label = labelMap[key] || key.charAt(0).toUpperCase() + key.slice(1)
+                specs[label] = value
+            }
+        })
+
+        return specs
+    }, [product?.attributes])
+
+    // Product tabs
+
+    const productTabs = useMemo(() => {
+        setDescLoaded(true);
+        return [
+            { name: "Opis produktu", type: 'html' as const, html: cleanDescription }
+        ]
+    }, [cleanDescription, productSpecs])
+
+
+    const contentRef = useRef(null);
     useEffect(() => {
-        if (priceInfo.variantId && product?.configurable_options?.products[priceInfo.variantId]) {
-            setCurrentProduct(product.configurable_options.products[priceInfo.variantId])
-        }
-    }, [priceInfo.variantId, product])
 
-    const name = useMemo((): string => {
-        if (!product?.name) return ""
-        return product.name?.split("CARINII")[0].trim() || product.name
-    }, [product?.name])
 
-    // === CONDITIONAL RETURN - AFTER ALL HOOKS ===
-    if (!product) {
-        return null;
-    }
+        const container = document.querySelector('.product-content') || document.body;
 
-    const existing = items.find(item => item.pid === product.id)
+        const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[?&]\S*)?/g;
 
-    const handleQuantityChange = (delta: number): void => {
-        const newQuantity = Math.max(1, quantity + delta)
-        setQuantity(newQuantity)
-    }
+        const elements = container.querySelectorAll('p, span, li, div:not(.video-container), h2, h3, h4');
 
-    const handleAttributeChange = (code: string, value: string): void => {
-        setSelectedAttributes((prev) => ({ ...prev, [code]: value }))
-    }
+        elements.forEach(element => {
+            if (element.querySelector('iframe')) return;
 
-    const handleInquiryChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ): void => {
-        const { name, value } = e.target
-        setInquiryForm((prev) => ({ ...prev, [name]: value }))
-    }
+            let html = element.innerHTML;
+            let modified = false;
+            let newHtml = html;
 
-    const handlePriceChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ): void => {
-        const { name, value } = e.target
-        setPriceForm((prev) => ({ ...prev, [name]: value }))
-    }
+            const matches = [...html.matchAll(youtubeRegex)];
 
-    const handleSubmitInquiry = (): void => {
-        console.log('Inquiry submitted:', inquiryForm)
-        setSubmittedInquiry(true)
-        setTimeout(() => {
-            setIsInquiryOpen(false)
-            setSubmittedInquiry(false)
-            setInquiryForm(INITIAL_FORM)
-        }, 2000)
-    }
+            matches.forEach(match => {
+                const fullUrl = match[0];
+                const videoId = match[1];
 
-    const handleSubmitPrice = (): void => {
-        console.log('Price negotiation submitted:', priceForm)
-        setSubmittedPrice(true)
-        setTimeout(() => {
-            setIsPriceOpen(false)
-            setSubmittedPrice(false)
-            setPriceForm(INITIAL_FORM)
-        }, 2000)
-    }
-    const handleAddToCartPaypo = (): void => {
-        setShowMiniCart(true);
-        addItemToCart({
-            pid: product.pid + "_" + variant?.size,
-            variantId: product.childProducts[variant.size] ?? 0,
-            variant: variant,
-            qty: 1,
-            payment_method: "purchaseorder",
-            attrs: {},
-            name: product.name,
-            image: product?.image_main,
-            price: product.price,
-            final_price: product.final_price,
-            sku: product.sku,
-        })
+                const iframeHtml = `<div class="video-container"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+
+                newHtml = newHtml.replace(fullUrl, iframeHtml);
+                modified = true;
+            });
+
+            if (modified) {
+                element.innerHTML = newHtml;
+            }
+        });
+
+    }, [descLoad]); // Re-run jeśli htmlContent się zmieni
 
 
 
-    }
-    const handleAddToCart = (): void => {
-        if (_.isEmpty(variant) && hasVariant) {
-            setErorrVariant(true);
-            return;
-        }
-        setErorrVariant(false);
-
-        console.log('Added to cart:', {
-            pid: product.pid,
-            variantId: variant,
-            qty: quantity,
-            name: product.name,
-            image: product?.image_main,
-            price: product.price,
-            final_price: product.final_price,
-            sku: product.sku,
-        })
-        setShowMiniCart(true);
-        addItemToCart({
-            pid: product.pid + "_" + variant?.size,
-            variantId: product.childProducts[variant.size] ?? 0,
-            variant: variant,
-            qty: 1,
-            payment_method: "",
-            attrs: {},
-            name: product.name,
-            image: product?.image_main,
-            price: product.price,
-            final_price: product.final_price,
-            sku: product.sku,
-        })
-    }
-
+    // Format price
     const formatPrice = (price: number): string => {
         return new Intl.NumberFormat('pl-PL', {
             style: 'currency',
@@ -503,227 +290,430 @@ export default function ProductPage({ product, seemore }: { product: Product, se
         }).format(price)
     }
 
-    const formatPriceEur = (pricePln: number): string | null => {
-        if (!eurRate) return null
-        const priceEur = pricePln / eurRate
-        return new Intl.NumberFormat('de-DE', {
-            style: 'currency',
-            currency: 'EUR',
-        }).format(priceEur)
+    // Render star rating
+    const renderRating = (rating: number) => {
+        const stars = []
+        const fullStars = Math.floor(rating)
+        const hasHalfStar = rating % 1 >= 0.5
+
+        for (let i = 0; i < fullStars; i++) {
+            stars.push(<Star key={`full-${i}`} className="h-4 w-4 fill-amber-400 text-amber-400" />)
+        }
+        if (hasHalfStar) {
+            stars.push(<StarHalf key="half" className="h-4 w-4 fill-amber-400 text-amber-400" />)
+        }
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0)
+        for (let i = 0; i < emptyStars; i++) {
+            stars.push(<Star key={`empty-${i}`} className="h-4 w-4 text-gray-300" />)
+        }
+        return stars
     }
 
-    const calculateBruttoPrice = (nettoPrice: number): number => {
-        return nettoPrice * 1.23 // 23% VAT
-    }
+    // Add to cart handler
+    const handleAddToCart = (): void => {
+        // if (_.isEmpty(variant) && hasVariant) {
+        //     setErorrVariant(true);
+        //     return;
+        // }
+        // setErorrVariant(false);
+        console.clear();
+        var price = product.price;
+        var final_price = product.final_price;
+        if (selectedVariation.price) {
+            final_price = selectedVariation.final_price;
+            price = selectedVariation.price
+        };
 
-    const handleNextImage = (): void => {
-        if (!galleryImages) return
-        setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length)
-    }
 
-    const handlePrevImage = (): void => {
-        if (!galleryImages) return
-        setCurrentImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
+        console.log('Added to cart:', {
+            pid: product.pid,
+            variantId: selectedVariation,
+            product: product,
+            qty: quantity,
+            name: product.name,
+            image: product?.image_main,
+            price: price,
+            final_price: final_price,
+            sku: product.sku,
+        })
+        setShowMiniCart(true);
+        addItemToCart({
+            pid: selectedVariation?.id,
+            variantId: selectedVariation?.id,
+            variant: selectedVariation,
+            product: product,
+            qty: quantity,
+            attrs: {},
+            name: product.name,
+            image: product?.image_main,
+            price: price,
+            final_price: final_price,
+            sku: product.sku,
+        })
     }
-
-    const handleKeyDown = (e: React.KeyboardEvent): void => {
-        if (e.key === 'ArrowRight') handleNextImage()
-        if (e.key === 'ArrowLeft') handlePrevImage()
-        if (e.key === 'Escape') setIsLightboxOpen(false)
+    if (!product) {
+        return null
     }
-
 
     return (
-        <main className="min-h-screen  py-8" style={{ '--primary-color': PRIMARY_COLOR, '--accent-color': ACCENT_COLOR } as React.CSSProperties}>
+        <main className="min-h-screen bg-background py-8">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="grid gap-8 lg:grid-cols-[1fr_350px]">
+                {/* Breadcrumb */}
+                {product.category_hierarchy && product.category_hierarchy.length > 0 && (
+                    <nav className="mb-6 text-sm text-muted-foreground">
+                        <ol className="flex flex-wrap items-center gap-2">
+                            <li><a href="/" className="hover:text-foreground transition-colors">Sklep</a></li>
+                            {product.category_names.map((cat, i) => (
+                                <li key={i} className="flex items-center gap-2">
+                                    <span>/</span>
+                                    <a href={`/kategoria/${product.category_slugs[i]}`} className="hover:text-foreground transition-colors">
+                                        {cat}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                )}
+
+                <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
                     {/* Product Gallery Section */}
-                    <ProductGallery imgs={galleryImages} />
+                    <ProductGallery imgs={product.images} />
+
                     {/* Product Details Section */}
                     <div className="flex flex-col gap-6">
-                        {/* Product Info */}
-                        <div className="space-y-2 ">
-                            <div className="flex mb-20 justify-between">
-                                <div className="badge" key={`badge-${badge}-${by}`}>
+                        {/* Tags/Badges */}
+                        <div className="flex flex-wrap gap-2">
+                            {product.featured && (
+                                <span className="bg-amber-100 text-amber-800 text-xs font-medium px-3 py-1 rounded-full">
+                                    Polecany
+                                </span>
+                            )}
+                            {product.has_special_price && product.save_percent > 0 && (
+                                <span className="bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full">
+                                    -{product.save_percent}%
+                                </span>
+                            )}
+                            {product.tag_names?.slice(0, 3).map((tag, i) => (
+                                <span key={i} className="bg-muted text-muted-foreground text-xs font-medium px-3 py-1 rounded-full">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
 
-                                    {badge && (
-                                        <>
-                                            <span className="uppercase text-2xl font-bold">{badge}</span>
-                                            <div className="text-xs">{by}</div>
-                                        </>
-                                    )}
-                                </div>
-
-                                <div className="share flex gap-2">
-                                    <ShareIt url="https://example.com/post/123" title="Świetny artykuł!" />
-                                    <Button
-                                        variant="outline"
-                                        size="icon"
-
-                                        aria-label="Udostępnij"
-                                    >
-                                        <Heart className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <h1 className="text-3xl font-bold text-hert uppercase tracking-tighter">
-                                {name}
+                        {/* Product Name & SKU */}
+                        <div className="space-y-2">
+                            <h1 className="text-2xl lg:text-3xl font-bold text-foreground">
+                                {product.name}
                             </h1>
-                            <div className="flex justify-between">
-                                <p className="text-md text-gray-600">{product.sku}</p>
+                            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                                <span>SKU: {product.sku}</span>
+                                {product.weight > 0 && (
+                                    <span>Waga: {product.weight} kg</span>
+                                )}
+                            </div>
+                        </div>
 
-                                {product['Grupa klientów 1'] && (
-                                    <p className="text-sm text-gray-500">
-                                        Dla: {product['Grupa klientów 1']}
+                        {/* Rating */}
+                        {product.average_rating > 0 && (
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-1">
+                                    {renderRating(product.average_rating)}
+                                </div>
+                                <span className="text-sm font-medium">{product.average_rating.toFixed(2)}</span>
+                                <span className="text-sm text-muted-foreground">
+                                    ({product.review_count} {product.review_count === 1 ? 'opinia' : 'opinii'})
+                                </span>
+                            </div>
+                        )}
+
+                        {/* Price Section */}
+                        <div className="space-y-2 py-4 border-y border-border">
+
+                            <div className="grid items-baseline gap-3">
+
+                                <span className="text-3xl font-bold text-primary">
+                                    {formatPrice(currentPrice.finalPrice)}
+                                </span>
+                                {currentPrice.hasDiscount && (
+                                    <span className="text-lg text-muted-foreground line-through">
+                                        {formatPrice(currentPrice.price)}
+                                    </span>
+                                )}
+                            </div>
+                            {product.price_min !== product.price_max && !selectedVariation && (
+                                <p className="text-sm text-muted-foreground">
+                                    Ceny od {formatPrice(product.price_min)} do {formatPrice(product.price_max)}
+                                </p>
+                            )}
+                            {product.omnibus_price && (
+                                <p className="text-xs text-muted-foreground">
+                                    Najniższa cena w ciągu ostatnich 30 dni: {product.omnibus_price}
+                                </p>
+                            )}
+                        </div>
+
+
+
+
+
+
+                        {/* Short Description */}
+                        {product.short_description && (
+                            <div
+                                className="text-sm text-muted-foreground prose prose-sm max-w-none"
+                                suppressHydrationWarning
+                                dangerouslySetInnerHTML={{ __html: cleanShortDescription }}
+                            />
+                        )}
+
+                        {/* Variation Selector */}
+                        {product.type === 'variable' && buyerCoalOptions.length > 0 && (
+                            <div className="space-y-3">
+                                <label className="text-sm font-medium text-foreground">
+                                    Wybierz typ kupującego *
+                                </label>
+                                <Select value={selectedBuyer} onValueChange={handleBuyerChange}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Wybierz typ kupującego" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {buyerCoalOptions.map((option) => (
+                                            <SelectItem key={option} value={option}>
+                                                {option}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {!selectedBuyer && (
+                                    <p className="text-xs text-amber-600">
+                                        Wybierz typ kupującego, aby dodać produkt do koszyka
                                     </p>
                                 )}
                             </div>
-                        </div>
-
-                        <div className="space-y-2 mt-6">
-                            <div className="grid items-baseline gap-3 flex-wrap">
-                                <div className="flex gap-2">
-                                    {product.has_special_price && (
-                                        <p className="text-md text-black line-through">
-                                            {formatPrice(product.price)}
-                                        </p>
-                                    )}
-                                    {product.has_special_price && product.save_percent && product.save_percent > 0 && (
-                                        <span className="text-sm font-semibold text-white bg-hcar rounded-full px-2 py-0.5">
-                                            -{product.save_percent}%
-                                        </span>
-                                    )}
+                        )}
+                        {product.type === 'variable' && product.variation_count > 0 && buyerCoalOptions.length === 0 && (
+                            <div className="opts mt-4 relative">
+                                <div className="text-gray-700 font-medium mb-3">
+                                    Wybierz {Object.keys(product.variations[0]?.attrs || {}).join(", ")}:
                                 </div>
-                                <div className="text-4xl font-bold text-hcar">
-                                    {product.final_price && formatPrice(product.final_price)}
+                                <div className="options relative grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                    {product.variations.map((e, idx) => {
+                                        const isAvailable = e.qty > 0 && e.in_stock === true;
+                                        return (
+                                            <div
+                                                onClick={() => handleVariationSelect(e)}
+                                                key={idx}
+                                                className={(selectedVariation.id == e.id ? "border-green-600  bg-green-50 text-green-600" : '') + `
+              border rounded-2xl p-3 flex flex-col items-center justify-center text-center
+              transition-all duration-200
+              ${isAvailable
+                                                        ? ' border-gray-200 relative overflow-hidden pt-[30px] hover:shadow-md hover:border-blue-300 cursor-pointer'
+                                                        : 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed'
+                                                    }
+            `}
+                                            >
+
+                                                <div className="promo absolute top-0 left-0  text-xs text-white bg-red-600 w-full">
+                                                    {e.final_price != e.price && (
+                                                        <div className="py-[2px]">! PROMOCJA !</div>
+                                                    )}
+                                                </div>
+                                                <span className={`
+              font-bold text-lg
+              ${isAvailable ? 'text-gray-800' : 'text-gray-500'}
+            `}>
+                                                    {Object.values(e.attrs).join(", ")}
+                                                </span>
+
+
+                                                <div className="price">
+
+
+                                                    {e.final_price != e.price && (
+
+                                                        <>
+                                                            <s className="text-gray-500 text-xs">{formatPrice(e.price)}</s>
+                                                            <div className={`
+              font-semibold text-sm mt-1
+              ${isAvailable ? 'text-red-600' : 'text-gray-400'}
+            `}>
+
+                                                                {formatPrice(e.final_price)}
+                                                            </div></>
+                                                    )}
+
+
+
+
+
+                                                    {e.final_price == e.price && (
+                                                        <div className={`
+              font-semibold text-sm mt-1
+              ${isAvailable ? 'text-red-600' : 'text-gray-400'}
+            `}>
+                                                            {formatPrice(e.final_price)}
+                                                        </div>
+
+
+                                                    )}
+
+                                                </div>
+
+
+
+
+
+                                                {!isAvailable && (
+                                                    <div className="text-xs text-gray-400 mt-1">
+                                                        brak w magazynie
+                                                    </div>
+                                                )}
+                                                {isAvailable && e.qty <= 3 && (
+                                                    <div className="text-xs text-orange-500 mt-1">
+                                                        tylko {e.qty} szt.
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-
-                                {product.omnibus && (
-                                    <span className="text-xs"> najniższa cena w ciągu ostatnich 30 dni: <u> {formatPrice(product.omnibus)}</u></span>
-                                )}
-                            </div>
-
-                        </div>
-                        <div className="mt-4">
-                            <PromoBadge product={product} />
-                        </div>
-                        <div className="mt-4">
-                            <SizeSwatch
-                                setVariant={(variant: Variant) => {
-                                    console.log(variant);
-                                    setVariant(variant);
-                                    setErorrVariant(false);
-                                }}
-                                size_qty={product.size_qty || []}
-                                sku={product.sku}
-                                image_thumbnail={product.image_main}
-                            />
-                        </div>
-                        {/* Configurable Options */}
-                        {product.is_configurable && product.configurable_options && (
-                            <div className="space-y-4 border-t border-b border-gray-200 py-6">
-                                <h3 className="text-sm font-semibold text-hert">Konfiguracja</h3>
-                                {getAttributesArray().map((attribute) => (
-                                    <div key={attribute.code} className="space-y-2">
-                                        <Label htmlFor={attribute.code} className="text-sm font-semibold">
-                                            {attribute.label}
-                                        </Label>
-                                        <Select value={selectedAttributes[attribute.code] || ''} onValueChange={(value) => handleAttributeChange(attribute.code, value)}>
-                                            <SelectTrigger id={attribute.code} className="w-full">
-                                                <SelectValue placeholder={`Wybierz ${attribute.label.toLowerCase()}`} />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {attribute.options.map((option) => (
-                                                    <SelectItem key={option.id} value={option.value}>
-                                                        {option.label}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                ))}
                             </div>
                         )}
-                        {product.short_description && (
-                            <div className="shortdesc">
-                                <div dangerouslySetInnerHTML={{ __html: short_cleanHTML }} />
-                            </div>
-                        )}
 
+                        {/* Add to Cart */}
+                        <div className="space-y-3">
 
-                        {/* Quantity Selector & Add to Cart */}
-                        {!product.hide_price && (
+                            {/* Przycisk dodawania do koszyka */}
 
-                            <>
-                                <div className="flex flex-wrap  justify-between items-center">
-
-
-                                    {errorVariant && (
-                                        <div className="rounded-full w-full mb-2 text-center bg-hcar px-2.5 py-1.5 text-sm whitespace-nowrap text-white">
-                                            Prosimy o wybranie rozmiaru!
+                            {stock_anv && (
+                                <div>
+                                    {/* Qty Selector */}
+                                    < div className="flex items-center justify-between border rounded-lg p-2 mb-1">
+                                        <span className="text-sm font-medium text-gray-600">Ilość:</span>
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                onClick={() => handleQuantityChange(quantity - 1)}
+                                                disabled={quantity <= 1}
+                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+                                            >
+                                                -
+                                            </button>
+                                            <span className="w-12 text-center font-semibold text-lg">
+                                                {quantity}
+                                            </span>
+                                            <button
+                                                onClick={() => handleQuantityChange(quantity + 1)}
+                                                disabled={quantity >= qtySelectedVariant}
+                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+                                            >
+                                                +
+                                            </button>
                                         </div>
-                                    )}
-                                    <div className="w-full">
-                                        <Button
-                                            onClick={handleAddToCart}
-                                            disabled={product.is_configurable && getAttributesArray().some((attr) => !selectedAttributes[attr.code])}
-                                            className="w-full py-6 text-lg text-white bg-car hover:bg-hcar"
-
-                                        >
-                                            <ShoppingCart className="mr-2 h-5 w-5" />
-                                            Dodaj do koszyka
-                                        </Button>
-
                                     </div>
-
                                     <Button
+                                        onClick={handleAddToCart}
+                                        disabled={product.type === 'variable' && !selectedVariation}
+                                        className="w-full py-6 text-lg"
 
-                                        className="w-full bg-[#00C853] hover:bg-[#00B848] text-white font-semibold p-0 mt-2"
-                                        disabled={product.is_configurable && getAttributesArray().some((attr) => !selectedAttributes[attr.code])}
                                         size="lg"
-                                        onClick={handleAddToCartPaypo}
                                     >
-
-
-                                        <svg className="!h-[70px] !w-[78px]" viewBox="0 0 141 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20.1953 30.8863V22.751H11.9842V30.8863H20.1953Z" fill="#A60585" />
-                                            <path d="M20.1602 19.9158V11.7135H11.9491V19.9158H20.1602Z" fill="#36B587" />
-                                            <path d="M9.21094 30.8523V22.65H0.999872V30.8523H9.21094Z" fill="#FAD15C" />
-                                            <path d="M44.6722 11.1995C44.6722 16.8537 40.1178 21.4046 34.2441 21.4046H29.7745V30.7579H22.9648V1H34.2441C40.1178 1 44.6722 5.54954 44.6722 11.1995ZM37.8624 11.1995C37.8624 9.03004 36.3297 7.37181 34.2441 7.37181H29.7745V15.0273H34.2441C36.3297 15.0273 37.8624 13.3732 37.8624 11.1995Z" fill="black" />
-                                            <path d="M68.4263 8.92355V30.7485H61.8725V28.6979C60.43 30.3561 58.2897 31.3609 55.3611 31.3609C49.638 31.3609 44.918 26.3411 44.918 19.8367C44.918 13.3323 49.638 8.31384 55.3611 8.31384C58.2897 8.31384 60.4246 9.31726 61.8725 10.9769V8.92628L68.4263 8.92355ZM61.8725 19.8353C61.8725 16.5626 59.6828 14.5107 56.6721 14.5107C53.6614 14.5107 51.4718 16.5612 51.4718 19.8353C51.4718 23.1094 53.6614 25.1668 56.6721 25.1668C59.6828 25.1668 61.8725 23.1094 61.8725 19.8353Z" fill="black" />
-                                            <path d="M93.323 8.92334L85.9057 29.9472C83.4752 36.8398 79.6105 39.5712 73.5385 39.2677V33.198C76.5752 33.198 78.008 32.2411 78.9632 29.6013L70.332 8.92334H77.4921L82.3092 22.1837L86.3888 8.92334H93.323Z" fill="black" />
-                                            <path d="M117.588 11.1995C117.588 16.8537 113.032 21.4046 107.158 21.4046H102.689V30.7579H95.8789V1H107.158C113.028 1 117.588 5.54954 117.588 11.1995ZM110.777 11.1995C110.777 9.03004 109.244 7.37181 107.158 7.37181H102.689V15.0273H107.158C109.244 15.0273 110.777 13.3732 110.777 11.1995Z" fill="black" />
-                                            <path d="M118.441 20.1333C118.441 13.7984 123.464 8.90845 129.721 8.90845C135.977 8.90845 141.001 13.7984 141.001 20.1333C141.001 26.4682 135.977 31.3595 129.721 31.3595C123.464 31.3595 118.441 26.4695 118.441 20.1333ZM134.616 20.1333C134.616 17.1148 132.488 15.1162 129.721 15.1162C126.954 15.1162 124.826 17.1148 124.826 20.1333C124.826 23.1517 126.954 25.1517 129.721 25.1517C132.488 25.1517 134.616 23.1531 134.616 20.1333Z" fill="black" />
-                                        </svg>
-
-                                        Kup i zapłać za 30 dni
+                                        {isAddingToCart ? (
+                                            <span className="flex items-center gap-2">
+                                                <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                                Dodawanie...
+                                            </span>
+                                        ) : (
+                                            <span className="flex items-center gap-2">
+                                                <ShoppingCart className="h-5 w-5" />
+                                                Dodaj do koszyka
+                                            </span>
+                                        )}
                                     </Button>
-                                </div></>
+                                </div>
+
+                            )}
+
+                            {!stock_anv && (
+                                <Button
+
+                                    className="w-full py-6 text-lg bg-red-500"
+
+                                    size="lg"
+                                >
+
+                                    <span className="flex items-center gap-2">
+                                        ⚠️
+                                        BRAK NA MAGAZYNIE
+                                    </span>
+
+                                </Button>
+                            )}
+
+                        </div>
+
+                        {/* Trust Badges */}
+                        <div className="grid grid-cols-3 gap-4 py-4">
+                            <div className="flex flex-col items-center text-center gap-2">
+                                <div className="p-2 rounded-full bg-green-100">
+                                    <Truck className="h-5 w-5 text-green-700" />
+                                </div>
+                                <span className="text-xs text-muted-foreground">Szybka dostawa</span>
+                            </div>
+                            <div className="flex flex-col items-center text-center gap-2">
+                                <div className="p-2 rounded-full bg-blue-100">
+                                    <Shield className="h-5 w-5 text-blue-700" />
+                                </div>
+                                <span className="text-xs text-muted-foreground">Bezpieczne płatności</span>
+                            </div>
+                            <div className="flex flex-col items-center text-center gap-2">
+                                <div className="p-2 rounded-full bg-amber-100">
+                                    <Leaf className="h-5 w-5 text-amber-700" />
+                                </div>
+                                <span className="text-xs text-muted-foreground">Certyfikat jakości</span>
+                            </div>
+                        </div>
+
+                        {/* Product Attributes Quick View */}
+                        {Object.keys(productSpecs).length > 0 && (
+                            <div className="bg-muted/50 rounded-lg p-4">
+                                <h3 className="font-medium mb-3 text-foreground">Parametry produktu</h3>
+                                <dl className="grid grid-cols-2 gap-2 text-sm">
+                                    {Object.entries(productSpecs).slice(0, 6).map(([key, value]) => (
+                                        <div key={key} className="flex flex-col">
+                                            <dt className="text-muted-foreground">{key}</dt>
+                                            <dd className="font-medium text-foreground">{value}</dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </div>
                         )}
 
-                        <div className="relprss">
-                            <ReletaedProducts products={product.rel || []} />
-                        </div>
+                        {/* Tabs */}
 
-                        <div className="mt-0 ">
-                            <TabList
-                                tabs={productTabs}
-                                defaultActiveIndex={0}
-                                className="custom-class"
-                            />
-                        </div>
                     </div>
                 </div>
+                <div className="mt-4 product-content">
+                    <TabList
+                        tabs={productTabs}
+                        defaultActiveIndex={0}
+                    />
+                </div>
+                {/* Sales Info */}
+                {product.total_sales > 0 && (
+                    <div className="mt-8 text-center text-sm text-muted-foreground">
+                        {product.pid}
+                        Sprzedano już: <strong>{(product.total_sales + Math.ceil(product.pid * 0.1)).toLocaleString('pl-PL')}</strong> sztuk
+                    </div>
+                )}
 
-                {/* Full Description Section */}
-
+                {/* Reviews Section */}
+                <ProductReviews
+                    productSku={product.sku}
+                    productBasename={product.basename}
+                    averageRating={product.average_rating}
+                    reviewCount={product.review_count}
+                />
             </div>
-
-            <div className=" mt-16 w-full h-px my-8 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-
-            <ProductsCarouselProducts title="Nieprzegap..." products={seemore.length > 0 ? seemore : []} />
-
         </main>
     )
 }

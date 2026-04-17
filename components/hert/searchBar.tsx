@@ -135,7 +135,7 @@ const FACET_CONFIG: FacetConfig[] = [
         icon: <Folder size={14} />,
         type: 'multi',
         activeColor: 'text-purple-700',
-        activeBg: 'bg-purple-100',
+        activeBg: 'bg-gray-100',
         defaultExpanded: true,
         maxVisible: 8,
     },
@@ -304,13 +304,14 @@ const popularSearches = [
     { term: "torebka", icon: "❤️" },
 ];
 
-const promoProducts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/products_category?cid=190&t=1`, {
-    cache: 'force-cache',
-    next: {
-        revalidate: 60 * 60 * 24,
-    },
-}).then(res => res.json()).then(data => data.hits.map((hit: any) => hit.document))
+// const promoProducts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/products_category?cid=190&t=1`, {
+//     cache: 'force-cache',
+//     next: {
+//         revalidate: 60 * 60 * 24,
+//     },
+// }).then(res => res.json()).then(data => data.hits.map((hit: any) => hit.document))
 
+const promoProducts = [];
 // ============ DEBOUNCE HOOK ============
 function useDebounce<T>(value: T, delay: number): T {
     const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -366,7 +367,7 @@ function FacetSection({ config, counts, activeValues, onToggleValue }: FacetSect
 
     // Kolorystyka na podstawie config
     const colorMap: Record<string, { activeBg: string; activeText: string; pillBg: string; pillText: string; dotBg: string }> = {
-        'text-purple-700': { activeBg: 'bg-purple-100', activeText: 'text-purple-700', pillBg: 'bg-purple-200', pillText: 'text-purple-700', dotBg: 'bg-purple-500' },
+        'text-purple-700': { activeBg: 'bg-gray-100', activeText: 'text-purple-700', pillBg: 'bg-gray-200', pillText: 'text-purple-700', dotBg: 'bg-gray-500' },
         'text-blue-700': { activeBg: 'bg-blue-100', activeText: 'text-blue-700', pillBg: 'bg-blue-200', pillText: 'text-blue-700', dotBg: 'bg-blue-500' },
         'text-indigo-700': { activeBg: 'bg-indigo-100', activeText: 'text-indigo-700', pillBg: 'bg-indigo-200', pillText: 'text-indigo-700', dotBg: 'bg-indigo-500' },
         'text-pink-700': { activeBg: 'bg-pink-100', activeText: 'text-pink-700', pillBg: 'bg-pink-200', pillText: 'text-pink-700', dotBg: 'bg-pink-500' },
@@ -669,7 +670,7 @@ export default function MegaSearch({ type }: { type: string }) {
 
             params.append('sort_by', '_text_match:desc,price:asc');
 
-            const url = `https://sklep.carinii.com.pl/directseo/nextjs/api/?path=/collections/carinii_prs/documents/search?${params.toString()}`;
+            const url = `https://sklep.carinii.com.pl/directseo/nextjs/api/?path=/collections/sobianek_prs/documents/search?${params.toString()}`;
 
             const response = await fetch(url);
             const data: TypesenseResponse = await response.json();
@@ -755,7 +756,7 @@ export default function MegaSearch({ type }: { type: string }) {
 
     const isMobile = type === 'mobile';
     const containerClass = isMobile
-        ? 'flex mt-4 md:hidden flex-grow mx-2 relative'
+        ? 'flex  md:hidden flex-grow mr-2  relative'
         : 'hidden md:flex max-w-[400px] flex-grow mx-2 relative';
 
     return (
@@ -764,7 +765,7 @@ export default function MegaSearch({ type }: { type: string }) {
             <div className={containerClass}>
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="w-full border border-gray-300 rounded-full py-2.5 px-6 pr-12 text-left text-gray-400 text-sm bg-white hover:border-gray-300 hover:shadow-md transition-all flex items-center gap-2 group"
+                    className="w-full border border-gray-300 rounded-xl py-2.5 px-4  text-left text-gray-400 text-md bg-white hover:border-gray-300 hover:shadow-md transition-all flex items-center gap-2 group"
                 >
                     <Search size={16} className="text-gray-400 group-hover:text-purple-500 transition-colors" />
                     <span>Czego szukasz?</span>
@@ -772,9 +773,7 @@ export default function MegaSearch({ type }: { type: string }) {
                         ⌘K
                     </kbd>
                 </button>
-                <div className="absolute right-[2px] top-[3px] bg-hert text-white p-2 rounded-full w-9 h-9 flex items-center justify-center pointer-events-none">
-                    <Search size={16} />
-                </div>
+
             </div>
 
             {/* Mega Search Modal */}
@@ -851,7 +850,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                 {activeFilterPills.map((pill, i) => (
                                                     <span
                                                         key={`${pill.field}-${pill.value}-${i}`}
-                                                        className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full ${pill.config.activeBg || 'bg-purple-100'} ${pill.config.activeColor || 'text-purple-700'}`}
+                                                        className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full ${pill.config.activeBg || 'bg-gray-100'} ${pill.config.activeColor || 'text-purple-700'}`}
                                                     >
                                                         {pill.config.icon}
                                                         {pill.label}
@@ -910,7 +909,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                                 key={index}
                                                                 onClick={() => handleSuggestionClick(term)}
                                                                 className="group flex items-center gap-2 px-4 py-2.5 bg-white 
-                                                                           hover:bg-purple-50 text-gray-700 hover:text-purple-700 
+                                                                           hover:bg-gray-50 text-gray-700 hover:text-purple-700 
                                                                            rounded-xl text-sm transition-all shadow-sm 
                                                                            hover:shadow-md border border-gray-100"
                                                             >
@@ -923,7 +922,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                             )}
 
                                             {/* Popular Searches */}
-                                            <div className="bg-purple-50 rounded-2xl p-5 w-full overflow-y-auto mb-4">
+                                            <div className="bg-gray-50 rounded-2xl p-5 w-full overflow-y-auto mb-4">
                                                 <h3 className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">
                                                     <TrendingUp size={16} className="text-purple-500" />
                                                     Na skróty
@@ -936,7 +935,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                                     key={index}
                                                                     onClick={() => handleSuggestionClick(item.term)}
                                                                     className="flex-shrink-0 min-w-fit group flex items-center gap-2 
-                                                                               px-4 py-2.5 bg-white hover:bg-purple-600 text-gray-700 
+                                                                               px-4 py-2.5 bg-white hover:bg-gray-600 text-gray-700 
                                                                                hover:text-white rounded-xl text-sm transition-all shadow-sm 
                                                                                hover:shadow-lg border border-purple-100"
                                                                 >
@@ -1006,7 +1005,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                 <button
                                                     key={index}
                                                     onClick={() => handleSuggestionClick(item.term)}
-                                                    className="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full text-sm transition"
+                                                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-purple-700 rounded-full text-sm transition"
                                                 >
                                                     {item.icon} {item.term}
                                                 </button>
@@ -1024,14 +1023,14 @@ export default function MegaSearch({ type }: { type: string }) {
                                             <button
                                                 onClick={() => setShowMobileFacets(!showMobileFacets)}
                                                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition ${showMobileFacets
-                                                    ? 'bg-purple-600 text-white'
+                                                    ? 'bg-gray-600 text-white'
                                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                                     }`}
                                             >
                                                 <Filter size={16} />
                                                 Filtry
                                                 {totalActiveFilters > 0 && (
-                                                    <span className={`text-xs px-1.5 py-0.5 rounded-full ${showMobileFacets ? 'bg-purple-500' : 'bg-purple-200 text-purple-700'
+                                                    <span className={`text-xs px-1.5 py-0.5 rounded-full ${showMobileFacets ? 'bg-gray-500' : 'bg-gray-200 text-purple-700'
                                                         }`}>
                                                         {totalActiveFilters}
                                                     </span>
@@ -1050,7 +1049,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                             key={cfg.field}
                                                             onClick={() => toggleFilterValue(cfg.field, cfg.booleanTrueValue || 'true')}
                                                             className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition ${isActive
-                                                                ? `${cfg.activeBg || 'bg-purple-500'} text-white shadow-lg`
+                                                                ? `${cfg.activeBg || 'bg-gray-500'} text-white shadow-lg`
                                                                 : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
                                                                 }`}
                                                         >
@@ -1089,7 +1088,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                                 key={cfg.field}
                                                                 onClick={() => toggleFilterValue(cfg.field, cfg.booleanTrueValue || 'true')}
                                                                 className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition ${isActive
-                                                                    ? `${cfg.activeBg || 'bg-purple-500'} text-white shadow-lg`
+                                                                    ? `${cfg.activeBg || 'bg-gray-500'} text-white shadow-lg`
                                                                     : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
                                                                     }`}
                                                             >

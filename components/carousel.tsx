@@ -127,7 +127,7 @@ export default function Carousel<T>({
                     <div
                         key={i}
                         className={`h-1 rounded-full transition-all duration-300 ${i === Math.floor(current / 2)
-                            ? 'w-6 bg-hert'
+                            ? 'w-6 bg-sobianek'
                             : 'w-2 bg-gray-300'
                             }`}
                     />

@@ -128,6 +128,62 @@ export const useCheckoutValidation = () => {
         []
     )
 
+    const validateAdditionalFieldsForm = useCallback(
+        (data: any): Record<string, string> => {
+            const newErrors: Record<string, string> = {}
+
+            Object.keys(data).forEach(key => {
+                if (key == "pesel") {
+
+                    let pesel = data[key];
+
+                    const clean = pesel.replace(/\D/g, '')
+                    if (clean.length !== 11) {
+                        newErrors.pesel = 'Niepoprawny numer pesel';
+
+                    } else {
+
+                        const weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
+                        let sum = 0
+                        for (let i = 0; i < 10; i++) {
+                            sum += parseInt(clean[i]) * weights[i]
+                        }
+
+                        const control = (10 - (sum % 10)) % 10
+                        console.log(control === parseInt(clean[10]));
+                        if (!(control === parseInt(clean[10]))) {
+                            newErrors.pesel = 'Niepoprawny numer pesel';
+                        }
+                    }
+                }
+
+
+                if (key == "certificateNumber") {
+                    if (!data[key].trim()) {
+                        newErrors.certificateNumber = 'Numer zaświadczenia jest wymagany'
+                    }
+                }
+
+                if (key == "certificateDate") {
+                    if (!data[key]) {
+                        newErrors.certificateDate = 'Data wydania jest wymagana'
+                    }
+                }
+
+                if (key == "certificateAuthority") {
+                    if (!data[key].trim()) {
+                        newErrors.certificateAuthority = 'Organ wydający jest wymagany'
+                    }
+                }
+            })
+
+
+
+            console.log(newErrors);
+            return newErrors
+        },
+        []
+    )
     const validate = useCallback(
         (data: CheckoutData): ValidationErrors => {
             const newErrors: ValidationErrors = {
@@ -227,6 +283,7 @@ export const useCheckoutValidation = () => {
         getCompletionPercentage,
         getCompletionCount,
         validateBillingForm,
+        validateAdditionalFieldsForm,
         validateShippingForm,
         billingTouched,
         markBillingTouched

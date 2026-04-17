@@ -99,7 +99,7 @@ export default function ReturnsPage() {
     if (type === "zwrot") {
       return <Badge className="bg-blue-100 text-blue-800">Zwrot</Badge>
     }
-    return <Badge className="bg-purple-100 text-purple-800">Reklamacja</Badge>
+    return <Badge className="bg-gray-100 text-purple-800">Reklamacja</Badge>
   }
 
   const getActionText = (action: "self" | "company") => {
@@ -113,7 +113,7 @@ export default function ReturnsPage() {
           <RotateCcw className="h-8 w-8" />
           <h1 className="text-3xl font-bold">Zwroty i reklamacje</h1>
         </div>
-        <Button onClick={() => setShowNewReturnDialog(true)} className="bg-hert hover:bg-hert/90 text-white">
+        <Button onClick={() => setShowNewReturnDialog(true)} className="bg-sobianek hover:bg-sobianek/90 text-white">
           <Plus className="mr-2 h-4 w-4" />
           Nowy zwrot
         </Button>
@@ -144,7 +144,7 @@ export default function ReturnsPage() {
             <RotateCcw className="h-16 w-16 text-muted-foreground mb-4" />
             <h2 className="text-xl font-semibold mb-2">Brak zwrotów</h2>
             <p className="text-muted-foreground text-center mb-4">Nie masz jeszcze żadnych zwrotów ani reklamacji</p>
-            <Button onClick={() => setShowNewReturnDialog(true)} className="bg-hert hover:bg-hert/90 text-white">
+            <Button onClick={() => setShowNewReturnDialog(true)} className="bg-sobianek hover:bg-sobianek/90 text-white">
               <Plus className="mr-2 h-4 w-4" />
               Zgłoś zwrot/reklamację
             </Button>
@@ -252,7 +252,7 @@ export default function ReturnsPage() {
                   Zamknij
                 </Button>
                 <Button
-                  className="flex-1 bg-hert hover:bg-hert/90 text-white"
+                  className="flex-1 bg-sobianek hover:bg-sobianek/90 text-white"
                   onClick={() => {
                     setShowNewReturnDialog(false)
                     router.push("/klient/panel/zamowienia")

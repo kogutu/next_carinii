@@ -53,7 +53,7 @@ const SLUGS_URL = "https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=2"
 async function getSeeMoreProducts(product: any) {
   try {
     const url =
-      "https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/carinii_prs/documents/search?q=*&page=1&per_page=10&filter_by=categories:[`" +
+      "https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/sobianek_prs/documents/search?q=*&page=1&per_page=10&filter_by=categories:[`" +
       encodeURI(product.cat_main[0]) +
       "`]"
 

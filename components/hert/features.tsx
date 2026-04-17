@@ -36,7 +36,7 @@ export default function Features() {
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 py-6 ">
       {features.map((feature, idx) => (
-        <div key={idx} className="bg-hertwhite  items-center gap-4 pr-4 px-1 py-4 rounded-lg shadow-sm  hover:shadow-lg transition flex ">
+        <div key={idx} className="bg-sobianekwhite  items-center gap-4 pr-4 px-1 py-4 rounded-lg shadow-sm  hover:shadow-lg transition flex ">
 
           <Image
             src={feature.icon || "/placeholder.svg"}

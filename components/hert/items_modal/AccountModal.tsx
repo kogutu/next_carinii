@@ -36,7 +36,7 @@ export function AccountModal() {
     setMounted(true)
   }, [])
 
-  if (!mounted) return <button className="flex items-center justify-center hover:bg-hertwhite p-2 rounded-full transition">
+  if (!mounted) return <button className="flex items-center justify-center hover:bg-sobianekwhite p-2 rounded-full transition">
     <Image src="/icons/account.svg" alt="Moje konto" width={24} height={24} />
   </button>;
 
@@ -311,7 +311,7 @@ export function AccountModal() {
 
         <Button
           type="submit"
-          className="w-full bg-hert hover:bg-hert/90 h-11 font-semibold py-6"
+          className="w-full bg-sobianek hover:bg-sobianek/90 h-11 font-semibold py-6"
           disabled={isLoading}
         >
           {isLoading ? 'Logowanie...' : 'Zaloguj się'}
@@ -327,7 +327,7 @@ export function AccountModal() {
         <Button
           type="button"
           variant="outline"
-          className="w-full h-11 font-semibold border-hert text-hert hover:bg-hert/5"
+          className="w-full h-11 font-semibold border-hert text-hert hover:bg-sobianek/5"
           onClick={() => {
             setView('register');
             setLoginError('');
@@ -343,7 +343,7 @@ export function AccountModal() {
     <div className="space-y-4">
       <div className="space-y-4 mb-6">
         <h3 className="text-2xl font-semibold">Rejestracja</h3>
-        <div className="bg-hertwhite p-4 rounded-lg border border-hert/10">
+        <div className="bg-sobianekwhite p-4 rounded-lg border border-hert/10">
           <p className="text-sm text-gray-700 leading-relaxed">
             <span className="font-semibold text-hert">Posiadanie konta ma wiele zalet.</span> Szybszy proces składania zamówienia, możliwość zapisywania swoich adresów i śledzenie stanu zamówień to tylko niektóre z nich.
           </p>
@@ -457,7 +457,7 @@ export function AccountModal() {
 
         <Button
           type="submit"
-          className="w-full bg-hert hover:bg-hert/90 h-11 font-semibold"
+          className="w-full bg-sobianek hover:bg-sobianek/90 h-11 font-semibold"
           disabled={isLoading || registerSuccess}
         >
           {isLoading ? 'Rejestracja...' : 'Zarejestruj się'}
@@ -469,7 +469,7 @@ export function AccountModal() {
         <Button
           type="button"
           variant="outline"
-          className="w-full h-11 font-semibold border-hert text-hert hover:bg-hert/5"
+          className="w-full h-11 font-semibold border-hert text-hert hover:bg-sobianek/5"
           onClick={() => {
             setView('login');
             setRegisterMessage('');
@@ -488,8 +488,8 @@ export function AccountModal() {
     return (
       <Drawer open={open} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>
-          <button key="account" className="flex items-center justify-center hover:bg-hertwhite p-2 rounded-full transition">
-            <Image src="/icons/account.svg" alt="Moje konto" width={24} height={24} />
+          <button key="account" className="flex items-center justify-center hover:bg-sobianekwhite rounded-full min-w-[38px] transition">
+            <Image src="/icons/account.svg" alt="Moje konto" className='w-[30px] h-auto ' width={24} height={24} />
           </button>
         </DrawerTrigger>
         <DrawerContent>
@@ -508,6 +508,7 @@ export function AccountModal() {
     <div className="flex items-center">
 
       <div className="hidden sm:flex flex-col items-end leading-tight mr-2">
+
         {status === "authenticated" ? (
           <span>          <div onClick={() => handleLogout()} className="cursor-pointer text-[10px] text-gray-400 uppercase font-bold">Wyloguj się</div>
             <a href="/klient/panel/profil" className="text-xs font-bold text-hert">MOJE KONTO</a></span>
@@ -520,7 +521,7 @@ export function AccountModal() {
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">
+          <button className="flex items-center justify-center hover:bg-gray-50 p-2 rounded-full transition">
             <Image src="/icons/account.svg" alt="Moje konto" width={24} height={24} />
           </button>
         </DialogTrigger>

@@ -429,7 +429,7 @@ export default function OrderSummary({
                             className="w-5 h-5 accent-[#441c49] mt-0.5 flex-shrink-0"
                         />
                         <span className={`text-xs ${!agreeToTerms ? 'text-red-500' : 'text-green-500'}`}>
-                            <span className="font-semibold">*</span> Potwierdzam, że zapoznałem się i akceptuję regulamin sklepu internetowego i politykę prywatności.   Wyrażam zgodę na przesyłanie mi za pomocą środków komunikacji elektronicznej informacji handlowej przez lub na zlecenie Carinii, w rozumieniu ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną.
+                            <span className="font-semibold">*</span> Potwierdzam, że zapoznałem się i akceptuję regulamin sklepu internetowego i politykę prywatności.   Wyrażam zgodę na przesyłanie mi za pomocą środków komunikacji elektronicznej informacji handlowej przez lub na zlecenie  SOBIANEK Sp. z o.o., w rozumieniu ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną.
                         </span>
                     </label>
 
@@ -454,6 +454,7 @@ export default function OrderSummary({
                 )}
 
                 {/* Submit Button */}
+
                 <Button
                     onClick={handleSubmitOrder}
                     disabled={!agreeToTerms || isSubmitting || totalErr}
@@ -478,7 +479,7 @@ export default function OrderSummary({
                 {/* Admin Info */}
                 <div className="bg-white text-xs text-gray-400 space-y-2">
                     <p>
-                        <span className="font-semibold">Ochrona danych:</span> Administratorem danych osobowych zbieranych za pośrednictwem sklepu internetowego jest Z.P.O. CARINII,ul. Warszawska 78,08-450 Łaskarzew.
+                        <span className="font-semibold">Ochrona danych:</span> Administratorem danych osobowych zbieranych za pośrednictwem sklepu internetowego  SOBIANEK Sp. z o.o., ul. Polna 70, 21-200 Parczew, NIP 5391513337.
                     </p>
                     <p>
                         Dane są lub mogą być przetwarzane w celach oraz na podstawach wskazanych szczegółowo w polityce prywatności (np. realizacja umowy, marketing bezpośredni).

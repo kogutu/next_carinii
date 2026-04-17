@@ -134,8 +134,8 @@ export default function DiscountCode() {
                     onClick={handleCoupon}
                     disabled={isCouponLoading || !couponCode.trim()}
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center justify-center min-w-[80px] ${isCouponLoading || !couponCode.trim()
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-[#441c49] hover:bg-[#3d1841] text-white'
+                        ? 'bg-gray-200 cursor-not-allowed'
+                        : 'bg-sgreen hover:bg-sgreen/80 cursor-pointer text-white'
                         }`}
                 >
                     {isCouponLoading ? (

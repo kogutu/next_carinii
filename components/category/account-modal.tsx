@@ -56,14 +56,14 @@ function AccountModal() {  // <-- Changed from export function to just function
       <div className="grid grid-cols-1 gap-3">
         <Button
           onClick={() => setView('login')}
-          className="w-full bg-hert hover:bg-hert/90 h-12 text-base font-semibold"
+          className="w-full bg-sobianek hover:bg-sobianek/90 h-12 text-base font-semibold"
         >
           Zaloguj się
         </Button>
         <Button
           onClick={() => setView('register')}
           variant="outline"
-          className="w-full h-12 text-base font-semibold border-hert text-hert hover:bg-hertwhite"
+          className="w-full h-12 text-base font-semibold border-hert text-hert hover:bg-sobianekwhite"
         >
           Utwórz konto
         </Button>
@@ -131,7 +131,7 @@ function AccountModal() {  // <-- Changed from export function to just function
 
         <Button
           type="submit"
-          className="w-full bg-hert hover:bg-hert/90 h-11 font-semibold"
+          className="w-full bg-sobianek hover:bg-sobianek/90 h-11 font-semibold"
         >
           Zaloguj się
         </Button>
@@ -149,7 +149,7 @@ function AccountModal() {  // <-- Changed from export function to just function
       <Button
         onClick={() => setView('register')}
         variant="outline"
-        className="w-full h-11 font-semibold border-hert text-hert hover:bg-hertwhite"
+        className="w-full h-11 font-semibold border-hert text-hert hover:bg-sobianekwhite"
       >
         Zarejestruj się
       </Button>
@@ -168,7 +168,7 @@ function AccountModal() {  // <-- Changed from export function to just function
           </button>
           <h3 className="text-2xl font-semibold">Rejestracja</h3>
         </div>
-        <div className="bg-hertwhite p-4 rounded-lg border border-hert/10">
+        <div className="bg-sobianekwhite p-4 rounded-lg border border-hert/10">
           <p className="text-sm text-gray-700 leading-relaxed">
             <span className="font-semibold text-hert">Posiadanie konta ma wiele zalet.</span> Szybszy proces składania zamówienia, możliwość zapisywania swoich adresów i śledzenie stanu zamówień to tylko niektóre z nich.
           </p>
@@ -247,7 +247,7 @@ function AccountModal() {  // <-- Changed from export function to just function
 
         <Button
           type="submit"
-          className="w-full bg-hert hover:bg-hert/90 h-11 font-semibold"
+          className="w-full bg-sobianek hover:bg-sobianek/90 h-11 font-semibold"
         >
           Zarejestruj się
         </Button>
@@ -267,7 +267,7 @@ function AccountModal() {  // <-- Changed from export function to just function
     return (
       <Drawer open={open} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>
-          <button className="flex items-center justify-center hover:bg-hertwhite p-2 rounded-full transition">
+          <button className="flex items-center justify-center hover:bg-sobianekwhite p-2 rounded-full transition">
             <Image src="/icons/account.svg" alt="Moje konto" width={24} height={24} />
           </button>
         </DrawerTrigger>
@@ -286,7 +286,7 @@ function AccountModal() {  // <-- Changed from export function to just function
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">
+        <button className="flex items-center justify-center hover:bg-gray-50 p-2 rounded-full transition">
           <Image src="/icons/account.svg" alt="Moje konto" width={24} height={24} />
         </button>
       </DialogTrigger>

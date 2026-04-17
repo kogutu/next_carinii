@@ -2,6 +2,7 @@
 import {
   transformDataProduct,
   searchProductsNew,
+  getDataTypesense,
 } from "@/lib/typesense"
 import CmsPageTemplate from "@/components/pages/cms-page-template"
 import CategoryTemplate from "@/pages/category/category-page"
@@ -22,6 +23,13 @@ import {
   getCachedPageType,
 } from "./metadata"
 import { generatePageMetadata } from "./metadata"
+import logger from "@/lib/logger"
+import { JsonLd } from "@/components/json-ld"
+import {
+  buildProductJsonLd,
+  buildCategoryJsonLd,
+  buildCmsPageJsonLd,
+} from "@/lib/json-ld"
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -49,22 +57,41 @@ export async function generateMetadata({ params, searchParams }: PageProps) {
 
 const CATS_TREE_URL =
   "https://sklep.carinii.com.pl/directseo/nextjs/typesense/categories/cats_tree.json?t=2"
-const SLUGS_URL = "https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=2"
+const SLUGS_URL = "https://sobianek.pl/nextjs/slugs.php"
 
 async function getSeeMoreProducts(product: any) {
+
+
+
+
   try {
     const url =
-      "https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/carinii_prs/documents/search?q=*&page=1&per_page=10&filter_by=categories:[`" +
-      encodeURI(product.cat_main[0]) +
+      "https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/sobianek_prs/documents/search?q=*&page=1&per_page=10&filter_by=categories:[`" +
+      encodeURI(product.categories[0]) +
       "`]"
 
-    const res = await fetch(url, { next: { revalidate: 3600 } })
+    const data = await getDataTypesense({
+      searches: [
+        {
+          collection: 'sobianek_prs',
+          q: "*",
+          filter_by: `category_ids: [${encodeURI(product.categories[0])}]`,
+          max_facet_values: 0,
+          page: 1,
+          per_page: 10,
+          sort_by: "pid:desc",
+          exclude_fields: "content_text",
+        },
+      ],
+    });
+    // const res = await fetch(url, { next: { revalidate: 3600 } })
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch products")
-    }
+    // if (!res.ok) {
+    //   throw new Error("Failed to fetch products")
+    // }
 
-    const data = await res.json()
+    // const data = await res.json()
+    console.log(data);
 
     if (data.hits && Array.isArray(data.hits)) {
       return data.hits.map((hit: any) => hit.document || hit)
@@ -119,7 +146,10 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
     // ── Category ───────────────────────────────────────────────────
     case "category": {
       // Użyj cache'owanej funkcji do pobrania kategorii
+      logger.warn('category--');
       const category = await getCachedCategory(pageMetadata.identifier)
+      console.log(category);
+      console.log(pageMetadata);
 
       if (!category) {
         notFound()
@@ -134,20 +164,38 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
       const tsQuery: any = buildTypesenseSearchParams(decoded)
       tsQuery[0]['include_fields'] = [
+        'id',
+        'pid',
         'sku',
         'name',
         'slug',
-        'image_small',
-        'image_main',
-        'image_thumbnail',
+        'url',
+        'type',
+        'status',
+        'in_stock',
+        'stock_quantity',
+        'stock_status',
         'price',
-        'special_price',
-        'has_special_price',
-        'new',
-        'categories',
-        'size_qty',
-        'promo_code',
-        'save_percent'
+        'sale_price',
+        'final_price',
+        'on_sale',
+        'save_percent',
+        'category_ids',
+        'category_names',
+        'image_main',
+        'image_large',
+        'image_medium',
+        'image_thumbnail',
+        'images',
+        'featured',
+        'total_sales',
+        'average_rating',
+        'review_count',
+        'variation_attributes',
+        'created_at',
+        'updated_at',
+        'menu_order'
+
       ].join(',')
       console.log(tsQuery);
 
@@ -155,6 +203,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         searchProductsNew(tsQuery),
         fetch(CATS_TREE_URL, { cache: "force-cache" }).then(r => r.json()),
       ])
+
       const products = transformDataProduct(productsResponse)
       const facets = productsResponse.facet_counts
 
@@ -168,26 +217,30 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
       }
 
       return (
-        <CategoryTemplate
-          categoryId={category.cid}
-          parentCategoryId={mockCategories[0]?.id}
-          products={products}
-          facets={facets}
-          page={page}
-          totalPage={productsResponse.found}
-          category={category}
-          categories={mockCategories}
-          categoryTree={categoryPath}
-          categoryImage="https://www.hert.pl/media/iopt/Content/piekarnictwo.jpg"
-          categoryImageAlt={mockCategories[0]?.name}
-        />
+        <>
+          <JsonLd data={buildCategoryJsonLd(category, products, slug)} />
+          <CategoryTemplate
+            categoryId={category.cid}
+            parentCategoryId={mockCategories[0]?.id}
+            products={products}
+            facets={facets}
+            page={page}
+            totalPage={productsResponse.found}
+            itemPerPage={24}
+            category={category}
+            categories={mockCategories}
+            categoryTree={categoryPath}
+            categoryImage="https://www.hert.pl/media/iopt/Content/piekarnictwo.jpg"
+            categoryImageAlt={mockCategories[0]?.name}
+          />
+        </>
       )
     }
 
     // ── Product ────────────────────────────────────────────────────
     case "product": {
       // Użyj cache'owanej funkcji do pobrania produktu
-      const product = await getCachedProduct(slug[0])
+      const product = await getCachedProduct(slug.join("/"))
 
       if (!product) {
         notFound()
@@ -195,7 +248,12 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
       const seeMoreProducts = await getSeeMoreProducts(product)
 
-      return <ProductPage product={product} seemore={seeMoreProducts} />
+      return (
+        <>
+          <JsonLd data={buildProductJsonLd(product)} />
+          <ProductPage product={product} relatedProducts={seeMoreProducts} />
+        </>
+      )
     }
 
     // ── Shop ──────────────────────────────────────────────────────
@@ -244,11 +302,21 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
       // Użyj cache'owanej funkcji do pobrania CMS danych
       const cmsData = await getCachedCMSData()
+
       const slugKey = slug.join("/")
+      console.log("✅" + slugKey);
+      console.log(pageMetadata);
+
+      const content = cmsData[slugKey];
+      console.log('➖' + content.id);
+      console.log(pageMetadata);
+
 
       return (
-        <div className={slugKey}>
-          <CmsPageTemplate slug={slug} content={cmsData[slugKey]} />
+        <div className={pageMetadata.type + ` elementor-` + content.id + ' ' + slugKey}>
+          <JsonLd data={buildCmsPageJsonLd(content, slug)} />
+          <link rel="spreadsheet" href="https://sobianek.pl/wp-content/uploads/elementor/css/post-21843.css?ver=1721046372"></link>
+          <CmsPageTemplate slug={slug} content={content} />
         </div>
       )
     }
@@ -260,8 +328,9 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 export async function generateStaticParams() {
   try {
     const res = await fetch(SLUGS_URL, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 1 },
     })
+    console.log(res);
 
     if (!res.ok) {
       throw new Error(`API error: ${res.status}`)

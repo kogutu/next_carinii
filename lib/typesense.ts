@@ -5,8 +5,8 @@ import Typesense from "typesense"
 const TYPESENSE_API_URL =
     "https://sklep.carinii.com.pl/directseo/nextjs/api/index.php"
 
-const COLLECTION_PRODUCTS = "carinii_prs"
-const COLLECTION_CATEGORIES = "carinii_cats"
+const COLLECTION_PRODUCTS = "sobianek_prs"
+const COLLECTION_CATEGORIES = "sobianek_cats"
 
 /**
  * Revalidation times (in seconds).
@@ -18,7 +18,7 @@ const CACHE_TTL = {
     /** Pojedynczy produkt (PDP) — odświeżaj co 5 min */
     PRODUCT_DETAIL: 300,
     /** Kategorie — zmieniają się rzadko, co 1h */
-    CATEGORIES: 3600,
+    CATEGORIES: 10,
     /** Featured / bestsellery — co 5 min */
     FEATURED: 300,
 } as const
@@ -102,9 +102,34 @@ export interface TypesenseSearchResponse {
     facet_counts?: TypesenseFacet[]
 }
 
+export interface Review {
+    id: string;
+    content: string;
+    author_name: string;
+    rating: number;
+    date_created: number;
+    verified_purchase: boolean;
+    is_registered_user: boolean;
+    product_name: string;
+    product_sku: string;
+    status: string;
+}
+
+export interface ReviewsResponse {
+    reviews: Review[];
+    total: number;
+    page: number;
+    totalPages: number;
+    facets?: {
+        rating?: { value: string; count: number }[];
+    };
+}
+
+
 // ─── Transform ───────────────────────────────────────────────────────
 
 export function transformDataProduct(data: any): TypesenseProduct[] {
+    console.log(data);
     return data.hits.map((hit: any) => hit.document)
 }
 
@@ -144,6 +169,23 @@ export async function searchProductsNew(
     }
 }
 
+export async function getDataTypesense(
+    obj: any
+): Promise<TypesenseSearchResponse> {
+    try {
+        const response = await typesenseClient.multiSearch.perform(obj)
+
+        if (!response.results) {
+            throw new Error("Typesense multi-search: brak results")
+        }
+
+        console.log(response.results[0]);
+        return response.results[0];
+    } catch (error) {
+        console.error("[typesense] multi-search error:", error)
+        throw error
+    }
+}
 export async function getProduct(slug: string): Promise<any> {
     try {
         const params = new URLSearchParams({
@@ -153,20 +195,23 @@ export async function getProduct(slug: string): Promise<any> {
             per_page: "1",
         })
 
-        const response = await fetch(buildSearchUrl(params, COLLECTION_PRODUCTS), {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-TYPESENSE-API-KEY": process.env.TYPESENSE_API_KEY || "",
-            },
-            next: { revalidate: CACHE_TTL.PRODUCT_DETAIL },
+
+        const response = await getDataTypesense({
+            "searches": [
+                {
+                    "collection": COLLECTION_PRODUCTS,
+                    "q": "*",
+                    "filter_by": `slug:=${slug}`,
+                    "per_page": 1,
+                    "page": 1
+                }
+            ]
         })
 
-        if (!response.ok) {
-            throw new Error(`Typesense API error: ${response.status}`)
-        }
+        console.log("------getProduct----type");
+        console.log(`slug:=${slug}`);
 
-        const data = await response.json()
+        const data = response;
 
         return data.hits.length > 0 ? data.hits[0].document : null
     } catch (error) {
@@ -242,6 +287,8 @@ export async function searchCategories(
             params.append("filter_by", filterConditions.join(" && "))
         }
 
+        console.log(buildSearchUrl(params, COLLECTION_CATEGORIES));
+
         const response = await fetch(
             buildSearchUrl(params, COLLECTION_CATEGORIES),
             {
@@ -269,6 +316,7 @@ export async function getCategoryBySlug(
     slug: string
 ): Promise<TypesenseCategory | null> {
     try {
+        console.log(slug);
         const response = await searchCategories("*", 1, 1, { slug })
 
         if (response.found > 0 && response.hits.length > 0) {
@@ -279,5 +327,76 @@ export async function getCategoryBySlug(
     } catch (error) {
         console.error("[typesense] getCategoryBySlug error:", error)
         return null
+    }
+}
+
+
+
+export async function fetchProductReviews(
+    productSku: string,
+    productBasename: any,
+    page: number = 1,
+    perPage: number = 12
+): Promise<ReviewsResponse> {
+    try {
+        var fs = `(product_slug:=${productBasename} || product_sku:=${productSku}) && status:=approved`;
+        if (productSku.length < 2) {
+
+            fs = `(product_slug:=${productBasename}) && status:=approved`;
+        }
+
+        const searchResult = await typesenseClient.multiSearch.perform({
+            searches: [
+                {
+                    collection: "sobianek_revs",
+                    q: '*',
+
+                    max_facet_values: 0,
+                    page,
+                    per_page: perPage,
+                    filter_by: fs,
+                    sort_by: "created_at:desc",
+                },
+            ],
+        });
+        console.log(searchResult);
+        const result = searchResult.results[0];
+
+        if (!result || !result.hits) {
+            return { reviews: [], total: 0, page: 1, totalPages: 0 };
+        }
+
+        const reviews: Review[] = result.hits.map((hit: any) => ({
+            id: hit.document.id,
+            content: hit.document.content || "",
+            author_name: hit.document.author_name || "Anonim",
+            rating: hit.document.rating || 5,
+            date_created: hit.document.date_created || Date.now(),
+            verified_purchase: hit.document.verified_purchase || false,
+            is_registered_user: hit.document.is_registered_user || false,
+            product_name: hit.document.product_name || "",
+            product_sku: hit.document.product_sku || "",
+            status: hit.document.status || "",
+        }));
+
+        const ratingFacet = result.facet_counts?.find(
+            (f: any) => f.field_name === "rating"
+        );
+
+        return {
+            reviews,
+            total: result.found || 0,
+            page,
+            totalPages: Math.ceil((result.found || 0) / perPage),
+            facets: {
+                rating: ratingFacet?.counts?.map((c: any) => ({
+                    value: c.value,
+                    count: c.count,
+                })),
+            },
+        };
+    } catch (error) {
+        console.error("Error fetching reviews from Typesense:", error);
+        return { reviews: [], total: 0, page: 1, totalPages: 0 };
     }
 }

@@ -6,6 +6,7 @@ export interface ValidationErrors {
     shipping?: Record<string, string>
     shippingMethod?: string
     paymentMethod?: string
+    additionalFields: Record<string, string>
     terms?: string
 }
 
@@ -14,6 +15,7 @@ export type SectionStatusType = 'complete' | 'incomplete' | 'error'
 export interface SectionStatus {
     billing: SectionStatusType
     shipping: SectionStatusType
+    additionalFields: SectionStatusType
     shippingMethod: SectionStatusType
     paymentMethod: SectionStatusType
     terms: SectionStatusType
@@ -24,6 +26,7 @@ export interface CheckoutValidationStore {
     status: SectionStatus
     billingTouched: boolean
     shippingTouched: boolean
+    additionalFieldsTouched: boolean
     sameAddress: boolean
     isExpanded: boolean
     expandedSection: string | null
@@ -31,9 +34,11 @@ export interface CheckoutValidationStore {
     paymentMethod: string
     shippingTotal: number
 
+
     // Actions
     setErrors: (errors: ValidationErrors) => void
     setStatus: (status: any) => void
+    setAdditionalFieldsTouched: (touched: boolean) => void
     setBillingTouched: (touched: boolean) => void
     setShippingTouched: (touched: boolean) => void
     setSameAddress: (same: boolean) => void
@@ -64,6 +69,7 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
     errors: {
         billing: {},
         shipping: {},
+        additionalFields: {},
         shippingMethod: '',
         paymentMethod: '',
         terms: ''
@@ -71,12 +77,15 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
     status: {
         billing: 'incomplete',
         shipping: 'incomplete',
+        additionalFields: 'incomplete',
         shippingMethod: 'complete',
         paymentMethod: 'complete',
         terms: 'incomplete'
     },
     billingTouched: false,
     shippingTouched: false,
+    additionalFieldsTouched: false,
+
     shippingMethod: 'dhl_dhl24pl_courier',
     paymentMethod: getInitialPaymentMethod(),
     sameAddress: true,
@@ -96,6 +105,10 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
         console.log('setBillingTouched', touched)
         set({ billingTouched: touched })
     },
+    setAdditionalFieldsTouched: (touched) => {
+        console.log('setBillingTouched', touched)
+        set({ additionalFieldsTouched: touched })
+    },
     setShippingTouched: (touched) => {
         console.log('setShippingTouched', touched)
         set({ shippingTouched: touched })
@@ -106,9 +119,7 @@ export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) 
     setShippingMethod: (method) => set({ shippingMethod: method }),
     setShippingTotal: (total: number) => set({ shippingTotal: total }),
     setPaymentMethod: (method) => set({ paymentMethod: method }),
-    test: (t) => {
 
-    },
     updateSectionStatus: (section, status) =>
         set((state) => ({
             status: {

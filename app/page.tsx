@@ -7,208 +7,102 @@ import Brands from "@/components/hert/brands"
 import SEOText from "@/components/hert/home-seo"
 import { cp } from "fs"
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products"
+import SobianekLanding from "./home"
+import { HeroSplit } from "@/components/sobianek/home/hero-split"
+import { TrustBadges } from "@/components/sobianek/home/trust-badges"
+import { AboutStats } from "@/components/sobianek/home/about-stats"
+import ProductCarousel from "@/components/product/ProductsCarusel"
+import { MagazineSection } from "@/components/sobianek/home/magazine-section"
+import { BlogSections } from "@/components/sobianek/home/blog-sections"
+import { Testimonials } from "@/components/sobianek/home/testimonials"
+import { SeoContent } from "@/components/sobianek/home/seo-content"
+import { ContactForm } from "@/components/sobianek/home/contact-form"
 
-
-// Funkcja do pobierania najnowszych produktów
-async function getNewestProducts() {
+async function fetchProducts(endpoint: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/new_products`, {
-      next: { revalidate: 3600 }
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/home/${endpoint}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/${endpoint}`, {
+      next: { revalidate: 1 }
     });
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch products');
-    }
-
+    if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
     const data = await res.json();
+    const result = data.hits?.map((hit: any) => hit.document || hit) ?? [];
 
-    if (data.hits && Array.isArray(data.hits)) {
-      return data.hits.map((hit: any) => {
-        const product = hit.document || hit;
-
-        return product;
-      });
-    }
-
-    return [];
+    return result;
   } catch (error) {
-    console.error('Error fetching newest products:', error);
+    console.error(`Error fetching ${endpoint}:`, error);
     return [];
   }
 }
 
+const [newestProducts, bestProducts, popularProducts, blog, blog_agro, reviewss] = await Promise.all([
+  fetchProducts('new_products'),
+  fetchProducts('best'),
+  fetchProducts('popular_products'),
+  fetchProducts('blog'),
+  fetchProducts('blog_agro'),
+  fetchProducts('reviewss'),
+]);
+
 export default async function HomePage() {
-  const newestProducts = await getNewestProducts();
+
+
+
 
   return (
-    <>
+    <main className="flex-1">
+      <HeroSplit />
 
-      {/* Widget nowosci/nowosci - do zastąpienia odpowiednim komponentem */}
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=86&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/wo_m.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=88output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/wo_d.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/nowosci.html"
-        ></a>
-      </div>
-      {/* <ProductsCarousel title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} /> */}
+      <TrustBadges />
       <ProductsCarouselProducts title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} />
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=84&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/2-25m.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=89&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/2-25d.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/wyprzedaz.html"
-        ></a>
-      </div>
+      <AboutStats />
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/3.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
+      {/* Bestsellers Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-1 h-8 bg-primary" />
+            <h2 className="text-3xl font-bold text-foreground">Bestsellery</h2>
+          </div>
+          <p className="text-muted-foreground mb-8 max-w-3xl leading-relaxed">
+            Poznaj produkty najczęściej wybierane przez naszych klientów. Nasze certyfikowane i nagrodzone produkty w
+            najlepszych cenach. Nasze certyfikowane produkty dostępne są w szerokiej dostępności czynili to z dolorem
+            distribai. Produkty które trafiają, środki ochrony roślin, stabilizator azotu i darmowa dostawa. Produkty
+            tej marki, środki ochrony roślin, stabilizator azotu i darmowa dostawa i dalszego dostarcznia partmo w
+            dostępne opady i rośliny poplożnikew.
+          </p>
+          {/* <ProductCarousel category="BestProducts" /> */}
+          <ProductsCarouselProducts title="Bestsellers" products={bestProducts.length > 0 ? bestProducts : []} />
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/3.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/by-magda-pieczonka.html"
-        ></a>
-      </div>
+        </div>
+      </section>
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/4.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
+      {/* New Products Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-1 h-8 bg-primary" />
+            <h2 className="text-3xl font-bold text-foreground">Klienci uwielbiają</h2>
+          </div>
+          <p className="text-muted-foreground mb-8 max-w-3xl leading-relaxed">
+            Klienci uwielbiają nas, ponieważ regularnie nas oceniają i zostawiają szczere opinie. Dzięki ich pozytywnym recenzjom wiemy, że to, co robimy, naprawdę ma znaczenie i trafia w ich potrzeby. To właśnie te oceny i komentarze są dla nas najlepszym dowodem, że jesteśmy na właściwej drodze.
+          </p>
+          {/* <ProductCarousel category="new" /> */}
+          <ProductsCarouselProducts title="Najlepiej oceniane" products={popularProducts.length > 0 ? popularProducts : []} />
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/4.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/sneakersy.html"
-        ></a>
-      </div>
+        </div>
+      </section>
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/5.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
+      {/* <MagazineSection /> */}
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/5.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/sandaly.html"
-        ></a>
-      </div>
+      <BlogSections blog={blog} agro={blog_agro} />
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/6.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
+      <Testimonials reviews={reviewss} />
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/6.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/baleriny.html"
-        ></a>
-      </div>
+      <SeoContent />
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/7.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/7.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/kowbojki.html"
-        ></a>
-      </div>
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/8.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/8.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/mokasyny.html"
-        ></a>
-      </div>
-
-
-
-
-    </>
+      <ContactForm />
+    </main>
   )
 }

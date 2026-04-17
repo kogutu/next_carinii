@@ -203,7 +203,7 @@ export default function CmsPageTemplate({ slug, content }: CmsPageTemplateProps)
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 uael-team-member wpdata">
             <Card>
                 <CardHeader>
                     <CardTitle className="text-3xl font-bold">{content?.h1 || defaultTitle}</CardTitle>
@@ -218,7 +218,7 @@ export default function CmsPageTemplate({ slug, content }: CmsPageTemplateProps)
                                 }}
                             />
                         ) : (
-                            <p className="text-muted-foreground">Strona CMS: {slugString}</p>
+                            <p className="text-muted-foreground">Strona CMS:              {JSON.stringify(content)}{slugString}</p>
                         )}
                     </div>
                 </CardContent>

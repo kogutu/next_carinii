@@ -151,7 +151,7 @@ export default function ProductsCarouselTypesense({ title, url, viewAllUrl = '#'
                     className="w-full h-full object-contain p-2 sm:p-3 md:p-4"
                   />
                   {product.tag && (
-                    <span className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-hert text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded">
+                    <span className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-sobianek text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded">
                       {product.tag}
                     </span>
                   )}
@@ -212,7 +212,7 @@ export default function ProductsCarouselTypesense({ title, url, viewAllUrl = '#'
           <div
             key={i}
             className={`h-1 rounded-full transition-all duration-300 ${i === Math.floor(current / Math.max(1, Math.floor(visibleItems)))
-              ? 'w-5 sm:w-6 bg-hert'
+              ? 'w-5 sm:w-6 bg-sobianek'
               : 'w-1.5 sm:w-2 bg-gray-300'
               }`}
           />

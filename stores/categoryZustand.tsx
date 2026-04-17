@@ -1,7 +1,7 @@
 import { create } from "zustand"
 import { searchProductsNew, transformDataProduct, type TypesenseProduct } from "@/lib/typesense"
 import { ProductsCollection } from "./category-types"
-import _ from "lodash"
+import _, { sortBy } from "lodash"
 
 // Definicje typów
 type FilterFields = Record<string, string[]>
@@ -323,7 +323,8 @@ export function buildTypesenseSearchParams(state: {
     if (!_.isEmpty(state.filters)) {
         for (const [key, values] of Object.entries(state.filters)) {
             if (Array.isArray(values) && values.length > 0) {
-                const k = key === "cids" ? "cids_all" : key
+                if (key == "cids" || key == "category_ids") continue;
+                const k = key === "cids" ? "category_ids" : key
                 filterParts.push(`${k}:=[${values.map((v) => `\`${v}\``).join(",")}]`)
             }
         }
@@ -338,7 +339,7 @@ export function buildTypesenseSearchParams(state: {
         }
     }
 
-    const categoryFilter = `cids_all:=[${state.catId}]`
+    const categoryFilter = `category_ids:=[${state.catId}]`
     const productFilterBy = filterParts.length > 0
         ? `${categoryFilter} && ${filterParts.join(" && ")}`
         : categoryFilter
@@ -346,18 +347,18 @@ export function buildTypesenseSearchParams(state: {
     return [
         // produkty z filtrami + kategoria
         {
-            collection: "carinii_prs",
+            collection: "sobianek_prs",
             q: "*",
             filter_by: productFilterBy,
             facet_by: "*",
             max_facet_values: 1000,
-            sort_by: "sort_cat_" + state.catId + ":asc",
             page: state.page ?? 1,
+            sort_by: "qty:desc",
             per_page: state.itemsPerPage ?? startItemPerPage,
         },
         // fasety tylko z kategorią (do panelu filtrów)
         {
-            collection: "carinii_prs",
+            collection: "sobianek_prs",
             q: "*",
             filter_by: categoryFilter,
             facet_by: "*",

@@ -14,11 +14,12 @@ import { useCheckoutValidation, BillingFormData, CheckoutData, ShippingFormData 
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
 import { InfoIcon } from 'lucide-react'
 import Link from 'next/link'
+import AdditionalFields from './AdditionalFields'
 
 
 
 export default function CheckoutLayout() {
-    const { validateBillingForm, validateShippingForm } = useCheckoutValidation()
+    const { validateBillingForm, validateShippingForm, validateAdditionalFieldsForm } = useCheckoutValidation()
     const { data: sessionUser } = useSession()
 
     // Zustand store
@@ -27,10 +28,12 @@ export default function CheckoutLayout() {
         setStatus: setZustandStatus,
         setBillingTouched: setZustandBillingTouched,
         setShippingTouched: setZustandShippingTouched,
+        setAdditionalFieldsTouched: setZustandAdditionalFieldsTouched,
         updateSectionStatus: setZustandSectionStatus,
         setShippingMethod: setZustandShippingMethod,
         setPaymentMethod: setZustandPaymentMethod,
         shippingTouched,
+        additionalFieldsTouched,
         billingTouched,
         shippingMethod,
         shippingTotal,
@@ -249,6 +252,51 @@ export default function CheckoutLayout() {
 
     }, [validateShippingForm, setZustandSectionStatus, setZustandErrors])
 
+
+    const handleAdditonalFieldsChange = useCallback((data: any, isValid: boolean) => {
+
+        console.log(data);
+
+        setCheckoutData(prev => ({
+            ...prev,
+            additionalFields: data
+        }))
+
+        console.log(data, isValid);
+        console.log("----");
+
+        const Errors = validateAdditionalFieldsForm(data);
+        console.log(Errors);
+
+
+        setZustandErrors({
+            additionalFields: Errors
+        })
+
+
+        // console.log('shippingData', shippingData)
+
+        // // Oblicz błędy z nowych danych (shippingData) zamiast starego state
+        // const shippingErrors = validateShippingForm(shippingData)
+        // // Aktualizuj store z błędami
+        // setZustandErrors({
+        //     billing: {},
+        //     shipping: shippingErrors,
+        //     shippingMethod: '',
+        //     paymentMethod: '',
+        //     terms: ''
+        // })
+
+
+        setZustandAdditionalFieldsTouched(true)
+        setZustandSectionStatus('additionalFields', isValid ? 'complete' as const : 'incomplete' as const);
+
+        // Update Zustand store
+        // setZustandStatus(newStatus)
+
+    }, [validateShippingForm, setZustandSectionStatus, setZustandErrors])
+
+
     const handleShippingMethodFieldsCheck = useCallback((data: any) => {
 
         setCheckoutData(prev => ({
@@ -312,7 +360,7 @@ export default function CheckoutLayout() {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-white via-[#f8f4f1] to-white relative z-0">
+        <div className="min-h-screen bg-gradient-to-br from-white via-[#f8f3e7] to-white relative z-0">
             {/* Floating Validation Panel */}
 
             <div className="max-w-7xl mx-auto py-12 px-4">
@@ -360,7 +408,12 @@ export default function CheckoutLayout() {
                                 />
                             </div>
                         )}
-
+                        <div className="bg-white rounded-lg border  py-8 px-8 shadow-sm">
+                            <AdditionalFields
+                                onValidationChange={handleAdditonalFieldsChange}
+                                isTouched={additionalFieldsTouched}
+                            />
+                        </div>
                         <div className="bg-white rounded-lg border  py-8 px-8 shadow-sm">
                             <ShippingMethod
                                 onMethodChange={handleShippingMethodChange}

@@ -3,7 +3,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import methods from '../data/shipping_payment_methods.json'
-import { set } from 'lodash'
+import _, { set } from 'lodash'
 
 
 export type CartItem = {
@@ -18,6 +18,7 @@ export type CartItem = {
     price: number
     final_price: number
     weight?: string
+    product: any
     paleta?: boolean
     sku: string
 }
@@ -29,9 +30,12 @@ type CartStore = {
     paymentMethods: any[]
     grandTotal: number
     shippingTotal: number
+    fieldsAdditional: any;
     coupon: string,
     couponData: any,
     couponState: boolean,
+    getGrandTotalCart: () => void
+    checkProductsCart: () => void
     addItemToCart: (item: CartItem) => void
     removeItemCart: (id: string) => void
     setShowMiniCart: (state: boolean) => void
@@ -47,6 +51,7 @@ type CartStore = {
 
 }
 
+
 export const useCartStore = create<CartStore>()(
     persist(
         (set, get) => ({
@@ -54,6 +59,7 @@ export const useCartStore = create<CartStore>()(
             isHydrated: false,
             showMiniCart: false,
             grandTotal: 0,
+            fieldsAdditional: [],
             couponData: {},
             coupon: "",
             couponState: false,
@@ -124,10 +130,23 @@ export const useCartStore = create<CartStore>()(
                 } else {
                     set({ items: [...get().items, item] })
                 }
-            },
 
+                get().checkProductsCart();
+            },
+            getGrandTotalCart: () => {
+                var g = get().items.reduce((total: number, item: any) => {
+                    return total + parseFloat(item.price);
+                }, 0);
+
+                return g.toLocaleString('pl-PL', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }) + " zł";
+            },
             removeItemCart: (pr: any) => {
                 set({ items: get().items.filter(i => i.pid !== pr.pid) })
+                get().checkProductsCart();
+
             },
             updateQty: (pr: any, qty: number) => {
                 set({
@@ -135,12 +154,29 @@ export const useCartStore = create<CartStore>()(
                         i.pid === pr.pid ? { ...i, qty } : i
                     )
                 })
+                get().checkProductsCart();
+
             },
             updatePaymentMethod: (shipping_method: string) => {
 
                 set({ paymentMethods: get().paymentMethods.map(i => i.code === shipping_method ? { ...i, selected: true } : { ...i, selected: false }) })
+                get().checkProductsCart();
+
             },
-            clearCart: () => set({ items: [] })
+            clearCart: () => set({ items: [] }),
+            checkProductsCart: () => {
+                var fieldsReq = new Set();
+                get().items.map(item => {
+                    if (item.product.categories.includes(80)) fieldsReq.add('agro');
+                    if (!_.isUndefined(item.variant.attrs) && item.variant.attrs['kupujący']) {
+                        if (!item.variant.attrs['kupujący'].includes("Inny podmiot, nie zwolniony z akcyz"))
+                            if (item.product.name_normalized.includes("groszek")) fieldsReq.add('groszek');
+                    }
+                    if (item.product.name_normalized.includes("pellet")) fieldsReq.add('pellet');
+                });
+                console.log(Array.from(fieldsReq));
+                set({ fieldsAdditional: Array.from(fieldsReq) });
+            }
         }),
         {
             //change this name to refresh cart!!

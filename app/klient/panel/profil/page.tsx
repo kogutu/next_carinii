@@ -630,7 +630,7 @@ export default function ProfilePage() {
                 <Button
                   onClick={handleSaveProfile}
                   disabled={isLoading}
-                  className="flex-1 bg-hert hover:bg-hert/90"
+                  className="flex-1 bg-sobianek hover:bg-sobianek/90"
                 >
                   {isLoading ? (
                     <>
@@ -960,7 +960,7 @@ export default function ProfilePage() {
                 <Button
                   onClick={handleSaveBillingAddress}
                   disabled={isLoading}
-                  className="flex-1 bg-hert hover:bg-hert/90"
+                  className="flex-1 bg-sobianek hover:bg-sobianek/90"
                 >
                   {isLoading ? (
                     <>
@@ -1167,7 +1167,7 @@ export default function ProfilePage() {
                 <Button
                   onClick={handleSaveShippingAddress}
                   disabled={isLoading}
-                  className="flex-1 bg-hert hover:bg-hert/90"
+                  className="flex-1 bg-sobianek hover:bg-sobianek/90"
                 >
                   {isLoading ? (
                     <>
