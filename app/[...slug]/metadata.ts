@@ -18,14 +18,15 @@ interface PageProps {
     }
 }
 
-const CMS_URL = "http://sklep.carinii.com.pl/directseo/nextjs//cms.php"
-
+const CMS_URL = `${process.env.BACKEND_URL}/nextjs/cms.php`
+console.log(CMS_URL);
 // ─── Cache'owane funkcje ───────────────────────────────────────────
 
 /**
  * Cache'owane pobieranie kategorii - to samo wywołanie zwróci ten sam wynik
  */
 export const getCachedCategory = cache(async (identifier: string) => {
+    console.log("---++++" + identifier);
     return await getCategoryBySlug(identifier)
 })
 
@@ -61,20 +62,20 @@ async function generateCategoryMetadata(identifier: string, slug: string[]): Pro
 
     if (!category) {
         return {
-            title: 'Kategoria nie istnieje | Carinii',
+            title: 'Kategoria nie istnieje | Sobianek',
             robots: {
                 index: false,
             },
         }
     }
     // console.log(category);
-    const categoryTitle = category?.meta_title ?? `${category.name} | Carinii - Obuwie Damskie i Torebki`
-    const categoryDescription = category?.meta_description ?? `Odkryj kolekcję ${category.name} w sklepie Carinii. Znajdziesz tu eleganckie buty damskie, torebki i dodatki najwyższej jakości. Sprawdź naszą ofertę!`
+    const categoryTitle = category?.meta_title ?? `${category.name} | Sobianek - Obuwie Damskie i Torebki`
+    const categoryDescription = category?.meta_description ?? `Odkryj kolekcję ${category.name} w sklepie Sobianek. Znajdziesz tu eleganckie buty damskie, torebki i dodatki najwyższej jakości. Sprawdź naszą ofertę!`
 
     return {
         title: categoryTitle,
         description: categoryDescription,
-        keywords: `${category.name}, buty damskie ${category.name.toLowerCase()}, torebki ${category.name.toLowerCase()}, Carinii ${category.name}`,
+        keywords: `${category.name}, buty damskie ${category.name.toLowerCase()}, torebki ${category.name.toLowerCase()}, Sobianek ${category.name}`,
         openGraph: {
             title: categoryTitle,
             description: categoryDescription,
@@ -120,21 +121,21 @@ async function generateProductMetadata(slug: string): Promise<Metadata> {
 
     if (!product) {
         return {
-            title: 'Produkt nie istnieje | Carinii',
+            title: 'Produkt nie istnieje | Sobianek',
             robots: {
                 index: false,
             },
         }
     }
 
-    const productTitle = `${product.name} | Carinii`
+    const productTitle = `${product.name} | Sobianek`
     const productDescription = product.description ||
-        `Sprawdź ${product.name} w sklepie Carinii. ${product.cat_main?.join(', ')} - wysokiej jakości obuwie damskie i dodatki. Zamów online!`
+        `Sprawdź ${product.name} w sklepie Sobianek. ${product.cat_main?.join(', ')} - wysokiej jakości obuwie damskie i dodatki. Zamów online!`
 
     return {
         title: product.name,
         description: productDescription,
-        keywords: `${product.name}, ${product.cat_main?.join(', ')}, buty damskie, torebki, Carinii`,
+        keywords: `${product.name}, ${product.cat_main?.join(', ')}, buty damskie, torebki, Sobianek`,
         openGraph: {
             title: productTitle,
             description: productDescription,
@@ -189,23 +190,23 @@ function generateShopMetadata(slug: string[]): Metadata {
 
     const shopMetadata = {
         koszyk: {
-            title: 'Koszyk zakupów | Carinii',
-            description: 'Zobacz zawartość swojego koszyka w sklepie Carinii. Wybierz buty damskie, torebki i dodatki. Szybka wysyłka i łatwy zwrot.',
+            title: 'Koszyk zakupów | Sobianek',
+            description: 'Zobacz zawartość swojego koszyka w sklepie Sobianek. ',
             robots: { index: false, follow: true } as const,
         },
         finalizacja: {
-            title: 'Finalizacja zamówienia | Carinii',
-            description: 'Dokończ zakupy w sklepie Carinii. Wprowadź dane dostawy i wybierz metodę płatności.',
+            title: 'Finalizacja zamówienia | Sobianek',
+            description: 'Dokończ zakupy w sklepie Sobianek. Wprowadź dane dostawy i wybierz metodę płatności.',
             robots: { index: false, follow: true } as const,
         },
         zamowienie: {
-            title: 'Potwierdzenie zamówienia | Carinii',
-            description: 'Dziękujemy za zakupy w Carinii! Sprawdź szczegóły swojego zamówienia.',
+            title: 'Potwierdzenie zamówienia | Sobianek',
+            description: 'Dziękujemy za zakupy w Sobianek! Sprawdź szczegóły swojego zamówienia.',
             robots: { index: false, follow: true } as const,
         },
         sklep: {
-            title: 'Sklep | Carinii - Obuwie Damskie i Torebki',
-            description: 'Przeglądaj pełną ofertę sklepu Carinii. Znajdziesz tu eleganckie buty damskie, torebki i dodatki na każdą okazję.',
+            title: 'Sklep | Sobianek',
+            description: 'Przeglądaj pełną ofertę sklepu Sobianek. ',
             robots: { index: true, follow: true } as const,
         },
     }
@@ -231,8 +232,8 @@ async function generateCmsMetadata(slug: string[]): Promise<Metadata> {
     // Strona kontaktowa
     if (slug.includes('contact')) {
         return {
-            title: 'Kontakt | Carinii',
-            description: 'Skontaktuj się z nami! Carinii - buty damskie i torebki. Zapraszamy do kontaktu telefonicznego, mailowego lub poprzez formularz.',
+            title: 'Kontakt | Sobianek',
+            description: 'Skontaktuj się z nami! Sobianek - buty damskie i torebki. Zapraszamy do kontaktu telefonicznego, mailowego lub poprzez formularz.',
             robots: { index: true, follow: true },
             alternates: {
                 canonical: '/contact',
@@ -240,17 +241,6 @@ async function generateCmsMetadata(slug: string[]): Promise<Metadata> {
         }
     }
 
-    // Strona sprzedaj maszynę
-    if (slug.includes('sprzedaj-maszyne')) {
-        return {
-            title: 'Sprzedaj maszynę | Carinii',
-            description: 'Sprzedaj swoją maszynę w Carinii. Szybka wycena i profesjonalna obsługa. Sprawdź jak to działa!',
-            robots: { index: true, follow: true },
-            alternates: {
-                canonical: '/sprzedaj-maszyne',
-            },
-        }
-    }
 
     // Dla pozostałych stron CMS - użyj cache'owanych danych
     try {
@@ -259,8 +249,8 @@ async function generateCmsMetadata(slug: string[]): Promise<Metadata> {
 
         if (pageContent) {
             return {
-                title: `${pageContent.title || slugKey} | Carinii`,
-                description: pageContent.meta_description || pageContent.excerpt || `Zapoznaj się z treścią na stronie ${slugKey} w serwisie Carinii.`,
+                title: `${pageContent.title || slugKey} | Sobianek`,
+                description: pageContent.meta_description || pageContent.excerpt || `Zapoznaj się z treścią na stronie ${slugKey} w serwisie Sobianek.`,
                 robots: {
                     index: pageContent.index !== false,
                     follow: true,
@@ -276,8 +266,8 @@ async function generateCmsMetadata(slug: string[]): Promise<Metadata> {
 
     // Domyślne metadane dla stron CMS
     return {
-        title: `${slug.join(' - ')} | Carinii`,
-        description: `Strona ${slug.join(' - ')} w serwisie Carinii. Znajdź informacje o butach damskich, torebkach i dodatkach.`,
+        title: `${slug.join(' - ')} | Sobianek`,
+        description: `Strona ${slug.join(' - ')} w serwisie Sobianek.`,
         robots: {
             index: true,
             follow: true,
@@ -299,7 +289,7 @@ export async function generatePageMetadata({ params }: PageProps): Promise<Metad
 
     if (!pageMetadata) {
         return {
-            title: 'Strona nie została znaleziona | Carinii',
+            title: 'Strona nie została znaleziona | Sobianek',
             robots: {
                 index: false,
                 follow: false,

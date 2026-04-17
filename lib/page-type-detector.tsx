@@ -19,9 +19,9 @@ interface SlugApiResponse {
 export async function detectPageType(slug: string[]): Promise<PageMetadata | null> {
     try {
         // Pobierz informacje o slug z API
-        const res = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=3", {
+        const res = await fetch("https://sobianek.pl/nextjs/slugs.php?t=1", {
             cache: 'force-cache',
-            next: { revalidate: 3600 }, // Cache na 1 godzinę
+            next: { revalidate: 1 }, // Cache na 1 godzinę
         })
 
         if (!res.ok) {
@@ -36,10 +36,13 @@ export async function detectPageType(slug: string[]): Promise<PageMetadata | nul
         let matchedPage: any = '';
 
         const sulr = slug.join("/");
+
         var fs = pages.forEach(e => {
 
             if (e.path == sulr) matchedPage = e;
         })
+
+
 
 
 

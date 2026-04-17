@@ -121,12 +121,12 @@ export function CartDrawerContent() {
               key={`${item.pid}-${item.variant ?? ''}-${index}`}
               className="border rounded-lg p-3"
             >
-              <div className="flex gap-3">
+              <div className="flex items-center gap-3">
                 {item.image && (
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-16 rounded"
+                    className="w-26 h-auto rounded"
                   />
                 )}
 
@@ -137,11 +137,17 @@ export function CartDrawerContent() {
                         {item.name.split("CARINII--")[0]}<br />
                         <span className="text-xs text-gray-500 font-normal"> {item.sku}</span>
                       </p>
-                      {item.variant.size && (
-                        <div className="text-xs text-gray-500">
-                          Rozmiar: <b> {item.variant.size}</b>
+                      {/* ATRYBUTY */}
+                      {item.variant.attrs && (
+                        <div className="text-xs text-gray-500 mt-1 space-y-0.5">
+                          {Object.entries(item.variant.attrs).map(([key, value]: any) => (
+                            <div key={key}>
+                              {key}: {value}
+                            </div>
+                          ))}
                         </div>
                       )}
+
                     </div>
 
                     <button
@@ -152,28 +158,17 @@ export function CartDrawerContent() {
                     </button>
                   </div>
 
-                  {/* ATRYBUTY */}
-                  {item.attrs && (
-                    <div className="text-xs text-gray-500 mt-1 space-y-0.5">
-                      {Object.entries(item.attrs).map(([key, value]: any) => (
-                        <div key={key}>
-                          {key}: {value}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
                   {/* CENA JEDNOSTKOWA + ILOŚĆ + SUMA */}
                   <div className="mt-3 space-y-2">
                     {item.price != item.final_price && (
                       <div className="flex justify-between text-xs text-gray-500">
                         <span>&nbsp;</span>
-                        <span>
+                        <s>
                           {item.price.toLocaleString('pl-PL', {
                             style: 'currency',
                             currency: 'PLN'
                           })}
-                        </span>
+                        </s>
                       </div>
                     )}
                     {/* Ilość + suma pozycji */}
@@ -234,7 +229,7 @@ export function CartDrawerContent() {
               window.location.href = '/checkout'
               setOpen(false)
             }}
-            className="w-full bg-hert hover:bg-hert/90 h-12 font-semibold"
+            className="w-full bg-sobianek hover:bg-sobianek/90 h-12 font-semibold"
           >
             Przejdź do Kasy
           </Button>

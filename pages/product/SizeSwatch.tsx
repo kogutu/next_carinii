@@ -23,7 +23,7 @@ const brandCSS = `
   .animate-scaleIn { animation: scaleIn .25s cubic-bezier(.22,1,.36,1) }
   .animate-tooltipIn { animation: tooltipIn .15s ease }
 
-  .bg-hertwhite { background-color: var(--hertwhite) }
+  .bg-sobianekwhite { background-color: var(--hertwhite) }
   .bg-hhert { background-color: var(--hhert) }
   .bg-hgold { background-color: var(--hgold) }
   .bg-hcar { background-color: var(--hcar) }
@@ -178,7 +178,7 @@ function Drawer({ open, onClose, size, onSubmit }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="twoj@email.pl"
-                className={`input-email w-full px-4 py-3.5 rounded-lg text-sm bg-hertwhite text-hert outline-none border-2 transition-all ${error && !email ? "border-hcar" : "border-gray-200"
+                className={`input-email w-full px-4 py-3.5 rounded-lg text-sm bg-sobianekwhite text-hert outline-none border-2 transition-all ${error && !email ? "border-hcar" : "border-gray-200"
                   }`}
               />
             </div>
@@ -253,7 +253,7 @@ function SizeGuide({ open, onClose }) {
           </thead>
           <tbody>
             {rows.map((r, i) => (
-              <tr key={r.eu} className={i % 2 === 0 ? "" : "bg-hertwhite"}>
+              <tr key={r.eu} className={i % 2 === 0 ? "" : "bg-sobianekwhite"}>
                 <td className="py-2.5 px-2 text-center font-medium text-hert">{r.eu}</td>
                 <td className="py-2.5 px-2 text-center text-hborder">{r.cm}</td>
                 <td className="py-2.5 px-2 text-center text-hborder">{r.uk}</td>

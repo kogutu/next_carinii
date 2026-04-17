@@ -26,7 +26,7 @@ export default function CTASections() {
           </p>
 
           <a href="/showroom/"
-            className="inline-block bg-hert hover:bg-hhert transition px-6 py-2.5 rounded-md font-medium"
+            className="inline-block bg-sobianek hover:bg-hhert transition px-6 py-2.5 rounded-md font-medium"
           >
             Zobacz
           </a>
@@ -54,7 +54,7 @@ export default function CTASections() {
           </p>
 
           <a href="/zaprojektuj-swoj-sklep"
-            className="inline-block bg-hert hover:bg-hhert transition px-6 py-2.5 rounded-md font-medium"
+            className="inline-block bg-sobianek hover:bg-hhert transition px-6 py-2.5 rounded-md font-medium"
           >
             Skontaktuj się
           </a>

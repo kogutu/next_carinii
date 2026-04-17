@@ -1,5 +1,5 @@
 // components/TabList.tsx
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 
 
@@ -19,6 +19,11 @@ const TabList: React.FC<TabListProps> = ({
     if (!tabs || tabs.length === 0) {
         return null;
     }
+    const handleTabClick = useCallback((index: number) => {
+        console.log('Changing tab to:', index);
+        setActiveTab(index);
+    }, []);
+
     console.log(tabs)
     const SpecsTable = (specs: any) => {
         console.log(specs)
@@ -45,11 +50,12 @@ const TabList: React.FC<TabListProps> = ({
         <div className={`mt-2  ${className}`}>
             {/* Tab Navigation */}
             <div className="border-b border-gray-200">
+
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                     {tabs.map((tab: any, index: any) => (
                         <button
                             key={index}
-                            onClick={() => setActiveTab(index)}
+                            onClick={() => handleTabClick(index)}
                             className={`
                 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base transition-colors
                 ${activeTab === index

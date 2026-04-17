@@ -328,7 +328,7 @@ export function buildTypesenseSearchParams(state: {
     if (!_.isEmpty(state.filters)) {
         for (const [key, values] of Object.entries(state.filters)) {
             if (Array.isArray(values) && values.length > 0) {
-                const k = key === "cids" ? "cids_all" : key
+                const k = key === "cids" ? "category_ids" : key
                 filterParts.push(`${k}:=[${values.map((v) => `\`${v}\``).join(",")}]`)
             }
         }
@@ -345,7 +345,7 @@ export function buildTypesenseSearchParams(state: {
 
     // FIX #7: dodaj filtr kategorii do pierwszego zapytania, żeby produkty
     // nie wyciekały z innych kategorii
-    const categoryFilter = `cids_all:=[${state.catId}]`
+    const categoryFilter = `category_ids:=[${state.catId}]`
     const productFilterBy = filterParts.length > 0
         ? `${categoryFilter} && ${filterParts.join(" && ")}`
         : categoryFilter
@@ -353,7 +353,7 @@ export function buildTypesenseSearchParams(state: {
     return [
         // produkty z filtrami + kategoria
         {
-            collection: "carinii_prs",
+            collection: "sobianek_prs",
             q: "*",
             filter_by: productFilterBy,
             facet_by: "*",
@@ -364,7 +364,7 @@ export function buildTypesenseSearchParams(state: {
         },
         // fasety tylko z kategorią (do panelu filtrów)
         {
-            collection: "carinii_prs",
+            collection: "sobianek_prs",
             q: "*",
             filter_by: categoryFilter,
             facet_by: "*",

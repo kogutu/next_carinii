@@ -44,7 +44,7 @@ function CategoryList({
               <CollapsibleTrigger
                 className={cn(
                   'flex items-start text-left justify-between w-full px-3 py-2 rounded text-sm font-medium hover:bg-gray-100 transition-colors',
-                  (activeId === cat.id || categoryTree?.includes(cat.id)) && 'bg-hert/10 text-hert'
+                  (activeId === cat.id || categoryTree?.includes(cat.id)) && 'bg-sobianek/10 text-hert'
                 )}
               >
                 {cat.name}
@@ -60,7 +60,7 @@ function CategoryList({
               href={cat.url}
               className={cn(
                 'block px-3 py-2 rounded text-sm hover:bg-gray-100 transition-colors',
-                activeId === cat.id && 'bg-hert text-white'
+                activeId === cat.id && 'bg-sobianek text-white'
               )}
             >
               {cat.name}
