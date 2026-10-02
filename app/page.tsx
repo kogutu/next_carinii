@@ -1,11 +1,5 @@
-import HeroBanner from "@/components/hert/hero-banner"
-import Features from "@/components/hert/features"
-import CategoryCards from "@/components/hert/category-cards"
-import ProductsCarousel from "@/components/hert/products-carousel"
-import CTASections from "@/components/hert/cta-sections"
-import Brands from "@/components/hert/brands"
-import SEOText from "@/components/hert/home-seo"
-import { cp } from "fs"
+import Link from "next/link"
+import home from "@/data/home.json"
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products"
 
 
@@ -37,178 +31,154 @@ async function getNewestProducts() {
   }
 }
 
+function HomeBanner({ href, mob, desk, alt, eager = false }: {
+  href: string
+  mob: string
+  desk: string
+  alt: string
+  eager?: boolean
+}) {
+  return (
+    <div className="relative">
+      <img
+        className="block w-full md:hidden"
+        src={mob}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+      <img
+        className="hidden w-full md:block"
+        src={desk}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+      <Link
+        className="absolute inset-0 w-full h-full"
+        href={href}
+        aria-label={alt}
+      />
+    </div>
+  )
+}
+
+function HeroVideo() {
+  const hero = (home as any).hero
+  return (
+    <div className="relative">
+      {/* Desktop: statyczny obrazek */}
+      <Link href={hero.href} aria-label={hero.desktopAlt} className="hidden md:block">
+        <img
+          className="w-full"
+          src={hero.desktopImage}
+          alt={hero.desktopAlt}
+          loading="eager"
+          // @ts-expect-error fetchPriority nie ma jeszcze w typach React 19
+          fetchpriority="high"
+          decoding="async"
+        />
+      </Link>
+      {/* Mobile: wideo */}
+      <Link href={hero.href} aria-label={hero.desktopAlt} className="block md:hidden">
+        <video
+          className="w-full h-auto"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src={hero.mobileVideoWebm} type="video/webm" />
+          <source src={hero.mobileVideoMp4} type="video/mp4" />
+        </video>
+      </Link>
+    </div>
+  )
+}
+
+function MagdaVideo({ section }: { section: any }) {
+  return (
+    <div className="relative">
+      {/* Desktop */}
+      <Link href={section.href} aria-label="By Magda Pieczonka" className="hidden md:block">
+        <video
+          className="w-full h-auto"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src={section.deskWebm} type="video/webm" />
+          <source src={section.deskMp4} type="video/mp4" />
+        </video>
+      </Link>
+      {/* Mobile */}
+      <Link href={section.href} aria-label="By Magda Pieczonka" className="block md:hidden">
+        <video
+          className="w-full h-auto"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={section.mobPoster}
+        >
+          <source src={section.mobWebm} type="video/webm" />
+          <source src={section.mobMp4} type="video/mp4" />
+        </video>
+      </Link>
+    </div>
+  )
+}
+
 export default async function HomePage() {
   const newestProducts = await getNewestProducts();
 
   return (
     <>
+      <HeroVideo />
 
-      {/* Widget nowosci/nowosci - do zastąpienia odpowiednim komponentem */}
+      {(home as any).sections.map((section: any, i: number) => {
+        if (section.type === "banner") {
+          return (
+            <HomeBanner
+              key={i}
+              href={section.href}
+              mob={section.mob}
+              desk={section.desk}
+              alt={section.alt}
+            />
+          )
+        }
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=86&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/wo_m.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
+        if (section.type === "products") {
+          return (
+            <ProductsCarouselProducts
+              key={i}
+              title={section.title}
+              products={newestProducts.length > 0 ? newestProducts : []}
+            />
+          )
+        }
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=88output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/wo_d.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/nowosci.html"
-        ></a>
-      </div>
-      {/* <ProductsCarousel title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} /> */}
-      <ProductsCarouselProducts title="Najnowsze produkty" products={newestProducts.length > 0 ? newestProducts : []} />
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=84&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/2-25m.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
+        if (section.type === "magda-video") {
+          return <MagdaVideo key={i} section={section} />
+        }
 
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=89&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/2-25d.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/wyprzedaz.html"
-        ></a>
-      </div>
+        if (section.type === "seo") {
+          return (
+            <section
+              key={i}
+              className="max-w-7xl mx-auto px-4 py-10 text-sm leading-relaxed text-gray-600 font-light [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-gray-900 [&_h1]:mb-4 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:mt-8 [&_h2]:mb-3 [&_p]:mb-4 [&_a]:underline"
+              dangerouslySetInnerHTML={{ __html: (home as any).seoHtml }}
+            />
+          )
+        }
 
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/3.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/3.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/by-magda-pieczonka.html"
-        ></a>
-      </div>
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/4.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/4.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/sneakersy.html"
-        ></a>
-      </div>
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/5.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/5.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/sandaly.html"
-        ></a>
-      </div>
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/6.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/6.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/baleriny.html"
-        ></a>
-      </div>
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/7.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/7.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/kowbojki.html"
-        ></a>
-      </div>
-
-      <div className="relative">
-        <img
-          className="vmob hidden max-md:block"
-          src="https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob/8.webp"
-          style={{ width: '100%' }}
-          alt=""
-        />
-
-        <img
-          alt=""
-          className="vdes max-md:hidden"
-          src="https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk/8.webp"
-          style={{ width: '100%' }}
-        />
-        <a
-          className="arel absolute inset-0 w-full h-full"
-          href="https://sklep.carinii.com.pl/obuwie/mokasyny.html"
-        ></a>
-      </div>
-
-
-
-
+        return null
+      })}
     </>
   )
 }
