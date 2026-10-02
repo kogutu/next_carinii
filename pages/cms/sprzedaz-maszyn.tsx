@@ -217,7 +217,7 @@ export default function SellMachinePage() {
                                 onDragOver={handleDrag}
                                 onDrop={handleDrop}
                                 className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all ${isDragActive
-                                    ? 'border-[#431c49] bg-purple-50'
+                                    ? 'border-[#431c49] bg-gray-50'
                                     : 'border-[#e2b87f] bg-white hover:bg-gray-50'
                                     }`}
                             >

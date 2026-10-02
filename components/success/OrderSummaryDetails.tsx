@@ -57,7 +57,7 @@ export function OrderSummaryDetails({ items, subtotal, shipping, total }: OrderS
           <span>Koszt wysyłki:</span>
           <span className="font-semibold text-gray-900">{shipping.toFixed(2)} zł</span>
         </div>
-        <div className="flex justify-between text-base font-bold pt-3 px-4 py-3 rounded-lg bg-hert text-white">
+        <div className="flex justify-between text-base font-bold pt-3 px-4 py-3 rounded-lg bg-sobianek text-white">
           <span>RAZEM:</span>
           <span>{total.toFixed(2)} zł</span>
         </div>

@@ -13,11 +13,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'sklep.carinii.com.pl',
-      },
-      {
-        protocol: 'https',
-        hostname: 'carinii.com.pl',
+        hostname: 'sobianek.pl',
       },
       {
         protocol: 'https',

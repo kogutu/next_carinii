@@ -147,7 +147,7 @@ export default function ProductsCarouselProducts({ title, products, viewAllUrl =
   const itemWidthCalc = `calc((100% - ${gap}px * ${visibleItems - 0.5}) / ${visibleItems})`;
 
   return (
-    <div className="max-w-7xl mx-auto py-8 md:py-12 px-4">
+    <div className="container m-auto mt-8 mb-8">
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold">{title}</h2>
         <Link href={viewAllUrl} className="text-purple-900 font-bold text-xs sm:text-sm md:text-base hover:underline whitespace-nowrap ml-4">
@@ -209,7 +209,7 @@ export default function ProductsCarouselProducts({ title, products, viewAllUrl =
           <div
             key={i}
             className={`h-1 rounded-full transition-all duration-300 ${i === Math.floor(current / Math.max(1, Math.floor(visibleItems)))
-              ? 'w-5 sm:w-6 bg-hert'
+              ? 'w-5 sm:w-6 bg-sobianek'
               : 'w-1.5 sm:w-2 bg-gray-300'
               }`}
           />

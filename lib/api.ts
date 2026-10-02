@@ -34,7 +34,7 @@ export interface ApiResponse {
   }>;
 }
 
-const API_BASE = 'https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/carinii_prs/documents/search';
+const API_BASE = 'https://sklep.carinii.com.pl/directseo/nextjs/api/?path=collections/sobianek_prs/documents/search';
 
 export async function fetchProducts(
   categoryId: string,

@@ -40,7 +40,7 @@ export default function CheckoutPage() {
                 </p>
                 <a
                     href="/"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-hert text-white rounded-lg hover:bg-hert/90 transition-all hover:shadow-lg hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-sobianek text-white rounded-lg hover:bg-sobianek/90 transition-all hover:shadow-lg hover:-translate-y-0.5"
                 >
                     <ArrowLeft />
                     <span>Wróć do sklepu</span>

@@ -8,7 +8,7 @@ export default function TopHeader() {
 
   useEffect(() => {
     // Ustawienie docelowej daty na 2026-03-22 godzina 23:59:59
-    const targetDate = new Date('2026-03-29T23:59:59')
+    const targetDate = new Date('2026-04-06T23:59:59')
 
     const timer = setInterval(() => {
       const now = new Date()
@@ -32,7 +32,7 @@ export default function TopHeader() {
   }, [])
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('WOMAN')
+    navigator.clipboard.writeText('SobianekZima2024')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -55,15 +55,17 @@ export default function TopHeader() {
   const seconds = pad(timeLeft.seconds)
 
   return (
-    <div className="bg-stone-900 text-stone-200 text-center py-2 px-4">
+    <div className="bg-gray-900 text-stone-200 text-center py-2 px-4">
       <div className="text-[12px] sm:text-[14px] tracking-widest uppercase">
-        Świętujemy Dzień Kobiet! Odbierz <b>do -30% rabatu</b> na wszystko z kodem:{' '}
+
+
+        Teraz węgiel taniej Odbierz <b>o 100 zł/tona</b>z kodem:{' '}
         <button
           onClick={handleCopy}
           className="inline-flex items-center gap-1 font-bold border border-stone-500 rounded px-1.5 py-0.5 hover:bg-stone-800 transition-colors cursor-pointer"
           title="Kliknij aby skopiować kod" translate="no"
         >
-          WOMAN
+          SobianekZima2024
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"

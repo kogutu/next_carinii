@@ -61,7 +61,6 @@ export default function PaymentMethod({ onMethodChange, shippingMethod, init, st
         (method: any) => {
             const hasWildcard = method.shipping_methods[0] === '*';
             const hasShippingMethod = method.shipping_methods.includes(shippingMethod);
-            console.log(method);
 
             const isExcluded = method.exclude_hipping_methods.includes(shippingMethod);
 

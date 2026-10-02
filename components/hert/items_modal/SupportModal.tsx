@@ -72,7 +72,7 @@ export function SupportModal() {
 
   if (!mounted) {
     return (
-      <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">
+      <button className="flex items-center justify-center hover:bg-gray-50 p-2 rounded-full transition">
         <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
       </button>
     );
@@ -122,7 +122,7 @@ export function SupportModal() {
             <div className="space-y-2">
               <a
                 href="tel:+48257484200"
-                className="flex items-center gap-3 w-full h-11 px-3 border border-gray-200 rounded-lg hover:bg-purple-50 transition text-sm text-gray-700"
+                className="flex items-center gap-3 w-full h-11 px-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition text-sm text-gray-700"
               >
                 <Phone size={16} className="text-hert shrink-0" />
                 <span className="flex-1 text-left">+48 25 748 42 00</span>
@@ -130,7 +130,7 @@ export function SupportModal() {
               </a>
               <a
                 href="tel:+48504270628"
-                className="flex items-center gap-3 w-full h-11 px-3 border border-gray-200 rounded-lg hover:bg-purple-50 transition text-sm text-gray-700"
+                className="flex items-center gap-3 w-full h-11 px-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition text-sm text-gray-700"
               >
                 <Phone size={16} className="text-hert shrink-0" />
                 <span className="flex-1 text-left">+48 504 270 628</span>
@@ -138,7 +138,7 @@ export function SupportModal() {
               </a>
               <a
                 href="mailto:sklep@carinii.com.pl"
-                className="flex items-center gap-3 w-full h-11 px-3 border border-gray-200 rounded-lg hover:bg-purple-50 transition text-sm text-gray-700"
+                className="flex items-center gap-3 w-full h-11 px-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition text-sm text-gray-700"
               >
                 <Mail size={16} className="text-hert shrink-0" />
                 <span className="flex-1 text-left">sklep@carinii.com.pl</span>
@@ -255,7 +255,7 @@ export function SupportModal() {
               <Button
                 onClick={handleSubmit}
                 disabled={!isFormValid || formStatus === 'sending'}
-                className="w-full bg-hert hover:bg-hert/90 h-11 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-sobianek hover:bg-sobianek/90 h-11 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {formStatus === 'sending' ? (
                   <>
@@ -281,18 +281,18 @@ export function SupportModal() {
 
   if (!isDesktop) {
     return (
-      <div className="flex gap-2">
-        <div className="w-[55px] flex">
+      <div className="block gap-2">
+        {/* <div className="w-[55px] flex">
           <LanguageSelector></LanguageSelector>
-        </div>
+        </div> */}
 
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
             <button
               key="support"
-              className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition"
+              className="flex items-center justify-center hover:bg-gray-50 min-w-[38px]  rounded-full transition"
             >
-              <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
+              <Image src="/icons/support.svg" alt="Biuro obsługi" className='w-[35px]  h-auto' width={24} height={24} />
             </button>
           </DrawerTrigger>
           <DrawerContent>
@@ -315,7 +315,7 @@ export function SupportModal() {
         <DialogTrigger asChild>
           <div className="flex gap-2">
 
-            <button className="flex items-center justify-center hover:bg-purple-50 p-2 rounded-full transition">
+            <button className="flex items-center justify-center hover:bg-gray-50 p-2 rounded-full transition">
               <Image src="/icons/support.svg" alt="Biuro obsługi" width={24} height={24} />
             </button>
           </div>
