@@ -1,12 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { fetchProducts, searchProducts, type Product } from '@/lib/api'
 import { useCategoryZustand } from '@/stores/categoryZustand'
 import SearchTemplate from '@/pages/search/search-template'
 
 export default function SearchPage() {
+    // useSearchParams() wymaga granicy Suspense przy prerenderze
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
+            <SearchPageInner />
+        </Suspense>
+    )
+}
+
+function SearchPageInner() {
     const searchParams: any = useSearchParams()
     const searchQuery = searchParams.get('q') || ''
     const pageParam = searchParams.get('page') || '1'

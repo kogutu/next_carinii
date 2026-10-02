@@ -21,8 +21,7 @@ import {
     DrawerTitle,
 } from '@/components/ui/drawer';
 import type { ProcessedFacet, SortOption } from './types';
-import { decodeFiltersFromUrl, useCategoryZustand } from '@/stores/categoryZustand';
-import _ from 'lodash';
+import { useCategoryZustand } from '@/stores/categoryZustand';
 
 // ─── Config ──────────────────────────────────────────────────────────
 const DEFAULT_VISIBLE_COUNT = 5;
@@ -42,23 +41,61 @@ export function ProductFiltersClient({
     sortOptions,
     className,
 }: ProductFiltersClientProps) {
-    // ── Zustand selectors ──────────────────────────────────────────────
+    // ── Zustand: jedyne źródło prawdy dla produktów ────────────────────
     const setFilterZustand = useCategoryZustand(state => state.setFilters);
     const setRangePriceZustand = useCategoryZustand(state => state.setPriceRange);
     const setSortZustand = useCategoryZustand(state => state.setSort);
-    const selectedFiltersZustand = useCategoryZustand(state => state.selectedFiltersURL);
+    const zustandFilters = useCategoryZustand(state => state.filters);
+    const zustandPriceRange = useCategoryZustand(state => state.priceRange);
+    const zustandSort = useCategoryZustand(state => state.sort);
 
-    // ── Local state ────────────────────────────────────────────────────
-    const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>(selectedFiltersZustand?.filters ?? {});
-    const [priceRange, setPriceRange] = useState<Record<string, [number, number]>>({});
-    const [currentSort, setCurrentSort] = useState<string>(sortOptions[0].value);
+    // ── Local state (kont rolek UI) — inicjalizowany ze store (store już
+    // wczytał ?f.* / ?pr.* / ?sort z URL w initializeStore) ─────────────
+    const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>(zustandFilters ?? {});
+    const [priceRange, setPriceRange] = useState<Record<string, [number, number]>>(zustandPriceRange ?? {});
+    const [currentSort, setCurrentSort] = useState<string>(zustandSort || sortOptions[0].value);
 
     // ── Drawer open state ──────────────────────────────────────────────
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [sortDrawerOpen, setSortDrawerOpen] = useState(false);
 
-    // ── Guard against sync loops ───────────────────────────────────────
-    const isSyncingFromUrl = useRef(false);
+    // Debounce timery — jeden request na serię klików, nie na każdy klik
+    const filtersDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const priceDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (filtersDebounce.current) clearTimeout(filtersDebounce.current);
+            if (priceDebounce.current) clearTimeout(priceDebounce.current);
+        };
+    }, []);
+
+    // Gdy store czyści filtry z zewnątrz (zmiana kategorii / reset) —
+    // podążaj za nim. Porównanie przez JSON, żeby nie zapętlić.
+    const filtersKey = JSON.stringify(zustandFilters ?? {});
+    const priceKey = JSON.stringify(zustandPriceRange ?? {});
+    useEffect(() => {
+        try {
+            const parsed = JSON.parse(filtersKey);
+            setSelectedFilters((prev) =>
+                JSON.stringify(prev) === filtersKey ? prev : parsed
+            );
+        } catch { /* ignore */ }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filtersKey]);
+    useEffect(() => {
+        try {
+            const parsed = JSON.parse(priceKey);
+            setPriceRange((prev) =>
+                JSON.stringify(prev) === priceKey ? prev : parsed
+            );
+        } catch { /* ignore */ }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [priceKey]);
+    useEffect(() => {
+        if (zustandSort && zustandSort !== currentSort) setCurrentSort(zustandSort);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [zustandSort]);
 
 
     // ── Helpers ────────────────────────────────────────────────────────
@@ -85,40 +122,49 @@ export function ProductFiltersClient({
         });
     }, []);
 
-    // ── Sync FROM URL → local state ────────────────────────────────────
+    // ── Sync local state → Zustand (debounced) ─────────────────────────
+    // Każdy toggle aktualizuje UI natychmiast (lokalnie), a request
+    // do Typesense idzie max 1x na 350 ms — szybkie klikanie nie
+    // zalewa serwera, a wyścigi odpowiedzi ucina requestId w storze.
     useEffect(() => {
-        const restored = decodeFiltersFromUrl(window?.location?.search);
-
-        isSyncingFromUrl.current = true;
-        setSelectedFilters(restored.filters ?? {});
-        setPriceRange(restored.priceRange ?? {});
-        // Reset guard after React processes the state updates
-        requestAnimationFrame(() => {
-            isSyncingFromUrl.current = false;
-        });
-    }, [selectedFiltersZustand]);
-
-    // ── Sync local state → Zustand ─────────────────────────────────────
-    useEffect(() => {
-        if (isSyncingFromUrl.current) return;
-        setFilterZustand(selectedFilters);
+        if (filtersDebounce.current) clearTimeout(filtersDebounce.current);
+        filtersDebounce.current = setTimeout(() => {
+            const storeFilters = useCategoryZustand.getState().filters;
+            if (JSON.stringify(storeFilters ?? {}) !== JSON.stringify(selectedFilters)) {
+                setFilterZustand(selectedFilters);
+            }
+        }, 350);
+        return () => {
+            if (filtersDebounce.current) clearTimeout(filtersDebounce.current);
+        };
     }, [selectedFilters, setFilterZustand]);
 
     useEffect(() => {
-        if (isSyncingFromUrl.current) return;
-        if (_.isEmpty(priceRange)) return;
-        setRangePriceZustand(priceRange);
+        if (priceDebounce.current) clearTimeout(priceDebounce.current);
+        priceDebounce.current = setTimeout(() => {
+            const storePrice = useCategoryZustand.getState().priceRange;
+            if (JSON.stringify(storePrice ?? {}) !== JSON.stringify(priceRange)) {
+                // Pusty priceRange też propagujemy (to naprawia "wyczyść cenę")
+                setRangePriceZustand(priceRange);
+            }
+        }, 500);
+        return () => {
+            if (priceDebounce.current) clearTimeout(priceDebounce.current);
+        };
     }, [priceRange, setRangePriceZustand]);
 
-    useEffect(() => {
-        if (_.isEmpty(currentSort) || currentSort === 'relevance') return;
-        setSortZustand(currentSort);
-    }, [currentSort, setSortZustand]);
+    const handleSortChange = useCallback((value: string) => {
+        setCurrentSort(value);
+        setSortZustand(value);
+    }, [setSortZustand]);
 
     const clearAllFilters = useCallback(() => {
+        if (filtersDebounce.current) clearTimeout(filtersDebounce.current);
+        if (priceDebounce.current) clearTimeout(priceDebounce.current);
         setSelectedFilters({});
-        setFilterZustand({});
         setPriceRange({});
+        // Natychmiast, bez debounce — jeden request po "wyczyść wszystko"
+        setFilterZustand({});
         setRangePriceZustand({});
     }, [setFilterZustand, setRangePriceZustand]);
 
@@ -286,7 +332,7 @@ export function ProductFiltersClient({
                                 <button
                                     key={option.value}
                                     onClick={() => {
-                                        setCurrentSort(option.value);
+                                        handleSortChange(option.value);
                                         setSortDrawerOpen(false);
                                     }}
                                     className={cn(

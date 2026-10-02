@@ -25,6 +25,12 @@ import { generatePageMetadata } from "./metadata"
 
 // ─── Types ───────────────────────────────────────────────────────────
 
+// Strony kategorii/produktu czytają ?f.* / ?page / ?sort z searchParams
+// i dociągają świeże dane z Typesense — muszą być renderowane dynamicznie.
+// (Trzymamy to TUTAJ zamiast w layoucie, żeby home i strony statyczne
+// mogły korzystać ze static rendering / cache.)
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: {
     slug: string[]
@@ -108,6 +114,12 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
   const { slug } = await params
   const { page } = await searchParams
 
+  // Start niezależnych fetchy od razu (równolegle z detectPageType),
+  // żeby nie dokładać pełnego RTT w waterfallu.
+  const catsTreePromise = fetch(CATS_TREE_URL, { next: { revalidate: 3600 } })
+    .then(r => r.json())
+    .catch(() => null)
+
   // Użyj cache'owanej funkcji do wykrycia typu strony
   const pageMetadata = await getCachedPageType(slug)
 
@@ -128,8 +140,6 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
       const rawSearchParams: any = await searchParams
 
       const decoded: any = decodeFiltersFromUrl(rawSearchParams)
-      decoded.filters = decoded.filters ?? {}
-      decoded.filters.cids = [category.cid]
       decoded.catId = category.cid
 
       const tsQuery: any = buildTypesenseSearchParams(decoded)
@@ -149,11 +159,10 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         'promo_code',
         'save_percent'
       ].join(',')
-      console.log(tsQuery);
 
       const [productsResponse, catsTree] = await Promise.all([
         searchProductsNew(tsQuery),
-        fetch(CATS_TREE_URL, { cache: "force-cache" }).then(r => r.json()),
+        catsTreePromise,
       ])
       const products = transformDataProduct(productsResponse)
       const facets = productsResponse.facet_counts
@@ -161,10 +170,12 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
       const mockCategories: CategoryNode[] = []
       let categoryPath: string[] = []
 
-      const result = findCategoryRecursive(catsTree, category.name)
-      if (result) {
-        mockCategories.push(result.category)
-        categoryPath = result.path
+      if (Array.isArray(catsTree)) {
+        const result = findCategoryRecursive(catsTree, category.name)
+        if (result) {
+          mockCategories.push(result.category)
+          categoryPath = result.path
+        }
       }
 
       return (

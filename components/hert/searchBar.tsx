@@ -304,12 +304,14 @@ const popularSearches = [
     { term: "torebka", icon: "❤️" },
 ];
 
-const promoProducts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/products_category?cid=190&t=1`, {
+// Top-level fetch nie może wywalić prerendera/builda (np. gdy
+// NEXT_PUBLIC_API_URL wskazuje lokalny host) — twardy fallback na [].
+const promoProducts: any[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/products_category?cid=190&t=1`, {
     cache: 'force-cache',
     next: {
         revalidate: 60 * 60 * 24,
     },
-}).then(res => res.json()).then(data => data.hits.map((hit: any) => hit.document))
+}).then(res => res.json()).then(data => data.hits.map((hit: any) => hit.document)).catch(() => [])
 
 // ============ DEBOUNCE HOOK ============
 function useDebounce<T>(value: T, delay: number): T {

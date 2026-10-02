@@ -16,7 +16,7 @@ import LanguageSelector from './language-selector';
 import CariniiMegaMenu from './Menu';
 import TopHeader from './topHeader';
 type Props = {
-  currency: string
+  currency?: string
 }
 export default function Header({ currency }: Props) {
 

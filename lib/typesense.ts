@@ -120,14 +120,39 @@ function buildSearchUrl(
 // ─── Products ────────────────────────────────────────────────────────
 
 /**
- * Multi-search (nowa wersja) — używa SDK Typesense.
- * SDK nie przechodzi przez fetch, więc cache Next.js nie działa.
- * Jeśli potrzebujesz cache'owania, rozważ przejście na fetch-based multi-search.
+ * Multi-search — na serwerze bezpośrednio przez SDK (szybkie, http OK),
+ * w przeglądarce przez nasze proxy /api/typesense/multisearch
+ * (omija blokadę mixed-content https→http).
  */
 export async function searchProductsNew(
     searches: any
 ): Promise<TypesenseSearchResponse> {
     try {
+        // ── CLIENT: przez same-origin proxy (https) ──────────────────
+        if (typeof window !== 'undefined') {
+            const res = await fetch('/api/typesense/multisearch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ searches }),
+            })
+
+            if (!res.ok) {
+                throw new Error(`Typesense proxy error: ${res.status}`)
+            }
+
+            const data = await res.json()
+
+            if (!data.results) {
+                throw new Error('Typesense multi-search: brak results')
+            }
+
+            // Fasety z drugiego zapytania (bez filtrów) → do panelu filtrów
+            data.results[0]['facet_counts'] = data.results[1]['facet_counts']
+
+            return data.results[0] as TypesenseSearchResponse
+        }
+
+        // ── SERVER: bezpośrednio przez SDK ───────────────────────────
         const response = await typesenseClient.multiSearch.perform({ searches })
 
         if (!response.results) {

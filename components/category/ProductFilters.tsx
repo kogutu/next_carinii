@@ -49,13 +49,13 @@ const colors = {
     "kolorowy": "linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8F00FF)",
     "musztardowy": "linear-gradient(135deg, #FFDB58, #E6B800, #CC9C00)"
 }
-// ─── Sort options ────────────────────────────────────────────────────
+// ─── Sort options (wartości = prawdziwe Typesense sort_by) ──────────
 export const SORT_OPTIONS = [
-    { value: 'relevance', label: 'Wg nowości' },
-    { value: 'price_asc', label: 'Cena: od najniższej' },
-    { value: 'price_desc', label: 'Cena: od najwyższej' },
-    { value: 'newest', label: 'Najnowsze' },
-    { value: 'bestsellers', label: 'Bestsellery' },
+    { value: 'createdat:desc', label: 'Wg nowości' },
+    { value: 'price:asc', label: 'Cena: od najniższej' },
+    { value: 'price:desc', label: 'Cena: od najwyższej' },
+    { value: 'name:asc', label: 'Nazwa A-Z' },
+    { value: 'name:desc', label: 'Nazwa Z-A' },
 ] as const;
 
 

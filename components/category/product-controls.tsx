@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { Grid3x3, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCategoryZustand } from '@/stores/categoryZustand';
-import { ProductFilters } from './filters';
 
 interface ProductControlsProps {
   totalProducts: number;

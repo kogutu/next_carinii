@@ -1,15 +1,11 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { fetchProducts, type Product } from '@/lib/api';
+import type { Product } from '@/lib/api';
 import { ProductControls } from '@/components/category/product-controls';
 import { ProductPagination } from '@/components/category/product-pagination';
-import { MobileCategoryMenu } from '@/components/category/mobile-category-menu';
-import { Spinner } from '@/components/ui/spinner';
-import { ProductTemplate } from '@/components/category/product-template'; // Import ProductTemplate
 import { ProductGrid } from '@/components/category/product-grid';
 import { useCategoryZustand } from '@/stores/categoryZustand';
-import CategorySidebar from '../../components/category/category-sidebar';
 import { ProductFilters } from '@/components/category/ProductFilters';
 
 interface CategoryTemplateProps {
@@ -17,7 +13,7 @@ interface CategoryTemplateProps {
     facets: any;
     categoryId: string;
     parentCategoryId: string;
-    itemPerPage: number;
+    itemPerPage?: number;
     categories: any;
     categoryImage?: string;
     categoryImageAlt?: string;
@@ -25,10 +21,10 @@ interface CategoryTemplateProps {
     totalPage: number;
     category: any;
     categoryTree: any;
-}ProductGrid
+}
 export default function CategoryTemplate({
     products: initialProducts,
-    facets,
+    facets: initialFacets,
     page,
     totalPage,
     categoryId,
@@ -40,48 +36,42 @@ export default function CategoryTemplate({
     categoryImageAlt = 'Kategoria',
 }: CategoryTemplateProps) {
     const initializeStore = useCategoryZustand((state: any) => state.initializeStore)
-    const productZustand = useCategoryZustand((state: any) => state.products)
-    const itemPerPage = useCategoryZustand((state: any) => state.itemsPerPage)
+    // Jedyne źródło prawdy — store. SSR-owe propsy to stan startowy, pokazywany
+    // dopóki store nie zainicjalizuje się dla TEJ kategorii. Pusty wynik
+    // wyszukiwania ([]) po zakończeniu fetcha jest poprawny i nie cofa się do SSR.
+    const storeProducts = useCategoryZustand((state: any) => state.products) as Product[]
+    const storeCategoryId = useCategoryZustand((state: any) => state.categoryId)
+    const isInitialized = useCategoryZustand((state: any) => state.isInitialized)
+    const liveFacets = useCategoryZustand((state: any) => state.facets)
+    const storeTotal = useCategoryZustand((state: any) => state.totalItems)
+    const isCurrentCategory = isInitialized && storeCategoryId === categoryId
+    const products = isCurrentCategory ? storeProducts : initialProducts
+    const facets = isCurrentCategory && liveFacets?.length > 0 ? liveFacets : initialFacets
+    const totalProducts = isCurrentCategory ? storeTotal : (totalPage || 0)
+    const currentPage = useCategoryZustand((state: any) => state.page)
+    const zustandPerPage = useCategoryZustand((state: any) => state.itemsPerPage)
     const setPageZustand = useCategoryZustand((state: any) => state.setPage)
     const setSortZustand = useCategoryZustand((state: any) => state.setSort)
     const setPerPageZustand = useCategoryZustand((state: any) => state.setPerPage)
     const isLoading = useCategoryZustand((state: any) => state.isLoading)
-    const [products, setProducts] = useState<Product[]>(initialProducts);
 
-    const totalProducts = useCategoryZustand((state: any) => state.totalItems)
-    const currentPage = useCategoryZustand((state: any) => state.page)
-
-
-    const [perPage, setPerPage] = useState(itemPerPage);
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-    const [sortBy, setSortBy] = useState('createdat:desc');
-
     const [error, setError] = useState<string | null>(null);
 
+    // Init raz na kategorię. initializeStore sam dociąga dane z API,
+    // gdy URL zawiera ?f.* / ?page / ?sort (inaczej zostaje szybki SSR).
     useEffect(() => {
-        console.log("[v0] Initializing store for category:", categoryId);
         initializeStore({
             categoryId: categoryId,
-            initialProducts: products,
-            initialFacets: facets,
+            initialProducts: initialProducts,
+            initialFacets: initialFacets,
             initialTotalItems: totalPage,
-            itemsPerPage: itemPerPage
         }, false)
-    }, [category?.cid, initializeStore])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categoryId])
 
-
-
-    useEffect(() => {
-        setProducts(initialProducts);
-    }, []); // synchronizuj gdy zmieni się props
-
-    useEffect(() => {
-        setProducts(productZustand);
-    }, [initialProducts, categoryId, productZustand, currentPage, perPage, sortBy]); // synchronizuj gdy zmieni się props
-
-
-
-    const totalPages = Math.ceil(totalProducts / perPage);
+    const perPage = zustandPerPage || 100;
+    const totalPages = Math.max(1, Math.ceil((totalProducts || 0) / perPage));
     const currentCategory = category;
     if (!category && !products) {
         return null;
@@ -152,9 +142,7 @@ export default function CategoryTemplate({
                             onViewModeChange={setViewMode}
                             onSortChange={setSortZustand}
                             onPerPageChange={(newPerPage) => {
-
                                 setPerPageZustand(newPerPage);
-                                setPerPage(newPerPage);
                                 setPageZustand(1);
                             }}
                         />

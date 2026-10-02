@@ -5,8 +5,6 @@ import './globals.css'
 import Header from "@/components/hert/header"
 import Footer from "@/components/hert/footer"
 import CartHydrator from "@/components/cart/CartHydrator"
-import { cookies } from "next/headers"
-import { SessionProvider } from "next-auth/react"
 import { Providers } from "./providers"
 import Script from "next/script"
 
@@ -19,8 +17,6 @@ const outfit = Outfit({
   weight: ['300', '400', '500', '600'],
   variable: '--font-outfit',
 })
-
-export const dynamic = 'force-dynamic' // 👈 Add this
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -109,10 +105,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-
-  const cookieStore = await cookies()
-  const currency_cookies = cookieStore.get('currency')?.value ?? 'PLN'
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pl">
 
@@ -121,7 +114,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <CartHydrator />
           <div className="min-h-screen flex flex-col bg-white">
             <div id="google_translate_element" className="hidden"></div>
-            <Header currency={currency_cookies} />
+            <Header />
             <main className="flex-1 mt-4 relative">
               {children}
             </main>
@@ -130,9 +123,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Providers>
         <Script
           src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-translate-init" strategy="afterInteractive">
+        <Script id="google-translate-init" strategy="lazyOnload">
           {`
             function googleTranslateElementInit() {
               new google.translate.TranslateElement(
