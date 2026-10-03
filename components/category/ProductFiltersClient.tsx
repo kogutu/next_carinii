@@ -589,7 +589,7 @@ function ColorsFacetSection({
     const visibleCounts = showAll
         ? facet.counts
         : facet.counts.slice(0, DEFAULT_VISIBLE_COUNT);
-    const hasMore = facet.counts.length > 20;
+    const hasMore = facet.counts.length > DEFAULT_VISIBLE_COUNT;
 
     return (
         <div className="border-b border-gray-100 py-3 last:border-b-0">
