@@ -1,5 +1,6 @@
 'use client'
 
+import { EYEBROW } from '@/components/ui/surface'
 import { useCartStore } from '@/stores/cartZustand'
 import PayButton from '@/components/payments/PayButton'
 import { useEffect, useRef, useState } from 'react'
@@ -312,7 +313,7 @@ export default function OrderSummary({
             )}
 
             <div ref={summaryRef} id="order-summary" className="surface-card scroll-mt-4 space-y-6 rounded-2xl bg-card p-5 sm:p-6">
-                <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                <h2 className={EYEBROW}>
                     Podsumowanie zamówienia
                 </h2>
 

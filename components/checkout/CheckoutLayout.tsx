@@ -1,5 +1,6 @@
 'use client'
 
+import { ENTER, EYEBROW, SURFACE_CARD } from '@/components/ui/surface'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -34,10 +35,7 @@ const DEFAULT_SHIPPING_METHOD = 'dhl_dhl24pl_courier'
 const DEFAULT_PAYMENT_METHOD = 'banktransfer'
 const DRAFT_SAVE_DELAY_MS = 600
 
-// Karty sekcji jak na stronie zamówienia: cień zamiast ramki, zaokrąglenie 16 px
-const CARD = 'surface-card rounded-2xl bg-card p-5 sm:p-8'
-// Wejście sekcji: lekkie wsunięcie od dołu, kolejne bloki z opóźnieniem ~100 ms
-const ENTER = 'animate-in fade-in slide-in-from-bottom-3 duration-500 fill-mode-backwards motion-reduce:animate-none'
+const CARD = cn(SURFACE_CARD, 'p-5 sm:p-8')
 
 const CUSTOMER_FIELD_ORDER = ['firstName', 'lastName', 'email', 'phone', 'street', 'postcode', 'city']
 const INVOICE_FIELD_ORDER = ['nip', 'companyName', 'street', 'postcode', 'city']
@@ -185,7 +183,7 @@ export default function CheckoutLayout() {
         <div className="relative z-0 min-h-screen bg-background">
             <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
                 <header className={cn(ENTER, 'max-w-3xl')}>
-                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">Zamówienie</p>
+                    <p className={EYEBROW}>Zamówienie</p>
                     <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
                         Koszyk
                     </h1>

@@ -1,3 +1,4 @@
+import { EYEBROW } from '@/components/ui/surface'
 import type { ReactNode } from 'react'
 import { Building2, CreditCard, FileText, Mail, MapPin, Phone, Truck } from 'lucide-react'
 
@@ -62,7 +63,7 @@ export function OrderDetails({ orderData }: OrderDetailsProps) {
 
   return (
     <section aria-labelledby="order-details-title">
-      <h2 id="order-details-title" className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+      <h2 id="order-details-title" className={EYEBROW}>
         Szczegóły zamówienia
       </h2>
 

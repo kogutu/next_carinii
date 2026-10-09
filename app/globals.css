@@ -19,6 +19,74 @@
   --color-warning-soft: #fff7e6;
 }
 
+/* Treść stron CMS (HTML z Magento): typografia w stylu sklepu */
+@layer components {
+  .cms-content {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--foreground);
+    overflow-wrap: anywhere;
+  }
+  .cms-content > :first-child { margin-top: 0; }
+  .cms-content > :last-child { margin-bottom: 0; }
+  .cms-content h1, .cms-content h2, .cms-content h3, .cms-content h4 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    text-wrap: balance;
+    margin: 2em 0 0.6em;
+  }
+  .cms-content h1 { font-size: 1.875rem; }
+  .cms-content h2 { font-size: 1.5rem; }
+  .cms-content h3 { font-size: 1.25rem; }
+  .cms-content h4 { font-size: 1.0625rem; }
+  .cms-content p { margin: 0 0 1em; text-wrap: pretty; }
+  .cms-content a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cms-content a:hover { color: var(--color-hcar); }
+  .cms-content ul, .cms-content ol { margin: 0 0 1em; padding-left: 1.25rem; }
+  .cms-content ul { list-style: disc; }
+  .cms-content ol { list-style: decimal; }
+  .cms-content li { margin: 0.35em 0; }
+  .cms-content strong, .cms-content b { font-weight: 600; }
+  .cms-content hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+  .cms-content img { max-width: 100%; height: auto; border-radius: 0.75rem; }
+  .cms-content blockquote {
+    border-left: 3px solid var(--foreground);
+    padding-left: 1rem;
+    margin: 1.5em 0;
+    color: var(--muted-foreground);
+  }
+  .cms-content table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    margin: 1.5em 0;
+  }
+  .cms-content th, .cms-content td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .cms-content th { font-weight: 600; background: var(--muted); }
+  /* stare treści z Magento mają zaszyty krój (tahoma, Roboto) — używamy kroju sklepu */
+  .cms-content :where(*:not(code, pre, kbd, samp)) { font-family: inherit !important; }
+  .cms-content .contact__contact-header,
+  .cms-content .contact__info-col-header {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 1.75em 0 0.5em;
+  }
+  .cms-content .contact__contact-item,
+  .cms-content .contact__info-col { margin-bottom: 1em; }
+}
+
 /* Powierzchnia karty: cień zamiast ramki (jasny motyw) */
 @utility surface-card {
   box-shadow:

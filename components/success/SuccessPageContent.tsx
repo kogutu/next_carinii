@@ -1,5 +1,6 @@
 'use client'
 
+import { ENTER } from '@/components/ui/surface'
 import { useState } from 'react'
 import Link from 'next/link'
 import { Headset } from 'lucide-react'
@@ -61,9 +62,6 @@ interface OrderData {
   grandTotal?: number
   total: number
 }
-
-// Wejście sekcji: lekkie wsunięcie od dołu, kolejne bloki z opóźnieniem ~100 ms
-const ENTER = 'animate-in fade-in slide-in-from-bottom-3 duration-500 fill-mode-backwards motion-reduce:animate-none'
 
 export function SuccessPageContent({ orderData: initialData, sessionid }: { orderData: OrderData, sessionid: string }) {
   const [orderData, setOrderData] = useState<OrderData>(initialData)

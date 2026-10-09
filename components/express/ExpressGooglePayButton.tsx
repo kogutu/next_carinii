@@ -156,6 +156,7 @@ export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced
                     allowedPaymentMethods: allowedPaymentMethods(config),
                     buttonType: 'buy',
                     buttonSizeMode: 'fill',
+                    buttonRadius: 12,
                 }),
             )
         }
@@ -170,7 +171,7 @@ export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced
         <div className="space-y-2">
             {/* wysokość kontenera wyznacza wysokość przycisku Google (tryb fill) — tyle samo co przycisk Apple */}
             <div ref={containerRef} className={`h-11 w-full ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`} />
-            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>
     )
 }

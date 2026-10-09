@@ -1,3 +1,4 @@
+import { EYEBROW } from '@/components/ui/surface'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -43,7 +44,7 @@ export function SuccessNextSteps(props: SuccessNextStepsProps) {
 
   return (
     <section aria-labelledby="next-steps-title">
-      <h2 id="next-steps-title" className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+      <h2 id="next-steps-title" className={EYEBROW}>
         Co dalej
       </h2>
       <ol className="mt-5">

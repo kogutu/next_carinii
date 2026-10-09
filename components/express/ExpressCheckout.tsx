@@ -29,10 +29,10 @@ export default function ExpressCheckout({ getItems, coupon, onOrderPlaced, disab
 
     return (
         <div className={className}>
-            <div className="flex items-center gap-3 text-xs text-gray-400 mb-2">
-                <span className="h-px flex-1 bg-gray-200" />
+            <div className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="h-px flex-1 bg-border" />
                 lub kup od razu
-                <span className="h-px flex-1 bg-gray-200" />
+                <span className="h-px flex-1 bg-border" />
             </div>
             {/* przechwytujemy kliknięcie zablokowanych przycisków, żeby pokazać komunikat zamiast cichej bezczynności */}
             <div

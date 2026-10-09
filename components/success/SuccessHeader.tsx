@@ -1,3 +1,5 @@
+import { EYEBROW } from '@/components/ui/surface'
+import { cn } from '@/lib/utils'
 import { Check } from 'lucide-react'
 import { CopyOrderNumber } from './CopyOrderNumber'
 
@@ -11,7 +13,7 @@ type SuccessHeaderProps = {
 export function SuccessHeader({ incrementId, firstName, email, isPaid }: SuccessHeaderProps) {
   return (
     <header className="max-w-3xl">
-      <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+      <p className={cn(EYEBROW, 'flex items-center gap-3')}>
         <span className="flex size-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
           <Check className="size-3.5" strokeWidth={3} aria-hidden="true" />
         </span>

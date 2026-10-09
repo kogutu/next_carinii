@@ -1,7 +1,8 @@
 'use client'
 
 // Template dla zwykłych stron CMS
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ENTER, EYEBROW, SurfaceCard } from '@/components/ui/surface'
+import { cn } from '@/lib/utils'
 import { useEffect, useRef } from "react"
 
 interface CmsPageTemplateProps {
@@ -95,101 +96,103 @@ export default function CmsPageTemplate({ slug, content }: CmsPageTemplateProps)
         }
     }, [content?.content])
 
-    // Funkcja do przetworzenia HTML i dodania stylów
-    const processHtml = (html: string) => {
-        // Dodaj style dla accordionu
+    const title = content?.h1 || defaultTitle
+
+    // Treść z Magento często zaczyna się własnym <h1> z tym samym tytułem — strona ma już nagłówek
+    const stripDuplicateTitle = (html: string): string => {
+        const match = html.match(/^\s*<h1[^>]*>([\s\S]*?)<\/h1>\s*/i)
+        if (!match) return html
+        const heading = match[1].replace(/<[^>]+>/g, '').trim().toLowerCase()
+        return heading === title.trim().toLowerCase() ? html.slice(match[0].length) : html
+    }
+
+    // Style akordeonu wstrzykiwane razem z treścią CMS (kolory z tokenów strony)
+    const processHtml = (rawHtml: string) => {
+        const html = stripDuplicateTitle(rawHtml)
         const styles = `
             <style>
                 .accordion {
-                    background-color: #f8f9fa;
-                    color: #333;
+                    background-color: var(--muted);
+                    color: var(--foreground);
                     cursor: pointer;
                     padding: 18px;
                     width: 100%;
                     text-align: left;
                     border: none;
-                    border-bottom: 1px solid #dee2e6;
+                    border-bottom: 1px solid var(--border);
                     outline: none;
-                    transition: 0.4s;
+                    transition: background-color 0.2s;
                     font-weight: 600;
-                    font-size: 1.1rem;
+                    font-size: 1.05rem;
                     position: relative;
                 }
-                
-                .accordion:hover {
-                    background-color: #e9ecef;
-                }
-                
+
+                .accordion:hover,
                 .accordion.active {
-                    background-color: #e9ecef;
-                    border-bottom: none;
+                    background-color: oklch(0.93 0 0);
                 }
-                
+
+                .accordion:focus-visible {
+                    box-shadow: inset 0 0 0 2px var(--foreground);
+                }
+
                 .accordion:after {
                     content: '\\002B';
-                    color: #777;
+                    color: var(--muted-foreground);
                     font-weight: bold;
                     float: right;
                     margin-left: 5px;
                 }
-                
+
                 .accordion.active:after {
                     content: '\\2212';
                 }
-                
+
                 .panel {
                     padding: 0 18px;
-                    background-color: white;
+                    background-color: var(--background);
                     max-height: 0;
                     overflow: hidden;
                     transition: max-height 0.3s ease-out;
-                    border-bottom: 1px solid #dee2e6;
+                    border-bottom: 1px solid var(--border);
                 }
-                
+
                 .panel p, .panel ul {
                     margin: 16px 0;
                 }
-                
+
                 .panel ul {
                     padding-left: 20px;
                 }
-                
+
                 .panel li {
                     margin: 8px 0;
                 }
-                
+
                 .icon {
                     vertical-align: middle;
                     margin-right: 8px;
                 }
-                
+
                 .accordion-container {
-                    border: 1px solid #dee2e6;
-                    border-radius: 8px;
+                    border: 1px solid var(--border);
+                    border-radius: 12px;
                     overflow: hidden;
                 }
-                
-                .accordion:first-child {
-                    border-top-left-radius: 8px;
-                    border-top-right-radius: 8px;
-                }
-                
-                .accordion:last-of-type {
-                    border-bottom: none;
-                }
-                
-                .accordion:last-of-type.active {
-                    border-bottom: none;
-                }
-                
+
+                .accordion:last-of-type,
+                .accordion:last-of-type.active,
                 .panel:last-of-type {
                     border-bottom: none;
                 }
-                
-                /* Styl dla aktywnego accordionu z hasztaga */
+
+                /* aktywny akordeon (też po przejściu z linku z hasztagiem) */
                 .accordion.active {
-                    background-color: #e3f2fd;
-                    border-left: 4px solid #0d6efd;
+                    box-shadow: inset 3px 0 0 var(--foreground);
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .accordion, .panel { transition: none; }
                 }
             </style>
         `
@@ -203,26 +206,29 @@ export default function CmsPageTemplate({ slug, content }: CmsPageTemplateProps)
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-3xl font-bold">{content?.h1 || defaultTitle}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="prose max-w-none">
-                        {content?.content ? (
-                            <div
-                                ref={accordionRef}
-                                dangerouslySetInnerHTML={{
-                                    __html: processHtml(content.content)
-                                }}
-                            />
-                        ) : (
-                            <p className="text-muted-foreground">Strona CMS: {slugString}</p>
-                        )}
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+        <main className="bg-background">
+            <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+                <header className={cn(ENTER, 'max-w-3xl')}>
+                    <p className={EYEBROW}>Informacje</p>
+                    <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                        {title}
+                    </h1>
+                </header>
+
+                <SurfaceCard className={cn(ENTER, 'mt-10 delay-100')}>
+                    {content?.content ? (
+                        <div
+                            ref={accordionRef}
+                            className="cms-content"
+                            dangerouslySetInnerHTML={{
+                                __html: processHtml(content.content)
+                            }}
+                        />
+                    ) : (
+                        <p className="text-muted-foreground">Strona CMS: {slugString}</p>
+                    )}
+                </SurfaceCard>
+            </div>
+        </main>
     )
 }

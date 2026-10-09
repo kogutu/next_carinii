@@ -43,7 +43,7 @@ export default function ExpressApplePayButton({ getItems, coupon, onOrderPlaced 
     if (available === 'no') {
         // poza produkcją mówimy, dlaczego przycisku nie ma (HTTPS / przeglądarka)
         return process.env.NODE_ENV !== 'production'
-            ? <p className="text-xs text-gray-400">Apple Pay niedostępny (wymaga HTTPS i Safari lub obsługiwanej przeglądarki).</p>
+            ? <p className="text-pretty text-xs text-muted-foreground">Apple Pay niedostępny (wymaga HTTPS i Safari lub obsługiwanej przeglądarki).</p>
             : null
     }
 
@@ -180,7 +180,7 @@ export default function ExpressApplePayButton({ getItems, coupon, onOrderPlaced 
             <div className={isProcessing ? 'opacity-50 pointer-events-none' : ''}>
                 <AppleButton type="buy" onPress={startPayment} />
             </div>
-            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>
     )
 }

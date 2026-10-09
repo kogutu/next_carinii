@@ -158,7 +158,7 @@ export const useCartStore = create<CartStore>()(
                         removeItem: () => { }
                     }
             ),
-            partialize: ({ removedItem, ...persisted }) => persisted,
+            partialize: ({ removedItem, showMiniCart, ...persisted }) => persisted,
             onRehydrateStorage: () => (state) => {
                 state?.setHydratedCart(true)
             }

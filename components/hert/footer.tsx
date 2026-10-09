@@ -46,7 +46,7 @@ const footerNavigation = {
   obsluga: {
     title: "Biuro Obsługi Klienta",
     links: [
-      { label: "Kontakt", href: "/kontakt-helpdesk" },
+      { label: "Kontakt", href: "/kontakt" },
       { label: "Sposoby płatności", href: "/sposoby-platnosci" },
       { label: "Sposoby wysyłki", href: "/dostawa" },
       { label: "Zwroty i reklamacje", href: "/zwroty-reklamacje" },
@@ -58,7 +58,7 @@ const footerNavigation = {
     links: [
       { label: "O nas", href: "/o-nas" },
       { label: "Blog", href: "/_blog" },
-      { label: "Kontakt", href: "/kontakt-helpdesk" },
+      { label: "Kontakt", href: "/kontakt" },
     ],
   },
   prywatnosc: {

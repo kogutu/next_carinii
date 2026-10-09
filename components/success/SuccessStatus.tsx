@@ -1,3 +1,4 @@
+import { EYEBROW } from '@/components/ui/surface'
 import { CheckCircle2, CreditCard, Loader2 } from 'lucide-react'
 import {
   Drawer,
@@ -194,7 +195,7 @@ export function SuccessStatus({ status, orderData, setOrderData, paymentMethod, 
     <section aria-labelledby="payment-title" className="surface-card rounded-2xl bg-card p-5 sm:p-8">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 id="payment-title" className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          <h2 id="payment-title" className={EYEBROW}>
             Płatność
           </h2>
           <p className="mt-2 text-3xl font-semibold tabular-nums tracking-tight text-foreground sm:text-4xl">

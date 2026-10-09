@@ -1,96 +1,63 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Home, ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Home } from 'lucide-react'
+import { ENTER, EYEBROW, SURFACE_CARD } from '@/components/ui/surface'
+import { cn } from '@/lib/utils'
+
+const LINKS = [
+    { href: '/nowosci.html', title: 'Nowości', description: 'To się będzie nosić' },
+    { href: '/torebki.html', title: 'Torebki', description: 'Nie samymi butami człowiek żyje :)' },
+    { href: '/kontakt', title: 'Kontakt', description: 'Skontaktuj się z nami' },
+    { href: '/kontakt', title: 'Pomoc', description: 'Pytania o zamówienie i dostawę' },
+]
+
+const BUTTON =
+    'inline-flex h-11 items-center justify-center gap-2 rounded-xl px-6 text-sm font-semibold transition-[transform,background-color] duration-150 ease-out active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none motion-reduce:active:scale-100'
 
 export default function NotFound() {
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-white px-4">
-            <div className="text-center space-y-8 max-w-2xl">
-                {/* Error Code */}
-                <div className="space-y-2">
-                    <h1 className="text-9xl font-bold" style={{ color: '#431c49' }}>
-                        404
-                    </h1>
-                    <div
-                        className="text-2xl font-semibold text-hcar"
-                    >
-                        Strona nie znaleziona
-                    </div>
-                </div>
+        <main className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 py-16">
+            <div className={cn(ENTER, 'w-full max-w-2xl text-center')}>
+                <p className={EYEBROW}>Błąd 404</p>
+                <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                    Nie ma takiej strony
+                </h1>
+                <p className="mx-auto mt-4 max-w-md text-pretty text-base text-muted-foreground">
+                    Strona, której szukasz, nie istnieje albo została przeniesiona. Sprawdź adres lub wróć do sklepu.
+                </p>
 
-                {/* Description */}
-                <div className="space-y-3">
-                    <p className="text-lg text-gray-600">
-                        Przepraszamy! Strona, którą szukasz, nie istnieje lub została przeniesiona.
-                    </p>
-                    <p className="text-base text-gray-500">
-                        Sprawdź adres URL lub wróć do strony głównej, aby kontynuować przeglądanie naszej oferty maszyn.
-                    </p>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-                    <Link href="/">
-                        <Button
-                            className="w-full sm:w-auto gap-2 text-white py-6 px-8 text-base bg-hcar"
-                        >
-                            <Home className="w-5 h-5" />
-                            Strona główna
-                        </Button>
+                <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                    <Link href="/" className={cn(BUTTON, 'bg-primary text-primary-foreground hover:bg-menuhover')}>
+                        <Home className="size-4" aria-hidden="true" />
+                        Strona główna
                     </Link>
-                    <Button
-                        variant="outline"
-                        className="w-full sm:w-auto gap-2 py-5.5 px-8 text-base border-2 hover:text-white"
-                        style={{ borderColor: '#431c49' }}
+                    <button
+                        type="button"
                         onClick={() => window.history.back()}
+                        className={cn(BUTTON, 'surface-card bg-background text-foreground hover:bg-muted')}
                     >
-                        <ArrowLeft className="w-5 h-5 text-hcar" />
+                        <ArrowLeft className="size-4" aria-hidden="true" />
                         Wróć wstecz
-                    </Button>
+                    </button>
                 </div>
 
-                {/* Helpful Links */}
-                <div className="border-t border-gray-200 pt-8 mt-8">
-                    <p className="text-sm text-gray-600 mb-4">Przydatne linki:</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <Link
-                            href="/nowosci.html"
-                            className="block p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors text-left"
-                        >
-                            <h3 className="font-semibold text-gray-900 text-sm">
-                                Nowości
-                            </h3>
-                            <p className="text-gray-600 text-xs">To się będzie nosić</p>
-                        </Link>
-                        <Link
-                            href="/kontakt"
-                            className="block p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors text-left"
-                        >
-                            <h3 className="font-semibold text-gray-900 text-sm">
-                                Kontakt
-                            </h3>
-                            <p className="text-gray-600 text-xs">Skontaktuj się z nami</p>
-                        </Link>
-                        <Link
-                            href="/torebki.html"
-                            className="block p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors text-left"
-                        >
-                            <h3 className="font-semibold text-gray-900 text-sm">
-                                Torbeki
-                            </h3>
-                            <p className="text-gray-600 text-xs">Nie samymi butami człowiek żyje :)</p>
-                        </Link>
-                        <Link
-                            href="/kontakt"
-                            className="block p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors text-left"
-                        >
-                            <h3 className="font-semibold text-gray-900 text-sm">
-                                Pomoc
-                            </h3>
-                            <p className="text-gray-600 text-xs">Sprawdź nasze FAQ</p>
-                        </Link>
+                <div className="mt-12 text-left">
+                    <p className={cn(EYEBROW, 'mb-4 text-center')}>Przydatne linki</p>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                        {LINKS.map((link) => (
+                            <Link
+                                key={link.title}
+                                href={link.href}
+                                className={cn(
+                                    SURFACE_CARD,
+                                    'block p-4 transition-[transform,background-color] duration-150 ease-out hover:bg-muted active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none motion-reduce:active:scale-100',
+                                )}
+                            >
+                                <h2 className="text-sm font-semibold text-foreground">{link.title}</h2>
+                                <p className="mt-1 text-xs text-muted-foreground">{link.description}</p>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>

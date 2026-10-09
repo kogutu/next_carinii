@@ -1,3 +1,4 @@
+import { EYEBROW } from '@/components/ui/surface'
 import { formatPrice } from '@/lib/formatPrice'
 import { cn } from '@/lib/utils'
 
@@ -49,7 +50,7 @@ export function OrderSummaryDetails({
   return (
     <section aria-labelledby="summary-title" className="surface-card rounded-2xl bg-card p-5 sm:p-6">
       <div className="flex items-baseline justify-between gap-4">
-        <h2 id="summary-title" className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+        <h2 id="summary-title" className={EYEBROW}>
           Twoje zamówienie
         </h2>
         <p className="text-xs tabular-nums text-muted-foreground">{itemCount} szt.</p>
