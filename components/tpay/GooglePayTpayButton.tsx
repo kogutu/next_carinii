@@ -104,6 +104,7 @@ export default function GooglePayTpayButton({ oid, amount, onPaid }: GooglePayTp
                     allowedPaymentMethods: allowedPaymentMethods(),
                     buttonType: 'pay',
                     buttonSizeMode: 'fill',
+                    buttonRadius: 12,
                 }),
             )
         }
@@ -115,9 +116,9 @@ export default function GooglePayTpayButton({ oid, amount, onPaid }: GooglePayTp
     }, [])
 
     return (
-        <div className="space-y-2 w-full max-w-xs">
-            <div ref={containerRef} className={isProcessing ? 'opacity-50 pointer-events-none' : ''} />
-            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+        <div className="w-full space-y-2">
+            <div ref={containerRef} className={isProcessing ? 'h-11 w-full opacity-50 pointer-events-none' : 'h-11 w-full'} />
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>
     )
 }

@@ -1,5 +1,14 @@
+import type { ReactNode } from 'react'
+import { Building2, CreditCard, FileText, Mail, MapPin, Phone, Truck } from 'lucide-react'
 
-import { Mail, Phone, MapPin, Truck, CreditCard } from 'lucide-react'
+type Address = {
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  postcode: string
+  phone: string
+}
 
 interface OrderDetailsProps {
   orderData: {
@@ -8,112 +17,96 @@ interface OrderDetailsProps {
       firstName: string
       lastName: string
       phone: string
+      nip?: string | null
+      companyName?: string | null
     }
-    billingAddress: {
-      firstName: string
-      lastName: string
-      street: string
-      city: string
-      postcode: string
-      phone: string
-    }
-    shippingAddress?: {
-      firstName: string
-      lastName: string
-      street: string
-      city: string
-      postcode: string
-      phone: string
-    }
+    billingAddress: Address
+    shippingAddress?: Address
     shippingMethod: string
     shippingDescription: string
-    paymentMethodIns: string
+    paymentMethodIns?: string | null
     paymentMethod: string
+    documentType?: 'receipt' | 'invoice'
   }
 }
 
-export function OrderDetails({ orderData }: OrderDetailsProps) {
-  const { customer, billingAddress, shippingAddress, shippingMethod, shippingDescription, paymentMethodIns, paymentMethod } = orderData
+type DetailCardProps = {
+  title: string
+  icon: ReactNode
+  children: ReactNode
+}
 
-  const displayShippingAddress = shippingAddress || billingAddress
+const DetailCard = ({ title, icon, children }: DetailCardProps) => (
+  <section className="surface-card rounded-2xl bg-card p-5">
+    <h3 className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+      <span aria-hidden="true" className="[&>svg]:size-4">{icon}</span>
+      {title}
+    </h3>
+    <div className="mt-4 space-y-1 text-sm text-muted-foreground">{children}</div>
+  </section>
+)
+
+const AddressLines = ({ address }: { address: Address }) => (
+  <>
+    <p className="font-semibold text-foreground">{address.firstName} {address.lastName}</p>
+    <p>{address.street}</p>
+    <p>{address.postcode} {address.city}</p>
+    <p>Polska</p>
+  </>
+)
+
+export function OrderDetails({ orderData }: OrderDetailsProps) {
+  const { customer, billingAddress, shippingAddress, shippingDescription, paymentMethodIns, paymentMethod, documentType } = orderData
+  const deliveryAddress = shippingAddress ?? billingAddress
+  const isInvoice = documentType === 'invoice' || Boolean(customer.nip)
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      {/* Dane kupującego */}
-      <div className="p-5 rounded-lg bg-white shadow-sm">
-        <h3 className="font-semibold text-hgold mb-4 pb-3 border-b border-gray-200 flex items-center gap-2 text-sm">
-          <MapPin className="h-4 w-4 text-hgold" />
-          Dane kupującego
-        </h3>
-        <div className="space-y-3 text-sm">
-          <div>
-            <p className="text-gray-900 font-semibold">{billingAddress.firstName} {billingAddress.lastName}</p>
-          </div>
-          <div className="space-y-1 text-gray-600">
-            <p>{billingAddress.street}</p>
-            <p>{billingAddress.postcode} {billingAddress.city}</p>
-            <p>Polska</p>
-          </div>
-          <div className="flex items-center gap-2 pt-2 text-gray-700">
-            <Phone className="h-4 w-4 text-gray-600" />
-            <p>{billingAddress.phone}</p>
-          </div>
-          <div className="flex items-center gap-2 pt-2">
-            <Mail className="h-4 w-4 text-gray-600" />
-            <a href={`mailto:${customer.email}`} className="text-hgold hover:underline">{customer.email}</a>
-          </div>
-        </div>
+    <section aria-labelledby="order-details-title">
+      <h2 id="order-details-title" className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+        Szczegóły zamówienia
+      </h2>
+
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <DetailCard title="Dane kupującego" icon={<Mail />}>
+          {isInvoice && customer.companyName && <p className="font-semibold text-foreground">{customer.companyName}</p>}
+          {!(isInvoice && customer.companyName) && (
+            <p className="font-semibold text-foreground">{billingAddress.firstName} {billingAddress.lastName}</p>
+          )}
+          <p>{billingAddress.street}</p>
+          <p>{billingAddress.postcode} {billingAddress.city}</p>
+          <p className="flex items-center gap-2 pt-3">
+            <Phone className="size-4 shrink-0" aria-hidden="true" />
+            <span className="tabular-nums">{billingAddress.phone}</span>
+          </p>
+          <p className="flex items-center gap-2 break-all">
+            <Mail className="size-4 shrink-0" aria-hidden="true" />
+            <a href={`mailto:${customer.email}`} className="text-foreground underline underline-offset-4">{customer.email}</a>
+          </p>
+        </DetailCard>
+
+        <DetailCard title="Adres dostawy" icon={<MapPin />}>
+          <AddressLines address={deliveryAddress} />
+        </DetailCard>
+
+        <DetailCard title="Dostawa" icon={<Truck />}>
+          <p className="font-semibold text-foreground">{shippingDescription}</p>
+        </DetailCard>
+
+        <DetailCard title="Płatność" icon={<CreditCard />}>
+          <p className="font-semibold text-foreground">{paymentMethod}</p>
+          {paymentMethodIns && <p className="text-pretty">{paymentMethodIns}</p>}
+        </DetailCard>
+
+        <DetailCard title="Dokument zakupu" icon={<FileText />}>
+          <p className="font-semibold text-foreground">{isInvoice ? 'Faktura VAT' : 'Paragon'}</p>
+          {isInvoice && customer.nip && (
+            <p className="flex items-center gap-2">
+              <Building2 className="size-4 shrink-0" aria-hidden="true" />
+              <span>NIP <span className="tabular-nums">{customer.nip}</span></span>
+            </p>
+          )}
+        </DetailCard>
       </div>
-
-      {/* Adres dostawy */}
-      <div className="p-5 rounded-lg bg-white shadow-sm">
-        <h3 className="font-semibold text-hgold mb-4 pb-3 border-b border-gray-200 flex items-center gap-2 text-sm">
-          <MapPin className="h-4 w-4 text-hgold" />
-          Adres dostawy
-        </h3>
-        <div className="space-y-3 text-sm">
-          <div>
-            <p className="text-gray-900 font-semibold">{displayShippingAddress.firstName} {displayShippingAddress.lastName}</p>
-          </div>
-          <div className="space-y-1 text-gray-600">
-            <p>{displayShippingAddress.street}</p>
-            <p>{displayShippingAddress.postcode} {displayShippingAddress.city}</p>
-            <p>Polska</p>
-          </div>
-          <div className="flex items-center gap-2 pt-2 text-gray-700">
-            <Phone className="h-4 w-4 text-gray-600" />
-            <p>{displayShippingAddress.phone}</p>
-          </div>
-          <div className="flex items-center gap-2 pt-2">
-            <Mail className="h-4 w-4 text-gray-600" />
-            <a href={`mailto:${customer.email}`} className="text-hgold hover:underline">{customer.email}</a>
-          </div>
-        </div>
-      </div>
-
-      {/* Metody */}
-      <div className="space-y-4">
-        {/* Metoda dostawy */}
-        <div className="p-5 rounded-lg bg-white shadow-sm">
-          <h3 className="font-semibold text-hgold mb-4 pb-3 border-b border-gray-200 flex items-center gap-2 text-sm ">
-
-
-            <Truck className="h-4 w-4 text-hgold" />
-            Metoda dostawy</h3>
-          <p className="text-gray-900 text-sm ">{shippingDescription}</p>
-        </div>
-
-        {/* Metoda płatności */}
-        <div className="p-5 rounded-lg bg-white shadow-sm">
-          <h3 className="font-semibold text-hgold mb-4 pb-3 border-b border-gray-200 flex items-center gap-2 text-sm">
-
-            <CreditCard className="h-4 w-4 text-hgold" />
-
-            Metoda płatności</h3>
-          <p className="text-gray-900 text-sm ">{paymentMethod}</p>
-          <p className="text-gray-400 text-sm" >{paymentMethodIns}</p>
-        </div>
-      </div>
-    </div>
+    </section>
   )
 }

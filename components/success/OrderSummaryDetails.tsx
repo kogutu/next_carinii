@@ -1,67 +1,112 @@
+import { formatPrice } from '@/lib/formatPrice'
+import { cn } from '@/lib/utils'
+
+type SummaryItem = {
+  name: string
+  sku: string
+  quantity: number
+  image?: string
+  price: number
+}
 
 interface OrderSummaryDetailsProps {
-  items: Array<{
-    name: string
-    sku: string
-    quantity: number
-    image: string,
-    price: number
-  }>
+  items: SummaryItem[]
   subtotal: number
   shipping: number
+  discount?: number
+  couponCode?: string | null
+  shippingDescription?: string
   total: number
 }
 
-export function OrderSummaryDetails({ items, subtotal, shipping, total }: OrderSummaryDetailsProps) {
+// Rozmiar zakodowany w SKU wariantu, np. „…-MO1roz_38” → „38”
+const sizeFromSku = (sku: string): string | null => sku.match(/roz_(\d+(?:[.,]\d+)?)$/i)?.[1] ?? null
+
+type SummaryRowProps = {
+  label: string
+  value: string
+  tone?: 'default' | 'success'
+}
+
+const SummaryRow = ({ label, value, tone = 'default' }: SummaryRowProps) => (
+  <div className="flex items-baseline justify-between gap-4 text-sm">
+    <dt className="text-muted-foreground">{label}</dt>
+    <dd className={cn('tabular-nums text-foreground', tone === 'success' && 'text-success')}>{value}</dd>
+  </div>
+)
+
+export function OrderSummaryDetails({
+  items,
+  subtotal,
+  shipping,
+  discount = 0,
+  couponCode,
+  shippingDescription,
+  total,
+}: OrderSummaryDetailsProps) {
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+
   return (
-    <div className="mt-10 overflow-x-auto">
-      <table className="w-full text-sm border-collapse">
-        <thead>
-          <tr style={{ borderBottom: '1px solid #e5e5e5' }}>
-            <th className="text-left py-3 px-3 font-semibold text-gray-900 text-xs uppercase">Produkt</th>
-            <th className="text-left py-3 px-3 font-semibold text-gray-900 text-xs uppercase">Cena</th>
-            <th className="text-center py-3 px-3 font-semibold text-gray-900 text-xs uppercase">Ilość</th>
-            <th className="text-right py-3 px-3 font-semibold text-gray-900 text-xs uppercase">Wartość</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item, idx) => (
-            <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-              <td className="py-3 px-3">
-                <div className="flex gap-4 items-center">
-                  <img src={item.image} alt="" className="h-20" />
-
-                  <div>
-                    <p className="text-gray-900 font-medium text-sm">{item.name}</p>
-                    <p className="text-gray-500 text-xs mt-1">SKU: {item.sku}</p>
-                  </div>
-                </div>
-              </td>
-              <td className="py-3 px-3 text-gray-700 text-sm">{item.price.toFixed(2)} zł</td>
-              <td className="py-3 px-3 text-center text-gray-700 text-sm">{item.quantity}</td>
-              <td className="py-3 px-3 text-right font-semibold text-gray-900 text-sm">
-                {(item.price * item.quantity).toFixed(2)} zł
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Summary */}
-      <div className="mt-8 space-y-2 text-right max-w-sm ml-auto">
-        <div className="flex justify-between text-gray-700 pb-2 text-sm">
-          <span>Razem (netto):</span>
-          <span className="font-semibold text-gray-900">{subtotal.toFixed(2)} zł</span>
-        </div>
-        <div className="flex justify-between text-gray-700 pb-3 border-b border-gray-200 text-sm">
-          <span>Koszt wysyłki:</span>
-          <span className="font-semibold text-gray-900">{shipping.toFixed(2)} zł</span>
-        </div>
-        <div className="flex justify-between text-base font-bold pt-3 px-4 py-3 rounded-lg bg-hert text-white">
-          <span>RAZEM:</span>
-          <span>{total.toFixed(2)} zł</span>
-        </div>
+    <section aria-labelledby="summary-title" className="surface-card rounded-2xl bg-card p-5 sm:p-6">
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 id="summary-title" className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          Twoje zamówienie
+        </h2>
+        <p className="text-xs tabular-nums text-muted-foreground">{itemCount} szt.</p>
       </div>
-    </div>
+
+      <ul className="mt-5 divide-y divide-border">
+        {items.map((item) => {
+          const size = sizeFromSku(item.sku)
+          return (
+            <li key={`${item.sku}-${item.name}`} className="flex gap-4 py-4 first:pt-0">
+              {item.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={item.image}
+                  alt=""
+                  loading="lazy"
+                  className="h-24 w-20 shrink-0 rounded-lg bg-muted object-cover outline outline-1 -outline-offset-1 outline-black/10"
+                />
+              ) : (
+                <div className="h-24 w-20 shrink-0 rounded-lg bg-muted" aria-hidden="true" />
+              )}
+              <div className="flex min-w-0 flex-1 flex-col justify-between">
+                <div>
+                  <p className="line-clamp-3 text-balance text-sm font-medium text-foreground">{item.name}</p>
+                  <p className="mt-1 text-xs tabular-nums text-muted-foreground">
+                    {size && <>Rozmiar {size} · </>}
+                    Ilość: {item.quantity}
+                  </p>
+                </div>
+                <p className="text-sm font-semibold tabular-nums text-foreground">
+                  {formatPrice(item.price * item.quantity)}
+                </p>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+
+      <dl className="mt-2 space-y-3 border-t border-border pt-5">
+        <SummaryRow label="Produkty" value={formatPrice(subtotal)} />
+        <SummaryRow
+          label={shippingDescription ? `Dostawa (${shippingDescription})` : 'Dostawa'}
+          value={shipping > 0 ? formatPrice(shipping) : 'Gratis'}
+        />
+        {discount > 0 && (
+          <SummaryRow
+            label={couponCode ? `Rabat (${couponCode})` : 'Rabat'}
+            value={`−${formatPrice(discount)}`}
+            tone="success"
+          />
+        )}
+        <div className="flex items-baseline justify-between gap-4 border-t border-border pt-4">
+          <dt className="text-base font-semibold text-foreground">Razem</dt>
+          <dd className="text-2xl font-semibold tabular-nums tracking-tight text-foreground">{formatPrice(total)}</dd>
+        </div>
+        <p className="text-right text-xs text-muted-foreground">Cena zawiera podatek VAT</p>
+      </dl>
+    </section>
   )
 }

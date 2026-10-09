@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { CreditCard } from 'lucide-react'
+import { ApplePayMark, GooglePayMark, MastercardIcon, PayPoIcon, VisaIcon } from '../payments/BrandIcons'
 import { paymentConfig } from '@/lib/payments/config'
 import TpayBlikPayment from './TpayBlikPayment'
 import TpayRedirectButton from './TpayRedirectButton'
@@ -42,8 +43,8 @@ const WalletButtons = ({ oid, amount, onPaid }: WalletButtonsProps) => {
                 paymentConfig.googlepayMode === 'onsite'
                     ? <GooglePayTpayButton oid={oid} amount={amount} onPaid={onPaid} />
                     : (
-                        <TpayRedirectButton oid={oid} method="googlepay" className="bg-black hover:bg-gray-800 text-white">
-                            Zapłać z Google Pay
+                        <TpayRedirectButton oid={oid} method="googlepay" align="center">
+                            Zapłać z <GooglePayMark className="text-base" />
                         </TpayRedirectButton>
                     )
             )}
@@ -52,8 +53,8 @@ const WalletButtons = ({ oid, amount, onPaid }: WalletButtonsProps) => {
                     ? <ApplePayTpayButton oid={oid} amount={amount} onPaid={onPaid} />
                     : isAppleDevice
                         ? (
-                            <TpayRedirectButton oid={oid} method="applepay" className="bg-black hover:bg-gray-800 text-white">
-                                Zapłać z Apple Pay
+                            <TpayRedirectButton oid={oid} method="applepay" align="center">
+                                Zapłać z <ApplePayMark className="text-base" />
                             </TpayRedirectButton>
                         )
                         : <AppleUnavailableNote />
@@ -68,10 +69,10 @@ export default function TpayPaymentPanel({ code, oid, amount, onPaid }: TpayPaym
 
     if (code === 'tpay_card') {
         return (
-            <div className="flex flex-wrap items-start gap-3">
+            <div className="flex flex-col gap-3">
                 {paymentConfig.card === 'tpay' && (
-                    <TpayRedirectButton oid={oid} method="card">
-                        <CreditCard className="w-4 h-4 mr-2" /> Zapłać kartą
+                    <TpayRedirectButton oid={oid} method="card" logos={<><VisaIcon /><MastercardIcon /></>}>
+                        <CreditCard className="size-4" aria-hidden="true" /> Zapłać kartą
                     </TpayRedirectButton>
                 )}
                 <WalletButtons oid={oid} amount={amount} onPaid={onPaid} />
@@ -83,8 +84,8 @@ export default function TpayPaymentPanel({ code, oid, amount, onPaid }: TpayPaym
 
     if (code === 'purchaseorder' && paymentConfig.paypo === 'tpay') {
         return (
-            <TpayRedirectButton oid={oid} method="paypo" className="bg-[#00C853] hover:bg-[#00b34a] text-white">
-                Zapłać z PayPo
+            <TpayRedirectButton oid={oid} method="paypo" tone="light" logos={<PayPoIcon />}>
+                Zapłać z
             </TpayRedirectButton>
         )
     }

@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import PayButton from '../payments/PayButton'
+import { ApplePayMark, GooglePayMark } from '../payments/BrandIcons'
 import { paymentConfig } from '@/lib/payments/config'
 import { isNativeApplePay } from '@/lib/tpay/apple-sdk'
 
@@ -31,26 +32,23 @@ export default function ExpressWalletButtons({ shippingMethod, isBusy, onPay }: 
 
     if (shippingMethod === COD_SHIPPING_METHOD || (!showGoogle && !showApple)) return null
 
-    const buttonClass =
-        'h-11 rounded-md bg-black text-white text-sm font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
-
     return (
-        <div className="space-y-2">
-            <div className="flex items-center gap-3 text-xs text-gray-400">
-                <span className="h-px flex-1 bg-gray-200" />
+        <div className="space-y-3">
+            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="h-px flex-1 bg-border" />
                 lub zapłać od razu
-                <span className="h-px flex-1 bg-gray-200" />
+                <span className="h-px flex-1 bg-border" />
             </div>
             <div className={`grid gap-2 ${showGoogle && showApple ? 'grid-cols-2' : 'grid-cols-1'}`}>
                 {showGoogle && (
-                    <button type="button" disabled={isBusy} onClick={() => onPay('googlepay')} className={buttonClass} aria-label="Zapłać z Google Pay">
-                        {isBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Google Pay'}
-                    </button>
+                    <PayButton align="center" isLoading={isBusy} loadingLabel="Chwila…" onClick={() => onPay('googlepay')} aria-label="Zapłać z Google Pay">
+                        <GooglePayMark className="text-base" />
+                    </PayButton>
                 )}
                 {showApple && (
-                    <button type="button" disabled={isBusy} onClick={() => onPay('applepay')} className={buttonClass} aria-label="Zapłać z Apple Pay">
-                        {isBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apple Pay'}
-                    </button>
+                    <PayButton align="center" isLoading={isBusy} loadingLabel="Chwila…" onClick={() => onPay('applepay')} aria-label="Zapłać z Apple Pay">
+                        <ApplePayMark className="text-base" />
+                    </PayButton>
                 )}
             </div>
         </div>

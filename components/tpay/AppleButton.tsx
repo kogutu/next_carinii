@@ -35,7 +35,7 @@ export default function AppleButton({ onPress, type }: AppleButtonProps) {
             width: '100%',
             '--apple-pay-button-width': '100%',
             '--apple-pay-button-height': '44px',
-            '--apple-pay-button-border-radius': '6px',
+            '--apple-pay-button-border-radius': '12px',
         },
     })
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { generateOrderNumber } from '@/lib/orderNumber'
 
 type OrderAddress = {
     firstName: string
@@ -110,7 +111,7 @@ async function sendToMagento(orderData: OrderData) {
     // Transformacja danych na format Magento 2
     const magentoOrderPayload = {
         entity: {
-            increment_id: `H-${Date.now()}`,
+            increment_id: generateOrderNumber(),
             status: 'pending',
             state: 'new',
             customer_email: orderData.customer.email,

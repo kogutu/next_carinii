@@ -72,6 +72,7 @@ export default function P24GooglePayButton({ oid, amount, onPaid }: P24GooglePay
                     allowedPaymentMethods: allowedPaymentMethods(config),
                     buttonType: 'pay',
                     buttonSizeMode: 'fill',
+                    buttonRadius: 12,
                 }),
             )
         }
@@ -83,10 +84,10 @@ export default function P24GooglePayButton({ oid, amount, onPaid }: P24GooglePay
     }, [])
 
     return (
-        <div className="space-y-2 w-full max-w-xs">
+        <div className="w-full space-y-2">
             <div ref={containerRef} className={`h-11 w-full ${status !== 'idle' ? 'opacity-50 pointer-events-none' : ''}`} />
-            {status === 'confirming' && <p role="status" className="text-sm text-gray-700">Potwierdzamy płatność…</p>}
-            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+            {status === 'confirming' && <p role="status" className="text-sm text-muted-foreground">Potwierdzamy płatność…</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>
     )
 }

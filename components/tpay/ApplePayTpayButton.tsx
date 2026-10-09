@@ -18,7 +18,7 @@ const DISPLAY_NAME = 'Carinii'
 
 // Komunikat zamiast cichego ukrywania opcji (np. Safari bez karty w Wallet albo przeglądarka bez obsługi)
 export const AppleUnavailableNote = () => (
-    <p className="max-w-xs text-xs text-gray-500">
+    <p className="text-pretty text-xs text-muted-foreground">
         Apple Pay jest tu niedostępny. Wymaga połączenia HTTPS oraz Safari albo przeglądarki z iPhonem skanującym kod QR (karta dodana do Wallet).
     </p>
 )
@@ -123,12 +123,12 @@ export default function ApplePayTpayButton({ oid, amount, onPaid }: ApplePayTpay
     }
 
     return (
-        <div className="space-y-2 w-full max-w-xs">
+        <div className="w-full space-y-2">
             {/* oficjalny element Apple (SDK): ten sam przycisk w Safari i w innych przeglądarkach */}
             <div className={isProcessing ? 'opacity-50 pointer-events-none' : ''}>
                 <AppleButton type="pay" onPress={startPayment} />
             </div>
-            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>
     )
 }

@@ -1,19 +1,21 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
-import { Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import PayButton from '@/components/payments/PayButton'
 import { PaymentRequestError, startRedirectPayment, type RedirectMethod } from '@/lib/tpay/browser-api'
 
 type TpayRedirectButtonProps = {
     oid: string
     method: RedirectMethod
     children: ReactNode
-    className?: string
+    // znaki płatności po prawej stronie przycisku
+    logos?: ReactNode
+    tone?: 'dark' | 'light'
+    align?: 'between' | 'center'
 }
 
 // Tworzy transakcję w Tpay i przenosi klienta do panelu płatności (karta, Tpay, PayPo).
-export default function TpayRedirectButton({ oid, method, children, className }: TpayRedirectButtonProps) {
+export default function TpayRedirectButton({ oid, method, children, logos, tone, align }: TpayRedirectButtonProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
 
@@ -32,11 +34,11 @@ export default function TpayRedirectButton({ oid, method, children, className }:
     }
 
     return (
-        <div className="space-y-2">
-            <Button onClick={handleClick} disabled={isLoading} size="lg" className={className ?? 'bg-[#441c49] hover:bg-[#3d1841] text-white'}>
-                {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Przekierowuję…</> : children}
-            </Button>
-            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+        <div className="w-full space-y-2">
+            <PayButton onClick={handleClick} isLoading={isLoading} logos={logos} tone={tone} align={align}>
+                {children}
+            </PayButton>
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>
     )
 }

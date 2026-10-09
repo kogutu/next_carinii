@@ -140,7 +140,7 @@ Authorization: Bearer {ORDER_MARK_PAID_TOKEN}      (token = mark_paid_token z pa
 Content-Type: application/json
 
 {
-  "oid": "H-1790000000000",       // numer zamówienia (increment_id)
+  "oid": "CAR-261009-7K3QXM",      // numer zamówienia (increment_id)
   "provider": "tpay",
   "transactionId": "TR-XXXX-XXXX",
   "amount": 549.00,                // faktycznie zapłacona kwota
