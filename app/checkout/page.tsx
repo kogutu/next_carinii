@@ -17,10 +17,10 @@ export default function CheckoutPage() {
 
     if (items.length === 0) {
         return (
-            <div className="max-w-4xl mx-auto py-20 text-center">
+            <div className="mx-auto max-w-4xl px-4 py-20 text-center">
                 <div className="flex justify-center mb-6">
                     <svg
-                        className="w-32 h-32 text-gray-400 animate-bounce"
+                        className="size-28 text-muted-foreground/60"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -33,10 +33,10 @@ export default function CheckoutPage() {
                         />
                     </svg>
                 </div>
-                <h1 className="text-3xl font-semibold mb-4 text-gray-800">
+                <h1 className="mb-4 text-balance text-3xl font-semibold tracking-tight text-foreground">
                     Twój koszyk jest pusty
                 </h1>
-                <p className="text-gray-600 mb-6">
+                <p className="mb-6 text-pretty text-muted-foreground">
                     Wygląda na to, że nie dodałeś jeszcze żadnych produktów
                 </p>
                 <div className="max-w-md mx-auto mb-6">
@@ -44,7 +44,7 @@ export default function CheckoutPage() {
                 </div>
                 <a
                     href="/"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-hert text-white rounded-lg hover:bg-hert/90 transition-all hover:shadow-lg hover:-translate-y-0.5"
+                    className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-[transform,background-color] duration-150 hover:bg-menuhover active:scale-97 motion-reduce:transition-none motion-reduce:active:scale-100"
                 >
                     <ArrowLeft />
                     <span>Wróć do sklepu</span>

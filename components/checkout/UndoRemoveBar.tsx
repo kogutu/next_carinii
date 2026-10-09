@@ -22,12 +22,12 @@ export default function UndoRemoveBar() {
     if (!removedItem) return null
 
     return (
-        <div role="status" className="flex items-center justify-between gap-3 rounded-lg bg-[#f8f4f1] px-3 py-2 text-xs text-gray-700">
+        <div role="status" className="flex items-center justify-between gap-3 rounded-xl bg-muted/60 px-3 py-2 text-xs text-muted-foreground">
             <span className="truncate">Usunięto: {removedItem.name.split('CARINII--')[0]}</span>
             <button
                 type="button"
                 onClick={restoreRemovedItem}
-                className="flex items-center gap-1 font-semibold text-[#441c49] underline flex-shrink-0"
+                className="flex min-h-9 shrink-0 items-center gap-1 font-semibold text-foreground underline underline-offset-4"
             >
                 <Undo2 className="w-3.5 h-3.5" /> Cofnij
             </button>

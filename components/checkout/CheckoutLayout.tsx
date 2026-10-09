@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import { InfoIcon } from 'lucide-react'
 import Link from 'next/link'
 import CustomerForm from '@/components/checkout/CustomerForm'
 import InvoiceSection from '@/components/checkout/InvoiceSection'
@@ -29,11 +28,16 @@ import {
 } from '@/hooks/useCheckoutValidation'
 import { mapAccountToCheckout, type AccountData } from '@/lib/checkoutAccount'
 import { readCheckoutDraft, useCheckoutDraftStore } from '@/stores/checkoutDraftStore'
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
+import { cn } from '@/lib/utils'
 
 const DEFAULT_SHIPPING_METHOD = 'dhl_dhl24pl_courier'
 const DEFAULT_PAYMENT_METHOD = 'banktransfer'
 const DRAFT_SAVE_DELAY_MS = 600
+
+// Karty sekcji jak na stronie zamówienia: cień zamiast ramki, zaokrąglenie 16 px
+const CARD = 'surface-card rounded-2xl bg-card p-5 sm:p-8'
+// Wejście sekcji: lekkie wsunięcie od dołu, kolejne bloki z opóźnieniem ~100 ms
+const ENTER = 'animate-in fade-in slide-in-from-bottom-3 duration-500 fill-mode-backwards motion-reduce:animate-none'
 
 const CUSTOMER_FIELD_ORDER = ['firstName', 'lastName', 'email', 'phone', 'street', 'postcode', 'city']
 const INVOICE_FIELD_ORDER = ['nip', 'companyName', 'street', 'postcode', 'city']
@@ -178,39 +182,50 @@ export default function CheckoutLayout() {
     const customerHasErrors = submitAttempted && !customerComplete
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-white via-[#f8f4f1] to-white relative z-0">
-            <div className="max-w-7xl mx-auto py-12 px-4">
-                <h1 className="text-4xl font-bold text-[#441c49] mb-4">
-                    Koszyk
-                </h1>
-                <p className="text-gray-600 mb-8">Uzupełnij dane, aby złożyć zamówienie</p>
+        <div className="relative z-0 min-h-screen bg-background">
+            <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+                <header className={cn(ENTER, 'max-w-3xl')}>
+                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">Zamówienie</p>
+                    <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                        Koszyk
+                    </h1>
+                    <p className="mt-3 text-pretty text-base text-muted-foreground">
+                        Uzupełnij dane, aby złożyć zamówienie.
+                    </p>
+                </header>
+
                 {sessionUser?.user && (
-                    <div className="mb-4">
-                        <Alert>
-                            <InfoIcon />
-                            <AlertTitle>Jesteś zalogowany!</AlertTitle>
-                            <AlertDescription>
-                                <div className="flex gap-2 items-center">  Jesteś zalogowany jako użytkownik: <Link className="bg-hgold py-2 px-4 text-white rounded-2xl" href="/klient/panel/profil">
-                                    {sessionUser?.user.email}</Link>
-                                    <span className="cursor-pointer underline text-xs" onClick={async () => { await signOut({ callbackUrl: "/checkout" }) }}>wyloguj się</span>
-                                </div>
-                            </AlertDescription>
-                        </Alert>
+                    <div className={cn(ENTER, 'mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl bg-muted/60 px-4 py-2 text-sm text-muted-foreground')}>
+                        <span>
+                            Jesteś zalogowany jako{' '}
+                            <Link className="font-medium text-foreground underline underline-offset-4" href="/klient/panel/profil">
+                                {sessionUser.user.email}
+                            </Link>
+                        </span>
+                        <button
+                            type="button"
+                            className="inline-flex h-11 items-center text-foreground underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            onClick={async () => { await signOut({ callbackUrl: '/checkout' }) }}
+                        >
+                            Wyloguj się
+                        </button>
                     </div>
                 )}
-                <div className="block md:grid md:grid-cols-3 gap-8">
-                    {/* Left Column - Forms */}
-                    <div className="md:col-span-2 space-y-8">
-                        <div className="bg-white rounded-lg border p-8 shadow-sm">
+
+                <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-start lg:gap-12">
+                    {/* Lewa kolumna: formularze */}
+                    <div className="space-y-6">
+                        <div className={cn(ENTER, 'delay-100', CARD)}>
                             <SectionHeader
-                                title="1. Dane i adres dostawy"
+                                step={1}
+                                title="Dane i adres dostawy"
                                 complete={customerComplete}
                                 hasErrors={customerHasErrors}
                             />
                             {hasSavedDraft && !isPristine(customer) && (
-                                <p className="text-xs text-gray-500 -mt-3 mb-4">
+                                <p className="-mt-3 mb-4 text-xs text-muted-foreground">
                                     Dane zapamiętane w tej przeglądarce.{' '}
-                                    <button type="button" onClick={handleClearSavedData} className="underline hover:text-gray-700">
+                                    <button type="button" onClick={handleClearSavedData} className="underline underline-offset-4 hover:text-foreground">
                                         Wyczyść
                                     </button>
                                 </p>
@@ -232,7 +247,7 @@ export default function CheckoutLayout() {
                             />
                         </div>
 
-                        <div className="bg-white rounded-lg border py-8 px-8 shadow-sm">
+                        <div className={cn(ENTER, 'delay-200', CARD)}>
                             <ShippingMethod
                                 init={shippingMethod}
                                 point={inpost}
@@ -243,7 +258,7 @@ export default function CheckoutLayout() {
                             />
                         </div>
 
-                        <div className="bg-white rounded-lg border p-8 shadow-sm">
+                        <div className={cn(ENTER, 'delay-300', CARD)}>
                             <PaymentMethod
                                 init={paymentMethod}
                                 shippingMethod={shippingMethod}
@@ -254,19 +269,17 @@ export default function CheckoutLayout() {
                         </div>
                     </div>
 
-                    {/* Right Column - Only Order Summary */}
-                    <div className="md:col-span-1">
-                        <div className="sticky top-8">
-                            <FloatingValidationPanel />
+                    {/* Prawa kolumna: podsumowanie */}
+                    <div className={cn(ENTER, 'delay-200 lg:sticky lg:top-24')}>
+                        <FloatingValidationPanel />
 
-                            <OrderSummary
-                                checkoutData={checkoutData}
-                                isTermsAccepted={agreeToTerms}
-                                termsError={submitAttempted ? errors.terms : ''}
-                                onTermsChange={setAgreeToTerms}
-                                onValidate={handleValidate}
-                            />
-                        </div>
+                        <OrderSummary
+                            checkoutData={checkoutData}
+                            isTermsAccepted={agreeToTerms}
+                            termsError={submitAttempted ? errors.terms : ''}
+                            onTermsChange={setAgreeToTerms}
+                            onValidate={handleValidate}
+                        />
                     </div>
                 </div>
             </div>

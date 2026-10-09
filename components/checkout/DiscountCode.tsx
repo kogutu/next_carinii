@@ -87,24 +87,24 @@ export default function DiscountCode() {
         return (
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-[#441c49]">
+                    <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
                         Kod kuponu
                     </label>
                     <button
                         onClick={handleRemoveCoupon}
-                        className="text-sm text-red-600 hover:text-red-800 font-medium"
+                        className="inline-flex min-h-11 items-center text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-destructive"
                     >
                         Usuń kod
                     </button>
                 </div>
-                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm flex items-center justify-between">
+                <div className="flex items-center justify-between rounded-xl bg-success-soft px-4 py-3 text-sm text-success">
                     <span className="flex items-center gap-2">
                         <span>✓</span>
                         <span>Kod {couponCode} został użyty</span>
                     </span>
                     <button
                         onClick={handleRemoveCoupon}
-                        className="text-red-500 hover:text-red-700 text-xl font-bold"
+                        className="flex size-9 items-center justify-center rounded-lg text-xl font-bold text-success hover:bg-success/10"
                         title="Usuń kod"
                     >
                         ×
@@ -116,7 +116,7 @@ export default function DiscountCode() {
 
     return (
         <div className="space-y-2">
-            <label className="text-sm font-semibold text-[#441c49]">
+            <label className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
                 Kod kuponu
             </label>
             <div className="flex gap-2">
@@ -127,15 +127,15 @@ export default function DiscountCode() {
                     onChange={e => setCouponCode(e.target.value)}
                     placeholder="Wpisz kod kuponu"
                     disabled={isCouponLoading}
-                    className={`flex-1 border border-hborder p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#441c49] ${isCouponLoading ? 'bg-gray-100 cursor-not-allowed' : ''
+                    className={`h-11 min-w-0 flex-1 rounded-xl border border-hborder/50 px-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-foreground ${isCouponLoading ? 'cursor-not-allowed bg-muted' : ''
                         }`}
                 />
                 <button
                     onClick={handleCoupon}
                     disabled={isCouponLoading || !couponCode.trim()}
-                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center justify-center min-w-[80px] ${isCouponLoading || !couponCode.trim()
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-[#441c49] hover:bg-[#3d1841] text-white'
+                    className={`flex h-11 min-w-20 items-center justify-center rounded-xl px-4 text-sm font-semibold transition-colors ${isCouponLoading || !couponCode.trim()
+                        ? 'cursor-not-allowed bg-muted text-muted-foreground'
+                        : 'bg-primary text-primary-foreground hover:bg-menuhover'
                         }`}
                 >
                     {isCouponLoading ? (

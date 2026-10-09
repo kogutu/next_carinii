@@ -1,9 +1,12 @@
 'use client'
 
-import { AlertCircle, CheckCircle, Circle } from 'lucide-react'
+import { Check } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type SectionHeaderProps = {
     title: string
+    // numer kroku pokazywany w kółku, dopóki sekcja nie jest kompletna
+    step: number
     description?: string
     hasErrors?: boolean
     complete?: boolean
@@ -11,25 +14,28 @@ type SectionHeaderProps = {
 
 export default function SectionHeader({
     title,
+    step,
     description,
     hasErrors = false,
     complete = false,
 }: SectionHeaderProps) {
     return (
-        <div className="mb-6 pb-4 border-b border-gray-200">
-            <div className="flex items-center gap-3 mb-2">
-                {hasErrors ? (
-                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                ) : complete ? (
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                ) : (
-                    <Circle className="w-5 h-5 text-gray-300 flex-shrink-0" />
+        <div className="mb-6 flex items-start gap-3">
+            <span
+                aria-hidden="true"
+                className={cn(
+                    'mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 motion-reduce:transition-none',
+                    hasErrors && 'bg-destructive text-destructive-foreground',
+                    !hasErrors && complete && 'bg-primary text-primary-foreground',
+                    !hasErrors && !complete && 'bg-background text-foreground ring-2 ring-foreground',
                 )}
-                <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+            >
+                {hasErrors ? '!' : complete ? <Check className="size-3.5" strokeWidth={3} /> : step}
+            </span>
+            <div className="min-w-0">
+                <h2 className="text-balance text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+                {description && <p className="mt-1 text-pretty text-sm text-muted-foreground">{description}</p>}
             </div>
-            {description && (
-                <p className="text-sm text-gray-600 ml-8">{description}</p>
-            )}
         </div>
     )
 }

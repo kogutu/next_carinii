@@ -1,9 +1,9 @@
 'use client'
 
 import { useCartStore } from '@/stores/cartZustand'
-import { Button } from '@/components/ui/button'
+import PayButton from '@/components/payments/PayButton'
 import { useEffect, useRef, useState } from 'react'
-import { Trash2, Plus, Minus, ShoppingBasket, Loader2 } from 'lucide-react'
+import { Trash2, Plus, Minus, ShoppingBasket } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import DiscountCode from './DiscountCode'
 import UndoRemoveBar from './UndoRemoveBar'
@@ -286,65 +286,66 @@ export default function OrderSummary({
             {/* Fullscreen Loader */}
             {isSubmitting && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-2xl p-8 shadow-2xl flex flex-col items-center gap-4 max-w-md mx-4">
+                    <div className="mx-4 flex max-w-md flex-col items-center gap-4 rounded-2xl bg-card p-8 shadow-2xl">
                         <div className="relative">
-                            <div className="w-20 h-20 border-4 border-gray-200 border-t-[#441c49] rounded-full animate-spin"></div>
+                            <div className="size-20 animate-spin rounded-full border-4 border-border border-t-foreground motion-reduce:animate-none"></div>
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-10 h-10 border-4 border-gray-200 border-b-[#441c49] rounded-full animate-spin animate-reverse"></div>
+                                <div className="size-10 animate-spin rounded-full border-4 border-border border-b-foreground animate-reverse motion-reduce:animate-none"></div>
                             </div>
                         </div>
                         <div className="text-center space-y-2">
-                            <h3 className="text-xl font-bold text-[#441c49]">
+                            <h3 className="text-xl font-semibold text-foreground">
                                 Przetwarzanie zamówienia
                             </h3>
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-sm text-muted-foreground">
                                 Prosimy o cierpliwość. Trwa wysyłanie Twojego zamówienia...
                             </p>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-muted-foreground">
                                 Nie zamykaj okna przeglądarki
                             </p>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                            <div className="h-full bg-[#441c49] rounded-full animate-progress"></div>
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                            <div className="h-full animate-progress rounded-full bg-foreground"></div>
                         </div>
                     </div>
                 </div>
             )}
 
-            <div ref={summaryRef} id="order-summary" className="border border-hborder rounded-lg p-6 space-y-6 bg-white mt-8 md:mt-0 scroll-mt-4">
-                <h2 className="text-xl font-bold text-[#441c49]">
+            <div ref={summaryRef} id="order-summary" className="surface-card scroll-mt-4 space-y-6 rounded-2xl bg-card p-5 sm:p-6">
+                <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
                     Podsumowanie zamówienia
                 </h2>
 
                 <UndoRemoveBar />
 
                 {/* Cart Items */}
-                <div className="space-y-4 pb-4 border-b-2 border-hborder">
+                <div className="space-y-5 border-b border-border pb-5">
                     {items.map((item, index) => (
                         <div key={index} className="flex gap-3">
                             {item.image && (
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    className="w-16 h-16 rounded object-contain border border-hborder"
+                                    className="h-24 w-20 shrink-0 rounded-lg bg-muted object-cover outline outline-1 -outline-offset-1 outline-black/10"
                                 />
                             )}
                             <div className="flex-1">
-                                <p className="font-semibold text-sm text-[#441c49]">   {item.name.split("CARINII--")[0]} <br /> {item.sku}</p>
+                                <p className="text-balance text-sm font-medium text-foreground">{item.name.split("CARINII--")[0]}</p>
+                                <p className="mt-0.5 text-xs text-muted-foreground">{item.sku}</p>
                                 {item.variant.size && (
-                                    <div className="text-xs text-gray-600 mb-2 flex gap-4 justify-between">
+                                    <div className="mb-2 mt-1 flex justify-between gap-4 text-xs text-muted-foreground">
                                         Rozmiar : {item.variant.size}
 
                                     </div>
                                 )}
-                                <div className="text-xs text-gray-600 mb-2 flex gap-4 justify-between">
+                                <div className="mb-2 flex items-center justify-between gap-4 text-xs tabular-nums text-muted-foreground">
 
                                     <div className="flex gap-4">
                                         Cena : {formatPLN((item.price))}
 
                                         {(item.discount_value) && (
                                             <div>
-                                                <span className='text-red-400'>Rabat:</span> - {formatPLN(item.discount_value)}
+                                                <span className='text-destructive'>Rabat:</span> - {formatPLN(item.discount_value)}
                                                 <br />
                                             </div>
 
@@ -353,7 +354,7 @@ export default function OrderSummary({
 
                                     <button
                                         onClick={() => removeItem(item)}
-                                        className=" hover:bg-red-50 rounded transition-colors text-red-500 hover:text-red-700"
+                                        className="-my-2 -mr-2 flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                         aria-label="Usuń produkt"
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -364,11 +365,11 @@ export default function OrderSummary({
                                     <div className="flex items-center gap-1">
                                         <button
                                             onClick={() => updateQty(item, item.qty - 1)}
-                                            className="p-2 rounded bg-gray-200 hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="flex size-9 items-center justify-center rounded-lg bg-muted transition-colors hover:bg-muted/70 active:scale-97 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:active:scale-100"
                                             aria-label="Zmniejsz ilość"
                                             disabled={item.qty <= 1}
                                         >
-                                            <Minus className="w-3 h-3 text-gray-700" />
+                                            <Minus className="size-3.5 text-foreground" aria-hidden="true" />
                                         </button>
 
                                         <input
@@ -376,22 +377,22 @@ export default function OrderSummary({
                                             min="1"
                                             value={item.qty}
                                             onChange={(e) => updateQty(item, parseInt(e.target.value) || 1)}
-                                            className="w-14 h-8 text-center border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#441c49] focus:border-transparent"
+                                            className="h-9 w-14 rounded-lg border border-hborder/50 text-center text-sm tabular-nums focus:border-transparent focus:outline-none focus:ring-2 focus:ring-foreground"
                                             aria-label="Ilość produktu"
                                         />
 
                                         <button
                                             onClick={() => updateQty(item, item.qty + 1)}
-                                            className="p-2 rounded bg-gray-200 hover:bg-gray-300 transition-colors"
+                                            className="flex size-9 items-center justify-center rounded-lg bg-muted transition-colors hover:bg-muted/70 active:scale-97 motion-reduce:active:scale-100"
                                             aria-label="Zwiększ ilość"
                                         >
-                                            <Plus className="w-3 h-3 text-gray-700" />
+                                            <Plus className="size-3.5 text-foreground" aria-hidden="true" />
                                         </button>
                                     </div>
 
 
-                                    <div className="font-medium text-sm">
-                                        <span className='text-gray-400 '>Razem:</span>{' '}
+                                    <div className="text-sm font-semibold tabular-nums text-foreground">
+                                        <span className='font-normal text-muted-foreground'>Razem:</span>{' '}
                                         {formatPLN(itemTotalBrutto(item))}
                                     </div>
                                 </div>
@@ -406,34 +407,34 @@ export default function OrderSummary({
                 <DiscountCode />
 
                 {/* Price Summary */}
-                <div className="space-y-2 py-4 border-y-2 border-hborder">
+                <div className="space-y-3 border-b border-border pb-5 tabular-nums">
                     <div className="flex justify-between text-sm">
-                        <span className="text-gray-700">Podsuma</span>
-                        <span className="font-medium">
+                        <span className="text-muted-foreground">Produkty</span>
+                        <span className="font-medium text-foreground">
                             {formatPLN(sumRegularPrice)}
                         </span>
                     </div>
                     {sumDiscount > 0 && (
                         <div className="flex justify-between text-sm">
-                            <span className="text-red-700">Rabat:</span>
-                            <span className="font-medium">
+                            <span className="text-success">Rabat:</span>
+                            <span className="font-medium text-success">
                                 - {formatPLN(sumDiscount)}
                             </span>
                         </div>
                     )}
                     <div className="flex justify-between text-sm">
-                        <span className="text-gray-700">Wysyłka:</span>
-                        <span className="font-medium">
+                        <span className="text-muted-foreground">Wysyłka:</span>
+                        <span className="font-medium text-foreground">
                             {formatPLN(shippingBrutto)}
                         </span>
                     </div>
 
 
-                    <div className="flex justify-between text-lg font-bold text-[#441c49] pt-2">
-                        <span>Do zapłaty:</span>
-                        <span>
-                            {formatPLN(grandTotalBrutto)} brutto<br />
-                            <div className="text-xs w-full text-gray-400 text-right"> {formatPLN(grandTotalNetto)} netto</div>
+                    <div className="flex items-baseline justify-between gap-4 border-t border-border pt-4">
+                        <span className="text-base font-semibold text-foreground">Do zapłaty:</span>
+                        <span className="text-right">
+                            <span className="block text-2xl font-semibold tracking-tight text-foreground">{formatPLN(grandTotalBrutto)}</span>
+                            <span className="block text-xs text-muted-foreground">brutto, {formatPLN(grandTotalNetto)} netto</span>
                         </span>
                     </div>
                 </div>
@@ -442,21 +443,21 @@ export default function OrderSummary({
                 <div>
                     {noteOpen ? (
                         <label className="block">
-                            <span className="text-xs text-gray-600">Komentarz do zamówienia (opcjonalnie)</span>
+                            <span className="text-xs text-muted-foreground">Komentarz do zamówienia (opcjonalnie)</span>
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
                                 maxLength={500}
                                 rows={3}
                                 placeholder="np. uwagi dla kuriera, preferowane godziny dostawy"
-                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#441c49] focus:border-transparent"
+                                className="mt-1 w-full rounded-xl border border-hborder/50 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-foreground"
                             />
                         </label>
                     ) : (
                         <button
                             type="button"
                             onClick={() => setNoteOpen(true)}
-                            className="text-xs text-gray-600 underline hover:text-gray-900"
+                            className="inline-flex min-h-11 items-center text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
                         >
                             Dodaj komentarz do zamówienia
                         </button>
@@ -472,13 +473,13 @@ export default function OrderSummary({
                             checked={agreeToTerms}
                             onChange={() => handleTermsChange(!agreeToTerms)}
                             aria-invalid={!!termsError}
-                            className="w-5 h-5 accent-[#441c49] mt-0.5 flex-shrink-0"
+                            className="mt-0.5 size-5 shrink-0 accent-black"
                         />
-                        <span className={`text-xs ${termsError ? 'text-red-500' : agreeToTerms ? 'text-green-600' : 'text-gray-700'}`}>
+                        <span className={`text-pretty text-xs ${termsError ? 'text-destructive' : agreeToTerms ? 'text-success' : 'text-muted-foreground'}`}>
                             <span className="font-semibold">*</span> Potwierdzam, że zapoznałem się i akceptuję regulamin sklepu internetowego i politykę prywatności.   Wyrażam zgodę na przesyłanie mi za pomocą środków komunikacji elektronicznej informacji handlowej przez lub na zlecenie Carinii, w rozumieniu ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną.
                         </span>
                     </label>
-                    {termsError && <p className="text-xs text-red-500">{termsError}</p>}
+                    {termsError && <p role="alert" className="text-xs text-destructive">{termsError}</p>}
 
                     {/* <label className="flex items-start gap-3 cursor-pointer">
                         <input
@@ -495,32 +496,22 @@ export default function OrderSummary({
 
                 {/* Error Message */}
                 {submitError && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    <div role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
                         {submitError}
                     </div>
                 )}
 
                 {/* Submit Button */}
-                <Button
+                <PayButton
+                    align="center"
+                    isLoading={isSubmitting}
+                    loadingLabel="Wysyłanie…"
                     onClick={() => handleSubmitOrder()}
-                    disabled={isSubmitting}
-                    className={`w-full h-12 font-semibold text-white rounded-lg transition-all duration-300 ${!isSubmitting
-                        ? 'bg-[#441c49] hover:bg-[#3d1841] hover:shadow-xl hover:shadow-purple-500/50 hover:-translate-y-0.5 cursor-pointer border-2 border-white/20'
-                        : 'bg-gray-400 cursor-not-allowed'
-                        }`}
+                    className="h-12 text-base"
                 >
-                    {isSubmitting ? (
-                        <>
-                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                            Wysyłanie...
-                        </>
-                    ) : (
-                        <>
-                            <ShoppingBasket className="w-8 h-8 mr-2" />
-                            Złóż zamówienie
-                        </>
-                    )}
-                </Button>
+                    <ShoppingBasket className="size-5" aria-hidden="true" />
+                    Złóż zamówienie
+                </PayButton>
 
                 <ExpressWalletButtons
                     shippingMethod={checkoutData.shippingMethod}
@@ -529,7 +520,7 @@ export default function OrderSummary({
                 />
 
                 {/* Admin Info */}
-                <div className="bg-white text-xs text-gray-400 space-y-2">
+                <div className="space-y-2 text-xs text-muted-foreground">
                     <p>
                         <span className="font-semibold">Ochrona danych:</span> Administratorem danych osobowych zbieranych za pośrednictwem sklepu internetowego jest Z.P.O. CARINII,ul. Warszawska 78,08-450 Łaskarzew.
                     </p>
@@ -541,18 +532,18 @@ export default function OrderSummary({
             </div>
 
             {!summaryVisible && (
-                <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t shadow-[0_-4px_12px_rgba(0,0,0,0.08)] px-4 py-3 flex items-center justify-between gap-3">
+                <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 bg-background px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] lg:hidden">
                     <div className="leading-tight">
-                        <p className="text-xs text-gray-500">Do zapłaty</p>
-                        <p className="font-bold text-[#441c49]">{formatPLN(grandTotalBrutto)}</p>
+                        <p className="text-xs text-muted-foreground">Do zapłaty</p>
+                        <p className="text-lg font-semibold tabular-nums text-foreground">{formatPLN(grandTotalBrutto)}</p>
                     </div>
-                    <Button
-                        type="button"
+                    <PayButton
+                        align="center"
+                        className="w-auto px-6"
                         onClick={() => summaryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                        className="bg-[#441c49] hover:bg-[#3d1841] text-white"
                     >
                         Do podsumowania
-                    </Button>
+                    </PayButton>
                 </div>
             )}
 

@@ -70,12 +70,12 @@ export default function CustomerForm({ value, onChange, errors, showAllErrors }:
                     onBlur={touch('email')}
                     error={errorFor('email')}
                 />
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-[7rem_minmax(0,1fr)] gap-2">
                     <FormSelect
                         name="phoneCode"
                         label="Kierunkowy"
                         autoComplete="tel-country-code"
-                        className="col-span-2"
+                        display={value.phoneCode}
                         value={value.phoneCode}
                         onChange={(phoneCode) => update({ phoneCode })}
                         options={PHONE_CODE_OPTIONS}
@@ -86,7 +86,6 @@ export default function CustomerForm({ value, onChange, errors, showAllErrors }:
                         type="tel"
                         inputMode="tel"
                         autoComplete="tel-national"
-                        className="col-span-3"
                         value={value.phone}
                         onChange={(phone) => update({ phone: formatPhone(phone) })}
                         onBlur={touch('phone')}

@@ -61,12 +61,12 @@ export default function FloatingValidationPanel() {
     const totalErrors = sections.reduce((sum, section) => sum + section.messages.length, 0)
 
     return (
-        <div role="alert" className="mb-3 bg-white rounded-lg border border-red-300 shadow-sm overflow-hidden">
+        <div role="alert" className="surface-card mb-4 overflow-hidden rounded-2xl bg-card">
             <div className="flex items-center gap-3 px-4 py-3">
-                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+                <AlertCircle className="size-5 shrink-0 text-destructive" aria-hidden="true" />
                 <div>
-                    <p className="font-semibold text-red-700 text-sm">Uzupełnij pola</p>
-                    <p className="text-xs text-gray-500">do poprawy: {totalErrors}</p>
+                    <p className="text-sm font-semibold text-foreground">Uzupełnij pola</p>
+                    <p className="text-xs tabular-nums text-muted-foreground">do poprawy: {totalErrors}</p>
                 </div>
             </div>
             <ul className="px-4 pb-3 space-y-1.5">
@@ -75,7 +75,7 @@ export default function FloatingValidationPanel() {
                         <button
                             type="button"
                             onClick={() => scrollTo(section.anchorId)}
-                            className="w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded text-xs font-medium bg-red-50 text-red-700 hover:bg-red-100 transition-colors text-left"
+                            className="flex min-h-10 w-full items-center justify-between gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-left text-xs font-medium text-destructive transition-colors hover:bg-destructive/15"
                         >
                             <span className="truncate">{section.label}</span>
                             <span className="flex-shrink-0">{section.messages.length}</span>

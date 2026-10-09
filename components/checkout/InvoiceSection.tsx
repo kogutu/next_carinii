@@ -27,19 +27,19 @@ type GusMessageProps = {
 const GusMessage = ({ status, inactive }: GusMessageProps) => {
     if (status === 'loading') {
         return (
-            <p className="flex items-center gap-1.5 text-blue-600">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" /> Pobieram dane z GUS…
+            <p className="flex items-center gap-1.5 text-muted-foreground">
+                <Loader2 className="size-3.5 animate-spin motion-reduce:animate-none" /> Pobieram dane z GUS…
             </p>
         )
     }
     if (status === 'found') {
         return (
             <div className="space-y-1">
-                <p className="flex items-center gap-1.5 text-green-700">
+                <p className="flex items-center gap-1.5 text-success">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Dane firmy pobrane z GUS — sprawdź i popraw w razie potrzeby.
                 </p>
                 {inactive && (
-                    <p className="flex items-center gap-1.5 text-amber-700">
+                    <p className="flex items-center gap-1.5 text-warning">
                         <AlertTriangle className="w-3.5 h-3.5" /> W GUS firma ma zakończoną działalność.
                     </p>
                 )}
@@ -48,7 +48,7 @@ const GusMessage = ({ status, inactive }: GusMessageProps) => {
     }
     if (status === 'not-found' || status === 'error') {
         return (
-            <p className="flex items-center gap-1.5 text-amber-700">
+            <p className="flex items-center gap-1.5 text-warning">
                 <Info className="w-3.5 h-3.5" />
                 {status === 'not-found'
                     ? 'Nie znaleziono firmy w GUS — uzupełnij dane ręcznie.'
@@ -96,20 +96,20 @@ export default function InvoiceSection({
     const privateBuyer = resolveInvoiceBuyer(customer, { ...value, nip: '' })
 
     return (
-        <div className="mt-6 pt-5 border-t-2 border-[#f8f4f1]">
-            <label className="flex items-center gap-3 cursor-pointer w-fit">
+        <div className="mt-6 border-t border-border pt-5">
+            <label className="flex min-h-11 w-fit cursor-pointer items-center gap-3">
                 <input
                     id="checkout-invoiceEnabled"
                     type="checkbox"
                     checked={enabled}
                     onChange={(e) => onEnabledChange(e.target.checked)}
-                    className="w-5 h-5 accent-[#441c49] cursor-pointer"
+                    className="size-5 cursor-pointer accent-black"
                 />
-                <span className="font-medium text-sm">Chcę otrzymać fakturę VAT na firmę</span>
+                <span className="text-sm font-medium text-foreground">Chcę otrzymać fakturę VAT na firmę</span>
             </label>
 
             {enabled && (
-                <div className="mt-4 space-y-4 bg-[#f8f4f1] p-4 rounded-lg">
+                <div className="mt-4 space-y-4 rounded-xl bg-muted/60 p-4">
                     <FormInput
                         name="invoice-nip"
                         label="NIP (dla firm)"
@@ -124,7 +124,7 @@ export default function InvoiceSection({
                             value.nip.trim() ? (
                                 <GusMessage status={status} inactive={inactive} />
                             ) : (
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Bez NIP wystawimy fakturę na: {privateBuyer.companyName || 'imię i nazwisko z formularza'}
                                     {privateBuyer.street && `, ${privateBuyer.street}, ${privateBuyer.postcode} ${privateBuyer.city}`}.
                                 </span>
