@@ -1,5 +1,6 @@
 'use client';
 
+import { normalizeMediaUrl } from '@/lib/mediaUrl'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -48,7 +49,7 @@ async function getProducts(url: string): Promise<Product[]> {
       const product = hit.document || hit;
       return {
         id: String(product.id),
-        image: product.image_main || product.image_small || '',
+        image: normalizeMediaUrl(product.image_main || product.image_small || ''),
         name: product.shortdesc || product.name,
         price: Number(product.price) || 0,
         finalPrice: Number(product.final_price) || 0,

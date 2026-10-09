@@ -1,5 +1,6 @@
 'use client'
 
+import WalletPlaceholder from '../payments/WalletPlaceholder'
 import { useEffect, useRef, useState } from 'react'
 import type { CartItem } from '@/stores/cartZustand'
 import { tpayPublicConfig } from '@/lib/payments/config'
@@ -33,6 +34,8 @@ export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced
     const containerRef = useRef<HTMLDivElement>(null)
     const [error, setError] = useState('')
     const [isProcessing, setIsProcessing] = useState(false)
+    // 'no' = brak konfiguracji P24 albo przeglądarka bez Google Pay — pokazujemy wyłączony przycisk
+    const [availability, setAvailability] = useState<'checking' | 'yes' | 'no'>('checking')
     const latest = useRef({ getItems, coupon, onOrderPlaced })
     latest.current = { getItems, coupon, onOrderPlaced }
     // pozycje z chwili kliknięcia — potrzebne też w callbackach okna (zmiana adresu / kuriera)
@@ -148,8 +151,13 @@ export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced
         const init = async () => {
             const config = await getP24GpayConfig()
             const client = await createPaymentsClient(config, { callbacks: { onPaymentDataChanged } })
-            if (!client || cancelled || !containerRef.current) return
+            if (cancelled) return
+            if (!client || !containerRef.current) {
+                setAvailability('no')
+                return
+            }
 
+            setAvailability('yes')
             containerRef.current.replaceChildren(
                 client.createButton({
                     onClick: () => pay(config, client),
@@ -161,11 +169,16 @@ export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced
             )
         }
 
-        init().catch((err) => console.error('[p24] express Google Pay init failed:', err))
+        init().catch((err) => {
+            console.error('[p24] express Google Pay init failed:', err)
+            if (!cancelled) setAvailability('no')
+        })
         return () => {
             cancelled = true
         }
     }, [])
+
+    if (availability === 'no') return <WalletPlaceholder wallet="googlepay" />
 
     return (
         <div className="space-y-2">

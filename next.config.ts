@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
         hostname: 'sklep.carinii.com.pl',
       },
       {
+        // adresy z Magento z podwójnym ukośnikiem (https://sklep.carinii.com.pl//media/...) — Vercel
+        // nie dopasowuje ich do pathname domyślnego wzorca
+        protocol: 'https',
+        hostname: 'sklep.carinii.com.pl',
+        pathname: '//**',
+      },
+      {
         protocol: 'https',
         hostname: 'carinii.com.pl',
       },

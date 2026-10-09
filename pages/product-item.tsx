@@ -1,5 +1,6 @@
 'use client';
 
+import { normalizeMediaUrl } from '@/lib/mediaUrl'
 import { useState, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -44,8 +45,8 @@ function ProductItemInner({ product, viewMode, loading }: ProductItemProps) {
 
     if (!product) return null;
 
-    const imageMain = product?.image_small || product?.image_main || '/placeholder.jpg';
-    const imageHover = product?.image_thumbnail || imageMain;
+    const imageMain = normalizeMediaUrl(product?.image_small || product?.image_main || '/placeholder.jpg');
+    const imageHover = normalizeMediaUrl(product?.image_thumbnail || imageMain);
     const productSlug = product?.slug || '';
     const price = product?.price;
     const specialPrice = product?.special_price;

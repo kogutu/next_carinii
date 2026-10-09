@@ -4,6 +4,7 @@ import type { CartItem } from '@/stores/cartZustand'
 import { paymentConfig } from '@/lib/payments/config'
 import ExpressApplePayButton from './ExpressApplePayButton'
 import ExpressGooglePayButton from './ExpressGooglePayButton'
+import WalletPlaceholder from '../payments/WalletPlaceholder'
 
 type ExpressCheckoutProps = {
     // pozycje do zamówienia w chwili kliknięcia (null = nie można kontynuować, np. brak rozmiaru)
@@ -25,7 +26,7 @@ export default function ExpressCheckout({ getItems, coupon, onOrderPlaced, disab
     // Google Pay on-site działa przez P24; przy Tpay (redirect) szybka płatność jest w koszyku
     const showGoogle = paymentConfig.googlepay === 'p24'
 
-    if (paymentConfig.express !== 'on' || (!showApple && !showGoogle)) return null
+    if (paymentConfig.express !== 'on') return null
 
     return (
         <div className={className}>
@@ -44,8 +45,13 @@ export default function ExpressCheckout({ getItems, coupon, onOrderPlaced, disab
                 } : undefined}
             >
                 <div className="grid grid-cols-1 gap-2">
-                    {showGoogle && <ExpressGooglePayButton getItems={getItems} coupon={coupon} onOrderPlaced={onOrderPlaced} />}
-                    {showApple && <ExpressApplePayButton getItems={getItems} coupon={coupon} onOrderPlaced={onOrderPlaced} />}
+                    {/* gdy portfel nie jest jeszcze włączony, pokazujemy wyłączony przycisk — widać, gdzie będzie */}
+                    {showGoogle
+                        ? <ExpressGooglePayButton getItems={getItems} coupon={coupon} onOrderPlaced={onOrderPlaced} />
+                        : <WalletPlaceholder wallet="googlepay" />}
+                    {showApple
+                        ? <ExpressApplePayButton getItems={getItems} coupon={coupon} onOrderPlaced={onOrderPlaced} />
+                        : <WalletPlaceholder wallet="applepay" />}
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import PayButton from '../payments/PayButton'
 import { ApplePayMark, GooglePayMark } from '../payments/BrandIcons'
+import WalletPlaceholder from '../payments/WalletPlaceholder'
 import { paymentConfig } from '@/lib/payments/config'
 import { isNativeApplePay } from '@/lib/tpay/apple-sdk'
 
@@ -30,7 +31,7 @@ export default function ExpressWalletButtons({ shippingMethod, isBusy, onPay }: 
     // Apple Pay w panelu Tpay działa w Safari / na urządzeniach Apple; gdzie indziej płatność kodem QR jest na stronie zamówienia
     const showApple = paymentConfig.applepay === 'tpay' && isAppleDevice
 
-    if (shippingMethod === COD_SHIPPING_METHOD || (!showGoogle && !showApple)) return null
+    if (shippingMethod === COD_SHIPPING_METHOD || paymentConfig.express !== 'on') return null
 
     return (
         <div className="space-y-3">
@@ -39,16 +40,20 @@ export default function ExpressWalletButtons({ shippingMethod, isBusy, onPay }: 
                 lub zapłać od razu
                 <span className="h-px flex-1 bg-border" />
             </div>
-            <div className={`grid gap-2 ${showGoogle && showApple ? 'grid-cols-2' : 'grid-cols-1'}`}>
-                {showGoogle && (
+            <div className="grid grid-cols-2 gap-2">
+                {showGoogle ? (
                     <PayButton align="center" isLoading={isBusy} loadingLabel="Chwila…" onClick={() => onPay('googlepay')} aria-label="Zapłać z Google Pay">
                         <GooglePayMark className="text-base" />
                     </PayButton>
+                ) : (
+                    <WalletPlaceholder wallet="googlepay" />
                 )}
-                {showApple && (
+                {showApple ? (
                     <PayButton align="center" isLoading={isBusy} loadingLabel="Chwila…" onClick={() => onPay('applepay')} aria-label="Zapłać z Apple Pay">
                         <ApplePayMark className="text-base" />
                     </PayButton>
+                ) : (
+                    <WalletPlaceholder wallet="applepay" note={paymentConfig.applepay === 'tpay' ? 'Safari / iOS' : 'wkrótce'} />
                 )}
             </div>
         </div>

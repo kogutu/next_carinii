@@ -1,5 +1,6 @@
 'use client'
 
+import WalletPlaceholder from '../payments/WalletPlaceholder'
 import { useEffect, useRef, useState } from 'react'
 import type { CartItem } from '@/stores/cartZustand'
 import { tpayPublicConfig } from '@/lib/payments/config'
@@ -39,12 +40,17 @@ export default function ExpressApplePayButton({ getItems, coupon, onOrderPlaced 
         }
     }, [])
 
-    if (available === 'checking') return null
+    if (available === 'checking') return <div className="h-11" aria-hidden="true" />
     if (available === 'no') {
-        // poza produkcją mówimy, dlaczego przycisku nie ma (HTTPS / przeglądarka)
-        return process.env.NODE_ENV !== 'production'
-            ? <p className="text-pretty text-xs text-muted-foreground">Apple Pay niedostępny (wymaga HTTPS i Safari lub obsługiwanej przeglądarki).</p>
-            : null
+        // wyłączony przycisk pokazuje, gdzie będzie Apple Pay; poza produkcją dodajemy powód (HTTPS / przeglądarka)
+        return (
+            <div className="space-y-2">
+                <WalletPlaceholder wallet="applepay" note="Safari / iOS" />
+                {process.env.NODE_ENV !== 'production' && (
+                    <p className="text-pretty text-xs text-muted-foreground">Apple Pay niedostępny (wymaga HTTPS i Safari lub obsługiwanej przeglądarki).</p>
+                )}
+            </div>
+        )
     }
 
     const startPayment = () => {

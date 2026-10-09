@@ -1,6 +1,7 @@
 import { Copy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { normalizeMediaUrl } from "@/lib/mediaUrl";
 
 interface Product {
     id: string | number;
@@ -15,7 +16,6 @@ interface RelatedProductsProps {
 }
 
 const RelatedProducts = ({ products }: RelatedProductsProps) => {
-    console.log(products)
     if (!products)
         return null
     return (
@@ -26,7 +26,7 @@ const RelatedProducts = ({ products }: RelatedProductsProps) => {
                     <div key={product.name} className="item-rel relative w-20 border border-gray-100 hover:border-hgold aspect-[2/3]">
                         <Link href={product.url}>
                             <Image
-                                src={product.img}
+                                src={normalizeMediaUrl(product.img)}
                                 alt={`Zobacz ${product.name}`}
                                 title={product.name}
                                 fill
@@ -34,7 +34,7 @@ const RelatedProducts = ({ products }: RelatedProductsProps) => {
                             />
 
                         </Link>
-                        <div className="roundcolor z-1 w-6 h-6 m-1 border-white border-2 absolute bottom-0 left-0" style={{ background: product.hc }}>
+                        <div className="roundcolor z-1 w-6 h-6 m-1 border-white border-2 absolute bottom-0 left-0" style={{ background: (product as any).hc }}>
                         </div>
                     </div>
                 ))}

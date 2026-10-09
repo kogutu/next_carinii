@@ -1,3 +1,4 @@
+import { normalizeMediaUrl } from '@/lib/mediaUrl'
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -85,7 +86,7 @@ export default async function BoxHeroPrs({ img, url, cat, side = 'left' }: BoxHe
                     >
                         <div className="aspect-square relative overflow-hidden bg-gray-50">
                             <Image
-                                src={product.image_main}
+                                src={normalizeMediaUrl(product.image_main)}
                                 alt={product.name}
                                 fill
                                 sizes="(max-width: 640px) 45vw, (max-width: 768px) 20vw, 150px"
