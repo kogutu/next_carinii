@@ -123,11 +123,10 @@ export default function ProfilePage() {
   const fetchUserData = async () => {
     setIsLoading(true)
     try {
-      console.log("UUID:", session?.user?.id)
       // if (form.billingFirstName != "") return;
       const response = await fetch('/api/user/getuser', {
         method: 'POST',
-        body: JSON.stringify({ uid: session?.user?.id }),
+        body: JSON.stringify({}),
         cache: 'no-store' // to rozwiązuje problem cache
       })
 
@@ -219,11 +218,10 @@ export default function ProfilePage() {
 
     try {
       // Save personal data
-      const personalResponse = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/user/editUser.php", {
+      const personalResponse = await fetch("/api/user/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          uid: session?.user?.id,
           type: "personal",
           firstName: form.firstName,
           lastName: form.lastName,
@@ -252,11 +250,10 @@ export default function ProfilePage() {
           return
         }
 
-        const passwordResponse = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/user/editUser.php", {
+        const passwordResponse = await fetch("/api/user/update", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            uid: session?.user?.id,
             type: "password",
             currentPassword: form.currentPassword,
             newPassword: form.newPassword,
@@ -296,11 +293,10 @@ export default function ProfilePage() {
     setMessage("")
 
     try {
-      const response = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/user/editUser.php", {
+      const response = await fetch("/api/user/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          uid: session?.user?.id,
           type: "billing",
           phone: form.billingPhoneCode + form.billingPhone,
           billingAddress: {
@@ -338,11 +334,10 @@ export default function ProfilePage() {
     setMessage("")
 
     try {
-      const response = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/user/editUser.php", {
+      const response = await fetch("/api/user/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          uid: session?.user?.id,
           type: "shipping",
           phone: form.sameAsBilling
             ? (form.billingPhoneCode + form.billingPhone)
@@ -399,11 +394,10 @@ export default function ProfilePage() {
     setMessage("")
 
     try {
-      const response = await fetch("https://sklep.carinii.com.pl/directseo/nextjs/user/editUser.php", {
+      const response = await fetch("/api/user/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          uid: session?.user?.id,
           type: "password",
           currentPassword: form.currentPassword,
           newPassword: form.newPassword,

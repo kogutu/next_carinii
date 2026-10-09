@@ -60,6 +60,15 @@ Powiadomienia P24 idą na `…/api/p24/notification` (adres wysyłany w każdej 
 | `ORDER_MARK_PAID_TOKEN` | token z lokalnego `.env` (ten sam, co `mark_paid_token` na serwerze) |
 | `ORDER_MARK_PAID_DRY_RUN` | `1` na czas testów (nic nie księguje w produkcyjnym Magento); **usuń**, gdy chcesz księgować naprawdę |
 
+## 5a. Konto klienta, panel i zwroty/reklamacje
+
+| Zmienna | Wartość |
+|---|---|
+| `CUSTOMER_API_TOKEN` | wartość z lokalnego `.env` (ten sam sekret co `customer_api_token` w `payment/config.local.php` na serwerze Magento) |
+
+Skrypty PHP `directseo/nextjs/user/*` i `directseo/nextjs/returns/*` odrzucają każde wywołanie bez tego tokenu (401).
+**Bez tej zmiennej nie zadziała logowanie, panel klienta ani formularz zwrotów/reklamacji.** Po dodaniu zrób Redeploy.
+
 ## 6. Pozostałe zmienne z lokalnego `.env`
 
 `PAYU_CLIENT_ID`, `PAYU_CLIENT_SECRET`, `PAYU_MERCHANT_POS_ID`, `PAYU_SECOND_KEY`, `PAYU_ENVIRONMENT` — jak lokalnie

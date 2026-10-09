@@ -63,45 +63,23 @@ export function AccountModal() {
     };
 
     try {
-      const response = await fetch('https://sklep.carinii.com.pl/directseo/nextjs/user/login.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
-      });
+      // hasło sprawdza serwer aplikacji (authorize w lib/auth.ts) — przeglądarka nie podaje już identyfikatora klienta
+      const result = await signIn("credentials", {
+        email: loginData.email,
+        password: loginData.password,
+        redirect: false,
+      })
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Błąd logowania');
+      if (!result || result.error) {
+        setLoginError('Nieprawidłowy e-mail lub hasło. Po kilku nieudanych próbach logowanie jest chwilowo blokowane.');
+        return;
       }
 
-      if (result.success) {
-        // Handle successful login
-        console.log('Login success:', result);
-
-        // Możesz tutaj zapisać token w localStorage lub context
-        if (result.success && result.data?.customer) {
-          localStorage.setItem("customer", JSON.stringify(result.data.customer))
-          await signIn("credentials", {
-            email: result.data.customer.email,
-            name: result.data.customer.firstname || result.data.customer.email,
-            id: result.data.customer.id,
-            redirect: false,
-          })
-        }
-
-
-        // Zamknij modal i przekieruj na stronę konta
-        setOpen(false);
-        window.location.href = '/klient/panel/profil';
-      } else {
-        setLoginError(result.message || 'Nieprawidłowy email lub hasło');
-      }
+      setOpen(false);
+      window.location.href = '/klient/panel/profil';
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError(error instanceof Error ? error.message : 'Wystąpił błąd podczas logowania');
+      setLoginError('Wystąpił błąd podczas logowania');
     } finally {
       setIsLoading(false);
     }
@@ -128,7 +106,7 @@ export function AccountModal() {
     };
 
     try {
-      const response = await fetch('https://sklep.carinii.com.pl/directseo/nextjs/user/register.php', {
+      const response = await fetch('/api/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -138,49 +116,28 @@ export function AccountModal() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Błąd rejestracji');
-      }
-
-      if (data.success) {
-        // Próba automatycznego logowania po rejestracji
-        try {
-          const loginResponse = await fetch('https://sklep.carinii.com.pl/directseo/nextjs/user/login.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: registerData.email,
-              password: registerData.password,
-            }),
-          });
-
-          const loginResult = await loginResponse.json();
-
-          if (loginResult.success && loginResult.data?.customer) {
-            localStorage.setItem("customer", JSON.stringify(loginResult.data.customer));
-            await signIn("credentials", {
-              email: loginResult.data.customer.email,
-              name: loginResult.data.customer.firstname || loginResult.data.customer.email,
-              id: loginResult.data.customer.id,
-              redirect: false,
-            });
-
-            setRegisterSuccess(true);
-            setRegisterMessage('✓ Konto utworzone! Trwa przekierowanie...');
-            setOpen(false);
-            window.location.href = '/klient/panel/profil';
-            return;
-          }
-        } catch (autoLoginError) {
-          console.warn('Auto-login after registration failed:', autoLoginError);
-        }
-
-        // Jeśli auto-login się nie udał (np. wymagana aktywacja mailowa)
-        setRegisterSuccess(true);
-        setRegisterMessage('✓ Konto zostało pomyślnie utworzone! Sprawdź skrzynkę mailową i potwierdź rejestrację, a następnie zaloguj się.');
-      } else {
+      if (!data.success) {
         setRegisterMessage('❌ ' + (data.message || 'Wystąpił błąd podczas rejestracji'));
+        return;
       }
+
+      // Automatyczne logowanie po rejestracji
+      const loginResult = await signIn("credentials", {
+        email: registerData.email,
+        password: registerData.password,
+        redirect: false,
+      });
+
+      if (loginResult && !loginResult.error) {
+        setRegisterSuccess(true);
+        setRegisterMessage('✓ Konto utworzone! Trwa przekierowanie...');
+        setOpen(false);
+        window.location.href = '/klient/panel/profil';
+        return;
+      }
+
+      setRegisterSuccess(true);
+      setRegisterMessage('✓ Konto zostało utworzone. Zaloguj się, aby kontynuować.');
     } catch (error) {
       console.error('Registration error:', error);
       setRegisterMessage('❌ ' + (error instanceof Error ? error.message : 'Wystąpił błąd podczas rejestracji'));

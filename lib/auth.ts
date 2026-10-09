@@ -3,7 +3,10 @@ import Google from "next-auth/providers/google"
 import Apple from "next-auth/providers/apple"
 import Facebook from "next-auth/providers/facebook"
 import Credentials from "next-auth/providers/credentials"
+import { customerApi } from "@/lib/customerApi"
 
+// Logowanie hasłem sprawdza hasło w Magento po stronie serwera (login.php + token zaufania).
+// Identyfikator klienta w sesji pochodzi z odpowiedzi Magento — nigdy z danych wysłanych przez przeglądarkę.
 export const { handlers, signIn, signOut, auth } = NextAuth({
     trustHost: true,
     providers: [
@@ -23,19 +26,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: "Credentials",
             credentials: {
                 email: { label: "Email", type: "email" },
-                name: { label: "Name", type: "text" },
-                id: { label: "ID", type: "text" },
+                password: { label: "Hasło", type: "password" },
             },
             async authorize(credentials) {
-                // Zwróć dane użytkownika po udanym logowaniu przez PHP API
-                if (credentials?.email) {
+                const email = String(credentials?.email ?? "").trim()
+                const password = String(credentials?.password ?? "")
+                if (!email || !password) return null
+
+                try {
+                    const result = await customerApi("user/login.php", { email, password })
+                    const customer = result.data?.customer
+                    if (!result.success || !customer?.id) return null
+
                     return {
-                        id: credentials.id as string,
-                        email: credentials.email as string,
-                        name: credentials.name as string,
+                        id: String(customer.id),
+                        email: customer.email,
+                        name: customer.firstname,
                     }
+                } catch (error) {
+                    console.error("[auth] Credentials login failed:", error)
+                    return null
                 }
-                return null
             },
         }),
     ],
@@ -44,63 +55,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     callbacks: {
         async signIn({ user, account, profile }) {
-            if (account?.provider !== "credentials") {
-                try {
-                    console.log("----------------------");
-                    console.log("----------------------");
+            if (account?.provider === "credentials") return true
 
+            // Google potwierdza własność adresu — bez tego ktoś mógłby przejąć cudze konto, podając cudzy e-mail
+            if (account?.provider === "google" && profile?.email_verified === false) return false
+            if (!user.email) return false
 
-                    console.log("----------------------");
-                    console.log({
-                        email: user.email,
-                        name: user.name,
-                        image: user.image,
-                        nextauth: true,
-                        provider: account?.provider,
-                        providerId: account?.providerAccountId,
-                    });
-                    console.log("----------------------");
-                    const response = await fetch(`https://sklep.carinii.com.pl/directseo/nextjs/user/login.php`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            email: user.email,
-                            name: user.name,
-                            image: user.image,
-                            nextauth: true,
-                            provider: account?.provider,
-                            providerId: account?.providerAccountId,
-                        }),
-                    })
-                    const data = await response.json()
+            try {
+                const result = await customerApi("user/login.php", {
+                    email: user.email,
+                    name: user.name,
+                    nextauth: true,
+                    provider: account?.provider,
+                    providerId: account?.providerAccountId,
+                })
+                const customer = result.data?.customer
+                if (!result.success || !customer?.id) return false
 
-                    if (data.success) {
-                        if (data.data) {
-                            if (typeof window !== "undefined") {
-                                localStorage.setItem("customer", JSON.stringify(data.data.customer))
-                            }
-                            user.name = data.data.customer.firstname;
-                            user.id = data.data.customer.id
-                            user.data = data.data.customer
-                        }
-                        return true
-                    }
-                } catch (error) {
-                    console.error("OAuth backend sync error:", error)
-                }
+                // identyfikator Magento zastępuje identyfikator dostawcy (trafi do tokenu w callbacku jwt)
+                user.id = String(customer.id)
+                user.name = customer.firstname
+                return true
+            } catch (error) {
+                console.error("[auth] OAuth backend sync error:", error)
+                return false
             }
-
-            return true
+        },
+        async jwt({ token, user }) {
+            if (user?.id) token.uid = user.id
+            return token
         },
         async session({ session, token }) {
-            // Dodaj custom dane do sesji
-
-
-            if (token.sub) {
-                session.user.id = token.sub
-            }
+            const uid = typeof token.uid === "string" ? token.uid : token.sub
+            if (uid) session.user.id = uid
             return session
         },
     },
