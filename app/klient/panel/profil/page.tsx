@@ -425,7 +425,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container max-w-4xl mx-auto p-6 space-y-6">
+    <div className="space-y-6">
       <div className="flex items-center gap-3 mb-6">
         <User className="h-8 w-8" />
         <h1 className="text-3xl font-bold">Mój Profil</h1>
@@ -443,7 +443,7 @@ export default function ProfilePage() {
       )}
 
       {/* Account Information */}
-      <Card>
+      <Card variant="surface">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -630,7 +630,7 @@ export default function ProfilePage() {
       </Card>
 
       {/* Billing Address */}
-      <Card>
+      <Card variant="surface">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -960,7 +960,7 @@ export default function ProfilePage() {
       </Card>
 
       {/* Shipping Address */}
-      <Card>
+      <Card variant="surface">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>

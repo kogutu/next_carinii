@@ -3,6 +3,7 @@
 // Template dla zwykłych stron CMS
 import { ENTER, EYEBROW, SurfaceCard } from '@/components/ui/surface'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 import { useEffect, useRef } from "react"
 
 interface CmsPageTemplateProps {
@@ -215,7 +216,19 @@ export default function CmsPageTemplate({ slug, content }: CmsPageTemplateProps)
                     </h1>
                 </header>
 
-                <SurfaceCard className={cn(ENTER, 'mt-10 delay-100')}>
+                {slug.join('/') === 'zwroty-reklamacje' && (
+                    <SurfaceCard className={cn(ENTER, 'mt-10 flex flex-wrap items-center justify-between gap-4 delay-100 sm:p-6')}>
+                        <div>
+                            <p className="font-semibold text-foreground">Chcesz zgłosić zwrot lub reklamację?</p>
+                            <p className="mt-1 text-sm text-muted-foreground">Wypełnij formularz online. Możesz dodać zdjęcia, a potwierdzenie dostaniesz mailem.</p>
+                        </div>
+                        <Link href="/zwrot-reklamacja" className="inline-flex h-11 items-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-menuhover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                            Zgłoś online
+                        </Link>
+                    </SurfaceCard>
+                )}
+
+                <SurfaceCard className={cn(ENTER, 'mt-6 delay-100')}>
                     {content?.content ? (
                         <div
                             ref={accordionRef}
