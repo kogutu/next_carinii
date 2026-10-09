@@ -19,7 +19,9 @@ type ExpressCheckoutProps = {
 
 // „Kup od razu”: Apple Pay (Tpay) i Google Pay (Przelewy24) bez przechodzenia przez koszyk i formularz.
 export default function ExpressCheckout({ getItems, coupon, onOrderPlaced, disabled, onBlockedClick, className }: ExpressCheckoutProps) {
-    const showApple = paymentConfig.applepay === 'tpay'
+    // Apple Pay w szybkiej płatności działa tylko na stronie (onsite): wymaga domeny zarejestrowanej w Apple i Tpay.
+    // W trybie redirect płatność odbywa się u Tpay, a przycisk bez zamówienia nie ma dokąd przekierować.
+    const showApple = paymentConfig.applepay === 'tpay' && paymentConfig.applepayMode === 'onsite'
     // Google Pay on-site działa przez P24; przy Tpay (redirect) szybka płatność jest w koszyku
     const showGoogle = paymentConfig.googlepay === 'p24'
 

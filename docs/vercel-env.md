@@ -25,7 +25,7 @@ Do testów ustaw:
 | Zmienna | Wartość | Skutek |
 |---|---|---|
 | `NEXT_PUBLIC_PAY_GOOGLEPAY` | `p24` | Google Pay na stronie przez Przelewy24 (przycisk w „Płatność kartą”, szybka płatność na karcie produktu) |
-| `NEXT_PUBLIC_PAY_APPLEPAY_MODE` | `redirect` | Apple Pay przez panel Tpay — domena Vercela nie jest (jeszcze) zarejestrowana w Apple/Tpay, więc `onsite` na niej nie zadziała |
+| `NEXT_PUBLIC_PAY_APPLEPAY_MODE` | `redirect` | Apple Pay przez panel Tpay (tylko urządzenia Apple) — domena Vercela nie jest (jeszcze) zarejestrowana w Apple/Tpay, więc `onsite` na niej nie zadziała. W tym trybie przycisk Apple Pay w szybkiej płatności (karta produktu, mini-koszyk) jest ukryty; Google Pay (P24) działa. **Nie ustawiaj** na Vercelu `APPLE_PAY_DOMAIN` ani `NEXT_PUBLIC_APPLE_MERCHANT_ID` |
 | `NEXT_PUBLIC_PAY_EXPRESS` | `on` (domyślnie) | przyciski „lub kup od razu” na karcie produktu i w mini-koszyku |
 
 Pozostałe `NEXT_PUBLIC_PAY_*` zostają domyślne — opis w `.env.example` i `docs/tpay-integration.md`.
