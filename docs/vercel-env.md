@@ -1,6 +1,6 @@
 # Vercel: zmienne środowiskowe do testów płatności
 
-Aplikacja: <https://next-carinii-81mq.vercel.app> (wdrożenie z `main`). Zmienne ustawia się w
+Aplikacja: <https://next-carinii.vercel.app> (wdrożenie z `main`; wcześniejszy adres `…-81mq.vercel.app` nie jest używany). Zmienne ustawia się w
 **Vercel → Project → Settings → Environment Variables** (środowisko *Production*, ewentualnie też *Preview*).
 Zmiana zmiennych działa dopiero po **ponownym wdrożeniu** (Deployments → ⋯ → Redeploy).
 Wartości sekretów bierz z lokalnego `.env` / paneli dostawców — nie wklejaj ich do repozytorium ani na czat.
@@ -9,12 +9,12 @@ Wartości sekretów bierz z lokalnego `.env` / paneli dostawców — nie wklejaj
 
 | Zmienna | Wartość na Vercelu | Po co |
 |---|---|---|
-| `NEXT_PUBLIC_APP_URL` | `https://next-carinii-81mq.vercel.app` | adresy powrotu i webhooków Tpay / P24 (musi być publiczny, HTTPS) |
-| `NEXT_PUBLIC_API_URL` | `https://next-carinii-81mq.vercel.app` | strona zamówienia pobiera zamówienie z własnego `/api/orders` |
-| `NEXTAUTH_URL` | `https://next-carinii-81mq.vercel.app` | logowanie (NextAuth) |
+| `NEXT_PUBLIC_APP_URL` | `https://next-carinii.vercel.app` | adresy powrotu i webhooków Tpay / P24 (musi być publiczny, HTTPS) |
+| `NEXT_PUBLIC_API_URL` | `https://next-carinii.vercel.app` | strona zamówienia pobiera zamówienie z własnego `/api/orders` |
+| `NEXTAUTH_URL` | `https://next-carinii.vercel.app` | logowanie (NextAuth) |
 | `NEXTAUTH_SECRET`, `AUTH_SECRET` | jak lokalnie | sesje |
 
-Logowanie przez Google / Apple / Facebook wymaga dodania adresu `https://next-carinii-81mq.vercel.app/api/auth/callback/<dostawca>`
+Logowanie przez Google / Apple / Facebook wymaga dodania adresu `https://next-carinii.vercel.app/api/auth/callback/<dostawca>`
 w konsolach tych dostawców (`GOOGLE_CLIENT_ID/SECRET`, `APPLE_ID/SECRET`, `FACEBOOK_CLIENT_ID/SECRET` jak lokalnie).
 
 ## 2. Wybór metod płatności (widoczne w koszyku i na stronie zamówienia)
@@ -38,7 +38,7 @@ Pozostałe `NEXT_PUBLIC_PAY_*` zostają domyślne — opis w `.env.example` i `d
 | `TPAY_CLIENT_ID`, `TPAY_CLIENT_SECRET` | klucze Open API z `panel.sandbox.tpay.com` → Integracje → API |
 | `NEXT_PUBLIC_APPLE_MERCHANT_ID`, `APPLE_PAY_DOMAIN` | opcjonalnie, dopiero przy Apple Pay `onsite` (domena = adres Vercela, zarejestrowany w Apple i Tpay) |
 
-W panelu Tpay (sandbox): adres powiadomień `https://next-carinii-81mq.vercel.app/api/tpay/notification` oraz opcja „Zezwól na nadpisanie”.
+W panelu Tpay (sandbox): adres powiadomień `https://next-carinii.vercel.app/api/tpay/notification` oraz opcja „Zezwól na nadpisanie”.
 
 ## 4. Przelewy24 (sandbox)
 
@@ -67,7 +67,7 @@ Powiadomienia P24 idą na `…/api/p24/notification` (adres wysyłany w każdej 
 
 ## 7. Szybka kontrola po wdrożeniu
 
-- `https://next-carinii-81mq.vercel.app/api/p24/gpay/config` → JSON z `merchantId` i `environment: TEST` (sandbox).
-- `https://next-carinii-81mq.vercel.app/api/tpay/status?oid=H-1` → JSON `{"error":"Brak parametrów"}` (trasa istnieje; bez wdrożenia: „Bad request.”).
+- `https://next-carinii.vercel.app/api/p24/gpay/config` → JSON z `merchantId` i `environment: TEST` (sandbox). Przed ustawieniem zmiennych zwraca 503 „Przelewy24 nie jest skonfigurowane” i przycisk Google Pay się nie pokazuje.
+- `https://next-carinii.vercel.app/api/tpay/status?oid=H-1` → JSON `{"error":"Brak parametrów"}` (trasa istnieje; bez wdrożenia: „Bad request.”).
 - Koszyk (`/checkout`): w „Metoda płatności” widać Blik, Płatność kartą (z plakietkami), PayPo, Przelew, Przelewy24, Tpay.
 - Zamówienia testowe trafiają do produkcyjnego Magento (`createOrder.php`) — używaj własnego e-maila i anuluj je po teście.
