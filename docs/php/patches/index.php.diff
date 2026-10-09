@@ -1,0 +1,32 @@
+--- index.php (przed)
++++ index.php (po)
+@@ -105,11 +105,21 @@
+     $paymentMethodTitle = null;
+     $paymentMethodCode = null;
+     $paymentMethodIns = null;
++    $documentType = 'receipt';
+ 
+     $payment = $order->getPayment();
+     if ($payment) {
+         $paymentMethodCode = $payment->getMethod();
+ 
++        // kod metody z aplikacji (np. tpay_blik, tpay_card) — Magento zna tylko zarejestrowane metody; patrz payment/codes.php
++        $paymentInfo = $payment->getAdditionalInformation();
++        if (is_array($paymentInfo) && !empty($paymentInfo['app_payment_code'])) {
++            $paymentMethodCode = $paymentInfo['app_payment_code'];
++        }
++        if (is_array($paymentInfo) && !empty($paymentInfo['document_type'])) {
++            $documentType = $paymentInfo['document_type'];
++        }
++
+         $additionalInfo = $payment->getAdditionalInformation();
+         if (is_array($additionalInfo)) {
+             $paymentMethodTitle = isset($additionalInfo['method_title']) ? $additionalInfo['method_title'] : null;
+@@ -224,6 +234,7 @@
+         'paymentMethod' => $paymentMethodTitle,
+         'paymentMethodIns' => $paymentMethodIns,
+         'paymentMethodCode' => $paymentMethodCode,
++        'documentType' => $documentType,
+         'items' => $items,
+         'couponCode' => $order->getCouponCode(),
+         'subtotal' => (float) $order->getSubtotalInclTax(),

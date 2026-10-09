@@ -2,11 +2,16 @@
 
 import { useCartStore } from '@/stores/cartZustand'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Trash2, Plus, Minus, ShoppingBasket, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useCheckoutValidationStore } from './checkoutValidationStore'
 import DiscountCode from './DiscountCode'
+import UndoRemoveBar from './UndoRemoveBar'
+import type { CheckoutData } from '@/hooks/useCheckoutValidation'
+import { countryIso } from '@/lib/countries'
+import { resolveInvoiceBuyer } from '@/lib/invoice'
+import { startRedirectPayment } from '@/lib/tpay/browser-api'
+import ExpressWalletButtons, { type ExpressWallet } from './ExpressWalletButtons'
 
 // 'netto' = ceny w koszyku są netto (trzeba dodać VAT do brutto)
 // 'brutto' = ceny w koszyku są brutto (trzeba odjąć VAT do netto)
@@ -15,11 +20,12 @@ type PriceType = 'netto' | 'brutto'
 const VAT_RATE = 0.23
 
 interface OrderSummaryProps {
-    onTermsChange?: (agreed: boolean) => void
+    checkoutData: CheckoutData
+    onTermsChange: (agreed: boolean) => void
+    // true, gdy formularz jest poprawny; w przeciwnym razie pokazuje błędy i przewija do pierwszego
+    onValidate: () => boolean
     isTermsAccepted?: boolean
-    shippingTotal?: number
-    checkoutData?: any
-    onOrderSubmit?: () => void
+    termsError?: string
     priceType?: PriceType
 }
 
@@ -31,11 +37,11 @@ const toBrutto = (price: number, type: PriceType): number =>
     type === 'netto' ? price * (1 + VAT_RATE) : price
 
 export default function OrderSummary({
-    onTermsChange,
-    isTermsAccepted,
-    shippingTotal,
     checkoutData,
-    onOrderSubmit,
+    onTermsChange,
+    onValidate,
+    isTermsAccepted,
+    termsError,
     priceType = 'brutto',
 }: OrderSummaryProps) {
     const router = useRouter()
@@ -46,35 +52,29 @@ export default function OrderSummary({
     const zshippingTotal = useCartStore(state => state.shippingTotal)
     const ZustandCouponData = useCartStore(state => state.setCouponData)
     const ZustandCoupon = useCartStore(state => state.coupon)
-    const {
-        errors,
-        status,
-        billingTouched,
-        shippingTouched,
-
-    } = useCheckoutValidationStore()
+    const clearCart = useCartStore(state => state.clearCart)
 
     const [couponCode, setCouponCode] = useState(ZustandCoupon || "")
     const [couponState, setCouponState] = useState(false)
     const [notes, setNotes] = useState('')
+    const [noteOpen, setNoteOpen] = useState(false)
+    const summaryRef = useRef<HTMLDivElement>(null)
+    const [summaryVisible, setSummaryVisible] = useState(true)
     const [agreeToTerms, setAgreeToTerms] = useState(isTermsAccepted || false)
     const [agreeToNewsletter, setAgreeToNewsletter] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState<string | null>(null)
     const [isCouponLoading, setIsCouponLoading] = useState(false)
-    const [totalErr, setTotalErr] = useState(false)
 
-
+    // Na telefonie podsumowanie jest na końcu strony — dopóki nie jest widoczne, pokazujemy dolny pasek z kwotą
     useEffect(() => {
-        console.clear();
-        console.log(errors)
-        let t = Object.values(errors).reduce((sum, sectionErrors) => {
+        const element = summaryRef.current
+        if (!element) return
 
-            return sum + (Object.values(sectionErrors).length || 0)
-
-        }, 0);
-        setTotalErr(t > 0)
-    }, [errors]);
+        const observer = new IntersectionObserver(([entry]) => setSummaryVisible(entry.isIntersecting))
+        observer.observe(element)
+        return () => observer.disconnect()
+    }, [])
 
     const handleTermsChange = (value: boolean) => {
         setAgreeToTerms(value)
@@ -94,7 +94,6 @@ export default function OrderSummary({
 
         setIsCouponLoading(true)
         try {
-            console.log(items);
             var r: any = await fetch('/api/magento/discount', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -104,7 +103,6 @@ export default function OrderSummary({
                 })
             })
             r = await r.json();
-            console.log(r)
             if (r.success) {
                 ZustandCouponData(r);
                 setCouponState(true);
@@ -133,8 +131,8 @@ export default function OrderSummary({
     const itemTotalBrutto = (item: typeof items[0]) => itemBrutto(item) * item.qty
 
     // Suma koszyka
-    const sumRegularPrice = items.reduce((sum, item) => sum + item.price, 0);
-    const sumDiscount = items.reduce((sum, item) => sum + (item.discount_value ?? 0), 0);
+    const sumRegularPrice = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const sumDiscount = items.reduce((sum, item) => sum + Math.max(0, item.price - item.final_price) * item.qty, 0);
     const subtotalNetto = items.reduce((sum, item) => sum + itemTotalNetto(item), 0)
     const subtotalBrutto = items.reduce((sum, item) => sum + itemTotalBrutto(item), 0)
 
@@ -148,46 +146,58 @@ export default function OrderSummary({
 
     const setGrandTotal = useCartStore((state) => state.setGrandTotal)
 
-    const handleSubmitOrder = async () => {
-        if (!checkoutData || !agreeToTerms) {
-            setSubmitError('Brakuje danych lub nie zaakceptowałeś regulaminu')
-            return
-        }
+    // wallet: szybka płatność z koszyka — zamówienie idzie z metodą „Płatność kartą”, a po jego utworzeniu
+    // od razu przekierowujemy do Google Pay / Apple Pay w Tpay
+    const handleSubmitOrder = async (wallet?: ExpressWallet) => {
+        if (!onValidate()) return
 
         setIsSubmitting(true)
         setSubmitError(null)
 
         try {
+            const { customer } = checkoutData
+            const buyer = checkoutData.invoice ? resolveInvoiceBuyer(customer, checkoutData.invoice) : null
+
+            const deliveryAddress = {
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                street: customer.street,
+                postcode: customer.postcode,
+                city: customer.city,
+                country: countryIso(customer.country),
+                phone: customer.phone
+            }
+            // Faktura: adres rozliczeniowy to nabywca (firma z GUS albo — bez NIP — osoba prywatna),
+            // dostawa zostaje na adres osoby
+            const billingAddress = buyer
+                ? {
+                    ...deliveryAddress,
+                    company: buyer.companyName,
+                    vatId: buyer.nip || undefined,
+                    street: buyer.street,
+                    postcode: buyer.postcode,
+                    city: buyer.city,
+                    country: buyer.country
+                }
+                : deliveryAddress
+
             const orderData = {
                 customer: {
-                    firstName: checkoutData.billing.firstName,
-                    lastName: checkoutData.billing.lastName,
-                    email: checkoutData.billing.email,
-                    phone: checkoutData.billing.phone,
-                    type: checkoutData.billing.type,
-                    nip: checkoutData.billing.nip,
-                    companyName: checkoutData.billing.companyName
+                    firstName: customer.firstName,
+                    lastName: customer.lastName,
+                    email: customer.email,
+                    phone: customer.phone,
+                    phoneCode: customer.phoneCode,
+                    type: buyer?.nip ? 'company' : 'private',
+                    nip: buyer?.nip || undefined,
+                    companyName: buyer?.companyName
                 },
-                billingAddress: {
-                    firstName: checkoutData.billing.firstName,
-                    lastName: checkoutData.billing.lastName,
-                    street: checkoutData.billing.street,
-                    postcode: checkoutData.billing.postcode,
-                    city: checkoutData.billing.city,
-                    phone: checkoutData.billing.phone
-                },
-                shippingAddress: checkoutData.billing.sameAddress
-                    ? {
-                        firstName: checkoutData.billing.firstName,
-                        lastName: checkoutData.billing.lastName,
-                        street: checkoutData.billing.street,
-                        postcode: checkoutData.billing.postcode,
-                        city: checkoutData.billing.city,
-                        phone: checkoutData.billing.phone
-                    }
-                    : checkoutData.shipping,
+                documentType: buyer ? 'invoice' : 'receipt',
+                invoice: buyer,
+                billingAddress,
+                shippingAddress: deliveryAddress,
                 shippingMethod: checkoutData.shippingMethod,
-                paymentMethod: checkoutData.paymentMethod,
+                paymentMethod: wallet ? 'tpay_card' : checkoutData.paymentMethod,
                 items: items.map(item => ({
                     productId: item.pid,
                     variantId: item.variantId,
@@ -210,10 +220,7 @@ export default function OrderSummary({
                 grandTotalNetto,
                 grandTotalBrutto
             }
-            console.clear();
 
-
-            console.log("@22");
             const response = await fetch('/api/magento/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -228,10 +235,7 @@ export default function OrderSummary({
 
 
             const result = await response.json()
-            console.log("-----------11");
-            console.log(result);
             if (!result.success) {
-                console.log('[v0] Order error unsuccessfully2:', result)
                 let errMsg = result.message;
                 if (result.errItemId > 0) {
                     let errIts: any = items.filter(e => {
@@ -241,7 +245,6 @@ export default function OrderSummary({
 
                     });
                     let errIt = errIts[0];
-                    console.log(errIt);
 
                     errMsg = errMsg + `: 
                     ` + errIt.name;
@@ -249,12 +252,26 @@ export default function OrderSummary({
                 }
                 throw new Error(errMsg || 'Błąd podczas wysyłania zamówienia')
             }
-            console.log("-----------122");
-
-            onOrderSubmit?.()
 
             if (result.externalOrderId) {
-                router.push(`/success/oid/${result.externalOrderId}`)
+                const orderNumber = String(result.externalOrderId)
+
+                if (wallet) {
+                    try {
+                        const { redirectUrl } = await startRedirectPayment(orderNumber, wallet)
+                        if (redirectUrl) {
+                            clearCart()
+                            window.location.href = redirectUrl
+                            return
+                        }
+                    } catch (paymentError) {
+                        // zamówienie już istnieje — klient zapłaci na jego stronie
+                        console.error('[tpay] express payment failed:', paymentError)
+                    }
+                }
+
+                router.push(`/success/oid/${orderNumber}`)
+                clearCart()
             }
         } catch (error) {
             console.error('[v0] Error submitting order:', error)
@@ -294,10 +311,12 @@ export default function OrderSummary({
                 </div>
             )}
 
-            <div className="border border-hborder rounded-lg p-6 space-y-6 bg-white mt-8 md:mt-0">
+            <div ref={summaryRef} id="order-summary" className="border border-hborder rounded-lg p-6 space-y-6 bg-white mt-8 md:mt-0 scroll-mt-4">
                 <h2 className="text-xl font-bold text-[#441c49]">
                     Podsumowanie zamówienia
                 </h2>
+
+                <UndoRemoveBar />
 
                 {/* Cart Items */}
                 <div className="space-y-4 pb-4 border-b-2 border-hborder">
@@ -419,19 +438,47 @@ export default function OrderSummary({
                     </div>
                 </div>
 
+                {/* Komentarz do zamówienia */}
+                <div>
+                    {noteOpen ? (
+                        <label className="block">
+                            <span className="text-xs text-gray-600">Komentarz do zamówienia (opcjonalnie)</span>
+                            <textarea
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                maxLength={500}
+                                rows={3}
+                                placeholder="np. uwagi dla kuriera, preferowane godziny dostawy"
+                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#441c49] focus:border-transparent"
+                            />
+                        </label>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={() => setNoteOpen(true)}
+                            className="text-xs text-gray-600 underline hover:text-gray-900"
+                        >
+                            Dodaj komentarz do zamówienia
+                        </button>
+                    )}
+                </div>
+
                 {/* Checkboxes */}
                 <div className="space-y-3">
                     <label className="flex items-start gap-3 cursor-pointer">
                         <input
+                            id="checkout-terms"
                             type="checkbox"
                             checked={agreeToTerms}
                             onChange={() => handleTermsChange(!agreeToTerms)}
+                            aria-invalid={!!termsError}
                             className="w-5 h-5 accent-[#441c49] mt-0.5 flex-shrink-0"
                         />
-                        <span className={`text-xs ${!agreeToTerms ? 'text-red-500' : 'text-green-500'}`}>
+                        <span className={`text-xs ${termsError ? 'text-red-500' : agreeToTerms ? 'text-green-600' : 'text-gray-700'}`}>
                             <span className="font-semibold">*</span> Potwierdzam, że zapoznałem się i akceptuję regulamin sklepu internetowego i politykę prywatności.   Wyrażam zgodę na przesyłanie mi za pomocą środków komunikacji elektronicznej informacji handlowej przez lub na zlecenie Carinii, w rozumieniu ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną.
                         </span>
                     </label>
+                    {termsError && <p className="text-xs text-red-500">{termsError}</p>}
 
                     {/* <label className="flex items-start gap-3 cursor-pointer">
                         <input
@@ -455,9 +502,9 @@ export default function OrderSummary({
 
                 {/* Submit Button */}
                 <Button
-                    onClick={handleSubmitOrder}
-                    disabled={!agreeToTerms || isSubmitting || totalErr}
-                    className={`w-full h-12 font-semibold text-white rounded-lg transition-all duration-300 ${agreeToTerms && !isSubmitting
+                    onClick={() => handleSubmitOrder()}
+                    disabled={isSubmitting}
+                    className={`w-full h-12 font-semibold text-white rounded-lg transition-all duration-300 ${!isSubmitting
                         ? 'bg-[#441c49] hover:bg-[#3d1841] hover:shadow-xl hover:shadow-purple-500/50 hover:-translate-y-0.5 cursor-pointer border-2 border-white/20'
                         : 'bg-gray-400 cursor-not-allowed'
                         }`}
@@ -475,6 +522,12 @@ export default function OrderSummary({
                     )}
                 </Button>
 
+                <ExpressWalletButtons
+                    shippingMethod={checkoutData.shippingMethod}
+                    isBusy={isSubmitting}
+                    onPay={handleSubmitOrder}
+                />
+
                 {/* Admin Info */}
                 <div className="bg-white text-xs text-gray-400 space-y-2">
                     <p>
@@ -486,6 +539,22 @@ export default function OrderSummary({
 
                 </div>
             </div>
+
+            {!summaryVisible && (
+                <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t shadow-[0_-4px_12px_rgba(0,0,0,0.08)] px-4 py-3 flex items-center justify-between gap-3">
+                    <div className="leading-tight">
+                        <p className="text-xs text-gray-500">Do zapłaty</p>
+                        <p className="font-bold text-[#441c49]">{formatPLN(grandTotalBrutto)}</p>
+                    </div>
+                    <Button
+                        type="button"
+                        onClick={() => summaryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                        className="bg-[#441c49] hover:bg-[#3d1841] text-white"
+                    >
+                        Do podsumowania
+                    </Button>
+                </div>
+            )}
 
             <style jsx>{`
                 @keyframes progress {

@@ -1,149 +1,34 @@
 import { useCartStore } from '@/stores/cartZustand'
 import { create } from 'zustand'
+import type { CheckoutErrors } from '@/hooks/useCheckoutValidation'
 
-export interface ValidationErrors {
-    billing?: Record<string, string>
-    shipping?: Record<string, string>
-    shippingMethod?: string
-    paymentMethod?: string
-    terms?: string
+type CheckoutValidationStore = {
+    errors: CheckoutErrors
+    // true po pierwszej próbie złożenia zamówienia — wtedy pokazujemy wszystkie błędy
+    submitAttempted: boolean
+
+    setErrors: (errors: CheckoutErrors) => void
+    setSubmitAttempted: (attempted: boolean) => void
 }
 
-export type SectionStatusType = 'complete' | 'incomplete' | 'error'
-
-export interface SectionStatus {
-    billing: SectionStatusType
-    shipping: SectionStatusType
-    shippingMethod: SectionStatusType
-    paymentMethod: SectionStatusType
-    terms: SectionStatusType
+export const NO_ERRORS: CheckoutErrors = {
+    customer: {},
+    invoice: {},
+    shippingMethod: '',
+    paymentMethod: '',
+    terms: '',
 }
 
-export interface CheckoutValidationStore {
-    errors: ValidationErrors
-    status: SectionStatus
-    billingTouched: boolean
-    shippingTouched: boolean
-    sameAddress: boolean
-    isExpanded: boolean
-    expandedSection: string | null
-    shippingMethod: string
-    paymentMethod: string
-    shippingTotal: number
-
-    // Actions
-    setErrors: (errors: ValidationErrors) => void
-    setStatus: (status: any) => void
-    setBillingTouched: (touched: boolean) => void
-    setShippingTouched: (touched: boolean) => void
-    setSameAddress: (same: boolean) => void
-    setIsExpanded: (expanded: boolean) => void
-    setExpandedSection: (section: string | null) => void
-    setShippingMethod: (method: string) => void
-    setPaymentMethod: (method: string) => void
-    updateSectionStatus: (section: keyof SectionStatus, status: SectionStatusType) => void
-    updateSectionErrors: (section: keyof Omit<ValidationErrors, 'shippingMethod' | 'paymentMethod' | 'terms'>, errors: Record<string, string>) => void
-    updateFieldError: (section: string, field: string, error: string) => void
-    clearFieldError: (section: string, field: string) => void
-}
-// Funkcja pomocnicza do inicjalizacji paymentMethod
-const getInitialPaymentMethod = (): string => {
-    try {
-        const items = useCartStore.getState().items
-        let p = "banktransfer"
-        items.forEach(e => {
-            if (e.payment_method) p = e.payment_method
-        })
-        return p
-    } catch {
-        return "banktransfer"
-    }
+// Metoda płatności ustawiona z koszyka (np. przycisk PayPo na karcie produktu) ma pierwszeństwo
+export const getCartPaymentMethod = (): string => {
+    const items = useCartStore.getState().items
+    return items.reduce((method, item) => item.payment_method ?? method, 'banktransfer')
 }
 
 export const useCheckoutValidationStore = create<CheckoutValidationStore>((set) => ({
-    errors: {
-        billing: {},
-        shipping: {},
-        shippingMethod: '',
-        paymentMethod: '',
-        terms: ''
-    },
-    status: {
-        billing: 'incomplete',
-        shipping: 'incomplete',
-        shippingMethod: 'complete',
-        paymentMethod: 'complete',
-        terms: 'incomplete'
-    },
-    billingTouched: false,
-    shippingTouched: false,
-    shippingMethod: 'dhl_dhl24pl_courier',
-    paymentMethod: getInitialPaymentMethod(),
-    sameAddress: true,
-    isExpanded: false,
-    expandedSection: null,
-    shippingTotal: 0,
+    errors: NO_ERRORS,
+    submitAttempted: false,
 
-    setErrors: (updates) => set((state) => ({
-        errors: {
-            ...state.errors,
-            ...updates
-        }
-    })),
-
-    setStatus: (status) => set({ status }),
-    setBillingTouched: (touched) => {
-        console.log('setBillingTouched', touched)
-        set({ billingTouched: touched })
-    },
-    setShippingTouched: (touched) => {
-        console.log('setShippingTouched', touched)
-        set({ shippingTouched: touched })
-    },
-    setSameAddress: (same) => set({ sameAddress: same }),
-    setIsExpanded: (expanded) => set({ isExpanded: expanded }),
-    setExpandedSection: (section) => set({ expandedSection: section }),
-    setShippingMethod: (method) => set({ shippingMethod: method }),
-    setShippingTotal: (total: number) => set({ shippingTotal: total }),
-    setPaymentMethod: (method) => set({ paymentMethod: method }),
-    test: (t) => {
-
-    },
-    updateSectionStatus: (section, status) =>
-        set((state) => ({
-            status: {
-                ...state.status,
-                [section]: status
-            }
-        })),
-
-    updateSectionErrors: (section, errors) =>
-        set((state) => ({
-            errors: {
-                ...state.errors,
-                [section]: errors
-            }
-        })),
-
-    updateFieldError: (section, field, error) =>
-        set((state) => ({
-            errors: {
-                ...state.errors,
-                [section]: {
-                    ...state.errors[section as keyof ValidationErrors],
-                    [field]: error
-                }
-            }
-        })),
-
-    clearFieldError: (section, field) =>
-        set((state) => ({
-            errors: {
-                ...state.errors,
-                [section]: {
-                    ...state.errors[section as keyof ValidationErrors],
-                    [field]: ''
-                }
-            }
-        }))
+    setErrors: (errors) => set({ errors }),
+    setSubmitAttempted: (submitAttempted) => set({ submitAttempted }),
 }))

@@ -99,10 +99,9 @@ function InpostMap({ onPointSelect }: { onPointSelect: (point: any) => void }) {
     return <div ref={containerRef} className="h-[600px] w-full" />
 }
 
-export default function Paczkomaty({ onSetPoint }: { onSetPoint: any }) {
+export default function Paczkomaty({ onSetPoint, point = {} }: { onSetPoint: any; point?: any }) {
     const [open, setOpen] = useState(false)
     const isDesktop = useMediaQuery('(min-width: 768px)')
-    const [point, setPoint] = useState({})
 
     const handlePointSelect = useCallback((point: any) => {
         onSetPoint({
@@ -113,15 +112,8 @@ export default function Paczkomaty({ onSetPoint }: { onSetPoint: any }) {
             }
         })
 
-        setPoint({
-            'name': point.name,
-            'address': point.address_details,
-            'img': point.image_url
-
-        })
-        console.log('Wybrany paczkomat:', point)
         setOpen(false)
-    }, [])
+    }, [onSetPoint])
 
     const PointComponent = () => {
         // Jeśli nie ma punktu, nie wyświetlaj nic

@@ -2,8 +2,6 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import methods from '../data/shipping_payment_methods.json'
-import { set } from 'lodash'
 
 
 export type CartItem = {
@@ -24,9 +22,10 @@ export type CartItem = {
 
 type CartStore = {
     items: CartItem[]
+    // ostatnio usunięty produkt — pozwala na „Cofnij” (nie jest zapisywany w localStorage)
+    removedItem: CartItem | null
     isHydrated: boolean
     showMiniCart: boolean
-    paymentMethods: any[]
     grandTotal: number
     shippingTotal: number
     coupon: string,
@@ -34,13 +33,14 @@ type CartStore = {
     couponState: boolean,
     addItemToCart: (item: CartItem) => void
     removeItemCart: (id: string) => void
+    restoreRemovedItem: () => void
+    clearRemovedItem: () => void
     setShowMiniCart: (state: boolean) => void
     setProductCoupon: (data: any) => void
     setCoupon: (state: string, data: any) => void
     clearCart: () => void
     setHydratedCart: (state: boolean) => void
     updateQty: (id: string, qty: number) => void
-    updatePaymentMethod: (ship_method: string) => void
     setShippingTotal: (state: number) => void
     setGrandTotal: (state: number) => void
     setCouponData: (state: any) => void
@@ -51,6 +51,7 @@ export const useCartStore = create<CartStore>()(
     persist(
         (set, get) => ({
             items: [],
+            removedItem: null,
             isHydrated: false,
             showMiniCart: false,
             grandTotal: 0,
@@ -58,7 +59,6 @@ export const useCartStore = create<CartStore>()(
             coupon: "",
             couponState: false,
             shippingTotal: 0,
-            paymentMethods: methods.payment_methods,
             setShippingTotal: (state) => set({ shippingTotal: state }),
             setGrandTotal: (state) => set({ grandTotal: state }),
             setShowMiniCart: (state) => set({ showMiniCart: state }),
@@ -127,18 +127,22 @@ export const useCartStore = create<CartStore>()(
             },
 
             removeItemCart: (pr: any) => {
-                set({ items: get().items.filter(i => i.pid !== pr.pid) })
+                const removed = get().items.find(i => i.pid === pr.pid) ?? null
+                set({ items: get().items.filter(i => i.pid !== pr.pid), removedItem: removed })
             },
+            restoreRemovedItem: () => {
+                const removed = get().removedItem
+                if (!removed) return
+                get().addItemToCart(removed)
+                set({ removedItem: null })
+            },
+            clearRemovedItem: () => set({ removedItem: null }),
             updateQty: (pr: any, qty: number) => {
                 set({
                     items: get().items.map(i =>
                         i.pid === pr.pid ? { ...i, qty } : i
                     )
                 })
-            },
-            updatePaymentMethod: (shipping_method: string) => {
-
-                set({ paymentMethods: get().paymentMethods.map(i => i.code === shipping_method ? { ...i, selected: true } : { ...i, selected: false }) })
             },
             clearCart: () => set({ items: [] })
         }),
@@ -154,6 +158,7 @@ export const useCartStore = create<CartStore>()(
                         removeItem: () => { }
                     }
             ),
+            partialize: ({ removedItem, ...persisted }) => persisted,
             onRehydrateStorage: () => (state) => {
                 state?.setHydratedCart(true)
             }

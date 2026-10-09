@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { User, Mail, Phone, Lock, MapPin, Save, Loader2, Edit, Building2, FileText, Eye, EyeOff } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { formatNIP, formatPostcode, formatPhone } from '@/hooks/useMaskedInput'
+import { useGusLookup } from '@/hooks/useGusLookup'
 
 interface FormData {
   // Personal info
@@ -53,7 +54,6 @@ export default function ProfilePage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState("")
-  const [loadingGus, setLoadingGus] = useState(false)
 
   // Editing states
   const [isEditingPersonal, setIsEditingPersonal] = useState(false)
@@ -110,33 +110,15 @@ export default function ProfilePage() {
     }
   }, [session])
 
-  const fetchGus = async () => {
-
-    if (form.nip.length < 10) return
-    console.log(form.nip);
-    setLoadingGus(true)
-
-    const res = await fetch('/api/gus', {
-      method: 'POST',
-      body: JSON.stringify({ nip: form.nip })
-    })
-
-    const data = await res.json()
-    console.log(data);
-    if (!data.error) {
-      setForm(prev => ({
-        ...prev,
-        companyName: data.Nazwa,
-        billingFirstName: data.firstname,
-        billingLastName: data.lastname,
-        billingStreet: data.street,
-        billingCity: data.Miejscowosc,
-        billingPostal: data.KodPocztowy
-      }))
-    }
-
-    setLoadingGus(false)
-  }
+  const { lookup: lookupGus } = useGusLookup((company) =>
+    setForm(prev => ({
+      ...prev,
+      companyName: company.companyName,
+      billingStreet: company.street,
+      billingCity: company.city,
+      billingPostal: company.postcode
+    }))
+  )
 
   const fetchUserData = async () => {
     setIsLoading(true)
@@ -877,10 +859,10 @@ export default function ProfilePage() {
                       id="nip"
                       value={form.nip}
                       onChange={(e) => {
-                        setForm(prev => ({ ...prev, nip: formatNIP(e.target.value) }));
-
+                        const nip = formatNIP(e.target.value)
+                        setForm(prev => ({ ...prev, nip }))
+                        lookupGus(nip)
                       }}
-                      onBlur={fetchGus}
                     />
                   </div>
                 </>

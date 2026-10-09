@@ -4,6 +4,7 @@ import { useCartStore } from '@/stores/cartZustand'
 import { useIsMobile } from '@/hooks/use-mobile'
 import CheckoutLayout from '@/components/checkout/CheckoutLayout'
 import { CheckoutSkeleton } from '@/components/checkout/CheckoutSkeleton'
+import UndoRemoveBar from '@/components/checkout/UndoRemoveBar'
 import { ArrowLeft, ChevronLeft } from 'lucide-react'
 
 export default function CheckoutPage() {
@@ -38,6 +39,9 @@ export default function CheckoutPage() {
                 <p className="text-gray-600 mb-6">
                     Wygląda na to, że nie dodałeś jeszcze żadnych produktów
                 </p>
+                <div className="max-w-md mx-auto mb-6">
+                    <UndoRemoveBar />
+                </div>
                 <a
                     href="/"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-hert text-white rounded-lg hover:bg-hert/90 transition-all hover:shadow-lg hover:-translate-y-0.5"

@@ -7,6 +7,7 @@ import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { useCartStore } from '@/stores/cartZustand'
 import { useIsMobile } from '@/hooks/use-mobile'
 import DiscountCode from '@/components/checkout/DiscountCode'
+import ExpressCheckout from '@/components/express/ExpressCheckout'
 import { useEffect } from 'react'
 
 export function CartDrawerContent() {
@@ -19,6 +20,8 @@ export function CartDrawerContent() {
   const removeItem = useCartStore((state: any) => state.removeItemCart)
   const updateQty = useCartStore((state: any) => state.updateQty)
   const isHydrated = useCartStore((state: any) => state.isHydrated)
+  const coupon = useCartStore((state: any) => state.coupon)
+  const clearCart = useCartStore((state: any) => state.clearCart)
 
   // Fix dla klawiatury mobilnej - resetuj pozycję drawera po zamknięciu klawiatury
   useEffect(() => {
@@ -238,6 +241,15 @@ export function CartDrawerContent() {
           >
             Przejdź do Kasy
           </Button>
+
+          <ExpressCheckout
+            getItems={() => items}
+            coupon={coupon}
+            onOrderPlaced={() => {
+              clearCart()
+              setOpen(false)
+            }}
+          />
         </div>
       )}
     </div>

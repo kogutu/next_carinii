@@ -1,325 +1,189 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
-import BillingForm from '@/components/checkout/BillingForm'
-import ShippingForm from '@/components/checkout/ShippingForm'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { signOut, useSession } from 'next-auth/react'
+import { InfoIcon } from 'lucide-react'
+import Link from 'next/link'
+import CustomerForm from '@/components/checkout/CustomerForm'
+import InvoiceSection from '@/components/checkout/InvoiceSection'
 import ShippingMethod from '@/components/checkout/ShippingMethod'
 import PaymentMethod from '@/components/checkout/PaymentMethod'
 import OrderSummary from '@/components/checkout/OrderSummary'
+import SectionHeader from '@/components/checkout/SectionHeader'
 import FloatingValidationPanel from '@/components/checkout/FloatingValidationPanel'
-import { useCheckoutValidationStore } from '@/components/checkout/checkoutValidationStore'
-
-import { signOut, useSession } from 'next-auth/react'
-import { useCheckoutValidation, BillingFormData, CheckoutData, ShippingFormData } from '@/hooks/useCheckoutValidation'
+import {
+    getCartPaymentMethod,
+    useCheckoutValidationStore,
+} from '@/components/checkout/checkoutValidationStore'
+import {
+    EMPTY_CUSTOMER,
+    EMPTY_INVOICE,
+    INPOST_PARCEL_LOCKER,
+    countCheckoutErrors,
+    validateCheckout,
+    type CheckoutData,
+    type CheckoutErrors,
+    type CustomerFormData,
+    type InpostPoint,
+    type InvoiceFormData,
+} from '@/hooks/useCheckoutValidation'
+import { mapAccountToCheckout, type AccountData } from '@/lib/checkoutAccount'
+import { readCheckoutDraft, useCheckoutDraftStore } from '@/stores/checkoutDraftStore'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
-import { InfoIcon } from 'lucide-react'
-import Link from 'next/link'
 
+const DEFAULT_SHIPPING_METHOD = 'dhl_dhl24pl_courier'
+const DEFAULT_PAYMENT_METHOD = 'banktransfer'
+const DRAFT_SAVE_DELAY_MS = 600
 
+const CUSTOMER_FIELD_ORDER = ['firstName', 'lastName', 'email', 'phone', 'street', 'postcode', 'city']
+const INVOICE_FIELD_ORDER = ['nip', 'companyName', 'street', 'postcode', 'city']
+
+const findFirstErrorAnchor = (errors: CheckoutErrors): string | null => {
+    const customerField = CUSTOMER_FIELD_ORDER.find((field) => errors.customer[field])
+    if (customerField) return `checkout-${customerField}`
+
+    const invoiceField = INVOICE_FIELD_ORDER.find((field) => errors.invoice[field])
+    if (invoiceField) return `checkout-invoice-${invoiceField}`
+
+    if (errors.shippingMethod) return 'section-shipping'
+    if (errors.paymentMethod) return 'section-payment'
+    if (errors.terms) return 'checkout-terms'
+    return null
+}
+
+const isPristine = (customer: CustomerFormData): boolean =>
+    !customer.firstName && !customer.lastName && !customer.email && !customer.phone && !customer.street
 
 export default function CheckoutLayout() {
-    const { validateBillingForm, validateShippingForm } = useCheckoutValidation()
     const { data: sessionUser } = useSession()
 
-    // Zustand store
-    const {
-        setErrors: setZustandErrors,
-        setStatus: setZustandStatus,
-        setBillingTouched: setZustandBillingTouched,
-        setShippingTouched: setZustandShippingTouched,
-        updateSectionStatus: setZustandSectionStatus,
-        setShippingMethod: setZustandShippingMethod,
-        setPaymentMethod: setZustandPaymentMethod,
-        shippingTouched,
-        billingTouched,
-        shippingMethod,
-        shippingTotal,
-        paymentMethod,
-        setSameAddress
-    } = useCheckoutValidationStore()
-    console.log(paymentMethod)
-    const [checkoutData, setCheckoutData] = useState<CheckoutData>({
-        billing: {
-            type: 'private',
-            firstName: '',
-            lastName: '',
-            nip: '',
-            street: '',
-            postcode: '',
-            city: '',
-            country: 'Polska',
-            phone: '',
-            phoneCode: '+48',
-            email: '',
-            documentType: 'receipt',
-            sameAddress: true
-        },
-        shipping: {
-            firstName: '',
-            lastName: '',
-            street: '',
-            postcode: '',
-            city: '',
-            country: 'Polska',
-            phone: '',
-            phoneCode: '+48'
-        },
-        shippingMethod: shippingMethod,
-        paymentMethod: paymentMethod,
-        agreeToTerms: false,
-        agreeToNewsletter: false,
-        inpost: {}
+    const setZustandErrors = useCheckoutValidationStore((state) => state.setErrors)
+    const submitAttempted = useCheckoutValidationStore((state) => state.submitAttempted)
+    const setSubmitAttempted = useCheckoutValidationStore((state) => state.setSubmitAttempted)
+
+    const saveDraft = useCheckoutDraftStore((state) => state.saveDraft)
+    const clearDraft = useCheckoutDraftStore((state) => state.clearDraft)
+    const hasSavedDraft = useCheckoutDraftStore((state) => state.savedAt > 0)
+
+    // Zapis z poprzedniego zamówienia — czytany raz, przy wejściu na stronę
+    const [initialDraft] = useState(readCheckoutDraft)
+
+    const [customer, setCustomer] = useState<CustomerFormData>({ ...EMPTY_CUSTOMER, ...initialDraft?.customer })
+    const [invoiceEnabled, setInvoiceEnabled] = useState(initialDraft?.invoiceEnabled ?? false)
+    const [invoice, setInvoice] = useState<InvoiceFormData>({ ...EMPTY_INVOICE, ...initialDraft?.invoice })
+    const [shippingMethod, setShippingMethod] = useState(initialDraft?.shippingMethod ?? DEFAULT_SHIPPING_METHOD)
+    const [inpost, setInpost] = useState<InpostPoint>(initialDraft?.inpost ?? {})
+    const [agreeToTerms, setAgreeToTerms] = useState(false)
+    const [paymentMethod, setPaymentMethod] = useState(() => {
+        // płatność wybrana w koszyku (np. PayPo z karty produktu) wygrywa z zapisem
+        const cartPayment = getCartPaymentMethod()
+        return cartPayment !== DEFAULT_PAYMENT_METHOD
+            ? cartPayment
+            : initialDraft?.paymentMethod ?? cartPayment
     })
 
+    const customerRef = useRef(customer)
+    customerRef.current = customer
+
+    const checkoutData: CheckoutData = useMemo(
+        () => ({
+            customer,
+            invoice: invoiceEnabled ? invoice : null,
+            shippingMethod,
+            paymentMethod,
+            agreeToTerms,
+            agreeToNewsletter: false,
+            inpost,
+        }),
+        [customer, invoiceEnabled, invoice, shippingMethod, paymentMethod, agreeToTerms, inpost],
+    )
+
+    const errors = useMemo(() => validateCheckout(checkoutData), [checkoutData])
 
     useEffect(() => {
-        const loadUser = async () => {
-            if (!sessionUser?.user?.id) return
+        setZustandErrors(errors)
+    }, [errors, setZustandErrors])
 
+    // Przy wyjściu ze strony nie zostawiamy „submitAttempted” z poprzedniej wizyty
+    useEffect(() => () => setSubmitAttempted(false), [setSubmitAttempted])
+
+    // Zapamiętywanie danych i metod (debounce, nie zapisujemy pustego formularza)
+    useEffect(() => {
+        if (isPristine(customer)) return
+
+        const timer = setTimeout(
+            () => saveDraft({ customer, invoiceEnabled, invoice, shippingMethod, paymentMethod, inpost }),
+            DRAFT_SAVE_DELAY_MS,
+        )
+        return () => clearTimeout(timer)
+    }, [customer, invoiceEnabled, invoice, shippingMethod, paymentMethod, inpost, saveDraft])
+
+    // Zalogowany użytkownik: dane z konta uzupełniają formularz
+    useEffect(() => {
+        const userId = sessionUser?.user?.id
+        if (!userId) return
+
+        const loadUser = async () => {
             try {
                 const response = await fetch('/api/user/getuser', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ uid: sessionUser.user.id }),
-                    cache: 'no-store'
+                    body: JSON.stringify({ uid: userId }),
+                    cache: 'no-store',
                 })
-
                 if (!response.ok) throw new Error('Failed to fetch user')
 
-                let data = await response.json()
-                let phone = data.data.phone;
-                let phoneCode = '+48';
-                let phoneNumber = phone || '';
+                const { data }: { data?: AccountData } = await response.json()
+                if (!data) return
 
-                // Parse phone code if it exists
-                if (phone && phone.match(/^(\+\d{1,3})\s?(.+)$/)) {
-                    const match = phone.match(/^(\+\d{1,3})\s?(.+)$/)
-                    if (match) {
-                        phoneCode = match[1]
-                        phoneNumber = match[2]
-                    }
+                const prefill = mapAccountToCheckout(data, customerRef.current)
+                setCustomer(prefill.customer)
+                if (prefill.invoice) {
+                    setInvoice(prefill.invoice)
+                    setInvoiceEnabled(true)
                 }
-
-                let email = data.data.email;
-
-                let billingData = data.data.billingAddress
-                let shippingData = data.data.shippingAddress
-                console.log(data)
-                let sameAddress = true;
-                if (shippingData?.firstName) {
-                    setZustandShippingTouched(true)
-                    sameAddress = false;
-                }
-                var newCheckoutData: CheckoutData = {
-                    ...checkoutData,
-                    billing: {
-                        email: email || '',
-                        firstName: data.data.firstName,
-                        lastName: data.data.lastName,
-                    }
-                }
-                // Aktualizuj dane formularza
-                if (billingData && shippingData)
-                    newCheckoutData = {
-                        ...newCheckoutData,
-                        billing: {
-                            ...checkoutData.billing,
-                            nip: billingData.nip,
-                            customerType: billingData.customerType,
-                            companyName: billingData.companyName,
-                            invoiceType: billingData.invoiceType,
-                            firstName: billingData.firstName,
-                            lastName: billingData.lastName,
-                            street: billingData.street || '',
-                            postcode: billingData.postal || '',
-                            city: billingData.city || '',
-                            country: billingData.country || 'Polska',
-                            phone: phoneNumber,
-                            phoneCode: phoneCode,
-                            email: email || '',
-                            documentType: billingData.type === 'company' ? 'invoice' : 'receipt',
-                            sameAddress: sameAddress
-                        },
-                        shipping: {
-                            ...checkoutData.shipping,
-                            firstName: shippingData.firstName,
-                            lastName: shippingData.lastName,
-                            street: shippingData.street || '',
-                            postcode: shippingData.postal || '',
-                            city: shippingData.city || '',
-                            country: shippingData.country || 'Polska',
-                            phone: phoneNumber,
-                            phoneCode: phoneCode,
-                        }
-                    }
-
-                setCheckoutData(newCheckoutData)
-
-                // Update Zustand store
-                setSameAddress(sameAddress)
             } catch (error) {
                 console.error('Error loading user:', error)
             }
         }
 
         loadUser()
-    }, [sessionUser?.user?.id, setSameAddress])
+    }, [sessionUser?.user?.id])
 
-
-    const handleBillingChange = useCallback((billingData: BillingFormData, isValid: boolean) => {
-        setCheckoutData(prev => {
-            let newData = {
-                ...prev,
-                billing: billingData
-            }
-
-            // Jeśli adresy są takie same, skopiuj dane billingowe do shipping
-            if (billingData.sameAddress) {
-                newData.shipping = {
-                    firstName: billingData.firstName,
-                    lastName: billingData.lastName,
-                    street: billingData.street,
-                    postcode: billingData.postcode,
-                    city: billingData.city,
-                    country: billingData.country,
-                    phone: billingData.phone,
-                    phoneCode: billingData.phoneCode
-                }
-            }
-
-            return newData
-        })
-
-        // Oblicz błędy z nowych danych (billingData) zamiast starego state
-        const billingErrors = validateBillingForm(billingData)
-
-        // Aktualizuj store z błędami
-        setZustandErrors({
-            billing: billingErrors,
-            shipping: {},
-            shippingMethod: '',
-            paymentMethod: '',
-            terms: ''
-        })
-
-        // const newStatus = {
-        //     billing: isValid ? 'complete' as const : 'incomplete' as const,
-        //     shipping: 'incomplete' as const,
-        //     shippingMethod: 'incomplete' as const,
-        //     paymentMethod: 'incomplete' as const,
-        //     terms: 'incomplete' as const
-        // }
-
-        // Update Zustand store
-        setZustandSectionStatus('billing', isValid ? 'complete' as const : 'incomplete' as const);
-        setZustandBillingTouched(true)
-        if (billingData.sameAddress
-
-        )
-            setZustandShippingTouched(true)
-        // console.log('newStatus', newStatus)
-        // setZustandStatus(newStatus)
-        setSameAddress(billingData.sameAddress)
-    }, [validateBillingForm, setZustandSectionStatus, setZustandBillingTouched, setZustandErrors, setSameAddress])
-
-    const handleShippingChange = useCallback((shippingData: ShippingFormData, isValid: boolean) => {
-        setCheckoutData(prev => ({
-            ...prev,
-            shipping: shippingData
-        }))
-        console.log('shippingData', shippingData)
-
-        // Oblicz błędy z nowych danych (shippingData) zamiast starego state
-        const shippingErrors = validateShippingForm(shippingData)
-        // Aktualizuj store z błędami
-        setZustandErrors({
-            billing: {},
-            shipping: shippingErrors,
-            shippingMethod: '',
-            paymentMethod: '',
-            terms: ''
-        })
-
-
-        setZustandShippingTouched(true)
-        setZustandSectionStatus('shipping', isValid ? 'complete' as const : 'incomplete' as const);
-
-        // Update Zustand store
-        // setZustandStatus(newStatus)
-
-    }, [validateShippingForm, setZustandSectionStatus, setZustandErrors])
-
-    const handleShippingMethodFieldsCheck = useCallback((data: any) => {
-
-        setCheckoutData(prev => ({
-            ...prev,
-            ...data
-        }))
-
-
+    const handleShippingMethodChange = useCallback((method: string) => {
+        setShippingMethod(method)
+        if (method !== INPOST_PARCEL_LOCKER) setInpost({})
     }, [])
-    const handleShippingMethodChange = useCallback((method: any) => {
-        setCheckoutData(prev => ({
-            ...prev,
-            shippingMethod: method
-        }))
 
-        setZustandShippingMethod(method)
+    const handleValidate = useCallback((): boolean => {
+        if (countCheckoutErrors(errors) === 0) return true
 
+        setSubmitAttempted(true)
+        const anchorId = findFirstErrorAnchor(errors)
+        const element = anchorId ? document.getElementById(anchorId) : null
+        element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        element?.focus({ preventScroll: true })
+        return false
+    }, [errors, setSubmitAttempted])
 
-        setZustandSectionStatus('shippingMethod', 'complete' as const);
+    const handleClearSavedData = () => {
+        clearDraft()
+        setCustomer(EMPTY_CUSTOMER)
+        setInvoice(EMPTY_INVOICE)
+        setInvoiceEnabled(false)
+        setInpost({})
+    }
 
-        // Update Zustand store
-    }, [setZustandSectionStatus])
-
-    const handlePaymentMethodChange = useCallback((method: any) => {
-        setCheckoutData(prev => ({
-            ...prev,
-            paymentMethod: method
-        }))
-
-        console.clear();
-
-
-
-
-        setZustandPaymentMethod(method)
-
-
-        setZustandSectionStatus('paymentMethod', 'complete' as const);
-
-        // Update Zustand store
-    }, [setZustandStatus])
-
-    const handleTermsChange = useCallback((agree: boolean) => {
-        setCheckoutData(prev => ({
-            ...prev,
-            agreeToTerms: agree
-        }))
-
-        // Aktualizuj błędy w store
-        setZustandErrors({
-            terms: agree ? '' : 'Musisz zaakceptować regulamin'
-        })
-
-
-
-        setZustandSectionStatus('terms', agree ? 'complete' as const : 'incomplete' as const);
-
-        // Update Zustand store
-    }, [setZustandErrors])
-
-
+    const customerComplete = Object.keys(errors.customer).length === 0 && Object.keys(errors.invoice).length === 0
+    const customerHasErrors = submitAttempted && !customerComplete
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-white via-[#f8f4f1] to-white relative z-0">
-            {/* Floating Validation Panel */}
-
             <div className="max-w-7xl mx-auto py-12 px-4">
                 <h1 className="text-4xl font-bold text-[#441c49] mb-4">
                     Koszyk
                 </h1>
-                <p className="text-gray-600 mb-8">Uzupełnij wszystkie pola, aby przejść do płatności</p>
+                <p className="text-gray-600 mb-8">Uzupełnij dane, aby złożyć zamówienie</p>
                 {sessionUser?.user && (
                     <div className="mb-4">
                         <Alert>
@@ -330,50 +194,62 @@ export default function CheckoutLayout() {
                                     {sessionUser?.user.email}</Link>
                                     <span className="cursor-pointer underline text-xs" onClick={async () => { await signOut({ callbackUrl: "/checkout" }) }}>wyloguj się</span>
                                 </div>
-
                             </AlertDescription>
-
                         </Alert>
                     </div>
                 )}
                 <div className="block md:grid md:grid-cols-3 gap-8">
                     {/* Left Column - Forms */}
                     <div className="md:col-span-2 space-y-8">
-                        {/* Billing Form */}
-                        <div className="bg-white rounded-lg border  p-8 shadow-sm">
-                            <BillingForm
-                                onValidationChange={handleBillingChange}
-
-                                isTouched={billingTouched}
-                                initialBillingData={checkoutData.billing}
+                        <div className="bg-white rounded-lg border p-8 shadow-sm">
+                            <SectionHeader
+                                title="1. Dane i adres dostawy"
+                                complete={customerComplete}
+                                hasErrors={customerHasErrors}
+                            />
+                            {hasSavedDraft && !isPristine(customer) && (
+                                <p className="text-xs text-gray-500 -mt-3 mb-4">
+                                    Dane zapamiętane w tej przeglądarce.{' '}
+                                    <button type="button" onClick={handleClearSavedData} className="underline hover:text-gray-700">
+                                        Wyczyść
+                                    </button>
+                                </p>
+                            )}
+                            <CustomerForm
+                                value={customer}
+                                onChange={setCustomer}
+                                errors={errors.customer}
+                                showAllErrors={submitAttempted}
+                            />
+                            <InvoiceSection
+                                customer={customer}
+                                enabled={invoiceEnabled}
+                                onEnabledChange={setInvoiceEnabled}
+                                value={invoice}
+                                onChange={setInvoice}
+                                errors={errors.invoice}
+                                showAllErrors={submitAttempted}
                             />
                         </div>
 
-                        {/* Shipping Form - pokazuje się tylko gdy adresy są różne */}
-
-                        {!checkoutData.billing.sameAddress && (
-                            <div className="bg-white rounded-lg border  p-8 shadow-sm">
-                                <ShippingForm
-                                    onValidationChange={handleShippingChange}
-                                    isTouched={shippingTouched}
-                                    initialShippingData={checkoutData.shipping as ShippingFormData}
-                                />
-                            </div>
-                        )}
-
-                        <div className="bg-white rounded-lg border  py-8 px-8 shadow-sm">
+                        <div className="bg-white rounded-lg border py-8 px-8 shadow-sm">
                             <ShippingMethod
-                                onMethodChange={handleShippingMethodChange}
-                                setCheckoutData={handleShippingMethodFieldsCheck}
                                 init={shippingMethod}
+                                point={inpost}
+                                lastUsed={initialDraft?.shippingMethod}
+                                onMethodChange={handleShippingMethodChange}
+                                onPointChange={setInpost}
+                                error={submitAttempted ? errors.shippingMethod : ''}
                             />
                         </div>
 
-                        <div className="bg-white rounded-lg border  p-8 shadow-sm">
+                        <div className="bg-white rounded-lg border p-8 shadow-sm">
                             <PaymentMethod
-                                onMethodChange={handlePaymentMethodChange}
-                                shippingMethod={checkoutData.shippingMethod}
                                 init={paymentMethod}
+                                shippingMethod={shippingMethod}
+                                lastUsed={initialDraft?.paymentMethod}
+                                onMethodChange={setPaymentMethod}
+                                error={submitAttempted ? errors.paymentMethod : ''}
                             />
                         </div>
                     </div>
@@ -384,13 +260,11 @@ export default function CheckoutLayout() {
                             <FloatingValidationPanel />
 
                             <OrderSummary
-                                onTermsChange={handleTermsChange}
-                                isTermsAccepted={checkoutData.agreeToTerms}
-                                shippingTotal={shippingTotal}
                                 checkoutData={checkoutData}
-                                onOrderSubmit={() => {
-                                    console.log('[v0] Order submitted, can reset form or redirect')
-                                }}
+                                isTermsAccepted={agreeToTerms}
+                                termsError={submitAttempted ? errors.terms : ''}
+                                onTermsChange={setAgreeToTerms}
+                                onValidate={handleValidate}
                             />
                         </div>
                     </div>

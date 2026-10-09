@@ -23,7 +23,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Minus, Plus, ShoppingCart, HelpCircle, DollarSign, X, ChevronLeft, ChevronRight, User, Briefcase, Mail, Phone, Heart, ExternalLink } from 'lucide-react'
 import ManagerSection from "./manager_section"
 import TabList from "./TabList";
-import { useCartStore } from "@/stores/cartZustand";
+import { useCartStore, type CartItem } from "@/stores/cartZustand";
+import ExpressCheckout from "@/components/express/ExpressCheckout";
 import ProductCarousel from "@/components/product/ProductsCarusel";
 import ProductsCarousel from "@/components/hert/products-carousel";
 import ProductsCarouselTypesense from "@/components/hert/products-carousel-typesense";
@@ -463,6 +464,28 @@ export default function ProductPage({ product, seemore }: { product: Product, se
 
 
     }
+    // Pozycja do szybkiej płatności (Apple Pay / Google Pay) — te same dane co przy „Dodaj do koszyka”, ale bez ruszania koszyka
+    const getExpressItems = (): CartItem[] | null => {
+        if (_.isEmpty(variant) && hasVariant) {
+            setErorrVariant(true);
+            return null;
+        }
+        setErorrVariant(false);
+
+        return [{
+            pid: product.pid + "_" + variant?.size,
+            variantId: (product.childProducts as Record<string, number> | undefined)?.[variant?.size] ?? 0,
+            variant: variant,
+            qty: 1,
+            payment_method: "tpay_card",
+            attrs: {},
+            name: product.name,
+            image: product?.image_main,
+            price: product.price,
+            final_price: product.final_price,
+            sku: product.sku,
+        } as CartItem]
+    }
     const handleAddToCart = (): void => {
         if (_.isEmpty(variant) && hasVariant) {
             setErorrVariant(true);
@@ -699,6 +722,13 @@ export default function ProductPage({ product, seemore }: { product: Product, se
 
                                         Kup i zapłać za 30 dni
                                     </Button>
+
+                                    <ExpressCheckout
+                                        className="w-full mt-3"
+                                        getItems={getExpressItems}
+                                        disabled={product.is_configurable && getAttributesArray().some((attr) => !selectedAttributes[attr.code])}
+                                        onBlockedClick={() => setErorrVariant(true)}
+                                    />
                                 </div></>
                         )}
 

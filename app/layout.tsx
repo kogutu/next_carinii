@@ -115,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="min-h-screen flex flex-col bg-white">
             <div id="google_translate_element" className="hidden"></div>
             <Header />
-            <main className="flex-1 mt-4 relative">
+            <main className="flex-1 relative">
               {children}
             </main>
             <Footer />

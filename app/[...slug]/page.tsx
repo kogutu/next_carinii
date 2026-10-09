@@ -15,6 +15,7 @@ import {
   buildTypesenseSearchParams,
   decodeFiltersFromUrl,
 } from "@/stores/categoryZustand"
+import { getPopularitySkus, POPULARITY_SORT } from "@/lib/popularity"
 import {
   getCachedCategory,
   getCachedProduct,
@@ -141,6 +142,9 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
       const decoded: any = decodeFiltersFromUrl(rawSearchParams)
       decoded.catId = category.cid
+      if (decoded.sort === POPULARITY_SORT) {
+        decoded.popularitySkus = await getPopularitySkus(String(category.cid))
+      }
 
       const tsQuery: any = buildTypesenseSearchParams(decoded)
       tsQuery[0]['include_fields'] = [

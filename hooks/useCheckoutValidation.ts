@@ -1,234 +1,145 @@
-import { useState, useCallback } from 'react'
+import { isValidNip } from '@/lib/nip'
+import { DEFAULT_COUNTRY } from '@/lib/countries'
 
-export interface BillingFormData {
-    type: 'private' | 'company'
+export type CustomerFormData = {
     firstName: string
     lastName: string
-    street: string
-    postcode: string
-    city: string
-    country: string
-    phone: string
-    phoneCode: string
     email: string
-    documentType: 'receipt' | 'invoice'
-    companyName?: string
-    nip?: string
-    sameAddress: boolean
-}
-
-export interface ShippingFormData {
-    firstName: string
-    lastName: string
+    phoneCode: string
+    phone: string
     street: string
     postcode: string
     city: string
     country: string
-    phone: string
-    phoneCode: string
 }
 
-export interface CheckoutData {
-    billing: BillingFormData
-    shipping?: ShippingFormData
-    shippingMethod: 'fedex' | 'pickup'
-    paymentMethod: 'transfer' | 'cod'
+export type InvoiceFormData = {
+    nip: string
+    companyName: string
+    street: string
+    postcode: string
+    city: string
+}
+
+export type InpostPoint = {
+    name?: string
+    address?: any
+    img?: string
+}
+
+export type CheckoutData = {
+    customer: CustomerFormData
+    // null = zamówienie bez faktury (paragon)
+    invoice: InvoiceFormData | null
+    shippingMethod: string
+    paymentMethod: string
     agreeToTerms: boolean
     agreeToNewsletter: boolean
-    inpost: {  // <-- DODAJ TO
-        name?: string
-        address?: any
-        img?: string
-    }
+    inpost: InpostPoint
 }
 
-export interface ValidationErrors {
-    billing: Record<string, string>
-    shipping: Record<string, string>
+export type FieldErrors = Record<string, string>
+
+export type CheckoutErrors = {
+    customer: FieldErrors
+    invoice: FieldErrors
     shippingMethod: string
     paymentMethod: string
     terms: string
 }
 
-export interface SectionStatus {
-    billing: 'incomplete' | 'complete' | 'error'
-    shipping: 'incomplete' | 'complete' | 'error'
-    shippingMethod: 'incomplete' | 'complete'
-    paymentMethod: 'incomplete' | 'complete'
-    terms: 'incomplete' | 'complete'
+export const INPOST_PARCEL_LOCKER = 'inpostparcels_inpostparcels'
+
+export const EMPTY_CUSTOMER: CustomerFormData = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneCode: '+48',
+    phone: '',
+    street: '',
+    postcode: '',
+    city: '',
+    country: DEFAULT_COUNTRY,
+}
+
+export const EMPTY_INVOICE: InvoiceFormData = {
+    nip: '',
+    companyName: '',
+    street: '',
+    postcode: '',
+    city: '',
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_REGEX = /^\d{9,}$/
 const POSTCODE_REGEX = /^\d{2}-\d{3}$/
 
-export const useCheckoutValidation = () => {
-    const [errors, setErrors] = useState<ValidationErrors>({
-        billing: {},
-        shipping: {},
-        shippingMethod: '',
-        paymentMethod: '',
-        terms: ''
-    })
-    const [billingTouched, setBillingTouched] = useState(false)
-
-    const validateBillingForm = useCallback(
-        (data: BillingFormData): Record<string, string> => {
-            const newErrors: Record<string, string> = {}
-            // Common validatio an
-            if (!data.firstName.trim()) newErrors.firstName = 'Imię jest wymagane'
-            if (!data.lastName.trim()) newErrors.lastName = 'Nazwisko jest wymagane'
-            if (!data.street.trim()) newErrors.street = 'Ulica i numer są wymagane'
-            if (!data.postcode.trim()) newErrors.postcode = 'Kod pocztowy jest wymagany'
-            if (!data.postcode || !POSTCODE_REGEX.test(data.postcode)) {
-                newErrors.postcode = 'Kod pocztowy musi mieć format: XX-XXX'
-            }
-            if (!data.city.trim()) newErrors.city = 'Miasto jest wymagane'
-            if (!data.phone.trim()) newErrors.phone = 'Telefon jest wymagany'
-            if (!data.phone || !PHONE_REGEX.test(data.phone.replace(/[\s\-]/g, ''))) {
-                newErrors.phone = 'Telefon musi zawierać co najmniej 9 cyfr'
-            }
-            if (!data.email.trim()) newErrors.email = 'Email jest wymagany'
-            if (!data.email || !EMAIL_REGEX.test(data.email)) {
-                newErrors.email = 'Podaj prawidłowy adres email'
-            }
-
-            // Company validation
-            if (data.type === 'company') {
-                if (!data.nip?.trim()) newErrors.nip = 'NIP jest wymagany dla firmy'
-                if (data.nip && data.nip.length !== 13) {
-                    newErrors.nip = 'NIP musi mieć 10 cyfr'
-                }
-                if (!data.companyName?.trim()) newErrors.companyName = 'Nazwa firmy jest wymagana'
-            }
-            return newErrors
-        },
-        []
-    )
-
-    const validateShippingForm = useCallback(
-        (data: ShippingFormData): Record<string, string> => {
-            const newErrors: Record<string, string> = {}
-
-            if (!data.firstName.trim()) newErrors.firstName = 'Imię jest wymagane'
-            if (!data.lastName.trim()) newErrors.lastName = 'Nazwisko jest wymagane'
-            if (!data.street.trim()) newErrors.street = 'Ulica i numer są wymagane'
-            if (!data.postcode.trim()) newErrors.postcode = 'Kod pocztowy jest wymagany'
-            if (!data.postcode || !POSTCODE_REGEX.test(data.postcode)) {
-                newErrors.postcode = 'Kod pocztowy musi mieć format: XX-XXX'
-            }
-            if (!data.city.trim()) newErrors.city = 'Miasto jest wymagane'
-            if (!data.phone.trim()) newErrors.phone = 'Telefon jest wymagany'
-            if (!data.phone || !PHONE_REGEX.test(data.phone.replace(/[\s\-]/g, ''))) {
-                newErrors.phone = 'Telefon musi zawierać co najmniej 9 cyfr'
-            }
-
-            return newErrors
-        },
-        []
-    )
-
-    const validate = useCallback(
-        (data: CheckoutData): ValidationErrors => {
-            const newErrors: ValidationErrors = {
-                billing: {},
-                shipping: {},
-                shippingMethod: '',
-                paymentMethod: '',
-                terms: ''
-            }
-
-            console.log(data.billing)
-            // Validate billing
-            newErrors.billing = validateBillingForm(data.billing)
-            console.log(newErrors)
-            // Validate shipping if different address
-            if (!data.billing.sameAddress && data.shipping) {
-                newErrors.shipping = validateShippingForm(data.shipping)
-            }
-
-            // Validate selections
-            if (!data.shippingMethod) newErrors.shippingMethod = 'Wybierz sposób wysyłki'
-            if (!data.paymentMethod) newErrors.paymentMethod = 'Wybierz metodę płatności'
-            if (!data.agreeToTerms) newErrors.terms = 'Musisz zaakceptować regulamin'
-
-            setErrors(newErrors)
-            return newErrors
-        },
-        [validateBillingForm, validateShippingForm]
-    )
-
-    const updateFieldError = useCallback(
-        (section: 'billing' | 'shipping', field: string, error: string) => {
-            setErrors(prev => ({
-                ...prev,
-                [section]: {
-                    ...prev[section],
-                    [field]: error ? error : undefined
-                }
-            }))
-        },
-        []
-    )
-
-    const getSectionStatus = useCallback(
-        (data: CheckoutData): SectionStatus => {
-            const billingErrors = validateBillingForm(data.billing)
-            console.log(billingErrors)
-            const shippingErrors = data.billing.sameAddress
-                ? {}
-                : validateShippingForm(data.shipping || {} as any)
-
-            return {
-                billing: Object.keys(billingErrors).length === 0 ? 'complete' : 'error',
-                shipping:
-                    data.billing.sameAddress || Object.keys(shippingErrors).length === 0
-                        ? 'complete'
-                        : 'error',
-                shippingMethod: data.shippingMethod ? 'complete' : 'incomplete',
-                paymentMethod: data.paymentMethod ? 'complete' : 'incomplete',
-                terms: data.agreeToTerms ? 'complete' : 'incomplete'
-            }
-        },
-        [validateBillingForm, validateShippingForm]
-    )
-
-    const getCompletionPercentage = useCallback(
-        (status: SectionStatus): number => {
-            const sections = ['billing', 'shipping', 'shippingMethod', 'paymentMethod', 'terms']
-            const completed = sections.filter(
-                section =>
-                    status[section as keyof SectionStatus] === 'complete' ||
-                    status[section as keyof SectionStatus] === 'incomplete'
-            ).length
-            return Math.round((completed / sections.length) * 100)
-        },
-        []
-    )
-
-    const getCompletionCount = useCallback((status: SectionStatus): { completed: number; total: number } => {
-        const sections = ['billing', 'shippingMethod', 'paymentMethod', 'terms']
-        const completed = sections.filter(
-            section =>
-                status[section as keyof SectionStatus] === 'complete'
-        ).length
-        return { completed, total: sections.length }
-    }, [])
-
-    const markBillingTouched = useCallback(() => {
-        setBillingTouched(true)
-    }, [])
-
-    return {
-        errors,
-        validate,
-        updateFieldError,
-        getSectionStatus,
-        getCompletionPercentage,
-        getCompletionCount,
-        validateBillingForm,
-        validateShippingForm,
-        billingTouched,
-        markBillingTouched
+const validatePostcode = (postcode: string, country: string): string | undefined => {
+    if (!postcode.trim()) return 'Kod pocztowy jest wymagany'
+    if (country === DEFAULT_COUNTRY && !POSTCODE_REGEX.test(postcode)) {
+        return 'Kod pocztowy musi mieć format: XX-XXX'
     }
 }
+
+export const validateCustomer = (data: CustomerFormData): FieldErrors => {
+    const errors: FieldErrors = {}
+
+    if (!data.firstName.trim()) errors.firstName = 'Imię jest wymagane'
+    if (!data.lastName.trim()) errors.lastName = 'Nazwisko jest wymagane'
+
+    if (!data.email.trim()) errors.email = 'Email jest wymagany'
+    else if (!EMAIL_REGEX.test(data.email.trim())) errors.email = 'Podaj prawidłowy adres email'
+
+    if (!data.phone.trim()) errors.phone = 'Telefon jest wymagany'
+    else if (!PHONE_REGEX.test(data.phone.replace(/[\s-]/g, ''))) {
+        errors.phone = 'Telefon musi zawierać co najmniej 9 cyfr'
+    }
+
+    if (!data.street.trim()) errors.street = 'Ulica i numer są wymagane'
+
+    const postcodeError = validatePostcode(data.postcode, data.country)
+    if (postcodeError) errors.postcode = postcodeError
+
+    if (!data.city.trim()) errors.city = 'Miasto jest wymagane'
+
+    return errors
+}
+
+export const validateInvoice = (data: InvoiceFormData): FieldErrors => {
+    const errors: FieldErrors = {}
+
+    // NIP jest opcjonalny: bez niego faktura idzie na osobę prywatną (dane z formularza dostawy)
+    if (!data.nip.trim()) return errors
+
+    if (!isValidNip(data.nip)) {
+        errors.nip = 'Nieprawidłowy numer NIP'
+        return errors
+    }
+
+    if (!data.companyName.trim()) errors.companyName = 'Nazwa firmy jest wymagana'
+    if (!data.street.trim()) errors.street = 'Ulica i numer są wymagane'
+
+    const postcodeError = validatePostcode(data.postcode, DEFAULT_COUNTRY)
+    if (postcodeError) errors.postcode = postcodeError
+
+    if (!data.city.trim()) errors.city = 'Miasto jest wymagane'
+
+    return errors
+}
+
+export const validateCheckout = (data: CheckoutData): CheckoutErrors => ({
+    customer: validateCustomer(data.customer),
+    invoice: data.invoice ? validateInvoice(data.invoice) : {},
+    shippingMethod: !data.shippingMethod
+        ? 'Wybierz sposób wysyłki'
+        : data.shippingMethod === INPOST_PARCEL_LOCKER && !data.inpost.name
+            ? 'Wybierz paczkomat'
+            : '',
+    paymentMethod: data.paymentMethod ? '' : 'Wybierz metodę płatności',
+    terms: data.agreeToTerms ? '' : 'Musisz zaakceptować regulamin',
+})
+
+export const countCheckoutErrors = (errors: CheckoutErrors): number =>
+    Object.keys(errors.customer).length +
+    Object.keys(errors.invoice).length +
+    [errors.shippingMethod, errors.paymentMethod, errors.terms].filter(Boolean).length

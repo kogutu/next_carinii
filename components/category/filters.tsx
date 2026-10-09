@@ -70,7 +70,7 @@ const FACET_LABELS: Record<string, string> = {
 };
 
 // ─── Config: Ile pokazywać domyślnie przed "Pokaż więcej" ───────────
-const DEFAULT_VISIBLE_COUNT = 5;
+const DEFAULT_VISIBLE_COUNT = 35;
 
 // ─── Props ───────────────────────────────────────────────────────────
 interface ProductFiltersProps {

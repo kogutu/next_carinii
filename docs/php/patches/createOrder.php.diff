@@ -1,0 +1,38 @@
+--- createOrder.php (przed)
++++ createOrder.php (po)
+@@ -223,8 +223,10 @@
+         $quote->setCouponCode($data['coupon_code']);
+     }
+ 
+-    // Metoda płatności
+-    $paymentMethod = isset($data['payment']['method']) ? $data['payment']['method'] : 'banktransfer';
++    // Metoda płatności — kody aplikacji Next.js (np. tpay_blik, tpay_card) mapowane na metody zarejestrowane w Magento (payment/codes.php)
++    require_once __DIR__ . '/../payment/codes.php';
++    $appPaymentCode = isset($data['payment']['method']) ? $data['payment']['method'] : 'banktransfer';
++    $paymentMethod = magentoPaymentCode($appPaymentCode);
+     $quote->getPayment()->setMethod($paymentMethod);
+ 
+     // Obliczenie kwot i zapis quote
+@@ -271,8 +273,22 @@
+               ->setIsCustomerNotified(false);
+     }
+ 
++    // Kod metody z aplikacji + typ dokumentu (odczytywane przez orders/index.php)
++    $orderPayment = $order->getPayment();
++    applyAppPaymentInfo($orderPayment, $appPaymentCode);
++    $documentType = (!empty($data['invoice_requested']) || (isset($data['document_type']) && $data['document_type'] === 'invoice')) ? 'invoice' : 'receipt';
++    $orderPayment->setAdditionalInformation('document_type', $documentType);
++    if ($documentType === 'invoice') {
++        $invoiceVat = !empty($data['billing_address']['vat_id']) ? $data['billing_address']['vat_id'] : '';
++        $order->addStatusHistoryComment(
++            'Klient chce fakturę VAT' . ($invoiceVat !== '' ? ' (NIP: ' . $invoiceVat . ')' : ' (osoba prywatna, bez NIP)'),
++            false
++        )->setIsCustomerNotified(false);
++    }
++
+     // Zapis zamówienia
+     $order->save();
++    $orderPayment->save();
+ 
+     // === INPOST PACZKOMATY ===
+ if (!empty($data['inpost']) && $shippingMethod === 'inpostparcels_inpostparcels') {

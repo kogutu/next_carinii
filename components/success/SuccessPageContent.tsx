@@ -15,6 +15,8 @@ interface OrderData {
   status: 'paid' | 'unpaid' | 'pending'
   paymentMethod: string
   paymentMethodCode: string
+  // 'invoice' = klient prosi o fakturę (także na osobę prywatną, bez NIP)
+  documentType?: 'receipt' | 'invoice'
   shippingMethod: string
   customer: {
     email: string
@@ -85,7 +87,11 @@ export function SuccessPageContent({ orderData: initialData, sessionid }: { orde
               Nr zamówienia: <span className="font-semibold text-gray-900">{orderData.incrementId}</span>
             </p>
             <p className="text-gray-700">
-              Dokument zakupu: <span className="font-semibold text-gray-900">Paragon</span>
+              Dokument zakupu: <span className="font-semibold text-gray-900">
+                {orderData.documentType === 'invoice' || orderData.customer?.nip
+                  ? `Faktura VAT${orderData.customer?.nip ? ` (NIP ${orderData.customer.nip})` : ''}`
+                  : 'Paragon'}
+              </span>
             </p>
           </div>
 

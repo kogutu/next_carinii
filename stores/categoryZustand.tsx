@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { searchProductsNew, transformDataProduct } from "@/lib/typesense"
 import type { ProductsCollection } from "./category-types"
 import _ from "lodash"
+import { buildPopularitySortBy, getPopularitySkus, POPULARITY_SORT } from "@/lib/popularity"
 
 // Definicje typów
 type FilterFields = Record<string, string[]>
@@ -50,7 +51,7 @@ interface CategoryState {
 }
 
 const startItemPerPage = 100
-const DEFAULT_SORT = "createdat:desc"
+const DEFAULT_SORT = POPULARITY_SORT
 
 // Rosnący licznik — odrzuca spóźnione (stale) odpowiedzi, gdy user
 // szybko klika kilka filtrów pod rząd.
@@ -183,22 +184,27 @@ export const useCategoryZustand = create<CategoryState>()(
                 return
             }
 
-            // UWAGA: bierzemy stan ze store, NIE z URL.
-            // Poprzednia wersja dekodowała window.location.search, co przy
-            // szybkim klikaniu dawało wyścig (stary URL vs nowy stan).
-            const tsParams = buildTypesenseSearchParams({
-                filters: state.filters,
-                priceRange: state.priceRange,
-                page: state.page,
-                itemsPerPage: state.itemsPerPage,
-                sort: state.sort,
-                catId: state.categoryId,
-            })
-
             const myId = ++fetchRequestId
             set({ isLoading: true })
 
             try {
+                const popularitySkus = state.sort === POPULARITY_SORT
+                    ? await getPopularitySkus(state.categoryId)
+                    : []
+
+                // UWAGA: bierzemy stan ze store, NIE z URL.
+                // Poprzednia wersja dekodowała window.location.search, co przy
+                // szybkim klikaniu dawało wyścig (stary URL vs nowy stan).
+                const tsParams = buildTypesenseSearchParams({
+                    filters: state.filters,
+                    priceRange: state.priceRange,
+                    page: state.page,
+                    itemsPerPage: state.itemsPerPage,
+                    sort: state.sort,
+                    catId: state.categoryId,
+                    popularitySkus,
+                })
+
                 const productsResponse = await searchProductsNew(tsParams)
 
                 // Odrzuć spóźnioną odpowiedź — nowszy fetch już wystartował
@@ -373,9 +379,15 @@ export function decodeFiltersFromUrl(
 }
 
 // Mapowanie wartości sortowania z UI na poprawne Typesense sort_by
-function resolveSortBy(sort: string, catId: string): string {
+function resolveSortBy(sort: string, catId: string, popularitySkus: string[] = []): string {
     const fallback = `sort_cat_${catId}:asc`
     if (!sort || sort === "relevance") return fallback
+    if (sort === POPULARITY_SORT) {
+        // Brak listy SKU (błąd/pusty plik) — zachowaj sensowną kolejność zamiast błędu
+        return popularitySkus.length > 0
+            ? buildPopularitySortBy(popularitySkus)
+            : "createdat:desc"
+    }
     switch (sort) {
         case "price_asc":
         case "price:asc":
@@ -414,6 +426,7 @@ export function buildTypesenseSearchParams(state: {
     itemsPerPage: number
     sort: string
     catId: string
+    popularitySkus?: string[]
 }): Record<string, any>[] {
     const filterParts: string[] = []
     const store = useCategoryZustand.getState()
@@ -456,7 +469,7 @@ export function buildTypesenseSearchParams(state: {
             filter_by: productFilterBy,
             facet_by: "*",
             max_facet_values: 1000,
-            sort_by: resolveSortBy(state.sort, state.catId),
+            sort_by: resolveSortBy(state.sort, state.catId, state.popularitySkus),
             page: state.page ?? 1,
             per_page: state.itemsPerPage ?? startItemPerPage,
         },

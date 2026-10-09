@@ -1,6 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs/promises';
-import path from 'path';
+
+type OrderAddress = {
+    firstName: string
+    lastName: string
+    street: string
+    postcode: string
+    city: string
+    phone: string
+    // ISO 3166-1 alpha-2
+    country?: string
+    // tylko adres rozliczeniowy przy fakturze na firmę
+    company?: string
+    vatId?: string
+}
 
 interface OrderData {
     customer: {
@@ -8,28 +20,16 @@ interface OrderData {
         lastName: string
         email: string
         phone: string
+        phoneCode?: string
         type: 'private' | 'company'
         nip?: string
         companyName?: string
     }
-    billingAddress: {
-        firstName: string
-        lastName: string
-        street: string
-        postcode: string
-        city: string
-        phone: string
-    }
-    shippingAddress: {
-        firstName: string
-        lastName: string
-        street: string
-        postcode: string
-        city: string
-        phone: string
-    }
-    shippingMethod: 'fedex' | 'pickup'
-    paymentMethod: 'transfer' | 'cod'
+    documentType?: 'receipt' | 'invoice'
+    billingAddress: OrderAddress
+    shippingAddress: OrderAddress
+    shippingMethod: string
+    paymentMethod: string
     items: Array<{
         productId: string
         sku: string
@@ -43,9 +43,10 @@ interface OrderData {
     Inpost?: any
     notes?: string
     agreeToNewsletter: boolean
-    subtotal: number
-    shipping: number
-    grandTotal: number
+    // Klient wysyła *Netto/*Brutto — ceny i tak przelicza createOrder.php
+    subtotal?: number
+    shipping?: number
+    grandTotal?: number
 }
 
 export async function POST(request: NextRequest) {
@@ -118,6 +119,8 @@ async function sendToMagento(orderData: OrderData) {
             customer_is_guest: true,
             customer_taxvat: orderData.customer.nip || null,
             customer_company: orderData.customer.companyName || null,
+            document_type: orderData.documentType ?? 'receipt',
+            invoice_requested: orderData.documentType === 'invoice',
             store_id: 1,
             global_currency_code: 'PLN',
             base_currency_code: 'PLN',
@@ -140,7 +143,9 @@ async function sendToMagento(orderData: OrderData) {
                 city: orderData.billingAddress.city,
                 postcode: orderData.billingAddress.postcode,
                 telephone: orderData.billingAddress.phone,
-                country_id: 'PL',
+                company: orderData.billingAddress.company || null,
+                vat_id: orderData.billingAddress.vatId || null,
+                country_id: orderData.billingAddress.country ?? 'PL',
                 address_type: 'billing'
             },
             shipping_address: {
@@ -150,17 +155,21 @@ async function sendToMagento(orderData: OrderData) {
                 city: orderData.shippingAddress.city,
                 postcode: orderData.shippingAddress.postcode,
                 telephone: orderData.shippingAddress.phone,
-                country_id: 'PL',
+                country_id: orderData.shippingAddress.country ?? 'PL',
                 address_type: 'shipping'
             },
             inpost:
             {
-                parcel_target_machine_id: orderData.Inpost.name,
+                parcel_target_machine_id: orderData.Inpost?.name,
                 receiver_phone: orderData.shippingAddress.phone,
                 parcel_size: 'A',
-                parcel_target_machine_detail: { "description": "Order Magento", "receiver": { "email": orderData.customer.email, "phone": orderData.shippingAddress.phone }, "size": "A", "tmp_id": "780566902252121", "target_machine": orderData.Inpost.name, "cod_amount": "" }
+                parcel_target_machine_detail: { "description": "Order Magento", "receiver": { "email": orderData.customer.email, "phone": orderData.shippingAddress.phone }, "size": "A", "tmp_id": "780566902252121", "target_machine": orderData.Inpost?.name, "cod_amount": "" }
             },
             shipping_method: orderData.shippingMethod,
+            // createOrder.php zapisuje notatkę i zgodę newsletter w historii zamówienia, a kupon przypina do koszyka
+            notes: orderData.notes || null,
+            agreeToNewsletter: Boolean(orderData.agreeToNewsletter),
+            coupon_code: orderData.couponCode || null,
             items: orderData.items.map(item => ({
                 sku: item.sku,
                 name: item.name,
@@ -177,9 +186,6 @@ async function sendToMagento(orderData: OrderData) {
 
 
     }
-
-    const filePath = path.join(process.cwd(), 'public', 'my-data.json');
-    await fs.writeFile(filePath, JSON.stringify(magentoOrderPayload), 'utf-8');
 
     try {
         const response = await fetch(MAGENTO_ENDPOINT, {
@@ -202,8 +208,6 @@ async function sendToMagento(orderData: OrderData) {
 
         const result = await response.json()
 
-        const filePath = path.join(process.cwd(), 'public', 'my-data-res.json');
-        await fs.writeFile(filePath, JSON.stringify(result), 'utf-8');
         return {
             success: true,
             orderId: result.orderId,

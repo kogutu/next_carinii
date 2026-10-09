@@ -96,8 +96,7 @@ function Tooltip({ children, content }) {
       {show && (
         <span
           ref={tipRef}
-          className="absolute z-1 px-3 py-1.5 rounded-md bg-black text-white text-xs whitespace-nowrap pointer-events-none animate -top-8 right-0 left-0 text-center "
-
+          className="absolute z-10 bottom-full inset-x-0 mx-auto w-max mb-2 px-3 py-1.5 rounded-md bg-black text-white text-xs whitespace-nowrap pointer-events-none animate-tooltipIn text-center"
         >
           {content}
 
@@ -338,7 +337,7 @@ export default function SizeSwatch({
                   >
                     {size.label}
                     {(last && size.qty > 0) && (
-                      <span className="text-hcar absolute top-0 t-0 l-0">■</span>
+                      <span className="bg-hcar absolute top-1 right-1 w-1.5 h-1.5" />
                     )}
                     {!available && (
                       <span className="absolute top-1/2 left-1/2 w-[70%] h-px bg-gray-300 -translate-x-1/2 -translate-y-1/2 -rotate-[20deg] opacity-70" />

@@ -51,6 +51,7 @@ const colors = {
 }
 // ─── Sort options (wartości = prawdziwe Typesense sort_by) ──────────
 export const SORT_OPTIONS = [
+    { value: 'popularity', label: 'Wg popularności' },
     { value: 'createdat:desc', label: 'Wg nowości' },
     { value: 'price:asc', label: 'Cena: od najniższej' },
     { value: 'price:desc', label: 'Cena: od najwyższej' },

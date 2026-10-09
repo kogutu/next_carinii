@@ -25,7 +25,7 @@ import { decodeFiltersFromUrl, useCategoryZustand } from '@/stores/categoryZusta
 import _ from 'lodash';
 
 // ─── Config ──────────────────────────────────────────────────────────
-const DEFAULT_VISIBLE_COUNT = 5;
+const DEFAULT_VISIBLE_COUNT = 35;
 
 // ─── Props ───────────────────────────────────────────────────────────
 interface ProductFiltersClientProps {

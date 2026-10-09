@@ -1,0 +1,14 @@
+--- cpay.php (przed)
++++ cpay.php (po)
+@@ -41,7 +41,10 @@
+     $oldMethod = $order->getPayment()->getMethod();
+ 
+     $payment = $order->getPayment();
+-    $payment->setMethod($paymentNew);
++    // kody aplikacji Next.js (np. tpay_blik, tpay_card) mapowane na metody zarejestrowane w Magento (payment/codes.php)
++    require_once __DIR__ . '/../payment/codes.php';
++    $payment->setMethod(magentoPaymentCode($paymentNew));
++    applyAppPaymentInfo($payment, $paymentNew);
+     $payment->save();
+ 
+     echo json_encode([

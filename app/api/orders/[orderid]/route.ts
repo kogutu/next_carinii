@@ -14,8 +14,9 @@ export async function GET(
     const { orderid } = await params
     console.log(orderid)
 
-    const url = "https://sklep.carinii.com.pl/directseo/nextjs/orders/?oid=" + orderid;
-    let data = await fetch(url)
+    // parametr _ omija cache odpowiedzi po stronie serwera sklepu (status płatności musi być aktualny)
+    const url = "https://sklep.carinii.com.pl/directseo/nextjs/orders/?oid=" + orderid + "&_=" + Date.now();
+    let data = await fetch(url, { cache: 'no-store' })
     let result = await data.json()
     return NextResponse.json((result));
     return NextResponse.json({ orderid })

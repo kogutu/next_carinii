@@ -35,6 +35,7 @@ export function ProductControls({
   onPerPageChange,
 }: ProductControlsProps) {
   const currentPageZustand = useCategoryZustand((state) => state.page)
+  const currentSort = useCategoryZustand((state) => state.sort)
 
   const start = (currentPageZustand - 1) * perPage + 1;
   const end = Math.min(currentPageZustand * perPage, totalProducts);
@@ -58,11 +59,12 @@ export function ProductControls({
             </SelectContent>
           </Select>
 
-          <Select onValueChange={onSortChange}>
+          <Select value={currentSort} onValueChange={onSortChange}>
             <SelectTrigger className="w-40">
               <SelectValue placeholder="Sortuj" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="popularity">Wg popularności</SelectItem>
               <SelectItem value="createdat:desc">Wg nowości</SelectItem>
               <SelectItem value="name:asc">Nazwa A-Z</SelectItem>
               <SelectItem value="name:desc">Nazwa Z-A</SelectItem>

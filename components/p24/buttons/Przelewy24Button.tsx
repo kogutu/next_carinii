@@ -47,7 +47,6 @@ export function Przelewy24Button({
           oid: checkoutData.incrementId,
           email: checkoutData.customer.email,
           client,
-          method: 266,
         }),
       });
 
