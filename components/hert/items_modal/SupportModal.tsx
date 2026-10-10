@@ -38,6 +38,7 @@ export function SupportModal() {
     message: '',
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -55,10 +56,21 @@ export function SupportModal() {
 
   const handleSubmit = async () => {
     setFormStatus('sending');
+    setFormError('');
     try {
-      // Replace with your actual form submission endpoint
-      // await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) });
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, terms: consent.terms, marketing: consent.marketing }),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.success) {
+        // zostawiamy wpisane dane, żeby można było poprawić i spróbować ponownie
+        setFormError(result?.message || 'Nie udało się wysłać wiadomości. Spróbuj ponownie.');
+        setFormStatus('error');
+        return;
+      }
+
       setFormStatus('sent');
       recordConsent({
         source: 'contact',
@@ -74,8 +86,8 @@ export function SupportModal() {
         setFormStatus('idle');
       }, 3000);
     } catch {
+      setFormError('Nie udało się wysłać wiadomości. Sprawdź połączenie i spróbuj ponownie.');
       setFormStatus('error');
-      setTimeout(() => setFormStatus('idle'), 3000);
     }
   };
 
@@ -261,8 +273,8 @@ export function SupportModal() {
               </div>
               <ConsentFields idPrefix="contact" channels="email-sms" value={consent} onChange={setConsent} disabled={formStatus === 'sending'} />
               {formStatus === 'error' && (
-                <p className="text-xs text-red-500">
-                  Wystąpił błąd. Spróbuj ponownie lub napisz na sklep@carinii.com.pl
+                <p role="alert" className="text-xs text-destructive">
+                  {formError || 'Wystąpił błąd. Spróbuj ponownie lub napisz na sklep@carinii.com.pl'}
                 </p>
               )}
               <Button

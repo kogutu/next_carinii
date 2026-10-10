@@ -8,6 +8,7 @@ import { Check, Copy } from 'lucide-react';
 import WishlistButton from '@/components/wishlist/WishlistButton';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/lib/api';
+import { getPromo, usePromoActive } from '@/lib/promo';
 
 interface ProductItemProps {
     product: Product;
@@ -20,6 +21,8 @@ interface ProductItemProps {
 function ProductItemInner({ product, viewMode, loading, priority = false }: ProductItemProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
+    // plakietka „-X% z kodem” tylko w trakcie kampanii (data/promo.json)
+    const promoActive = usePromoActive();
 
     if (loading) {
         return (
@@ -73,8 +76,8 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
         }))
         .sort((a, b) => Number(a.size) - Number(b.size));
 
-    const promoCode = product?.promo_code || 'WOMAN';
-    const promoPercent = product?.save_percent && product.save_percent < 100
+    const promoCode = product?.promo_code || getPromo().code;
+    const promoPercent = promoActive && product?.save_percent && product.save_percent < 100
         ? (100 - product.save_percent)
         : null;
 
