@@ -615,7 +615,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
                                 </div>
 
                                 <div className="share flex gap-2">
-                                    <ShareIt url={absoluteUrl(product.slug)} title={name} />
+                                    <ShareIt title={name} />
                                     <WishlistButton
                                         variant="outline"
                                         product={{ sku: product.sku, slug: product.slug, name: product.name }}

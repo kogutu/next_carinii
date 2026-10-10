@@ -28,6 +28,33 @@ const XIcon = ({ className }) => (
     </svg>
 );
 
+// Kopiowanie do schowka: nowoczesne API, a gdy nie działa (http, przeglądarka wbudowana w aplikację, brak fokusu)
+// — zapasowa metoda przez ukryte pole. Zwraca, czy się udało, żeby nie pokazywać „Skopiowano” po porażce.
+const copyToClipboard = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch {
+        try {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            const ok = document.execCommand("copy");
+            document.body.removeChild(textarea);
+            return ok;
+        } catch {
+            return false;
+        }
+    }
+};
+
+// Adres strony, na której jest klientka (bez parametrów) — działa tak samo na stronie testowej i na docelowej domenie
+const currentPageUrl = () => window.location.origin + window.location.pathname;
+
 const channels = [
     {
         id: "email",
@@ -72,35 +99,39 @@ const channels = [
         label: "Instagram",
         icon: Instagram,
         color: "hover:bg-pink-50 hover:text-pink-600 dark:hover:bg-pink-950 dark:hover:text-pink-400",
-        action: (url) => {
-            // Instagram nie wspiera bezpośredniego share linku – kopiujemy do schowka
-            navigator.clipboard.writeText(url);
-        },
+        // Instagram nie wspiera bezpośredniego share linku – kopiujemy do schowka
+        action: (url) => copyToClipboard(url),
     },
     {
         id: "copy",
         label: "Kopiuj link",
         icon: Link,
         color: "hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-950 dark:hover:text-emerald-400",
-        action: (url) => {
-            navigator.clipboard.writeText(url);
-        },
+        action: (url) => copyToClipboard(url),
     },
 ];
 
 export default function ShareIt({
-    url = typeof window !== "undefined" ? window.location.href : "",
+    url = "",
     title = "",
     className = "",
 }) {
     const [open, setOpen] = useState(false);
     const [copied, setCopied] = useState(null);
+    const [copyFailed, setCopyFailed] = useState(false);
 
     const handleShare = useCallback(
-        (channel) => {
-            channel.action(url, title);
+        async (channel) => {
+            // adres liczymy w chwili kliknięcia: aktualna strona, chyba że rodzic poda własny
+            const shareUrl = url || currentPageUrl();
+            const result = await channel.action(shareUrl, title);
 
             if (channel.id === "copy" || channel.id === "instagram") {
+                if (result === false) {
+                    setCopyFailed(true);
+                    setTimeout(() => setCopyFailed(false), 3000);
+                    return;
+                }
                 setCopied(channel.id);
                 setTimeout(() => setCopied(null), 2000);
             }
@@ -167,7 +198,9 @@ export default function ShareIt({
                                                 ? channel.id === "instagram"
                                                     ? "Link skopiowany! Wklej na Instagramie"
                                                     : "Skopiowano!"
-                                                : channel.label}
+                                                : copyFailed && (channel.id === "copy" || channel.id === "instagram")
+                                                    ? "Nie udało się skopiować"
+                                                    : channel.label}
                                         </p>
                                     </TooltipContent>
                                 </Tooltip>
