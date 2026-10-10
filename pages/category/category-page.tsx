@@ -32,7 +32,6 @@ export default function CategoryTemplate({
   categoryTree,
   categories,
   category,
-  categoryImage = "https://www.hert.pl/media/iopt/Content/piekarnictwo.jpg",
   categoryImageAlt = "Kategoria",
 }: CategoryTemplateProps) {
   const initializeStore = useCategoryZustand(

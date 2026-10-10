@@ -6,6 +6,8 @@ import {
     getProduct,
 } from "@/lib/typesense"
 import { detectPageType } from "@/lib/page-type-detector"
+import { absoluteUrl, plainText } from "@/lib/seo"
+import { normalizeMediaUrl } from "@/lib/mediaUrl"
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -90,7 +92,7 @@ async function generateCategoryMetadata(identifier: string, slug: string[]): Pro
                 ]
                 : [
                     {
-                        url: "/fav/og-icon.jpg",
+                        url: "/fav/og-image.jpg",
                         width: 1200,
                         height: 630,
                         alt: category.name,
@@ -100,7 +102,7 @@ async function generateCategoryMetadata(identifier: string, slug: string[]): Pro
         twitter: {
             title: categoryTitle,
             description: categoryDescription,
-            images: category.image ? [category.image] : "/fav/og-icon.jpg",
+            images: category.image ? [category.image] : "/fav/og-image.jpg",
         },
         alternates: {
             canonical: `/${category.slug}`,
@@ -128,8 +130,11 @@ async function generateProductMetadata(slug: string): Promise<Metadata> {
     }
 
     const productTitle = `${product.name} | Carinii`
-    const productDescription = product.description ||
+    // opis z Magento to długi HTML z nowymi liniami — do meta bierzemy czysty tekst (~155 znaków)
+    const productDescription = plainText(product.description || product.shortdesc) ||
         `Sprawdź ${product.name} w sklepie Carinii. ${product.cat_main?.join(', ')} - wysokiej jakości obuwie damskie i dodatki. Zamów online!`
+    const productPath = `/${product.slug}`
+    const productImage = product.image_main ? absoluteUrl(normalizeMediaUrl(product.image_main)) : undefined
 
     return {
         title: product.name,
@@ -138,34 +143,25 @@ async function generateProductMetadata(slug: string): Promise<Metadata> {
         openGraph: {
             title: productTitle,
             description: productDescription,
-            url: `/produkt/${product.slug}`,
-            images: product.image_main
+            url: productPath,
+            images: productImage
                 ? [
                     {
-                        url: product.image_main,
-                        width: 800,
-                        height: 800,
+                        url: productImage,
+                        width: 500,
+                        height: 750,
                         alt: product.name,
                     },
                 ]
                 : undefined,
-            ...(product.has_special_price && {
-                price: {
-                    amount: product.special_price,
-                    currency: 'PLN',
-                },
-            }),
-            availability: product.size_qty && Object.keys(product.size_qty).length > 0
-                ? 'in stock'
-                : 'out of stock',
         },
         twitter: {
             title: productTitle,
             description: productDescription,
-            images: product.image_main ? [product.image_main] : undefined,
+            images: productImage ? [productImage] : undefined,
         },
         alternates: {
-            canonical: `/produkt/${product.slug}`,
+            canonical: productPath,
         },
         robots: {
             index: true,
@@ -227,30 +223,6 @@ function generateShopMetadata(slug: string[]): Metadata {
  */
 async function generateCmsMetadata(slug: string[]): Promise<Metadata> {
     const slugKey = slug.join('/')
-
-    // Strona kontaktowa
-    if (slug.includes('contact')) {
-        return {
-            title: 'Kontakt | Carinii',
-            description: 'Skontaktuj się z nami! Carinii - buty damskie i torebki. Zapraszamy do kontaktu telefonicznego, mailowego lub poprzez formularz.',
-            robots: { index: true, follow: true },
-            alternates: {
-                canonical: '/contact',
-            },
-        }
-    }
-
-    // Strona sprzedaj maszynę
-    if (slug.includes('sprzedaj-maszyne')) {
-        return {
-            title: 'Sprzedaj maszynę | Carinii',
-            description: 'Sprzedaj swoją maszynę w Carinii. Szybka wycena i profesjonalna obsługa. Sprawdź jak to działa!',
-            robots: { index: true, follow: true },
-            alternates: {
-                canonical: '/sprzedaj-maszyne',
-            },
-        }
-    }
 
     // Dla pozostałych stron CMS - użyj cache'owanych danych
     try {

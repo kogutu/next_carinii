@@ -4,7 +4,6 @@ import WishlistButton from '@/components/wishlist/WishlistButton'
 import PayButton from '@/components/payments/PayButton'
 import { PayPoIcon } from '@/components/payments/BrandIcons'
 import React, { useState, useEffect, useMemo } from "react"
-import DOMPurify from 'isomorphic-dompurify';
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -273,15 +272,15 @@ export default function ProductPage({ product, seemore }: { product: Product, se
         return { badge, by };
     }, [product?.cids, product?.final_price, product?.price])
 
-    // Sanitized HTML - useMemo for stability
+    // Opisy są oczyszczane po stronie serwera (app/[...slug]/page.tsx, lib/sanitizeHtml.ts) — tu tylko łamanie linii
     const cleanHTML = useMemo((): string => {
         if (!product?.description) return ""
-        return DOMPurify.sanitize(product.description).replace(/\r\n/g, '<br />');
+        return product.description.replace(/\r\n/g, '<br />');
     }, [product?.description])
 
     const short_cleanHTML = useMemo((): string => {
         if (!product?.short_description) return ""
-        return DOMPurify.sanitize(product.short_description).replace(/\r\n/g, '<br />');
+        return product.short_description.replace(/\r\n/g, '<br />');
     }, [product?.short_description])
 
     // Attachments HTML - useMemo for stability
@@ -564,7 +563,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid gap-8 lg:grid-cols-[1fr_350px]">
                     {/* Product Gallery Section */}
-                    <ProductGallery imgs={galleryImages} />
+                    <ProductGallery imgs={galleryImages} name={product.name} />
                     {/* Product Details Section */}
                     <div className="flex flex-col gap-6">
                         {/* Product Info */}

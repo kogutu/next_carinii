@@ -8,14 +8,15 @@ import CategoryTemplate from "@/pages/category/category-page"
 import { ShopTemplate } from "@/components/shop/shop-template"
 import type { CategoryNode } from "@/components/category/category-sidebar"
 import ProductPage from "@/pages/product/product-page"
-import ContactPage from "@/pages/cms/contact"
-import SellMachinePage from "@/pages/cms/sprzedaz-maszyn"
 import { notFound } from "next/navigation"
 import {
   buildTypesenseSearchParams,
   decodeFiltersFromUrl,
 } from "@/stores/categoryZustand"
 import { getPopularitySkus, POPULARITY_SORT } from "@/lib/popularity"
+import { sanitizeProductHtml } from "@/lib/sanitizeHtml"
+import JsonLd from "@/components/seo/JsonLd"
+import { breadcrumbSchema, categoryCrumbs, productSchema } from "@/lib/structuredData"
 import {
   getCachedCategory,
   getCachedProduct,
@@ -182,20 +183,24 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         }
       }
 
+      const crumbs = categoryCrumbs(catsTree, (node) => node.url === `/${category.slug}`)
+
       return (
-        <CategoryTemplate
-          categoryId={category.cid}
-          parentCategoryId={mockCategories[0]?.id}
-          products={products}
-          facets={facets}
-          page={page}
-          totalPage={productsResponse.found}
-          category={category}
-          categories={mockCategories}
-          categoryTree={categoryPath}
-          categoryImage="https://www.hert.pl/media/iopt/Content/piekarnictwo.jpg"
-          categoryImageAlt={mockCategories[0]?.name}
-        />
+        <>
+          {crumbs.length > 0 && <JsonLd data={breadcrumbSchema(crumbs)} />}
+          <CategoryTemplate
+            categoryId={category.cid}
+            parentCategoryId={mockCategories[0]?.id}
+            products={products}
+            facets={facets}
+            page={page}
+            totalPage={productsResponse.found}
+            category={category}
+            categories={mockCategories}
+            categoryTree={categoryPath}
+            categoryImageAlt={mockCategories[0]?.name}
+          />
+        </>
       )
     }
 
@@ -210,7 +215,29 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
 
       const seeMoreProducts = await getSeeMoreProducts(product)
 
-      return <ProductPage product={product} seemore={seeMoreProducts} />
+      // HTML z opisów czyścimy tutaj, po stronie serwera (bez jsdom)
+      const safeProduct = {
+        ...product,
+        description: sanitizeProductHtml(product.description),
+        short_description: sanitizeProductHtml(product.short_description),
+      }
+
+      const categoryName = String(product.cat_main?.[0] ?? '').trim()
+      const crumbs = categoryName
+        ? categoryCrumbs(await catsTreePromise, (node) => node.name.trim() === categoryName)
+        : []
+
+      return (
+        <>
+          <JsonLd
+            data={[
+              productSchema(product),
+              breadcrumbSchema([...crumbs, { name: product.name, path: `/${product.slug}` }]),
+            ]}
+          />
+          <ProductPage product={safeProduct} seemore={seeMoreProducts} />
+        </>
+      )
     }
 
     // ── Shop ──────────────────────────────────────────────────────
@@ -241,22 +268,6 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
     // ── CMS Page (default) ────────────────────────────────────────
     case "cms_page":
     default: {
-      if (slug.includes("contact")) {
-        return (
-          <div className="contact">
-            <ContactPage />
-          </div>
-        )
-      }
-
-      if (slug.includes("sprzedaj-maszyne")) {
-        return (
-          <div className="sprzedaj-maszyne">
-            <SellMachinePage />
-          </div>
-        )
-      }
-
       // Użyj cache'owanej funkcji do pobrania CMS danych
       const cmsData = await getCachedCMSData()
       const slugKey = slug.join("/")

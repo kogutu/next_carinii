@@ -7,6 +7,9 @@ import Footer from "@/components/hert/footer"
 import CartHydrator from "@/components/cart/CartHydrator"
 import { Providers } from "./providers"
 import Script from "next/script"
+import { SITE_URL } from "@/lib/seo"
+import JsonLd from "@/components/seo/JsonLd"
+import { organizationSchema, websiteSchema } from "@/lib/structuredData"
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
 import { Outfit } from 'next/font/google'
@@ -23,11 +26,11 @@ export const viewport: Viewport = {
   initialScale: 1.0,
 }
 export const metadata: Metadata = {
+  // adres bezwzględny dla canonical, og:image i pozostałych linków względnych w metadanych
+  metadataBase: new URL(SITE_URL),
   title: 'Carinii - Obuwie Damskie i Torebki | Sklep Online',
   description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
-  keywords: 'baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy, Carinii, Obuwie Damskie',
   referrer: 'no-referrer-when-downgrade',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
@@ -62,7 +65,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Carinii - buty damskie i torebki | sklep.carinii.com.pl',
     description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
-    url: '/fav/',
     type: 'website',
     siteName: 'Carinii',
     images: [
@@ -81,9 +83,6 @@ export const metadata: Metadata = {
     description: 'Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy',
     images: ['/fav/og-image.jpg'],
   },
-  alternates: {
-    canonical: '/fav/',
-  },
   robots: {
     index: true,
     follow: true,
@@ -94,14 +93,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-  verification: {
-    // Add your verification codes here if needed
-    // google: 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
-  },
-  other: {
-    'yandex-verification': 'your-yandex-verification-code', // Add your Yandex Metrika verification
   },
 }
 
@@ -140,6 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
         <RouteListener></RouteListener>
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
       </body>
     </html>
   )

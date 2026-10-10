@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 export const metadata: Metadata = {
   title: 'Zgłoś zwrot lub reklamację | Carinii',
   description: 'Zgłoś zwrot lub reklamację zamówienia w Carinii. Wystarczy numer zamówienia i e-mail; możesz dodać zdjęcia.',
+  alternates: { canonical: '/zwrot-reklamacja' },
 }
 
 type PageProps = {

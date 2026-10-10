@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import Image from "next/image";
+import { normalizeMediaUrl } from "@/lib/mediaUrl";
 
 /**
  * ProductGallery
  *
  * Props:
  *   imgs – string[] of image URLs
+ *   name – nazwa produktu (do opisów alt zdjęć)
  *
  * Desktop  → 2-column masonry-style grid (all images visible)
  * Mobile   → full-width touch slideshow with dots + swipe
@@ -14,7 +17,15 @@ import { useState, useRef, useCallback, useEffect } from "react";
 
 const SWIPE_THRESHOLD = 50;
 
-export default function ProductGallery({ imgs = [] }) {
+// Oryginały z Magento to PNG po kilka MB — przechodzą przez optymalizator obrazów (WebP/AVIF, rozmiar dopasowany do ekranu).
+// Pierwsze zdjęcie w każdym układzie (siatka na desktopie, slajd na telefonie) ładuje się od razu i z wysokim priorytetem
+// (to element LCP strony produktu), reszta leniwie.
+const altFor = (name: string, index: number) => {
+  const label = (name || "Produkt").split("CARINII--")[0].trim();
+  return `${label} - zdjęcie ${index + 1}`;
+};
+
+export default function ProductGallery({ imgs = [], name = "" }) {
   /* ───── slideshow state (mobile) ───── */
   const [current, setCurrent] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -150,6 +161,7 @@ export default function ProductGallery({ imgs = [] }) {
           transition: none;
         }
         .pg-slide {
+          position: relative;
           min-width: 100%;
           aspect-ratio:2 / 3;
         }
@@ -281,7 +293,14 @@ export default function ProductGallery({ imgs = [] }) {
               key={i}
               onClick={() => setLightbox(i)}
             >
-              <img src={src} alt={`Product ${i + 1}`} loading="lazy" />
+              <Image
+                src={normalizeMediaUrl(src)}
+                alt={altFor(name, i)}
+                fill
+                sizes="(min-width: 1280px) 30vw, (min-width: 769px) 45vw, 100vw"
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : "auto"}
+              />
               <span className="pg-badge">{i + 1}/{total}</span>
             </div>
           ))}
@@ -303,7 +322,14 @@ export default function ProductGallery({ imgs = [] }) {
           >
             {imgs.map((src, i) => (
               <div className="pg-slide" key={i}>
-                <img src={src} alt={`Product ${i + 1}`} loading={i < 2 ? "eager" : "lazy"} />
+                <Image
+                  src={normalizeMediaUrl(src)}
+                  alt={altFor(name, i)}
+                  fill
+                  sizes="100vw"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  fetchPriority={i === 0 ? "high" : "auto"}
+                />
               </div>
             ))}
           </div>
@@ -346,9 +372,12 @@ export default function ProductGallery({ imgs = [] }) {
                 ‹
               </button>
             )}
-            <img
-              src={imgs[lightbox]}
-              alt={`Product ${lightbox + 1}`}
+            <Image
+              src={normalizeMediaUrl(imgs[lightbox])}
+              alt={altFor(name, lightbox)}
+              width={1200}
+              height={1800}
+              sizes="90vw"
               onClick={(e) => e.stopPropagation()}
             />
             {lightbox < total - 1 && (

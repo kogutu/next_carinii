@@ -1,7 +1,27 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import home from "@/data/home.json"
+import LazyVideo from "@/components/home/LazyVideo"
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products"
 
+
+const HOME_TITLE = "Carinii - buty damskie i torebki | sklep.carinii.com.pl"
+const HOME_DESCRIPTION =
+  "Zapraszamy do sklepu Online Carinii, czekają na Was piękne: baleriny, botki, czółenka, klapki, kozaki, mokasyny, półbuty, sandały, sneakersy"
+
+// Własne canonical i Open Graph strony głównej (metadane z layoutu nie zawierają już adresu strony)
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    url: "/",
+    type: "website",
+    siteName: "Carinii",
+    locale: "pl_PL",
+    images: [{ url: "/fav/og-image.jpg", width: 1200, height: 630, alt: "Carinii - Obuwie Damskie i Torebki" }],
+  },
+}
 
 // Funkcja do pobierania najnowszych produktów
 async function getNewestProducts() {
@@ -79,19 +99,16 @@ function HeroVideo() {
           decoding="async"
         />
       </Link>
-      {/* Mobile: wideo */}
+      {/* Mobile: wideo (ładuje się tylko na telefonie) */}
       <Link href={hero.href} aria-label={hero.desktopAlt} className="block md:hidden">
-        <video
-          className="w-full h-auto"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        >
-          <source src={hero.mobileVideoWebm} type="video/webm" />
-          <source src={hero.mobileVideoMp4} type="video/mp4" />
-        </video>
+        <LazyVideo
+          mp4={hero.mobileVideoMp4}
+          webm={hero.mobileVideoWebm}
+          width={480}
+          height={848}
+          media="(max-width: 767px)"
+          eager
+        />
       </Link>
     </div>
   )
@@ -102,32 +119,24 @@ function MagdaVideo({ section }: { section: any }) {
     <div className="relative">
       {/* Desktop */}
       <Link href={section.href} aria-label="By Magda Pieczonka" className="hidden md:block">
-        <video
-          className="w-full h-auto"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        >
-          <source src={section.deskWebm} type="video/webm" />
-          <source src={section.deskMp4} type="video/mp4" />
-        </video>
+        <LazyVideo
+          mp4={section.deskMp4}
+          webm={section.deskWebm}
+          width={1920}
+          height={1080}
+          media="(min-width: 768px)"
+        />
       </Link>
       {/* Mobile */}
       <Link href={section.href} aria-label="By Magda Pieczonka" className="block md:hidden">
-        <video
-          className="w-full h-auto"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
+        <LazyVideo
+          mp4={section.mobMp4}
+          webm={section.mobWebm}
           poster={section.mobPoster}
-        >
-          <source src={section.mobWebm} type="video/webm" />
-          <source src={section.mobMp4} type="video/mp4" />
-        </video>
+          width={1080}
+          height={1620}
+          media="(max-width: 767px)"
+        />
       </Link>
     </div>
   )

@@ -57,6 +57,7 @@ export const metadata: Metadata = {
   title: 'Kontakt | Carinii',
   description:
     'Skontaktuj się z Carinii: telefon, e-mail, godziny pracy biura obsługi klienta oraz dane firmy Z.P.O. CARINII, ul. Warszawska 78, Łaskarzew.',
+  alternates: { canonical: '/kontakt' },
 }
 
 const jsonLd = {
