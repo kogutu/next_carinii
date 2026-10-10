@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { InputMask } from '@react-input/mask';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import Image from 'next/image';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -14,6 +13,8 @@ import { Apple, Chrome, Eye, EyeOff, FacebookIcon } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react"
 import Facebook from "next-auth/providers/facebook";
 import LanguageSelector from "../language-selector";
+import ConsentFields, { EMPTY_CONSENT, type ConsentState } from "@/components/consent/ConsentFields";
+import { recordConsent } from "@/lib/consentClient";
 
 
 export function AccountModal() {
@@ -21,6 +22,8 @@ export function AccountModal() {
   const [view, setView] = useState<'login' | 'register'>('login');
   const [registerSuccess, setRegisterSuccess] = useState(false);
   const [registerMessage, setRegisterMessage] = useState('');
+  const [registerConsent, setRegisterConsent] = useState<ConsentState>(EMPTY_CONSENT);
+  const [registerTermsError, setRegisterTermsError] = useState('');
   const [loginError, setLoginError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
@@ -100,6 +103,10 @@ export function AccountModal() {
     e.preventDefault();
     setRegisterMessage('');
     setRegisterSuccess(false);
+    if (!registerConsent.terms) {
+      setRegisterTermsError('Aby założyć konto, zaakceptuj regulamin sklepu.');
+      return;
+    }
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
@@ -109,7 +116,7 @@ export function AccountModal() {
       email: formData.get('email'),
       telephone: formData.get('telephone')?.toString().replace(/-/g, ''), // Usuń myślniki z telefonu
       password: formData.get('password'),
-      newsletter: formData.get('newsletter') === 'on',
+      newsletter: registerConsent.marketing,
     };
 
     try {
@@ -127,6 +134,14 @@ export function AccountModal() {
         setRegisterMessage('❌ ' + (data.message || 'Wystąpił błąd podczas rejestracji'));
         return;
       }
+
+      recordConsent({
+        source: 'register',
+        email: String(registerData.email ?? ''),
+        phone: registerData.telephone,
+        terms: true,
+        marketing: registerConsent.marketing,
+      });
 
       // Automatyczne logowanie po rejestracji
       const loginResult = await signIn("credentials", {
@@ -412,12 +427,17 @@ export function AccountModal() {
           />
         </div>
 
-        <div className="flex items-center space-x-2">
-          <Checkbox id="newsletter" name="newsletter" disabled={isLoading || registerSuccess} />
-          <Label htmlFor="newsletter" className="text-sm font-normal cursor-pointer">
-            Zapisz się, aby otrzymywać newsletter
-          </Label>
-        </div>
+        <ConsentFields
+          idPrefix="register"
+          channels="email-sms"
+          value={registerConsent}
+          onChange={(next) => {
+            setRegisterConsent(next);
+            if (next.terms) setRegisterTermsError('');
+          }}
+          termsError={registerTermsError}
+          disabled={isLoading || registerSuccess}
+        />
 
         <Button
           type="submit"

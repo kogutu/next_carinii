@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import ConsentFields, { EMPTY_CONSENT, type ConsentState } from "@/components/consent/ConsentFields";
+import { recordConsent } from "@/lib/consentClient";
 
 /* ── Brand colors as CSS vars + custom utility classes + keyframes ── */
 const brandCSS = `
@@ -110,22 +112,22 @@ function Tooltip({ children, content }) {
 /* ── Drawer ── */
 function Drawer({ open, onClose, size, onSubmit }) {
   const [email, setEmail] = useState("");
-  const [consent, setConsent] = useState(false);
+  const [consent, setConsent] = useState<ConsentState>(EMPTY_CONSENT);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (open) { setEmail(""); setConsent(false); setSubmitted(false); setError(""); }
+    if (open) { setEmail(""); setConsent(EMPTY_CONSENT); setSubmitted(false); setError(""); }
   }, [open]);
 
   const handleSubmit = () => {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError("Podaj prawidłowy adres email"); return;
     }
-    if (!consent) { setError("Wymagana zgoda na przetwarzanie danych"); return; }
+    if (!consent.terms) { setError("Aby wysłać powiadomienie, zaakceptuj regulamin sklepu"); return; }
     setError("");
     setSubmitted(true);
-    onSubmit?.({ email, size });
+    onSubmit?.({ email, size, marketing: consent.marketing });
   };
 
   if (!open) return null;
@@ -182,23 +184,7 @@ function Drawer({ open, onClose, size, onSubmit }) {
               />
             </div>
 
-            <label className="flex gap-2.5 items-start cursor-pointer mb-6">
-              <span
-                onClick={() => setConsent(!consent)}
-                className={`shrink-0 w-5 h-5 rounded mt-0.5 border-2 inline-flex items-center justify-center transition-all ${error && !consent ? "border-hcar" : consent ? "border-hhert bg-hhert" : "border-gray-300"
-                  }`}
-              >
-                {consent && (
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </span>
-              <span className="text-xs text-gray-400 leading-relaxed">
-                Wyrażam zgodę na otrzymywanie od Carinii z siedzibą w Garwolinie drogą elektroniczną,
-                za pomocą wiadomości e-mail, informacji handlowych dotyczących usług i produktów własnych.
-              </span>
-            </label>
+            <ConsentFields idPrefix="size-alert" value={consent} onChange={setConsent} className="mb-6" />
 
             {error && <p className="text-hcar text-sm text-center mb-4">{error}</p>}
 
@@ -363,7 +349,7 @@ export default function SizeSwatch({
         </div>
       </div>
 
-      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} size={drawerSize} onSubmit={(data) => console.log("Notify:", data)} />
+      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} size={drawerSize} onSubmit={(data) => recordConsent({ source: "size-alert", email: data.email, terms: true, marketing: data.marketing, context: { sku, size: data.size } })} />
       <SizeGuide open={guideOpen} onClose={() => setGuideOpen(false)} />
     </>
   );

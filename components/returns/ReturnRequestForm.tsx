@@ -7,6 +7,8 @@ import { AlertTriangle, Check, Minus, Plus } from 'lucide-react'
 import FormInput, { FormSelect } from '@/components/checkout/FormInput'
 import SectionHeader from '@/components/checkout/SectionHeader'
 import PayButton from '@/components/payments/PayButton'
+import ConsentFields, { EMPTY_CONSENT, type ConsentState } from '@/components/consent/ConsentFields'
+import { recordConsent } from '@/lib/consentClient'
 import { CopyOrderNumber } from '@/components/success/CopyOrderNumber'
 import { ENTER, ENTER_DELAY, EYEBROW, SurfaceCard } from '@/components/ui/surface'
 import { formatPrice } from '@/lib/formatPrice'
@@ -56,6 +58,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
     const [description, setDescription] = useState('')
     const [bankAccount, setBankAccount] = useState('')
     const [photos, setPhotos] = useState<{ tokens: string[]; busy: boolean }>({ tokens: [], busy: false })
+    const [consent, setConsent] = useState<ConsentState>(EMPTY_CONSENT)
 
     const [submitAttempted, setSubmitAttempted] = useState(false)
     const [submitting, setSubmitting] = useState(false)
@@ -121,8 +124,9 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
         if (!resolution) found.resolution = 'Wybierz preferowane rozwiązanie.'
         if (type === 'reklamacja' && description.trim().length < 10) found.description = 'Opisz wadę (co najmniej 10 znaków).'
         if (bankAccount.trim() && !ACCOUNT_PATTERN.test(bankAccount.replace(/\s+/g, ''))) found.bankAccount = 'Numer konta powinien mieć 26 cyfr.'
+        if (!consent.terms) found.terms = 'Aby wysłać zgłoszenie, zaakceptuj regulamin sklepu.'
         return found
-    }, [selected, reason, resolution, description, bankAccount, type])
+    }, [selected, reason, resolution, description, bankAccount, type, consent.terms])
 
     const handleSubmit = async () => {
         setSubmitAttempted(true)
@@ -151,6 +155,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                 setSubmitError(json?.message ?? 'Nie udało się wysłać zgłoszenia. Spróbuj ponownie.')
                 return
             }
+            recordConsent({ source: 'returns', email, terms: true, marketing: consent.marketing, context: { ref: String(json.data?.ref ?? ''), order: order.orderNumber } })
             setResult(json.data)
             window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch {
@@ -387,6 +392,15 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                     </SurfaceCard>
 
                     <div className={ENTER}>
+                        <ConsentFields
+                            idPrefix="returns"
+                            channels="email"
+                            className="mb-4"
+                            value={consent}
+                            onChange={setConsent}
+                            termsError={showError('terms')}
+                            disabled={submitting}
+                        />
                         {submitAttempted && Object.keys(errors).length > 0 && (
                             <p role="alert" className="mb-3 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
                                 Uzupełnij zaznaczone pola, aby wysłać zgłoszenie.

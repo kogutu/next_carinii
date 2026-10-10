@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import FormInput from '@/components/checkout/FormInput'
 import PayButton from '@/components/payments/PayButton'
+import ConsentFields, { EMPTY_CONSENT, type ConsentState } from '@/components/consent/ConsentFields'
+import { recordConsent } from '@/lib/consentClient'
 import { useWishlistStore } from '@/stores/wishlistStore'
 
 type WishlistEmailFormProps = {
@@ -15,16 +17,26 @@ export default function WishlistEmailForm({ submitLabel }: WishlistEmailFormProp
     const submitEmail = useWishlistStore((state) => state.submitEmail)
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
+    const [consent, setConsent] = useState<ConsentState>(EMPTY_CONSENT)
+    const [termsError, setTermsError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         setError('')
+        if (!consent.terms) {
+            setTermsError('Aby zapisać listę, zaakceptuj regulamin sklepu.')
+            return
+        }
         setIsLoading(true)
 
         const result = await submitEmail(email)
         setIsLoading(false)
-        if (!result.ok) setError(result.message)
+        if (!result.ok) {
+            setError(result.message)
+            return
+        }
+        recordConsent({ source: 'wishlist', email, terms: true, marketing: consent.marketing })
     }
 
     return (
@@ -41,6 +53,16 @@ export default function WishlistEmailForm({ submitLabel }: WishlistEmailFormProp
                     setError('')
                 }}
                 error={error}
+            />
+
+            <ConsentFields
+                idPrefix="wishlist"
+                value={consent}
+                onChange={(next) => {
+                    setConsent(next)
+                    if (next.terms) setTermsError('')
+                }}
+                termsError={termsError}
             />
 
             <PayButton type="submit" align="center" isLoading={isLoading} loadingLabel="Zapisuję…" disabled={!email.trim()} className="h-12 text-base">

@@ -24,20 +24,21 @@ type ExpressGooglePayButtonProps = {
     // pozycje do zamówienia w chwili kliknięcia (null = nie można kontynuować, np. brak rozmiaru)
     getItems: () => CartItem[] | null
     coupon?: string
+    agreeToNewsletter?: boolean
     // wywoływane po utworzeniu zamówienia (np. wyczyszczenie koszyka)
     onOrderPlaced?: () => void
 }
 
 // Google Pay „kup od razu”, rozliczane przez Przelewy24: okno zbiera e-mail, telefon i adres, klient wybiera kuriera,
 // po autoryzacji powstaje zamówienie, a płatność idzie przez P24.
-export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced }: ExpressGooglePayButtonProps) {
+export default function ExpressGooglePayButton({ getItems, coupon, agreeToNewsletter, onOrderPlaced }: ExpressGooglePayButtonProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     const [error, setError] = useState('')
     const [isProcessing, setIsProcessing] = useState(false)
     // 'no' = brak konfiguracji P24 albo przeglądarka bez Google Pay — pokazujemy wyłączony przycisk
     const [availability, setAvailability] = useState<'checking' | 'yes' | 'no'>('checking')
-    const latest = useRef({ getItems, coupon, onOrderPlaced })
-    latest.current = { getItems, coupon, onOrderPlaced }
+    const latest = useRef({ getItems, coupon, agreeToNewsletter, onOrderPlaced })
+    latest.current = { getItems, coupon, agreeToNewsletter, onOrderPlaced }
     // pozycje z chwili kliknięcia — potrzebne też w callbackach okna (zmiana adresu / kuriera)
     const activeItems = useRef<CartItem[]>([])
 
@@ -123,7 +124,7 @@ export default function ExpressGooglePayButton({ getItems, coupon, onOrderPlaced
                 const { total } = calculateExpressTotals(items, shipping)
 
                 oid = await createExpressOrder(
-                    buildExpressOrderPayload({ items, coupon: latest.current.coupon, contact, shipping, wallet: 'googlepay' }),
+                    buildExpressOrderPayload({ items, coupon: latest.current.coupon, agreeToNewsletter: latest.current.agreeToNewsletter, contact, shipping, wallet: 'googlepay' }),
                     items,
                 )
                 latest.current.onOrderPlaced?.()

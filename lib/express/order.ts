@@ -1,6 +1,7 @@
 import type { CartItem } from '@/stores/cartZustand'
 import type { WalletContact } from './contact'
 import type { ExpressShippingOption } from './shipping'
+import { recordConsent } from '@/lib/consentClient'
 
 // Szybka płatność tworzy zamówienie z danych portfela: odbiorca = płatnik, dokument = paragon, płatność „Płatność kartą”.
 const VAT_RATE = 0.23
@@ -34,11 +35,13 @@ type BuildInput = {
     contact: WalletContact
     shipping: ExpressShippingOption
     wallet: ExpressWalletKind
+    // zgoda marketingowa z pola obok przycisków (regulamin jest warunkiem uruchomienia portfela)
+    agreeToNewsletter?: boolean
 }
 
 export type ExpressOrderPayload = ReturnType<typeof buildExpressOrderPayload>
 
-export const buildExpressOrderPayload = ({ items, coupon, contact, shipping, wallet }: BuildInput) => {
+export const buildExpressOrderPayload = ({ items, coupon, contact, shipping, wallet, agreeToNewsletter = false }: BuildInput) => {
     const totals = calculateExpressTotals(items, shipping)
 
     const address = {
@@ -80,7 +83,7 @@ export const buildExpressOrderPayload = ({ items, coupon, contact, shipping, wal
         Inpost: {},
         couponCode: coupon || undefined,
         notes: `Szybka płatność: ${WALLET_LABELS[wallet]}`,
-        agreeToNewsletter: false,
+        agreeToNewsletter,
         subtotalBrutto: totals.subtotal,
         shippingBrutto: totals.shipping,
         grandTotalBrutto: totals.total,
@@ -110,5 +113,14 @@ export const createExpressOrder = async (payload: ExpressOrderPayload, items: Ca
             : ''
         throw new ExpressOrderError((result.message || 'Nie udało się złożyć zamówienia') + detail)
     }
-    return String(result.externalOrderId)
+    const orderNumber = String(result.externalOrderId)
+    recordConsent({
+        source: 'express',
+        email: payload.customer.email,
+        phone: payload.customer.phone,
+        terms: true,
+        marketing: payload.agreeToNewsletter,
+        context: { order: orderNumber },
+    })
+    return orderNumber
 }

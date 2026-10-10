@@ -19,12 +19,15 @@ import { Button } from '@/components/ui/button';
 import { Phone, Mail, MapPin, Clock, Building2, Send, CheckCircle, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import LanguageSelector from '../language-selector';
+import ConsentFields, { EMPTY_CONSENT, type ConsentState } from '@/components/consent/ConsentFields';
+import { recordConsent } from '@/lib/consentClient';
 
 export function SupportModal() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [activeTab, setActiveTab] = useState<'contact' | 'form'>('contact');
+  const [consent, setConsent] = useState<ConsentState>(EMPTY_CONSENT);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -57,8 +60,17 @@ export function SupportModal() {
       // await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) });
       await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
       setFormStatus('sent');
+      recordConsent({
+        source: 'contact',
+        email: formData.email,
+        phone: formData.phone,
+        terms: true,
+        marketing: consent.marketing,
+        context: { subject: formData.subject },
+      });
       setTimeout(() => {
         setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+        setConsent(EMPTY_CONSENT);
         setFormStatus('idle');
       }, 3000);
     } catch {
@@ -68,7 +80,7 @@ export function SupportModal() {
   };
 
   const isFormValid =
-    formData.name.trim() && formData.email.trim() && formData.subject.trim() && formData.message.trim();
+    formData.name.trim() && formData.email.trim() && formData.subject.trim() && formData.message.trim() && consent.terms;
 
   if (!mounted) {
     return (
@@ -247,6 +259,7 @@ export function SupportModal() {
                   className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-hert/30 focus:border-hert transition resize-none"
                 />
               </div>
+              <ConsentFields idPrefix="contact" channels="email-sms" value={consent} onChange={setConsent} disabled={formStatus === 'sending'} />
               {formStatus === 'error' && (
                 <p className="text-xs text-red-500">
                   Wystąpił błąd. Spróbuj ponownie lub napisz na sklep@carinii.com.pl

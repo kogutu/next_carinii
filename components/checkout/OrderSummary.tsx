@@ -13,6 +13,8 @@ import { countryIso } from '@/lib/countries'
 import { resolveInvoiceBuyer } from '@/lib/invoice'
 import { startRedirectPayment } from '@/lib/tpay/browser-api'
 import ExpressWalletButtons, { type ExpressWallet } from './ExpressWalletButtons'
+import ConsentFields from '@/components/consent/ConsentFields'
+import { recordConsent } from '@/lib/consentClient'
 
 // 'netto' = ceny w koszyku są netto (trzeba dodać VAT do brutto)
 // 'brutto' = ceny w koszyku są brutto (trzeba odjąć VAT do netto)
@@ -259,6 +261,15 @@ export default function OrderSummary({
             if (result.externalOrderId) {
                 const orderNumber = String(result.externalOrderId)
 
+                recordConsent({
+                    source: 'checkout',
+                    email: customer.email,
+                    phone: customer.phone,
+                    terms: true,
+                    marketing: agreeToNewsletter,
+                    context: { order: orderNumber },
+                })
+
                 if (wallet) {
                     try {
                         const { redirectUrl } = await startRedirectPayment(orderNumber, wallet)
@@ -467,35 +478,17 @@ export default function OrderSummary({
                     )}
                 </div>
 
-                {/* Checkboxes */}
-                <div className="space-y-3">
-                    <label className="flex items-start gap-3 cursor-pointer">
-                        <input
-                            id="checkout-terms"
-                            type="checkbox"
-                            checked={agreeToTerms}
-                            onChange={() => handleTermsChange(!agreeToTerms)}
-                            aria-invalid={!!termsError}
-                            className="mt-0.5 size-5 shrink-0 accent-black"
-                        />
-                        <span className={`text-pretty text-xs ${termsError ? 'text-destructive' : agreeToTerms ? 'text-success' : 'text-muted-foreground'}`}>
-                            <span className="font-semibold">*</span> Potwierdzam, że zapoznałem się i akceptuję regulamin sklepu internetowego i politykę prywatności.   Wyrażam zgodę na przesyłanie mi za pomocą środków komunikacji elektronicznej informacji handlowej przez lub na zlecenie Carinii, w rozumieniu ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną.
-                        </span>
-                    </label>
-                    {termsError && <p role="alert" className="text-xs text-destructive">{termsError}</p>}
-
-                    {/* <label className="flex items-start gap-3 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            checked={agreeToNewsletter}
-                            onChange={() => setAgreeToNewsletter(!agreeToNewsletter)}
-                            className="w-5 h-5 accent-[#441c49] mt-0.5 flex-shrink-0"
-                        />
-                        <span className="text-xs text-gray-700">
-                            Wyrażam zgodę na przesyłanie mi za pomocą środków komunikacji elektronicznej informacji handlowej przez lub na zlecenie Carinii, w rozumieniu ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną.
-                        </span>
-                    </label> */}
-                </div>
+                {/* Zgody: regulamin (wymagany) i osobna, dobrowolna zgoda marketingowa */}
+                <ConsentFields
+                    idPrefix="checkout"
+                    channels="email-sms"
+                    value={{ terms: agreeToTerms, marketing: agreeToNewsletter }}
+                    onChange={(next) => {
+                        if (next.terms !== agreeToTerms) handleTermsChange(next.terms)
+                        if (next.marketing !== agreeToNewsletter) setAgreeToNewsletter(next.marketing)
+                    }}
+                    termsError={termsError}
+                />
 
                 {/* Error Message */}
                 {submitError && (

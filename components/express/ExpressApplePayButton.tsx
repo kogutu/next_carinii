@@ -20,17 +20,18 @@ type ExpressApplePayButtonProps = {
     // pozycje do zamówienia w chwili kliknięcia (null = nie można kontynuować, np. brak rozmiaru)
     getItems: () => CartItem[] | null
     coupon?: string
+    agreeToNewsletter?: boolean
     // wywoływane po utworzeniu zamówienia (np. wyczyszczenie koszyka)
     onOrderPlaced?: () => void
 }
 
 // Apple Pay „kup od razu”: okno zbiera e-mail, telefon i adres, klient wybiera kuriera, po autoryzacji powstaje zamówienie i płatność (Tpay).
-export default function ExpressApplePayButton({ getItems, coupon, onOrderPlaced }: ExpressApplePayButtonProps) {
+export default function ExpressApplePayButton({ getItems, coupon, agreeToNewsletter, onOrderPlaced }: ExpressApplePayButtonProps) {
     const [available, setAvailable] = useState<'checking' | 'yes' | 'no'>('checking')
     const [isProcessing, setIsProcessing] = useState(false)
     const [error, setError] = useState('')
-    const latest = useRef({ getItems, coupon, onOrderPlaced })
-    latest.current = { getItems, coupon, onOrderPlaced }
+    const latest = useRef({ getItems, coupon, agreeToNewsletter, onOrderPlaced })
+    latest.current = { getItems, coupon, agreeToNewsletter, onOrderPlaced }
 
     useEffect(() => {
         let cancelled = false
@@ -143,7 +144,7 @@ export default function ExpressApplePayButton({ getItems, coupon, onOrderPlaced 
 
                 const { totals } = lineItems()
                 oid = await createExpressOrder(
-                    buildExpressOrderPayload({ items, coupon: latest.current.coupon, contact, shipping: selected, wallet: 'applepay' }),
+                    buildExpressOrderPayload({ items, coupon: latest.current.coupon, agreeToNewsletter: latest.current.agreeToNewsletter, contact, shipping: selected, wallet: 'applepay' }),
                     items,
                 )
                 latest.current.onOrderPlaced?.()
