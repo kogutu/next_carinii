@@ -89,7 +89,7 @@ const inStock = (product: ProductDoc): boolean => {
     return Object.values(product.size_qty ?? {}).some((qty) => qty > 0)
 }
 
-export const productSchema = (product: ProductDoc) => {
+export const productSchema = (product: ProductDoc, rating?: { ratingValue: number; reviewCount: number } | null) => {
     const images = (product.imgs?.length ? product.imgs : product.image_main ? [product.image_main] : [])
         .slice(0, 8)
         .map((src) => absoluteUrl(normalizeMediaUrl(src)))
@@ -105,6 +105,18 @@ export const productSchema = (product: ProductDoc) => {
         description: plainText(product.description || product.shortdesc || product.name, 5000),
         image: images,
         brand: { '@type': 'Brand', name: SITE_NAME },
+        // ocena tylko z prawdziwych opinii Trustmate (te same widzi klientka na stronie); bez opinii — bez AggregateRating
+        ...(rating
+            ? {
+                aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: rating.ratingValue,
+                    reviewCount: rating.reviewCount,
+                    bestRating: 5,
+                    worstRating: 1,
+                },
+            }
+            : {}),
         ...(typeof price === 'number' && price > 0
             ? {
                 offers: {

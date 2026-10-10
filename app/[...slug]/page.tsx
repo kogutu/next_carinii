@@ -17,6 +17,7 @@ import { getPopularitySkus, POPULARITY_SORT } from "@/lib/popularity"
 import { sanitizeProductHtml } from "@/lib/sanitizeHtml"
 import JsonLd from "@/components/seo/JsonLd"
 import { breadcrumbSchema, categoryCrumbs, productSchema } from "@/lib/structuredData"
+import { getTrustmateRating } from "@/lib/trustmate"
 import {
   getCachedCategory,
   getCachedProduct,
@@ -223,15 +224,19 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
       }
 
       const categoryName = String(product.cat_main?.[0] ?? '').trim()
+      const [catsTreeForCrumbs, trustmateRating] = await Promise.all([
+        catsTreePromise,
+        getTrustmateRating(String(product.id ?? product.pid)),
+      ])
       const crumbs = categoryName
-        ? categoryCrumbs(await catsTreePromise, (node) => node.name.trim() === categoryName)
+        ? categoryCrumbs(catsTreeForCrumbs, (node) => node.name.trim() === categoryName)
         : []
 
       return (
         <>
           <JsonLd
             data={[
-              productSchema(product),
+              productSchema(product, trustmateRating),
               breadcrumbSchema([...crumbs, { name: product.name, path: `/${product.slug}` }]),
             ]}
           />

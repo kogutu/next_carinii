@@ -44,6 +44,8 @@ import { useCheckoutValidationStore } from "@/components/checkout/checkoutValida
 import { trackAddToCart, trackViewItem } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/seo";
 import { normalizeMediaUrl } from "@/lib/mediaUrl";
+import TrustmateWidget from "@/components/trustmate/TrustmateWidget";
+import { TRUSTMATE_HORNET_TOKEN, TRUSTMATE_HYDRA_TOKEN } from "@/lib/trustmate";
 
 // Wspólne pola produktu w zdarzeniach analitycznych: ID produktu głównego (jak w Magento), adres, zdjęcie, kategorie
 const trackingBase = (product: any) => ({
@@ -199,6 +201,9 @@ export default function ProductPage({ product, seemore }: { product: Product, se
     // === ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURN ===
 
     const addItemToCart = useCartStore(state => state.addItemToCart)
+    // produkt bez opinii w Trustmate: sekcja opinii znika zamiast zostawiać puste miejsce
+    const [reviewsEmpty, setReviewsEmpty] = useState(false)
+    useEffect(() => setReviewsEmpty(false), [product?.id])
 
     // Zdarzenie „wyświetlenie produktu” — raz na produkt (po zgodzie klienta, patrz lib/analytics.ts)
     useEffect(() => {
@@ -610,7 +615,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
                                 </div>
 
                                 <div className="share flex gap-2">
-                                    <ShareIt url="https://example.com/post/123" title="Świetny artykuł!" />
+                                    <ShareIt url={absoluteUrl(product.slug)} title={name} />
                                     <WishlistButton
                                         variant="outline"
                                         product={{ sku: product.sku, slug: product.slug, name: product.name }}
@@ -618,6 +623,8 @@ export default function ProductPage({ product, seemore }: { product: Product, se
                                 </div>
                             </div>
 
+                            {/* ocena z opinii klientów (Trustmate) nad nazwą produktu — jak na dotychczasowym sklepie */}
+                            <TrustmateWidget key={`tm-hornet-${product.id}`} token={TRUSTMATE_HORNET_TOKEN} productId={String(product.id ?? product.pid)} minHeight={26} />
                             <h1 className="text-3xl font-bold text-hert uppercase tracking-tighter">
                                 {name}
                             </h1>
@@ -760,7 +767,17 @@ export default function ProductPage({ product, seemore }: { product: Product, se
                     </div>
                 </div>
 
-                {/* Full Description Section */}
+                {/* Opinie klientów (Trustmate) */}
+                <section id="opinie" aria-label="Opinie klientów" className={reviewsEmpty ? "hidden" : "mt-16"}>
+                    <TrustmateWidget
+                        key={`tm-hydra-${product.id}`}
+                        token={TRUSTMATE_HYDRA_TOKEN}
+                        productId={String(product.id ?? product.pid)}
+                        lazy
+                        minHeight={240}
+                        onEmpty={() => setReviewsEmpty(true)}
+                    />
+                </section>
 
             </div>
 
