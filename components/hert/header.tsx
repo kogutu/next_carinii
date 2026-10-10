@@ -40,7 +40,7 @@ export default function Header({ currency }: Props) {
     return (
       <svg
         width={width}
-        className="max-w-[160px] sm:max-w-[250px]"
+        className="max-w-[128px] min-[400px]:max-w-[160px] sm:max-w-[250px]"
         viewBox="0 0 767.3 159"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"

@@ -40,9 +40,9 @@ export function ProductControls({
   const start = (currentPageZustand - 1) * perPage + 1;
   const end = Math.min(currentPageZustand * perPage, totalProducts);
   return (
-    <div className="flex flex-col gap-4 mb-6 pb-4 border-b">
+    <div className="mb-6 flex flex-col gap-4 border-b border-border pb-4">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Wyświetlanie {start}-{end} z {totalProducts} produktów
         </p>
 
@@ -78,7 +78,7 @@ export function ProductControls({
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => onViewModeChange('grid')}
-              className={cn('px-2', viewMode === 'grid' && 'bg-hert')}
+              className={cn('px-2', viewMode === 'grid' && 'bg-primary')}
             >
               <Grid3x3 className="w-4 h-4" />
             </Button>
@@ -86,7 +86,7 @@ export function ProductControls({
               variant={viewMode === 'list' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => onViewModeChange('list')}
-              className={cn('px-2', viewMode === 'list' && 'bg-hert')}
+              className={cn('px-2', viewMode === 'list' && 'bg-primary')}
             >
               <List className="w-4 h-4" />
             </Button>

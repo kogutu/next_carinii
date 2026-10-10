@@ -72,27 +72,34 @@ export async function searchProducts(
   perPage: number = 12,
   sortBy: string = 'createdat:desc'
 ): Promise<ApiResponse> {
-  console.log(term)
-  const params = new URLSearchParams({
-    q: term,
-    query_by: "name,description,sku",
-    page: page.toString(),
-    per_page: perPage.toString(),
-    sort_by: sortBy,
-  });
-
-
-  console.log(`${API_BASE}?${params}`)
-  const response = await fetch(`${API_BASE}?${params}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-typesense-api-key': 'xyz'
-    },
+  // Przez własne proxy (ta sama domena): bezpośrednie zapytanie z przeglądarki do serwera Magento jest blokowane
+  // przez CORS, bo zapytanie z nagłówkiem klucza wymaga odpowiedzi na OPTIONS, a ten endpoint zwraca 405.
+  const response = await fetch('/api/typesense/multisearch', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      searches: [
+        {
+          collection: 'carinii_prs',
+          q: term,
+          query_by: 'name,description,sku',
+          page,
+          per_page: perPage,
+          sort_by: sortBy,
+          exclude_fields: 'embedding,imgs,charakterystyka_string,description,specyfikacja_string,charakterystyka,specyfikacja',
+        },
+      ],
+    }),
   });
 
   if (!response.ok) {
     throw new Error(`API Error: ${response.statusText}`);
   }
 
-  return response.json();
+  const result = (await response.json())?.results?.[0];
+  if (!result || result.error) {
+    throw new Error(`API Error: ${result?.error ?? 'brak wyników'}`);
+  }
+
+  return result as ApiResponse;
 }

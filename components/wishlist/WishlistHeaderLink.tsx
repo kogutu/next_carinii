@@ -12,7 +12,7 @@ export default function WishlistHeaderLink() {
         <Link
             href="/ulubione"
             aria-label={count > 0 ? `Ulubione (${count})` : 'Ulubione'}
-            className="relative flex items-center justify-center rounded-full p-2 transition hover:bg-hertwhite focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="relative flex items-center justify-center rounded-full p-1.5 transition sm:p-2 hover:bg-hertwhite focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
             <Heart className="size-6" strokeWidth={1.5} aria-hidden="true" />
             {count > 0 && (

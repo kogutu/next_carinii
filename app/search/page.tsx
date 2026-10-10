@@ -9,7 +9,7 @@ import SearchTemplate from '@/pages/search/search-template'
 export default function SearchPage() {
     // useSearchParams() wymaga granicy Suspense przy prerenderze
     return (
-        <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
             <SearchPageInner />
         </Suspense>
     )
@@ -95,12 +95,12 @@ function SearchPageInner() {
     const totalPages = Math.ceil(totalProducts / perPage)
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-background">
             {/* Header with search query */}
 
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
                 <SearchTemplate
                     searchQuery={searchQuery}
                     products={currentProducts}

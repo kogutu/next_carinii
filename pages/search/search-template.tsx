@@ -5,6 +5,16 @@ import { ProductControls } from '../../components/search/product-controls';
 import { ProductPagination } from '../../components/search/product-pagination';
 import { Spinner } from '@/components/ui/spinner';
 import type { Product } from '@/lib/api';
+import Link from 'next/link';
+import { ENTER, EYEBROW, SurfaceCard } from '@/components/ui/surface';
+import { cn } from '@/lib/utils';
+
+const SUGGESTED_LINKS = [
+  { href: '/nowosci.html', label: 'Nowości' },
+  { href: '/obuwie.html', label: 'Obuwie' },
+  { href: '/torebki.html', label: 'Torebki' },
+  { href: '/wyprzedaz.html', label: 'Wyprzedaż' },
+];
 
 interface SearchTemplateProps {
   searchQuery: string;
@@ -41,27 +51,18 @@ export default function SearchTemplate({
     return null;
   }
   return (
-    <main className="flex-1 w-full md:w-auto">
-      <div className="mb-6 hidden md:block">
-        <h1 className="text-3xl font-bold text-gray-900">Wyniki wyszukiwania</h1>
-        <p className="text-gray-600 mt-2">
-          {totalProducts > 0 ? (
-            <>
-              Znaleźliśmy <span className="font-semibold">{totalProducts}</span> produktów dla frazy <span className="font-semibold">"{searchQuery}"</span>
-            </>
-          ) : (
-            <>
-              Brak wyników dla frazy <span className="font-semibold">"{searchQuery}"</span>
-            </>
-          )}
-        </p>
-      </div>
-
-      {/* Mobile Header */}
-      <div className="md:hidden mb-4">
-        <h2 className="text-xl font-bold text-gray-900">Wyniki dla: <span className="text-hert">{searchQuery}</span></h2>
-        <p className="text-sm text-gray-600">Znaleźliśmy {totalProducts} produktów</p>
-      </div>
+    <main className="w-full flex-1 md:w-auto">
+      <header className={cn(ENTER, 'mb-8')}>
+        <p className={EYEBROW}>Wyszukiwanie</p>
+        <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          {totalProducts > 0 ? 'Wyniki dla' : 'Brak wyników dla'} „{searchQuery}”
+        </h1>
+        {totalProducts > 0 && (
+          <p className="mt-2 text-sm tabular-nums text-muted-foreground">
+            Znaleźliśmy {totalProducts} {totalProducts === 1 ? 'produkt' : totalProducts < 5 ? 'produkty' : 'produktów'}
+          </p>
+        )}
+      </header>
 
       {/* Controls */}
       {totalProducts > 0 && (
@@ -78,21 +79,30 @@ export default function SearchTemplate({
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-800 mb-6">
+        <div role="alert" className="mb-6 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {error}
         </div>
       )}
 
       {/* Products Grid or Empty State */}
       {totalProducts === 0 ? (
-        <div className="bg-gray-50 rounded-lg p-12 text-center">
-          <p className="text-gray-600 text-lg mb-4">
-            Niestety, nie znaleźliśmy produktów pasujących do Twojego wyszukiwania.
+        <SurfaceCard className="mx-auto max-w-xl text-center sm:p-12">
+          <p className="text-lg font-semibold text-foreground">Nie znaleźliśmy pasujących produktów</p>
+          <p className="mt-2 text-pretty text-sm text-muted-foreground">
+            Spróbuj zmienić zapytanie albo przeglądaj nasze kategorie.
           </p>
-          <p className="text-gray-500 text-sm">
-            Spróbuj zmienić zapytanie lub przeglądaj nasze kategorie
-          </p>
-        </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {SUGGESTED_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="inline-flex h-11 items-center rounded-full bg-muted px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </SurfaceCard>
       ) : (
         <>
           {<ProductGrid products={products} viewMode={viewMode} loading={loading} />}

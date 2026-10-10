@@ -134,8 +134,8 @@ const FACET_CONFIG: FacetConfig[] = [
         label: 'Kategorie',
         icon: <Folder size={14} />,
         type: 'multi',
-        activeColor: 'text-purple-700',
-        activeBg: 'bg-purple-100',
+        activeColor: 'text-foreground',
+        activeBg: 'bg-muted',
         defaultExpanded: true,
         maxVisible: 8,
     },
@@ -285,8 +285,8 @@ const FACET_CONFIG: FacetConfig[] = [
         label: 'ocieplenie',
         icon: <Thermometer size={14} />,
         type: 'multi',
-        activeColor: 'text-red-700',
-        activeBg: 'bg-red-100',
+        activeColor: 'text-destructive',
+        activeBg: 'bg-destructive/10',
         defaultExpanded: false,
         maxVisible: 6,
     },
@@ -366,31 +366,17 @@ function FacetSection({ config, counts, activeValues, onToggleValue }: FacetSect
     const hasMore = filteredCounts.length > maxVisible;
     const activeCount = activeValues.size;
 
-    // Kolorystyka na podstawie config
-    const colorMap: Record<string, { activeBg: string; activeText: string; pillBg: string; pillText: string; dotBg: string }> = {
-        'text-purple-700': { activeBg: 'bg-purple-100', activeText: 'text-purple-700', pillBg: 'bg-purple-200', pillText: 'text-purple-700', dotBg: 'bg-purple-500' },
-        'text-blue-700': { activeBg: 'bg-blue-100', activeText: 'text-blue-700', pillBg: 'bg-blue-200', pillText: 'text-blue-700', dotBg: 'bg-blue-500' },
-        'text-indigo-700': { activeBg: 'bg-indigo-100', activeText: 'text-indigo-700', pillBg: 'bg-indigo-200', pillText: 'text-indigo-700', dotBg: 'bg-indigo-500' },
-        'text-pink-700': { activeBg: 'bg-pink-100', activeText: 'text-pink-700', pillBg: 'bg-pink-200', pillText: 'text-pink-700', dotBg: 'bg-pink-500' },
-        'text-amber-700': { activeBg: 'bg-amber-100', activeText: 'text-amber-700', pillBg: 'bg-amber-200', pillText: 'text-amber-700', dotBg: 'bg-amber-500' },
-        'text-slate-700': { activeBg: 'bg-slate-100', activeText: 'text-slate-700', pillBg: 'bg-slate-200', pillText: 'text-slate-700', dotBg: 'bg-slate-500' },
-        'text-rose-700': { activeBg: 'bg-rose-100', activeText: 'text-rose-700', pillBg: 'bg-rose-200', pillText: 'text-rose-700', dotBg: 'bg-rose-500' },
-        'text-stone-700': { activeBg: 'bg-stone-100', activeText: 'text-stone-700', pillBg: 'bg-stone-200', pillText: 'text-stone-700', dotBg: 'bg-stone-500' },
-        'text-teal-700': { activeBg: 'bg-teal-100', activeText: 'text-teal-700', pillBg: 'bg-teal-200', pillText: 'text-teal-700', dotBg: 'bg-teal-500' },
-        'text-violet-700': { activeBg: 'bg-violet-100', activeText: 'text-violet-700', pillBg: 'bg-violet-200', pillText: 'text-violet-700', dotBg: 'bg-violet-500' },
-        'text-red-700': { activeBg: 'bg-red-100', activeText: 'text-red-700', pillBg: 'bg-red-200', pillText: 'text-red-700', dotBg: 'bg-red-500' },
-    };
-
-    const colors = colorMap[config.activeColor || 'text-purple-700'] || colorMap['text-purple-700'];
+    // Jedna neutralna paleta (czerń/szarości sklepu); kolory per facet z konfiguracji nie są już używane
+    const colors = { activeBg: 'bg-muted', activeText: 'text-foreground', pillBg: 'bg-primary', pillText: 'text-primary-foreground', dotBg: 'bg-primary' };
 
     return (
-        <div className="border-b border-gray-100 last:border-b-0">
+        <div className="border-b border-border last:border-b-0">
             {/* Header — kliknięcie rozwija/zwija */}
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full p-4 md:p-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full p-4 md:p-5 flex items-center justify-between hover:bg-muted/60 transition-colors"
             >
-                <h3 className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-wide">
+                <h3 className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-[0.14em]">
                     {config.icon}
                     {config.label}
                     {activeCount > 0 && (
@@ -399,7 +385,7 @@ function FacetSection({ config, counts, activeValues, onToggleValue }: FacetSect
                         </span>
                     )}
                 </h3>
-                {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+                {isExpanded ? <ChevronUp size={16} className="text-muted-foreground" /> : <ChevronDown size={16} className="text-muted-foreground" />}
             </button>
 
             {/* Content */}
@@ -414,14 +400,14 @@ function FacetSection({ config, counts, activeValues, onToggleValue }: FacetSect
                                     onClick={() => onToggleValue(config.field, facet.value)}
                                     className={`w-full text-left px-3 py-2 rounded-xl text-sm transition flex items-center justify-between group ${isActive
                                         ? `${colors.activeBg} ${colors.activeText} font-medium`
-                                        : 'hover:bg-white text-gray-700'
+                                        : 'hover:bg-white text-foreground'
                                         }`}
                                 >
                                     <span className="truncate flex items-center gap-2">
                                         {/* Checkbox-like indicator */}
                                         <span className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition ${isActive
                                             ? `${colors.dotBg} border-transparent`
-                                            : 'border-gray-300 group-hover:border-gray-400'
+                                            : 'border-border group-hover:border-foreground/50'
                                             }`}>
                                             {isActive && (
                                                 <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -435,7 +421,7 @@ function FacetSection({ config, counts, activeValues, onToggleValue }: FacetSect
                                     </span>
                                     <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${isActive
                                         ? `${colors.pillBg} ${colors.pillText}`
-                                        : 'bg-gray-100 text-gray-500'
+                                        : 'bg-muted text-muted-foreground'
                                         }`}>
                                         {facet.count}
                                     </span>
@@ -448,7 +434,7 @@ function FacetSection({ config, counts, activeValues, onToggleValue }: FacetSect
                     {hasMore && (
                         <button
                             onClick={() => setShowAll(!showAll)}
-                            className="mt-2 text-xs text-purple-600 hover:text-purple-800 font-medium flex items-center gap-1 transition"
+                            className="mt-2 text-xs text-foreground hover:text-foreground font-medium flex items-center gap-1 transition"
                         >
                             {showAll ? (
                                 <>
@@ -766,15 +752,15 @@ export default function MegaSearch({ type }: { type: string }) {
             <div className={containerClass}>
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="w-full border border-gray-300 rounded-full py-2.5 px-6 pr-12 text-left text-gray-400 text-sm bg-white hover:border-gray-300 hover:shadow-md transition-all flex items-center gap-2 group"
+                    className="w-full border border-border rounded-full py-2.5 px-6 pr-12 text-left text-muted-foreground text-sm bg-white hover:border-border hover:shadow-md transition-all flex items-center gap-2 group"
                 >
-                    <Search size={16} className="text-gray-400 group-hover:text-purple-500 transition-colors" />
+                    <Search size={16} className="text-muted-foreground group-hover:text-foreground transition-colors" />
                     <span>Czego szukasz?</span>
-                    <kbd className="hidden lg:inline-flex ml-auto text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-500">
+                    <kbd className="hidden lg:inline-flex ml-auto text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
                         ⌘K
                     </kbd>
                 </button>
-                <div className="absolute right-[2px] top-[3px] bg-hert text-white p-2 rounded-full w-9 h-9 flex items-center justify-center pointer-events-none">
+                <div className="absolute right-[2px] top-[3px] bg-primary text-primary-foreground p-2 rounded-full w-9 h-9 flex items-center justify-center pointer-events-none">
                     <Search size={16} />
                 </div>
             </div>
@@ -791,19 +777,19 @@ export default function MegaSearch({ type }: { type: string }) {
                     {/* Modal Container */}
                     <div className="absolute inset-0 flex items-start justify-center p-4 pt-[5vh] overflow-y-auto">
                         <div
-                            className="relative w-full max-w-[95vw] xl:max-w-[1400px] bg-white rounded-3xl shadow-2xl 
+                            className="relative w-full max-w-[95vw] xl:max-w-[1400px] bg-white rounded-2xl shadow-2xl 
                                        animate-in fade-in slide-in-from-top-4 duration-300 my-auto"
                             style={{ minHeight: 'calc(90vh - 40px)', maxHeight: 'calc(90vh - 40px)' }}
                         >
                             {/* ============ SEARCH HEADER ============ */}
-                            <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 z-20 rounded-t-3xl">
+                            <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-border p-4 md:p-6 z-20 rounded-t-2xl">
                                 <form onSubmit={handleSubmit} className="flex items-center gap-3 md:gap-4">
                                     <div className="flex-grow relative">
                                         <div className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 flex items-center gap-2">
                                             {isLoading ? (
-                                                <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
+                                                <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-border border-t-foreground rounded-full animate-spin motion-reduce:animate-none" />
                                             ) : (
-                                                <Search className="text-gray-400 w-5 h-5 md:w-6 md:h-6" />
+                                                <Search className="text-muted-foreground w-5 h-5 md:w-6 md:h-6" />
                                             )}
                                         </div>
                                         <input
@@ -812,17 +798,16 @@ export default function MegaSearch({ type }: { type: string }) {
                                             placeholder="Wpisz nazwę produktu, kategorię lub markę..."
                                             value={query}
                                             onChange={handleChange}
-                                            className="w-full border-2 border-gray-200 rounded-2xl py-3 md:py-4 pl-12 md:pl-16 pr-12 
-                                                       text-base md:text-lg focus:outline-none focus:border-purple-400 
-                                                       focus:ring-4 focus:ring-purple-100 transition-all bg-gray-50 focus:bg-white"
+                                            className="w-full border border-hborder/50 rounded-xl py-3 md:py-4 pl-12 md:pl-16 pr-12 
+                                                       text-base md:text-lg focus:outline-none focus:border-transparent focus:ring-2 focus:ring-foreground transition-all bg-background"
                                             autoComplete="off"
                                         />
                                         {query && (
                                             <button
                                                 type="button"
                                                 onClick={handleClear}
-                                                className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-gray-400 
-                                                           hover:text-gray-600 transition p-1 hover:bg-gray-100 rounded-full"
+                                                className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-muted-foreground 
+                                                           hover:text-foreground transition p-1 hover:bg-muted rounded-full"
                                             >
                                                 <X size={20} />
                                             </button>
@@ -831,7 +816,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                     <button
                                         type="button"
                                         onClick={handleClose}
-                                        className="p-2 md:p-3 text-gray-400 hover:text-gray-600 hover:bg-gray-100 
+                                        className="p-2 md:p-3 text-muted-foreground hover:text-foreground hover:bg-muted 
                                                    rounded-xl transition-all flex-shrink-0"
                                     >
                                         <X size={24} />
@@ -841,19 +826,19 @@ export default function MegaSearch({ type }: { type: string }) {
                                 {/* Search info & active filters */}
                                 <div className="flex flex-wrap items-center justify-between mt-3 px-2 gap-2">
                                     <div className="flex items-center gap-2 flex-wrap">
-                                        <p className="text-xs text-gray-400">
-                                            Naciśnij <kbd className="px-2 py-0.5 bg-gray-100 rounded text-gray-600 mx-1">ESC</kbd>
+                                        <p className="text-xs text-muted-foreground">
+                                            Naciśnij <kbd className="px-2 py-0.5 bg-muted rounded text-muted-foreground mx-1">ESC</kbd>
                                             aby zamknąć
                                         </p>
 
                                         {/* Active Filters Pills */}
                                         {activeFilterPills.length > 0 && (
                                             <div className="flex items-center gap-2 flex-wrap">
-                                                <span className="text-xs text-gray-400">|</span>
+                                                <span className="text-xs text-muted-foreground">|</span>
                                                 {activeFilterPills.map((pill, i) => (
                                                     <span
                                                         key={`${pill.field}-${pill.value}-${i}`}
-                                                        className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full ${pill.config.activeBg || 'bg-purple-100'} ${pill.config.activeColor || 'text-purple-700'}`}
+                                                        className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-muted text-foreground`}
                                                     >
                                                         {pill.config.icon}
                                                         {pill.label}
@@ -867,7 +852,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                 ))}
                                                 <button
                                                     onClick={clearAllFilters}
-                                                    className="text-xs text-red-500 hover:text-red-700 underline"
+                                                    className="text-xs text-destructive hover:text-destructive underline"
                                                 >
                                                     Wyczyść wszystkie
                                                 </button>
@@ -876,9 +861,9 @@ export default function MegaSearch({ type }: { type: string }) {
                                     </div>
 
                                     {query && results.length > 0 && (
-                                        <p className="text-xs text-gray-500">
-                                            Znaleziono <span className="font-bold text-purple-600">{totalFound}</span> produktów
-                                            <span className="text-gray-400 ml-1">({searchTime}ms)</span>
+                                        <p className="text-xs text-muted-foreground">
+                                            Znaleziono <span className="font-bold text-foreground">{totalFound}</span> produktów
+                                            <span className="text-muted-foreground ml-1">({searchTime}ms)</span>
                                         </p>
                                     )}
                                 </div>
@@ -893,15 +878,15 @@ export default function MegaSearch({ type }: { type: string }) {
                                         <div className="grid md:grid-cols-1 gap-6 md:gap-8">
                                             {/* Recent Searches */}
                                             {recentSearches.length > 0 && (
-                                                <div className="bg-gray-50 rounded-2xl p-5">
+                                                <div className="bg-muted/60 rounded-2xl p-5">
                                                     <div className="flex items-center justify-between mb-4">
-                                                        <h3 className="flex items-center gap-2 text-sm font-bold text-gray-700 uppercase tracking-wide">
-                                                            <Clock size={16} className="text-gray-500" />
+                                                        <h3 className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-[0.14em]">
+                                                            <Clock size={16} className="text-muted-foreground" />
                                                             Ostatnio szukane
                                                         </h3>
                                                         <button
                                                             onClick={clearRecentSearches}
-                                                            className="text-xs text-gray-400 hover:text-red-500 transition"
+                                                            className="text-xs text-muted-foreground hover:text-destructive transition"
                                                         >
                                                             Wyczyść
                                                         </button>
@@ -912,11 +897,11 @@ export default function MegaSearch({ type }: { type: string }) {
                                                                 key={index}
                                                                 onClick={() => handleSuggestionClick(term)}
                                                                 className="group flex items-center gap-2 px-4 py-2.5 bg-white 
-                                                                           hover:bg-purple-50 text-gray-700 hover:text-purple-700 
+                                                                           hover:bg-muted/60 text-foreground hover:text-foreground 
                                                                            rounded-xl text-sm transition-all shadow-sm 
-                                                                           hover:shadow-md border border-gray-100"
+                                                                           hover:shadow-md border border-border"
                                                             >
-                                                                <Clock size={14} className="text-gray-400 group-hover:text-purple-500" />
+                                                                <Clock size={14} className="text-muted-foreground group-hover:text-foreground" />
                                                                 {term}
                                                             </button>
                                                         ))}
@@ -925,9 +910,9 @@ export default function MegaSearch({ type }: { type: string }) {
                                             )}
 
                                             {/* Popular Searches */}
-                                            <div className="bg-purple-50 rounded-2xl p-5 w-full overflow-y-auto mb-4">
-                                                <h3 className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">
-                                                    <TrendingUp size={16} className="text-purple-500" />
+                                            <div className="bg-muted/60 rounded-2xl p-5 w-full overflow-y-auto mb-4">
+                                                <h3 className="flex items-center gap-2 text-sm font-bold text-foreground mb-4 uppercase tracking-wide">
+                                                    <TrendingUp size={16} className="text-muted-foreground" />
                                                     Na skróty
                                                 </h3>
                                                 <div className="relative w-full">
@@ -938,9 +923,9 @@ export default function MegaSearch({ type }: { type: string }) {
                                                                     key={index}
                                                                     onClick={() => handleSuggestionClick(item.term)}
                                                                     className="flex-shrink-0 min-w-fit group flex items-center gap-2 
-                                                                               px-4 py-2.5 bg-white hover:bg-purple-600 text-gray-700 
+                                                                               px-4 py-2.5 bg-white hover:bg-primary text-foreground 
                                                                                hover:text-white rounded-xl text-sm transition-all shadow-sm 
-                                                                               hover:shadow-lg border border-purple-100"
+                                                                               hover:shadow-lg border border-border"
                                                                 >
                                                                     <span className="text-base">{item.icon}</span>
                                                                     {item.term}
@@ -954,8 +939,8 @@ export default function MegaSearch({ type }: { type: string }) {
                                         </div>
 
                                         <div className="mb-8">
-                                            <h3 className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">
-                                                <Zap size={16} className="text-purple-500" />
+                                            <h3 className="flex items-center gap-2 text-sm font-bold text-foreground mb-4 uppercase tracking-wide">
+                                                <Zap size={16} className="text-muted-foreground" />
                                                 Nie przegap
                                             </h3>
                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -973,9 +958,9 @@ export default function MegaSearch({ type }: { type: string }) {
                                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                             {[...Array(10)].map((_, i) => (
                                                 <div key={i} className="animate-pulse">
-                                                    <div className="aspect-square bg-gray-200 rounded-2xl mb-3" />
-                                                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                                                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                                                    <div className="aspect-square bg-muted rounded-2xl mb-3" />
+                                                    <div className="h-4 bg-muted rounded w-3/4 mb-2" />
+                                                    <div className="h-4 bg-muted rounded w-1/2" />
                                                 </div>
                                             ))}
                                         </div>
@@ -985,20 +970,20 @@ export default function MegaSearch({ type }: { type: string }) {
                                 {/* ===== NO RESULTS ===== */}
                                 {!isLoading && query.length >= 2 && results.length === 0 && (
                                     <div className="p-8 md:p-16 text-center">
-                                        <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                                            <Package size={48} className="text-gray-300" />
+                                        <div className="w-24 h-24 mx-auto mb-6 bg-muted rounded-full flex items-center justify-center">
+                                            <Package size={48} className="text-muted-foreground/60" />
                                         </div>
-                                        <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">
+                                        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
                                             Brak wyników dla &ldquo;{query}&rdquo;
                                         </h3>
-                                        <p className="text-gray-500 mb-6 max-w-md mx-auto">
+                                        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                                             Spróbuj zmienić lub uprościć wyszukiwane hasło.
                                             {totalActiveFilters > 0 && " Możesz też wyłączyć niektóre filtry."}
                                         </p>
                                         {totalActiveFilters > 0 && (
                                             <button
                                                 onClick={clearAllFilters}
-                                                className="mb-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-full text-sm transition"
+                                                className="mb-4 px-4 py-2 bg-destructive/10 hover:bg-destructive/15 text-destructive rounded-full text-sm transition"
                                             >
                                                 Wyczyść wszystkie filtry
                                             </button>
@@ -1008,7 +993,7 @@ export default function MegaSearch({ type }: { type: string }) {
                                                 <button
                                                     key={index}
                                                     onClick={() => handleSuggestionClick(item.term)}
-                                                    className="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full text-sm transition"
+                                                    className="px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-full text-sm transition"
                                                 >
                                                     {item.icon} {item.term}
                                                 </button>
@@ -1022,18 +1007,18 @@ export default function MegaSearch({ type }: { type: string }) {
                                     <div className="flex flex-col lg:flex-row min-h-[400px]">
 
                                         {/* Mobile: Filter toggle button */}
-                                        <div className="lg:hidden p-4 border-b border-gray-100 flex items-center gap-3">
+                                        <div className="lg:hidden p-4 border-b border-border flex items-center gap-3">
                                             <button
                                                 onClick={() => setShowMobileFacets(!showMobileFacets)}
                                                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition ${showMobileFacets
-                                                    ? 'bg-purple-600 text-white'
-                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                    ? 'bg-primary text-white'
+                                                    : 'bg-muted text-foreground hover:bg-muted/70'
                                                     }`}
                                             >
                                                 <Filter size={16} />
                                                 Filtry
                                                 {totalActiveFilters > 0 && (
-                                                    <span className={`text-xs px-1.5 py-0.5 rounded-full ${showMobileFacets ? 'bg-purple-500' : 'bg-purple-200 text-purple-700'
+                                                    <span className={`text-xs px-1.5 py-0.5 rounded-full ${showMobileFacets ? 'bg-foreground' : 'bg-muted text-foreground'
                                                         }`}>
                                                         {totalActiveFilters}
                                                     </span>
@@ -1052,15 +1037,15 @@ export default function MegaSearch({ type }: { type: string }) {
                                                             key={cfg.field}
                                                             onClick={() => toggleFilterValue(cfg.field, cfg.booleanTrueValue || 'true')}
                                                             className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition ${isActive
-                                                                ? `${cfg.activeBg || 'bg-purple-500'} text-white shadow-lg`
-                                                                : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
+                                                                ? `bg-primary text-primary-foreground shadow-sm`
+                                                                : 'bg-white hover:bg-muted/60 text-foreground border border-border'
                                                                 }`}
                                                         >
                                                             {cfg.icon}
                                                             {cfg.booleanLabel || cfg.label}
                                                             <span className={`text-xs px-1.5 py-0.5 rounded-full ${isActive
                                                                 ? 'bg-white/20'
-                                                                : 'bg-gray-100 text-gray-600'
+                                                                : 'bg-muted text-muted-foreground'
                                                                 }`}>
                                                                 {trueCount.count}
                                                             </span>
@@ -1071,12 +1056,12 @@ export default function MegaSearch({ type }: { type: string }) {
                                         </div>
 
                                         {/* Facets Sidebar */}
-                                        <div className={`lg:w-72 xl:w-80 flex-shrink-0 border-b lg:border-b-0 lg:border-r border-gray-100 bg-gray-50/50 overflow-y-auto ${showMobileFacets ? 'block' : 'hidden lg:block'
+                                        <div className={`lg:w-72 xl:w-80 flex-shrink-0 border-b lg:border-b-0 lg:border-r border-border bg-muted/60/50 overflow-y-auto ${showMobileFacets ? 'block' : 'hidden lg:block'
                                             }`}
                                         >
                                             {/* Quick Filters (desktop) */}
-                                            <div className="hidden lg:block p-4 md:p-5 border-b border-gray-100">
-                                                <h3 className="flex items-center gap-2 text-xs font-bold text-gray-500 mb-3 uppercase tracking-wide">
+                                            <div className="hidden lg:block p-4 md:p-5 border-b border-border">
+                                                <h3 className="flex items-center gap-2 text-xs font-bold text-muted-foreground mb-3 uppercase tracking-wide">
                                                     <Filter size={14} />
                                                     Szybkie filtry
                                                 </h3>
@@ -1091,15 +1076,15 @@ export default function MegaSearch({ type }: { type: string }) {
                                                                 key={cfg.field}
                                                                 onClick={() => toggleFilterValue(cfg.field, cfg.booleanTrueValue || 'true')}
                                                                 className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition ${isActive
-                                                                    ? `${cfg.activeBg || 'bg-purple-500'} text-white shadow-lg`
-                                                                    : 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200'
+                                                                    ? `bg-primary text-primary-foreground shadow-sm`
+                                                                    : 'bg-white hover:bg-muted/60 text-foreground border border-border'
                                                                     }`}
                                                             >
                                                                 {cfg.icon}
                                                                 {cfg.booleanLabel || cfg.label}
                                                                 <span className={`text-xs px-1.5 py-0.5 rounded-full ${isActive
                                                                     ? 'bg-white/20'
-                                                                    : 'bg-gray-100 text-gray-600'
+                                                                    : 'bg-muted text-muted-foreground'
                                                                     }`}>
                                                                     {trueCount.count}
                                                                 </span>
@@ -1126,10 +1111,10 @@ export default function MegaSearch({ type }: { type: string }) {
 
                                             {/* Clear all button at bottom of sidebar */}
                                             {totalActiveFilters > 0 && (
-                                                <div className="p-4 md:p-5 border-t border-gray-100">
+                                                <div className="p-4 md:p-5 border-t border-border">
                                                     <button
                                                         onClick={clearAllFilters}
-                                                        className="w-full py-2.5 px-4 bg-red-50 hover:bg-red-100 text-red-600 
+                                                        className="w-full py-2.5 px-4 bg-red-50 hover:bg-destructive/10 text-red-600 
                                                                    rounded-xl text-sm font-medium transition flex items-center justify-center gap-2"
                                                     >
                                                         <X size={14} />
@@ -1144,13 +1129,13 @@ export default function MegaSearch({ type }: { type: string }) {
                                             {/* Results Header */}
                                             <div className="flex items-center justify-between mb-4 md:mb-6">
                                                 <div>
-                                                    <h2 className="text-lg md:text-xl font-bold text-gray-800">
+                                                    <h2 className="text-lg md:text-xl font-bold text-foreground">
                                                         Produkty
                                                         {activeFilters['categories']?.size === 1 && (
-                                                            <span className="text-purple-600"> w {[...activeFilters['categories']][0]}</span>
+                                                            <span className="text-foreground"> w {[...activeFilters['categories']][0]}</span>
                                                         )}
                                                     </h2>
-                                                    <p className="text-sm text-gray-500">
+                                                    <p className="text-sm text-muted-foreground">
                                                         {totalFound} wyników dla &ldquo;{query}&rdquo;
                                                     </p>
                                                 </div>
@@ -1188,24 +1173,24 @@ export default function MegaSearch({ type }: { type: string }) {
                             </div>
 
                             {/* ============ FOOTER ============ */}
-                            <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-gray-100 
+                            <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-border 
                                             px-6 py-3 rounded-b-3xl flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-xs text-gray-400">
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                     <Layers size={14} />
                                     <span>Powered by DevBack.it</span>
                                     {searchTime > 0 && (
-                                        <span className="text-gray-300">• {searchTime}ms</span>
+                                        <span className="text-muted-foreground/60">• {searchTime}ms</span>
                                     )}
                                 </div>
-                                <div className="flex items-center gap-4 text-xs text-gray-400">
+                                <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                     <span className="hidden md:inline">
-                                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded">↵</kbd> wybierz
+                                        <kbd className="px-1.5 py-0.5 bg-muted rounded">↵</kbd> wybierz
                                     </span>
                                     <span className="hidden md:inline">
-                                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded">↑↓</kbd> nawiguj
+                                        <kbd className="px-1.5 py-0.5 bg-muted rounded">↑↓</kbd> nawiguj
                                     </span>
                                     <span>
-                                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded">esc</kbd> zamknij
+                                        <kbd className="px-1.5 py-0.5 bg-muted rounded">esc</kbd> zamknij
                                     </span>
                                 </div>
                             </div>
