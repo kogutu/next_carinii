@@ -1,8 +1,8 @@
 import { pool } from '@/lib/db-mysql'
-import { auth } from '@/lib/auth'
 
-// Lista ulubionych zalogowanego klienta w MySQL (osobna tabela wishlist_items).
-// Konto jest skojarzone z adresem e-mail z sesji (zawsze po stronie serwera — nigdy z treści żądania).
+// Lista ulubionych w MySQL (osobna tabela wishlist_items). Kluczem listy jest wyłącznie adres e-mail —
+// bez logowania: klient podaje e-mail przy pierwszym kliknięciu w serduszko, a ten sam adres przywraca listę
+// na każdym urządzeniu. (Kto zna adres, widzi listę — na liście są tylko produkty ze sklepu.)
 
 export type WishlistEntry = {
     // sku produktu (model + kolor) — klucz listy; karty na listingach nie mają id produktu, ale zawsze mają sku
@@ -43,10 +43,11 @@ const ensureTable = (): Promise<void> => {
     return tableReady
 }
 
-export const getSessionEmail = async (): Promise<string | null> => {
-    const session = await auth()
-    const email = session?.user?.email?.trim().toLowerCase()
-    return email && EMAIL_PATTERN.test(email) ? email : null
+/** Adres e-mail z żądania -> znormalizowany klucz listy (małe litery, bez spacji) albo null. */
+export const normalizeEmail = (raw: unknown): string | null => {
+    if (typeof raw !== 'string') return null
+    const email = raw.trim().toLowerCase()
+    return email.length <= 255 && EMAIL_PATTERN.test(email) ? email : null
 }
 
 /** Wpis z żądania -> poprawny wpis albo null (sku tylko ze znaków kodu produktu; slug jest obcinany). */

@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
 import { Heart } from 'lucide-react'
 import { ProductGrid } from '@/components/category/product-grid'
+import WishlistEmailForm from './WishlistEmailForm'
 import { ENTER, EYEBROW, SurfaceCard } from '@/components/ui/surface'
 import type { Product } from '@/lib/api'
 import { cn } from '@/lib/utils'
@@ -42,7 +42,8 @@ const chunk = <T,>(items: T[], size: number): T[][] =>
     Array.from({ length: Math.ceil(items.length / size) }, (_, index) => items.slice(index * size, (index + 1) * size))
 
 export default function WishlistPage() {
-    const { status } = useSession()
+    const email = useWishlistStore((state) => state.email)
+    const changeEmail = useWishlistStore((state) => state.changeEmail)
     const entries = useWishlistStore((state) => state.entries)
     const isHydrated = useWishlistStore((state) => state.isHydrated)
     const remove = useWishlistStore((state) => state.remove)
@@ -59,7 +60,7 @@ export default function WishlistPage() {
     )
 
     useEffect(() => {
-        if (!isHydrated) return
+        if (!isHydrated || !email) return
         if (idsToFetch.length === 0) {
             setState('ready')
             return
@@ -85,12 +86,10 @@ export default function WishlistPage() {
         return () => {
             cancelled = true
         }
-    }, [isHydrated, idsToFetch])
+    }, [isHydrated, email, idsToFetch])
 
     const products = entryIds.map((id) => catalog[id]).filter((product): product is Product => Boolean(product))
     const unavailableIds = entryIds.filter((id) => missing.has(id))
-
-    const openLogin = () => window.dispatchEvent(new Event('open-account-modal'))
 
     return (
         <main className="bg-background">
@@ -100,30 +99,43 @@ export default function WishlistPage() {
                         <p className={EYEBROW}>Lista życzeń</p>
                         <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Ulubione</h1>
                     </div>
-                    {entries.length > 0 && (
+                    {email && entries.length > 0 && (
                         <p className="text-sm tabular-nums text-muted-foreground">
                             {entries.length} {entries.length === 1 ? 'produkt' : entries.length < 5 ? 'produkty' : 'produktów'}
                         </p>
                     )}
                 </header>
 
-                {status === 'unauthenticated' && (
-                    <SurfaceCard className={cn(ENTER, 'mt-6 flex flex-wrap items-center justify-between gap-3 sm:p-5')}>
-                        <p className="text-pretty text-sm text-muted-foreground">
-                            Lista jest zapisana tylko w tej przeglądarce. Zaloguj się, aby zachować ją na koncie i mieć na każdym urządzeniu.
-                        </p>
+                {email && (
+                    <p className={cn(ENTER, 'mt-4 flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground')}>
+                        <span>
+                            Lista dla <span className="font-medium text-foreground">{email}</span>
+                        </span>
                         <button
                             type="button"
-                            onClick={openLogin}
-                            className="inline-flex h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-menuhover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            onClick={changeEmail}
+                            className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
-                            Zaloguj się
+                            To nie Ty? Zmień e-mail
                         </button>
-                    </SurfaceCard>
+                    </p>
                 )}
 
                 <div className="mt-8">
-                    {isHydrated && entries.length === 0 && (
+                    {isHydrated && !email && (
+                        <SurfaceCard className="mx-auto max-w-md sm:p-8">
+                            <div className="mb-5 text-center">
+                                <Heart className="mx-auto size-10 text-muted-foreground" strokeWidth={1.5} aria-hidden="true" />
+                                <p className="mt-4 text-lg font-semibold text-foreground">Podaj e-mail, aby zobaczyć ulubione</p>
+                                <p className="mt-1 text-pretty text-sm text-muted-foreground">
+                                    Twoja lista jest zapisana pod adresem e-mail, więc możesz do niej wrócić na każdym urządzeniu.
+                                </p>
+                            </div>
+                            <WishlistEmailForm submitLabel="Pokaż moją listę" />
+                        </SurfaceCard>
+                    )}
+
+                    {isHydrated && email && entries.length === 0 && (
                         <SurfaceCard className="mx-auto max-w-xl text-center sm:p-12">
                             <Heart className="mx-auto size-10 text-muted-foreground" strokeWidth={1.5} aria-hidden="true" />
                             <p className="mt-4 text-lg font-semibold text-foreground">Nie masz jeszcze ulubionych</p>
@@ -143,7 +155,7 @@ export default function WishlistPage() {
                     )}
 
                     {/* ta sama siatka i karty produktów co w kategorii */}
-                    {(products.length > 0 || (entries.length > 0 && state === 'loading')) && (
+                    {email && (products.length > 0 || (entries.length > 0 && state === 'loading')) && (
                         <ProductGrid products={products} viewMode="grid" loading={false} />
                     )}
 
