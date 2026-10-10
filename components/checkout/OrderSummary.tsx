@@ -157,7 +157,9 @@ export default function OrderSummary({
         checkoutTracked.current = true
         trackBeginCheckout(
             items.map((item) => ({
-                id: item.sku,
+                // pid pozycji koszyka to „<ID produktu głównego>_<rozmiar>”
+                id: String(item.pid).split('_')[0],
+                sku: item.sku,
                 name: item.name,
                 price: itemBrutto(item),
                 quantity: item.qty,

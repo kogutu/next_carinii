@@ -2,6 +2,8 @@ import { SuccessPageContent } from '@/components/success/SuccessPageContent'
 import { executeSQL } from '@/lib/db-mysql'
 import { initPayment } from '@/lib/p24/payment_calbacks'
 import { setUrlsP24 } from '@/lib/p24/p24-sdk'
+import { getTrackingProducts } from '@/lib/typesense'
+import { modelSku } from '@/lib/trackingProducts'
 interface SuccessPageProps {
     params: Promise<{
         orderid: string
@@ -39,5 +41,10 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
 
 
 
-    return <SuccessPageContent orderData={orderData} sessionid={sessionId} />
+    // dane produktów (ID produktu głównego, zdjęcia, kategorie) dla zdarzeń analitycznych zakupu
+    const trackingProducts = await getTrackingProducts(
+        (orderData.items ?? []).map((item: { sku: string }) => modelSku(String(item.sku))),
+    )
+
+    return <SuccessPageContent orderData={orderData} sessionid={sessionId} trackingProducts={trackingProducts} />
 }

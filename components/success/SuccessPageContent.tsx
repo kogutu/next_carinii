@@ -3,6 +3,10 @@
 import { ENTER } from '@/components/ui/surface'
 import { useEffect, useState } from 'react'
 import { trackPurchase } from '@/lib/analytics'
+import { readMarketingOptIn } from '@/lib/consentClient'
+import { modelSku, type TrackingProduct } from '@/lib/trackingProducts'
+import { absoluteUrl } from '@/lib/seo'
+import { normalizeMediaUrl } from '@/lib/mediaUrl'
 import Link from 'next/link'
 import { Headset } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -64,7 +68,7 @@ interface OrderData {
   total: number
 }
 
-export function SuccessPageContent({ orderData: initialData, sessionid }: { orderData: OrderData, sessionid: string }) {
+export function SuccessPageContent({ orderData: initialData, sessionid, trackingProducts = [] }: { orderData: OrderData, sessionid: string, trackingProducts?: TrackingProduct[] }) {
   const [orderData, setOrderData] = useState<OrderData>(initialData)
   const [sessionId] = useState(() => sessionid)
 
@@ -74,16 +78,40 @@ export function SuccessPageContent({ orderData: initialData, sessionid }: { orde
   // Zakup liczymy raz na zamówienie, po zgodzie klienta na analitykę/marketing (patrz lib/analytics.ts)
   useEffect(() => {
     if (!initialData.incrementId) return
+    const billing = initialData.billingAddress as { city?: string; country?: string } | undefined
     trackPurchase({
       orderId: String(initialData.incrementId),
       value: Number(initialData.grandTotal ?? initialData.total),
       shipping: Number(initialData.shipping ?? 0),
-      items: initialData.items.map((item) => ({
-        id: item.sku,
-        name: item.name,
-        price: Number(item.price),
-        quantity: Number(item.quantity),
-      })),
+      items: initialData.items.map((item) => {
+        // pozycja zamówienia ma sku z rozmiarem; ID produktu głównego i resztę danych bierzemy z katalogu
+        const catalog = trackingProducts.find((product) => product.sku === modelSku(item.sku))
+        return {
+          id: catalog?.id ?? String(modelSku(item.sku)),
+          sku: modelSku(item.sku),
+          name: item.name,
+          price: Number(item.price),
+          quantity: Number(item.quantity),
+          ...(catalog
+            ? {
+              url: absoluteUrl(catalog.slug),
+              image: catalog.image ? absoluteUrl(normalizeMediaUrl(catalog.image)) : undefined,
+              categoryIds: catalog.categoryIds,
+              categoryNames: catalog.categoryNames,
+            }
+            : {}),
+        }
+      }),
+      customer: initialData.customer?.email
+        ? {
+          email: initialData.customer.email,
+          firstName: initialData.customer.firstName,
+          lastName: initialData.customer.lastName,
+          city: billing?.city,
+          country: billing?.country,
+          subscribed: readMarketingOptIn(initialData.customer.email),
+        }
+        : undefined,
     })
   }, [initialData])
 

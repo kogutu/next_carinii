@@ -42,6 +42,19 @@ import ProductsCarouselProducts from "@/components/hert/products-carouse-product
 import _ from "lodash";
 import { useCheckoutValidationStore } from "@/components/checkout/checkoutValidationStore";
 import { trackAddToCart, trackViewItem } from "@/lib/analytics";
+import { absoluteUrl } from "@/lib/seo";
+import { normalizeMediaUrl } from "@/lib/mediaUrl";
+
+// Wspólne pola produktu w zdarzeniach analitycznych: ID produktu głównego (jak w Magento), adres, zdjęcie, kategorie
+const trackingBase = (product: any) => ({
+    id: String(product.id ?? product.pid),
+    sku: product.sku as string,
+    name: product.name as string,
+    url: absoluteUrl(product.slug),
+    image: product.image_main ? absoluteUrl(normalizeMediaUrl(product.image_main)) : undefined,
+    categoryIds: ((product.cids ?? []) as unknown[]).map(String),
+    categoryNames: ((product.categories ?? []) as unknown[]).map((name) => String(name).trim()),
+})
 
 interface ConfigurableAttribute {
     id: string
@@ -190,7 +203,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
     // Zdarzenie „wyświetlenie produktu” — raz na produkt (po zgodzie klienta, patrz lib/analytics.ts)
     useEffect(() => {
         if (!product?.sku) return
-        trackViewItem({ id: product.sku, name: product.name, price: Number(product.final_price ?? product.price), quantity: 1 })
+        trackViewItem({ ...trackingBase(product), price: Number(product.final_price ?? product.price), quantity: 1 })
     }, [product?.sku])
     const setShowMiniCart = useCartStore(state => state.setShowMiniCart)
     const items = useCartStore(state => state.items)
@@ -454,10 +467,9 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             setPriceForm(INITIAL_FORM)
         }, 2000)
     }
-    // Pozycja do zdarzeń analitycznych (sku, nazwa, cena brutto, rozmiar)
+    // Pozycja do zdarzeń analitycznych (ID produktu głównego, nazwa, cena brutto, rozmiar)
     const analyticsItem = () => ({
-        id: product.sku,
-        name: product.name,
+        ...trackingBase(product),
         price: Number(product.final_price ?? product.price),
         quantity: 1,
         variant: variant?.size ? String(variant.size) : undefined,

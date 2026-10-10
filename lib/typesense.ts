@@ -1,4 +1,5 @@
 import Typesense from "typesense"
+import type { TrackingProduct } from "@/lib/trackingProducts"
 
 // ─── Config ──────────────────────────────────────────────────────────
 
@@ -197,6 +198,53 @@ export async function getProduct(slug: string): Promise<any> {
     } catch (error) {
         console.error("[typesense] getProduct error:", error)
         throw error
+    }
+}
+
+/**
+ * Dane produktów (ID produktu głównego, nazwa, zdjęcie, kategorie) po sku modelu — do zdarzeń analitycznych zamówienia,
+ * bo pozycja zamówienia niesie ID wariantu rozmiarowego, a katalog i piksele używają ID produktu głównego.
+ * Błąd lub brak produktu nie może zepsuć strony potwierdzenia, więc zwracamy to, co się udało pobrać.
+ */
+export async function getTrackingProducts(skus: string[]): Promise<TrackingProduct[]> {
+    const unique = [...new Set(skus.filter(Boolean))]
+    if (unique.length === 0) return []
+
+    try {
+        const params = new URLSearchParams({
+            q: "*",
+            query_by: "sku",
+            filter_by: `sku:=[${unique.map((sku) => "`" + sku + "`").join(",")}]`,
+            include_fields: "id,sku,name,slug,image_main,cids,categories",
+            per_page: String(unique.length),
+        })
+
+        const response = await fetch(buildSearchUrl(params, COLLECTION_PRODUCTS), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-TYPESENSE-API-KEY": process.env.TYPESENSE_API_KEY || "",
+            },
+            next: { revalidate: CACHE_TTL.PRODUCT_DETAIL },
+        })
+        if (!response.ok) return []
+
+        const data = await response.json()
+        return (data.hits ?? []).map((hit: { document: any }) => {
+            const doc = hit.document
+            return {
+                id: String(doc.id),
+                sku: String(doc.sku),
+                name: String(doc.name ?? ""),
+                slug: String(doc.slug ?? ""),
+                image: String(doc.image_main ?? ""),
+                categoryIds: (doc.cids ?? []).map(String),
+                categoryNames: (doc.categories ?? []).map((name: string) => String(name).trim()),
+            } satisfies TrackingProduct
+        })
+    } catch (error) {
+        console.error("[typesense] getTrackingProducts error:", error)
+        return []
     }
 }
 
