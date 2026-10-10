@@ -15,6 +15,7 @@ import { startRedirectPayment } from '@/lib/tpay/browser-api'
 import ExpressWalletButtons, { type ExpressWallet } from './ExpressWalletButtons'
 import ConsentFields from '@/components/consent/ConsentFields'
 import { recordConsent } from '@/lib/consentClient'
+import { trackBeginCheckout } from '@/lib/analytics'
 
 // 'netto' = ceny w koszyku są netto (trzeba dodać VAT do brutto)
 // 'brutto' = ceny w koszyku są brutto (trzeba odjąć VAT do netto)
@@ -148,6 +149,24 @@ export default function OrderSummary({
     const grandTotalBrutto = subtotalBrutto + shippingBrutto
 
     const setGrandTotal = useCartStore((state) => state.setGrandTotal)
+
+    // Zdarzenie „rozpoczęcie zamówienia” — raz na wejście do kasy z niepustym koszykiem
+    const checkoutTracked = useRef(false)
+    useEffect(() => {
+        if (checkoutTracked.current || items.length === 0) return
+        checkoutTracked.current = true
+        trackBeginCheckout(
+            items.map((item) => ({
+                id: item.sku,
+                name: item.name,
+                price: itemBrutto(item),
+                quantity: item.qty,
+                variant: item.variant?.size ? String(item.variant.size) : undefined,
+            })),
+            grandTotalBrutto,
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [items])
 
     // wallet: szybka płatność z koszyka — zamówienie idzie z metodą „Płatność kartą”, a po jego utworzeniu
     // od razu przekierowujemy do Google Pay / Apple Pay w Tpay

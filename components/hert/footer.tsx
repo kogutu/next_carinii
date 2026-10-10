@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { openCookieSettings } from "@/lib/cookieConsent";
 
 const CariniiLogo = () => (
   <svg
@@ -149,6 +150,17 @@ export default function Footer() {
                       </Link>
                     </li>
                   ))}
+                  {section.title === "Prywatność" && (
+                    <li>
+                      <button
+                        type="button"
+                        onClick={openCookieSettings}
+                        className="text-left text-sm text-[#6b6560] transition-colors duration-200 hover:text-[#c9a96e]"
+                      >
+                        Ustawienia cookies
+                      </button>
+                    </li>
+                  )}
                 </ul>
               </div>
             ))}

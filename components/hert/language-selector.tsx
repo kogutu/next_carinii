@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ChevronDown, Check } from 'lucide-react';
+import { translateTo } from '@/lib/googleTranslate';
 
 interface LanguageOption {
     code: string;
@@ -31,6 +32,9 @@ export default function LanguageSelector() {
             ?.split('=')[1];
         if (saved) {
             setLanguage(saved);
+            // klient wrócił z wybranym językiem — dopiero teraz ładujemy tłumacza
+            const googleCode = languages.find(l => l.code === saved)?.googleCode;
+            if (googleCode && googleCode !== 'pl') translateTo(googleCode).catch(() => undefined);
         }
     }, []);
 
@@ -41,16 +45,8 @@ export default function LanguageSelector() {
         // Zapisz w cookie
         document.cookie = `language=${langCode}; path=/; max-age=31536000`;
 
-        // Wyzwól Google Translate
-        setTimeout(() => {
-            if ((window as any).google?.translate?.TranslateElement) {
-                const element = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-                if (element) {
-                    element.value = googleCode;
-                    element.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-            }
-        }, 100);
+        // Wyzwól Google Translate (ładuje się dopiero teraz, na życzenie klienta)
+        translateTo(googleCode).catch(() => undefined);
 
         // Dispatch event dla powiadomienia o zmianie języka
         window.dispatchEvent(

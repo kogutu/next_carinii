@@ -6,7 +6,8 @@ import Header from "@/components/hert/header"
 import Footer from "@/components/hert/footer"
 import CartHydrator from "@/components/cart/CartHydrator"
 import { Providers } from "./providers"
-import Script from "next/script"
+import CookieBanner from "@/components/consent/CookieBanner"
+import Tracking from "@/components/analytics/Tracking"
 import { SITE_URL } from "@/lib/seo"
 import JsonLd from "@/components/seo/JsonLd"
 import { organizationSchema, websiteSchema } from "@/lib/structuredData"
@@ -112,25 +113,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </div>
         </Providers>
-        <Script
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="lazyOnload"
-        />
-        <Script id="google-translate-init" strategy="lazyOnload">
-          {`
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement(
-                {
-                  pageLanguage: 'pl',
-                  includedLanguages: 'pl,en,de',
-                  autoDisplay: false
-                },
-                'google_translate_element'
-              );
-            }
-          `}
-        </Script>
         <RouteListener></RouteListener>
+        <Tracking />
+        <CookieBanner />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
       </body>
     </html>

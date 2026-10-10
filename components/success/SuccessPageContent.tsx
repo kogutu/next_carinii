@@ -1,7 +1,8 @@
 'use client'
 
 import { ENTER } from '@/components/ui/surface'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { trackPurchase } from '@/lib/analytics'
 import Link from 'next/link'
 import { Headset } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -69,6 +70,22 @@ export function SuccessPageContent({ orderData: initialData, sessionid }: { orde
 
   const { customer } = orderData
   const isPaid = Boolean(orderData.pay)
+
+  // Zakup liczymy raz na zamówienie, po zgodzie klienta na analitykę/marketing (patrz lib/analytics.ts)
+  useEffect(() => {
+    if (!initialData.incrementId) return
+    trackPurchase({
+      orderId: String(initialData.incrementId),
+      value: Number(initialData.grandTotal ?? initialData.total),
+      shipping: Number(initialData.shipping ?? 0),
+      items: initialData.items.map((item) => ({
+        id: item.sku,
+        name: item.name,
+        price: Number(item.price),
+        quantity: Number(item.quantity),
+      })),
+    })
+  }, [initialData])
 
   return (
     <main className="bg-background">
