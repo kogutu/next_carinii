@@ -41,6 +41,7 @@ import ReletaedProducts from "./related-products";
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products";
 import _ from "lodash";
 import { useCheckoutValidationStore } from "@/components/checkout/checkoutValidationStore";
+import { trackAddToCart, trackViewItem } from "@/lib/analytics";
 
 interface ConfigurableAttribute {
     id: string
@@ -185,6 +186,12 @@ export default function ProductPage({ product, seemore }: { product: Product, se
     // === ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURN ===
 
     const addItemToCart = useCartStore(state => state.addItemToCart)
+
+    // Zdarzenie „wyświetlenie produktu” — raz na produkt (po zgodzie klienta, patrz lib/analytics.ts)
+    useEffect(() => {
+        if (!product?.sku) return
+        trackViewItem({ id: product.sku, name: product.name, price: Number(product.final_price ?? product.price), quantity: 1 })
+    }, [product?.sku])
     const setShowMiniCart = useCartStore(state => state.setShowMiniCart)
     const items = useCartStore(state => state.items)
 
@@ -447,7 +454,17 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             setPriceForm(INITIAL_FORM)
         }, 2000)
     }
+    // Pozycja do zdarzeń analitycznych (sku, nazwa, cena brutto, rozmiar)
+    const analyticsItem = () => ({
+        id: product.sku,
+        name: product.name,
+        price: Number(product.final_price ?? product.price),
+        quantity: 1,
+        variant: variant?.size ? String(variant.size) : undefined,
+    })
+
     const handleAddToCartPaypo = (): void => {
+        trackAddToCart(analyticsItem());
         setShowMiniCart(true);
         addItemToCart({
             pid: product.pid + "_" + variant?.size,
@@ -505,6 +522,7 @@ export default function ProductPage({ product, seemore }: { product: Product, se
             final_price: product.final_price,
             sku: product.sku,
         })
+        trackAddToCart(analyticsItem());
         setShowMiniCart(true);
         addItemToCart({
             pid: product.pid + "_" + variant?.size,
