@@ -4,7 +4,8 @@ import { normalizeMediaUrl } from '@/lib/mediaUrl'
 import { useState, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Check, Copy } from 'lucide-react';
+import { Check, Copy } from 'lucide-react';
+import WishlistButton from '@/components/wishlist/WishlistButton';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/lib/api';
 
@@ -138,15 +139,10 @@ function ProductItemInner({ product, viewMode, loading }: ProductItemProps) {
                         </span>
                     )}
 
-                    <button
-                        className="absolute top-2.5 right-2.5 text-gray-500 hover:text-red-500 transition-colors z-10"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }}
-                    >
-                        <Heart className="w-5 h-5" strokeWidth={1.5} />
-                    </button>
+                    <WishlistButton
+                        product={{ sku, slug: productSlug, name: product.name }}
+                        className="absolute right-0 top-0 z-10"
+                    />
                 </Link>
 
                 <div className="px-3 pt-2.5 pb-2 flex flex-col gap-1 text-center">
@@ -346,12 +342,10 @@ function ProductItemInner({ product, viewMode, loading }: ProductItemProps) {
                         </button>
                     )}
 
-                    <button
-                        className="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors"
-                        onClick={() => { }}
-                    >
-                        <Heart className="w-5 h-5" strokeWidth={1.5} />
-                    </button>
+                    <WishlistButton
+                        product={{ sku, slug: productSlug, name: product.name }}
+                        className="absolute right-1 top-1"
+                    />
                 </div>
             </div>
         );

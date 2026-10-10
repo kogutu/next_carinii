@@ -5,12 +5,13 @@ import { useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
-import { Loader2, RotateCcw, ShoppingBag, User } from "lucide-react"
+import { Heart, Loader2, RotateCcw, ShoppingBag, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Mój profil", href: "/klient/panel/profil", icon: User },
   { name: "Moje zamówienia", href: "/klient/panel/zamowienia", icon: ShoppingBag },
+  { name: "Ulubione", href: "/ulubione", icon: Heart },
   { name: "Zwroty i reklamacje", href: "/klient/panel/zwroty-reklamacje", icon: RotateCcw },
 ]
 

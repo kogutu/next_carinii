@@ -36,6 +36,13 @@ export function AccountModal() {
     setMounted(true)
   }, [])
 
+  // inne części strony (np. lista ulubionych) mogą poprosić o otwarcie okna logowania
+  useEffect(() => {
+    const openFromOutside = () => setOpen(true)
+    window.addEventListener('open-account-modal', openFromOutside)
+    return () => window.removeEventListener('open-account-modal', openFromOutside)
+  }, [])
+
   if (!mounted) return <button className="flex items-center justify-center hover:bg-hertwhite p-2 rounded-full transition">
     <Image src="/icons/account.svg" alt="Moje konto" width={24} height={24} />
   </button>;
@@ -449,6 +456,7 @@ export function AccountModal() {
         {[
           { href: '/klient/panel/profil', label: 'Mój profil' },
           { href: '/klient/panel/zamowienia', label: 'Moje zamówienia' },
+          { href: '/ulubione', label: 'Ulubione' },
           { href: '/klient/panel/zwroty-reklamacje', label: 'Zwroty i reklamacje' },
         ].map((link) => (
           <li key={link.href}>

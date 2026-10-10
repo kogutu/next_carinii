@@ -1,5 +1,6 @@
 'use client';
 
+import WishlistHeaderLink from '../wishlist/WishlistHeaderLink';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { X, ChevronDown, Menu } from 'lucide-react';
@@ -124,6 +125,9 @@ export default function Header({ currency }: Props) {
 
               {/* Support Modal */}
               <SupportModal />
+
+              {/* Ulubione */}
+              <WishlistHeaderLink />
 
               {/* Mini Cart Drawer */}
               <CartIcon />

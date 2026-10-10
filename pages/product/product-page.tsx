@@ -1,5 +1,6 @@
 'use client'
 
+import WishlistButton from '@/components/wishlist/WishlistButton'
 import PayButton from '@/components/payments/PayButton'
 import { PayPoIcon } from '@/components/payments/BrandIcons'
 import React, { useState, useEffect, useMemo } from "react"
@@ -581,14 +582,10 @@ export default function ProductPage({ product, seemore }: { product: Product, se
 
                                 <div className="share flex gap-2">
                                     <ShareIt url="https://example.com/post/123" title="Świetny artykuł!" />
-                                    <Button
+                                    <WishlistButton
                                         variant="outline"
-                                        size="icon"
-
-                                        aria-label="Udostępnij"
-                                    >
-                                        <Heart className="h-4 w-4" />
-                                    </Button>
+                                        product={{ sku: product.sku, slug: product.slug, name: product.name }}
+                                    />
                                 </div>
                             </div>
 
