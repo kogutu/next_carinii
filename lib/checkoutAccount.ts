@@ -68,6 +68,7 @@ export const mapAccountToCheckout = (
 
     const invoice: InvoiceFormData | null = isCompany
         ? {
+            type: 'company',
             nip: formatNIP(billing.nip ?? ''),
             companyName: billing.companyName ?? '',
             street: billing.street ?? '',

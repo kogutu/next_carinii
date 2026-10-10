@@ -14,10 +14,10 @@ export type InvoiceBuyer = {
 
 export const hasCompanyNip = (invoice: InvoiceFormData): boolean => normalizeNip(invoice.nip).length > 0
 
-// Nabywca na fakturze: firma z NIP (dane z GUS/formularza) albo — bez NIP — osoba prywatna,
+// Nabywca na fakturze: firma z NIP (dane z GUS/formularza) albo osoba prywatna,
 // czyli „nazwa firmy” = imię i nazwisko, a adres = adres dostawy.
 export const resolveInvoiceBuyer = (customer: CustomerFormData, invoice: InvoiceFormData): InvoiceBuyer =>
-    hasCompanyNip(invoice)
+    invoice.type === 'company' && hasCompanyNip(invoice)
         ? {
             nip: invoice.nip,
             companyName: invoice.companyName,

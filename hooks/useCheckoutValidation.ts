@@ -13,7 +13,11 @@ export type CustomerFormData = {
     country: string
 }
 
+// Nabywca faktury: firma (z NIP) albo osoba prywatna (bez NIP, dane z formularza dostawy)
+export type InvoiceBuyerType = 'company' | 'private'
+
 export type InvoiceFormData = {
+    type: InvoiceBuyerType
     nip: string
     companyName: string
     street: string
@@ -63,6 +67,7 @@ export const EMPTY_CUSTOMER: CustomerFormData = {
 }
 
 export const EMPTY_INVOICE: InvoiceFormData = {
+    type: 'company',
     nip: '',
     companyName: '',
     street: '',
@@ -108,8 +113,13 @@ export const validateCustomer = (data: CustomerFormData): FieldErrors => {
 export const validateInvoice = (data: InvoiceFormData): FieldErrors => {
     const errors: FieldErrors = {}
 
-    // NIP jest opcjonalny: bez niego faktura idzie na osobę prywatną (dane z formularza dostawy)
-    if (!data.nip.trim()) return errors
+    // osoba prywatna nie ma NIP — fakturę wystawiamy na dane z formularza dostawy, nic więcej nie sprawdzamy
+    if (data.type === 'private') return errors
+
+    if (!data.nip.trim()) {
+        errors.nip = 'Podaj NIP firmy'
+        return errors
+    }
 
     if (!isValidNip(data.nip)) {
         errors.nip = 'Nieprawidłowy numer NIP'

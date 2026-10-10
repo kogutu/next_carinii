@@ -72,7 +72,12 @@ export default function CheckoutLayout() {
 
     const [customer, setCustomer] = useState<CustomerFormData>({ ...EMPTY_CUSTOMER, ...initialDraft?.customer })
     const [invoiceEnabled, setInvoiceEnabled] = useState(initialDraft?.invoiceEnabled ?? false)
-    const [invoice, setInvoice] = useState<InvoiceFormData>({ ...EMPTY_INVOICE, ...initialDraft?.invoice })
+    const [invoice, setInvoice] = useState<InvoiceFormData>(() => {
+        const saved = { ...EMPTY_INVOICE, ...initialDraft?.invoice }
+        // zapis sprzed wyboru „Firma / Osoba prywatna”: bez NIP faktura szła na osobę prywatną
+        const hadType = Boolean(initialDraft?.invoice && 'type' in initialDraft.invoice)
+        return hadType ? saved : { ...saved, type: saved.nip.trim() ? 'company' : 'private' }
+    })
     const [shippingMethod, setShippingMethod] = useState(initialDraft?.shippingMethod ?? DEFAULT_SHIPPING_METHOD)
     const [inpost, setInpost] = useState<InpostPoint>(initialDraft?.inpost ?? {})
     const [agreeToTerms, setAgreeToTerms] = useState(false)
