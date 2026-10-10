@@ -16,13 +16,26 @@ export type CustomerFormData = {
 // Nabywca faktury: firma (z NIP) albo osoba prywatna (bez NIP, dane z formularza dostawy)
 export type InvoiceBuyerType = 'company' | 'private'
 
+// Dane rozliczeniowe osoby prywatnej (faktura bez NIP): wypełniane z dostawy, ale edytowalne
+export type InvoicePerson = {
+    firstName: string
+    lastName: string
+    street: string
+    postcode: string
+    city: string
+    country: string
+}
+
 export type InvoiceFormData = {
     type: InvoiceBuyerType
+    // firma: NIP + dane z GUS (albo ręcznie)
     nip: string
     companyName: string
     street: string
     postcode: string
     city: string
+    // osoba prywatna: osobny zestaw pól, żeby przełączanie Firma/Osoba nie mieszało adresów
+    person: InvoicePerson
 }
 
 export type InpostPoint = {
@@ -66,6 +79,15 @@ export const EMPTY_CUSTOMER: CustomerFormData = {
     country: DEFAULT_COUNTRY,
 }
 
+export const EMPTY_INVOICE_PERSON: InvoicePerson = {
+    firstName: '',
+    lastName: '',
+    street: '',
+    postcode: '',
+    city: '',
+    country: DEFAULT_COUNTRY,
+}
+
 export const EMPTY_INVOICE: InvoiceFormData = {
     type: 'company',
     nip: '',
@@ -73,6 +95,7 @@ export const EMPTY_INVOICE: InvoiceFormData = {
     street: '',
     postcode: '',
     city: '',
+    person: EMPTY_INVOICE_PERSON,
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -113,18 +136,23 @@ export const validateCustomer = (data: CustomerFormData): FieldErrors => {
 export const validateInvoice = (data: InvoiceFormData): FieldErrors => {
     const errors: FieldErrors = {}
 
-    // osoba prywatna nie ma NIP — fakturę wystawiamy na dane z formularza dostawy, nic więcej nie sprawdzamy
-    if (data.type === 'private') return errors
+    // osoba prywatna nie ma NIP: wymagane są jej dane rozliczeniowe
+    if (data.type === 'private') {
+        const person = data.person
+        if (!person.firstName.trim()) errors.firstName = 'Imię jest wymagane'
+        if (!person.lastName.trim()) errors.lastName = 'Nazwisko jest wymagane'
+        if (!person.street.trim()) errors.street = 'Ulica i numer są wymagane'
 
-    if (!data.nip.trim()) {
-        errors.nip = 'Podaj NIP firmy'
+        const personPostcodeError = validatePostcode(person.postcode, person.country)
+        if (personPostcodeError) errors.postcode = personPostcodeError
+
+        if (!person.city.trim()) errors.city = 'Miasto jest wymagane'
         return errors
     }
 
-    if (!isValidNip(data.nip)) {
-        errors.nip = 'Nieprawidłowy numer NIP'
-        return errors
-    }
+    // formularz firmy jest widoczny od razu, więc zgłaszamy wszystkie braki naraz
+    if (!data.nip.trim()) errors.nip = 'Podaj NIP firmy'
+    else if (!isValidNip(data.nip)) errors.nip = 'Nieprawidłowy numer NIP'
 
     if (!data.companyName.trim()) errors.companyName = 'Nazwa firmy jest wymagana'
     if (!data.street.trim()) errors.street = 'Ulica i numer są wymagane'

@@ -1,5 +1,5 @@
 import { formatNIP, formatPhone } from '@/hooks/useMaskedInput'
-import type { CustomerFormData, InvoiceFormData } from '@/hooks/useCheckoutValidation'
+import { EMPTY_INVOICE, type CustomerFormData, type InvoiceFormData } from '@/hooks/useCheckoutValidation'
 
 // Kształt odpowiedzi /api/user/getuser (getUser.php) w zakresie, którego używa checkout
 type AccountAddress = {
@@ -68,6 +68,7 @@ export const mapAccountToCheckout = (
 
     const invoice: InvoiceFormData | null = isCompany
         ? {
+            ...EMPTY_INVOICE,
             type: 'company',
             nip: formatNIP(billing.nip ?? ''),
             companyName: billing.companyName ?? '',

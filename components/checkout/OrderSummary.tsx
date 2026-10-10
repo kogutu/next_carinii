@@ -168,11 +168,13 @@ export default function OrderSummary({
                 country: countryIso(customer.country),
                 phone: customer.phone
             }
-            // Faktura: adres rozliczeniowy to nabywca (firma z GUS albo — bez NIP — osoba prywatna),
+            // Faktura: adres rozliczeniowy to nabywca (firma z GUS albo osoba prywatna z własnymi danymi rozliczeniowymi),
             // dostawa zostaje na adres osoby
             const billingAddress = buyer
                 ? {
                     ...deliveryAddress,
+                    firstName: buyer.firstName || deliveryAddress.firstName,
+                    lastName: buyer.lastName || deliveryAddress.lastName,
                     company: buyer.companyName,
                     vatId: buyer.nip || undefined,
                     street: buyer.street,

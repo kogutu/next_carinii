@@ -38,7 +38,7 @@ const DRAFT_SAVE_DELAY_MS = 600
 const CARD = cn(SURFACE_CARD, 'p-5 sm:p-8')
 
 const CUSTOMER_FIELD_ORDER = ['firstName', 'lastName', 'email', 'phone', 'street', 'postcode', 'city']
-const INVOICE_FIELD_ORDER = ['nip', 'companyName', 'street', 'postcode', 'city']
+const INVOICE_FIELD_ORDER = ['nip', 'companyName', 'firstName', 'lastName', 'street', 'postcode', 'city']
 
 const findFirstErrorAnchor = (errors: CheckoutErrors): string | null => {
     const customerField = CUSTOMER_FIELD_ORDER.find((field) => errors.customer[field])
