@@ -4,6 +4,8 @@ export interface FacetCount {
     color: string;
     highlighted: string;
     value: string;
+    // przy scalonych wartościach liczbowych: wszystkie oryginalne zapisy (patrz lib/facetValues.ts)
+    values?: string[];
 }
 
 export interface FacetStats {

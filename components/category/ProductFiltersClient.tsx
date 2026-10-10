@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/drawer";
 import type { ProcessedFacet, SortOption } from "./types";
 import { useCategoryZustand } from "@/stores/categoryZustand";
+import { formatFacetNumber, parseFacetNumber } from "@/lib/facetValues";
 
 // ─── Config ──────────────────────────────────────────────────────────
 const DEFAULT_VISIBLE_COUNT = 35;
@@ -527,16 +528,25 @@ function NumericChipFacetSection({
   const hasMore = facet.counts.length > DEFAULT_VISIBLE_COUNT;
 
   const formatValue = (val: string) => {
-    const num = parseFloat(val);
-    if (isNaN(num)) return val;
-    return num % 1 === 0 ? num.toString() : num.toFixed(1);
+    const num = parseFacetNumber(val);
+    return num === null ? val.trim() : formatFacetNumber(num);
   };
+
+  // chip może obejmować kilka zapisów tej samej liczby w danych (values) — zaznaczamy i odznaczamy je razem
+  const isChipSelected = (chip: { value: string; values?: string[] }) =>
+    (chip.values ?? [chip.value]).some((v) => selected.includes(v));
+  const toggleChip = (chip: { value: string; values?: string[] }) => {
+    const all = chip.values ?? [chip.value];
+    const targets = isChipSelected(chip) ? all.filter((v) => selected.includes(v)) : all;
+    targets.forEach((v) => onToggle(v));
+  };
+  const selectedChips = facet.counts.filter(isChipSelected).length;
 
   return (
     <div className="border-b border-gray-100 py-3 last:border-b-0">
       <FacetHeader
         label={facet.label}
-        badgeCount={selected.length}
+        badgeCount={selectedChips}
         open={open}
         onToggle={() => setOpen(!open)}
       />
@@ -544,12 +554,13 @@ function NumericChipFacetSection({
       {open && (
         <div className="mt-2 flex flex-col gap-2">
           <div className="flex flex-wrap gap-1.5">
-            {visibleCounts.map(({ value, count }) => {
-              const isSelected = selected.includes(value);
+            {visibleCounts.map((chip) => {
+              const { value, count } = chip;
+              const isSelected = isChipSelected(chip);
               return (
                 <button
                   key={value}
-                  onClick={() => onToggle(value)}
+                  onClick={() => toggleChip(chip)}
                   className={cn(
                     "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all",
                     isSelected

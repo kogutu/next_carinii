@@ -1,3 +1,4 @@
+import { groupNumericFacetCounts } from "@/lib/facetValues";
 import { Facet } from './types';
 import { ProductFiltersClient } from './ProductFiltersClient';
 import _ from 'lodash';
@@ -97,6 +98,10 @@ export function ProductFilters({ filters_facets, className }: ProductFiltersProp
             };
         }
         if (facet.typ === 'numeric') {
+            // wartości z jednostką (cm): scalamy różne zapisy tej samej liczby w jeden chip
+            if (facet.suffix) {
+                return { ...facet, counts: groupNumericFacetCounts(facet.counts) };
+            }
             return {
                 ...facet,
                 counts: _.sortBy(facet.counts, (c) => parseFloat(c.value)),
