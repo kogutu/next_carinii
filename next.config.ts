@@ -52,12 +52,6 @@ const nextConfig: NextConfig = {
           { key: 'Permissions-Policy', value: 'geolocation=(), microphone=()' },
         ],
       },
-      {
-        // wersja pokazowa na adresie *.vercel.app nie trafia do wyszukiwarek (docelowy adres: sklep.carinii.com.pl)
-        source: '/:path*',
-        has: [{ type: 'host', value: '(?<host>.+\\.vercel\\.app)' }],
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
     ]
   },
   async redirects() {
