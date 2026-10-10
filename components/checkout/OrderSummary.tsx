@@ -437,7 +437,7 @@ export default function OrderSummary({
                         <span className="text-base font-semibold text-foreground">Do zapłaty:</span>
                         <span className="text-right">
                             <span className="block text-2xl font-semibold tracking-tight text-foreground">{formatPLN(grandTotalBrutto)}</span>
-                            <span className="block text-xs text-muted-foreground">brutto, {formatPLN(grandTotalNetto)} netto</span>
+                            <span className="block text-xs text-muted-foreground">{formatPLN(grandTotalNetto)} netto</span>
                         </span>
                     </div>
                 </div>
