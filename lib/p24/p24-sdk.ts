@@ -60,7 +60,6 @@ export function calculateSign(params: Record<string, string | number>): string {
 // ─── Auth Header (Basic Auth: posId:apiKey) ──────────────────────
 function getAuthHeader(): string {
     const credentials = `${P24_CONFIG.posId}:${P24_CONFIG.apiKey}`;
-    console.log(BASE_URL, credentials);
     return `Basic ${Buffer.from(credentials).toString('base64')}`;
 }
 

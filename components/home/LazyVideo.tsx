@@ -12,7 +12,8 @@ type LazyVideoProps = {
     height: number
     // media query, przy którym to wideo ma się w ogóle ładować (drugie, ukryte wideo nie pobiera nic)
     media: string
-    // true = start od razu (wideo nad zgięciem); false = dopiero gdy zbliża się do widoku
+    // true = start zaraz po załadowaniu strony (wideo nad zgięciem; do tego czasu widać plakat);
+    // false = dopiero gdy zbliża się do widoku
     eager?: boolean
     className?: string
 }
@@ -49,7 +50,10 @@ export default function LazyVideo({ mp4, webm, poster, width, height, media, eag
             observer?.disconnect()
             if (!query.matches) return
             if (eager) {
-                start()
+                // plakat jest elementem LCP — wideo (kilka MB) startuje dopiero po załadowaniu strony,
+                // żeby nie konkurować z nim o łącze
+                if (document.readyState === 'complete') start()
+                else window.addEventListener('load', start, { once: true })
                 return
             }
             observer = new IntersectionObserver(
@@ -68,6 +72,7 @@ export default function LazyVideo({ mp4, webm, poster, width, height, media, eag
         query.addEventListener('change', arm)
         return () => {
             observer?.disconnect()
+            window.removeEventListener('load', start)
             query.removeEventListener('change', arm)
         }
     }, [mp4, webm, media, eager])

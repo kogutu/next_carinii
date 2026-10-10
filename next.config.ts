@@ -36,6 +36,11 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   compress: true,
+  // Roboty z tej listy dostają pełny HTML naraz, z metadanymi (title, description, canonical, og:*) w <head>.
+  // Zwykli użytkownicy nadal dostają strumieniowanie z szybkim szkieletem strony. Domyślna lista Next.js
+  // nie zawiera samego Googlebota (wykonuje JS), ale metadane w <head> są pewniejsze niż doczytywane w <body>.
+  htmlLimitedBots:
+    /[\w-]+-Google|Google-[\w-]+|Googlebot|GoogleOther|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|TelegramBot|Pinterest|SkypeUriPreview|Yeti|googleweblight/i,
   async headers() {
     return [
       {

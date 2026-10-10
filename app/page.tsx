@@ -104,6 +104,7 @@ function HeroVideo() {
         <LazyVideo
           mp4={hero.mobileVideoMp4}
           webm={hero.mobileVideoWebm}
+          poster="/home/hero-mob-poster.jpg"
           width={480}
           height={848}
           media="(max-width: 767px)"

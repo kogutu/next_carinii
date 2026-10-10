@@ -317,6 +317,5 @@ const payuConfig: PayUConfig = {
     secondKey: process.env.PAYU_SECOND_KEY || '',
     environment: (process.env.PAYU_ENVIRONMENT as 'sandbox' | 'production') || 'sandbox',
 };
-console.log(payuConfig);
 export const payuClient = new PayUClient(payuConfig);
 export default payuClient;

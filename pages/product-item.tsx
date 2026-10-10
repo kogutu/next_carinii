@@ -13,9 +13,11 @@ interface ProductItemProps {
     product: Product;
     loading: boolean;
     viewMode: 'grid' | 'list';
+    // karta nad zgięciem (LCP): zdjęcie ładuje się od razu i z wysokim priorytetem zamiast leniwie
+    priority?: boolean;
 }
 
-function ProductItemInner({ product, viewMode, loading }: ProductItemProps) {
+function ProductItemInner({ product, viewMode, loading, priority = false }: ProductItemProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
 
@@ -105,23 +107,27 @@ function ProductItemInner({ product, viewMode, loading }: ProductItemProps) {
             >
                 <Link href={`/${productSlug}`} className="block relative flex-1 min-h-0 bg-gray-100">
                     <div className="relative w-full h-full overflow-hidden aspect-[2/3]">
-                        <img
+                        {/* oryginały z Magento to PNG po ~0,5 MB — przez optymalizator dostajemy WebP dopasowany do kolumny */}
+                        <Image
                             src={imageMain}
                             alt={product?.name || ''}
-                            loading="lazy"
-                            decoding="async"
+                            fill
+                            sizes="(min-width: 1024px) 25vw, 50vw"
+                            loading={priority ? 'eager' : 'lazy'}
+                            fetchPriority={priority ? 'high' : 'auto'}
                             className={cn(
-                                'object-cover absolute t-0 w-full h-full brightness-[0.96] transition-all duration-500 ease-in-out',
+                                'object-cover brightness-[0.96] transition-all duration-500 ease-in-out',
                                 isHovered ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
                             )}
                         />
-                        <img
+                        <Image
                             src={imageHover}
                             alt={product?.name || ''}
+                            fill
+                            sizes="(min-width: 1024px) 25vw, 50vw"
                             loading="lazy"
-                            decoding="async"
                             className={cn(
-                                'object-cover absolute w-full h-full brightness-[0.96] transition-all duration-500 ease-in-out',
+                                'object-cover brightness-[0.96] transition-all duration-500 ease-in-out',
                                 isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                             )}
                         />
@@ -356,6 +362,7 @@ const ProductItem = memo(ProductItemInner, (prev, next) => {
         prev.product?.sku === next.product?.sku &&
         prev.viewMode === next.viewMode &&
         prev.loading === next.loading &&
+        prev.priority === next.priority &&
         prev.product?.price === next.product?.price &&
         prev.product?.special_price === next.product?.special_price
     );
