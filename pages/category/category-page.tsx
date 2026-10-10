@@ -130,7 +130,8 @@ export default function CategoryTemplate({
                 {currentCategory?.name || "Kategoria"}
               </h1>
 
-              <p
+              {/* opis z Magento zawiera własne <p> — kontener musi być <div>, bo <p> w <p> psuje hydrację */}
+              <div
                 className="text-gray-500 font-light  text-sm mt-2 mb-6 htmlInsert"
                 dangerouslySetInnerHTML={{ __html: category?.seo?.top }}
               />
@@ -177,7 +178,7 @@ export default function CategoryTemplate({
               />
             )}
 
-            <p
+            <div
               className="htmlInsert text-gray-500 font-light  text-sm mt-12 mb-6"
               dangerouslySetInnerHTML={{ __html: category?.seo?.bottom }}
             />

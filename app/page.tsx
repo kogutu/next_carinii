@@ -94,8 +94,7 @@ function HeroVideo() {
           src={hero.desktopImage}
           alt={hero.desktopAlt}
           loading="eager"
-          // @ts-expect-error fetchPriority nie ma jeszcze w typach React 19
-          fetchpriority="high"
+          fetchPriority="high"
           decoding="async"
         />
       </Link>
