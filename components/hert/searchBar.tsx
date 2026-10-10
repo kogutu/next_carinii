@@ -8,6 +8,7 @@ import {
     Palette, Footprints, Shield, Ruler, Thermometer
 } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import ProductItem from "@/pages/product-item";
 
 
@@ -464,6 +465,7 @@ export default function MegaSearch({ type }: { type: string }) {
     const [searchTime, setSearchTime] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
     const [recentSearches, setRecentSearches] = useState<string[]>([]);
     const [showMobileFacets, setShowMobileFacets] = useState(false);
 
@@ -544,6 +546,12 @@ export default function MegaSearch({ type }: { type: string }) {
             setTimeout(() => inputRef.current?.focus(), 100);
         }
     }, [isOpen]);
+
+    // Wyszukiwarka jest w nagłówku (layout), więc nie odmontowuje się przy przejściu na inną stronę.
+    // Bez tego produkt otwierał się pod nią, a okno wyszukiwania dalej go zasłaniało.
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
 
     useEffect(() => {
         if (debouncedQuery) {
@@ -767,7 +775,17 @@ export default function MegaSearch({ type }: { type: string }) {
 
             {/* Mega Search Modal */}
             {isOpen && (
-                <div className="fixed inset-0 z-[9999]">
+                <div
+                    className="fixed inset-0 z-[9999]"
+                    onClickCapture={(event) => {
+                        // kliknięcie w dowolny link w wynikach (produkt, kategoria, „wszystkie wyniki”) zamyka okno
+                        // od razu — także gdy adres się nie zmienia (np. ponowne szukanie na stronie /search)
+                        if ((event.target as HTMLElement).closest('a[href]')) {
+                            saveToRecent(query);
+                            setIsOpen(false);
+                        }
+                    }}
+                >
                     {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
