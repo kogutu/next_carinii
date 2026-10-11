@@ -1,10 +1,11 @@
 {
   "hero": {
     "href": "/nowosci.html",
-    "desktopImage": "/home/hero-desk.jpg",
+    "desktopImage": "https://sklep.carinii.com.pl/media/home/desk290926/1.webp",
     "desktopAlt": "Nowości Carinii",
-    "mobileVideoMp4": "/home/hero-mob.mp4",
-    "mobileVideoWebm": "/home/hero-mob.webm"
+        "MobileImage": "https://sklep.carinii.com.pl/media/home/mob290926/1.webp",
+    "MobileAlt": "Nowości Carinii"
+
   },
   "sections": [
     {
