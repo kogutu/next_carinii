@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { preconnect } from "react-dom"
 import home from "@/data/home.json"
 import LazyVideo from "@/components/home/LazyVideo"
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products"
@@ -142,7 +143,10 @@ function MagdaVideo({ section }: { section: any }) {
   )
 }
 
+// Banery i wideo na stronie głównej idą z zewnętrznych hostów — wcześniejsze nawiązanie połączenia skraca ich ładowanie
 export default async function HomePage() {
+  preconnect("https://wsrv.nl")
+  preconnect("https://media-02.carinii.com.pl")
   const newestProducts = await getNewestProducts();
 
   return (

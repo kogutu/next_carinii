@@ -11,8 +11,8 @@
       "type": "banner",
       "href": "/nowosci.html",
       "alt": "Nowości",
-      "mob": "/home/b1-mob.webp",
-      "desk": "/home/b1-desk.webp"
+      "mob": "https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob290926/1.webp",
+      "desk": "https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk290926/1.webp"
     },
     {
       "type": "products",
@@ -22,45 +22,45 @@
       "type": "banner",
       "href": "/by-magda-pieczonka.html",
       "alt": "By Magda Pieczonka",
-      "mob": "/home/b2-mob.webp",
-      "desk": "/home/b2-desk.webp"
+      "mob": "https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob290926/2.webp",
+      "desk": "https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk290926/2.webp"
     },
     {
       "type": "banner",
       "href": "/obuwie/kozaki.html",
       "alt": "Kozaki",
-      "mob": "/home/b3-mob.webp",
-      "desk": "/home/b3-desk.webp"
+      "mob": "https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob290926/3.webp",
+      "desk": "https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk290926/3.webp"
     },
     {
       "type": "banner",
       "href": "/obuwie/botki.html",
       "alt": "Botki",
-      "mob": "/home/b4-mob.webp",
-      "desk": "/home/b4-desk.webp"
+      "mob": "https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob290926/4.webp",
+      "desk": "https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk290926/4.webp"
     },
     {
       "type": "banner",
       "href": "/torebki.html",
       "alt": "Torebki",
-      "mob": "/home/b5-mob.webp",
-      "desk": "/home/b5-desk.webp"
+      "mob": "https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob290926/5.webp?t=1",
+      "desk": "https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk290926/5.webp"
     },
     {
       "type": "banner",
       "href": "/obuwie/sneakersy.html",
       "alt": "Sneakersy",
-      "mob": "/home/b6-mob.webp",
-      "desk": "/home/b6-desk.webp"
+      "mob": "https://wsrv.nl/?w=600&q=83&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/mob290926/6.webp?t=1",
+      "desk": "https://wsrv.nl/?w=1900&q=90&output=webp&url=https://media-02.carinii.com.pl/cdn-cgi/image/w=1920,f=auto/media/home/desk290926/6.webp"
     },
     {
       "type": "magda-video",
       "href": "/by-magda-pieczonka.html",
-      "deskMp4": "/home/magda-desk.mp4",
-      "deskWebm": "/home/magda-desk.webm",
-      "mobMp4": "/home/magda-mob.mp4",
-      "mobWebm": "/home/magda-mob.webm",
-      "mobPoster": "/home/magda-mob-poster.jpg"
+      "deskMp4": "https://media-02.carinii.com.pl/media/Desktop%20Magda.mp4",
+      "deskWebm": "https://media-02.carinii.com.pl/media/Desktop%20Magda.webm",
+      "mobMp4": "https://media-02.carinii.com.pl/media/Mobile%20Magda.mp4#t=0.001",
+      "mobWebm": "https://media-02.carinii.com.pl/media/Mobile%20Magda.webm#t=0.001",
+      "mobPoster": "https://media-02.carinii.com.pl/media/home/mob3004/pre.jpg"
     },
     {
       "type": "seo"
