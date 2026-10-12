@@ -43,10 +43,20 @@ const writeSetting = async (name: string, value: string): Promise<void> => {
     await pool.query('INSERT INTO site_settings (name, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = VALUES(value)', [name, value])
 }
 
-/** Konfiguracja promocji prosto z bazy (bez cache). Brak wpisu albo błąd bazy = domyślna, czyli „nic nie pokazuj”. */
+// Odczyt bazy nie może spowalniać renderu strony: po tym czasie bierzemy konfigurację domyślną
+const READ_TIMEOUT_MS = 4000
+
+/** Konfiguracja promocji prosto z bazy (bez cache). Brak wpisu, błąd lub timeout bazy = domyślna, czyli „nic nie pokazuj”. */
 export const loadPromoConfig = async (): Promise<PromoConfig> => {
+    // Podczas budowania strony (Vercel) nie sięgamy do bazy: setki stron statycznych czekałyby na połączenie, a baza
+    // może nie przyjmować połączeń z maszyny budującej. Konfiguracja z panelu pojawia się po pierwszym odświeżeniu (ISR).
+    if (process.env.NEXT_PHASE === 'phase-production-build') return DEFAULT_PROMO_CONFIG
+
     try {
-        const raw = await readSetting(PROMO_KEY)
+        const raw = await Promise.race([
+            readSetting(PROMO_KEY),
+            new Promise<null>((_, reject) => setTimeout(() => reject(new Error('timeout odczytu ustawień')), READ_TIMEOUT_MS)),
+        ])
         return raw ? normalizePromoConfig(JSON.parse(raw), makeId) : DEFAULT_PROMO_CONFIG
     } catch (error) {
         console.error('[site_settings] odczyt promocji nie powiódł się:', error)
