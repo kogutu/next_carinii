@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { isAdminRequest } from '@/lib/adminAuth'
 import { loadPromoConfig, savePromoConfig } from '@/lib/siteSettings'
 
@@ -57,6 +57,8 @@ export async function PUT(request: NextRequest) {
 
     try {
         const config = await savePromoConfig(body)
+        // dane z unstable_cache (tag „promo”) wygasają od razu, a strony statyczne i ISR są renderowane od nowa
+        revalidateTag('promo', { expire: 0 })
         revalidatePath('/', 'layout')
         return NextResponse.json({ success: true, config })
     } catch (error) {

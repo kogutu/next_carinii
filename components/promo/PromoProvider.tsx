@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useMemo, useSyncExternalStore, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import {
     DEFAULT_PROMO_CONFIG,
     campaignIsLive,
@@ -22,7 +22,46 @@ const PromoContext = createContext<PromoContextValue>({ config: DEFAULT_PROMO_CO
 
 type PromoProviderProps = { config: PromoConfig; serverNow: number; children: ReactNode }
 
-export function PromoProvider({ config, serverNow, children }: PromoProviderProps) {
+// Jak często przeglądarka dopytuje o świeżą konfigurację, gdy karta jest otwarta
+const REFRESH_MS = 60_000
+
+export function PromoProvider({ config: serverConfig, serverNow, children }: PromoProviderProps) {
+    // Strona mogła przyjść z cache (statyczna / CDN), więc po załadowaniu dopytujemy o aktualne dane z bazy:
+    // zmiana z panelu /admin jest wtedy widoczna od razu, bez czekania na odświeżenie cache na serwerze
+    const [liveConfig, setLiveConfig] = useState<PromoConfig | null>(null)
+
+    useEffect(() => {
+        let cancelled = false
+
+        const refresh = async () => {
+            try {
+                const response = await fetch('/api/promo', { cache: 'no-store' })
+                if (!response.ok) return
+                const json = await response.json()
+                if (cancelled || !json?.success) return
+                setLiveConfig((previous) => (JSON.stringify(previous ?? serverConfig) === JSON.stringify(json.config) ? previous : json.config))
+            } catch {
+                // brak sieci / błąd: zostajemy przy tym, co przyszło z serwera
+            }
+        }
+
+        const onVisible = () => {
+            if (document.visibilityState === 'visible') refresh()
+        }
+
+        refresh()
+        const timer = setInterval(refresh, REFRESH_MS)
+        document.addEventListener('visibilitychange', onVisible)
+        window.addEventListener('focus', refresh)
+        return () => {
+            cancelled = true
+            clearInterval(timer)
+            document.removeEventListener('visibilitychange', onVisible)
+            window.removeEventListener('focus', refresh)
+        }
+    }, [serverConfig])
+
+    const config = liveConfig ?? serverConfig
     const value = useMemo(() => ({ config, serverNow }), [config, serverNow])
     return <PromoContext.Provider value={value}>{children}</PromoContext.Provider>
 }

@@ -6,7 +6,9 @@ import { DEFAULT_PROMO_CONFIG, normalizePromoConfig, type PromoConfig } from '@/
 // Ustawienia sklepu edytowane w panelu /admin, zapisane w MySQL (tabela site_settings: nazwa -> JSON).
 // Vercel nie ma zapisywalnego dysku, więc plik nie wchodzi w grę, a baza już jest używana przez ulubione i zgody.
 
-const PROMO_KEY = 'promo_config'
+// Nazwa wpisu w bazie. Lokalny serwer deweloperski używa tej samej bazy co produkcja, więc w .env.local ustawiamy
+// PROMO_CONFIG_KEY=promo_config_local — testy w panelu nie pokazują się wtedy na żywym sklepie.
+const PROMO_KEY = process.env.PROMO_CONFIG_KEY || 'promo_config'
 
 let tableReady: Promise<void> | null = null
 
@@ -46,6 +48,28 @@ const writeSetting = async (name: string, value: string): Promise<void> => {
 // Odczyt bazy nie może spowalniać renderu strony: po tym czasie bierzemy konfigurację domyślną
 const READ_TIMEOUT_MS = 4000
 
+const withTimeout = <T,>(promise: Promise<T>): Promise<T> =>
+    Promise.race([promise, new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout odczytu ustawień')), READ_TIMEOUT_MS))])
+
+/** Odczyt z bazy, który zgłasza błąd bazy (zamiast podstawiać wartość domyślną) — dla odświeżania w przeglądarce. */
+export const readPromoConfigStrict = async (): Promise<PromoConfig> => {
+    const raw = await withTimeout(readSetting(PROMO_KEY))
+    return raw ? normalizePromoConfig(JSON.parse(raw), makeId) : DEFAULT_PROMO_CONFIG
+}
+
+// Krótka pamięć w obrębie instancji serwera: chroni bazę przed zapytaniem przy każdym odświeżeniu w przeglądarce,
+// a zapis w panelu czyści ją od razu
+const MEMO_MS = 5000
+let memo: { at: number; config: PromoConfig } | null = null
+
+/** Najświeższa konfiguracja (maks. kilka sekund starsza niż baza). Błąd bazy = wyjątek. */
+export const getFreshPromoConfig = async (): Promise<PromoConfig> => {
+    if (memo && Date.now() - memo.at < MEMO_MS) return memo.config
+    const config = await readPromoConfigStrict()
+    memo = { at: Date.now(), config }
+    return config
+}
+
 /** Konfiguracja promocji prosto z bazy (bez cache). Brak wpisu, błąd lub timeout bazy = domyślna, czyli „nic nie pokazuj”. */
 export const loadPromoConfig = async (): Promise<PromoConfig> => {
     // Podczas budowania strony (Vercel) nie sięgamy do bazy: setki stron statycznych czekałyby na połączenie, a baza
@@ -53,11 +77,7 @@ export const loadPromoConfig = async (): Promise<PromoConfig> => {
     if (process.env.NEXT_PHASE === 'phase-production-build') return DEFAULT_PROMO_CONFIG
 
     try {
-        const raw = await Promise.race([
-            readSetting(PROMO_KEY),
-            new Promise<null>((_, reject) => setTimeout(() => reject(new Error('timeout odczytu ustawień')), READ_TIMEOUT_MS)),
-        ])
-        return raw ? normalizePromoConfig(JSON.parse(raw), makeId) : DEFAULT_PROMO_CONFIG
+        return await readPromoConfigStrict()
     } catch (error) {
         console.error('[site_settings] odczyt promocji nie powiódł się:', error)
         return DEFAULT_PROMO_CONFIG
@@ -72,5 +92,6 @@ export const getPromoConfig = unstable_cache(loadPromoConfig, ['promo-config'], 
 export const savePromoConfig = async (input: unknown): Promise<PromoConfig> => {
     const config = normalizePromoConfig(input, makeId)
     await writeSetting(PROMO_KEY, JSON.stringify(config))
+    memo = { at: Date.now(), config }
     return config
 }
