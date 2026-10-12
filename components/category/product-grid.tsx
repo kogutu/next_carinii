@@ -74,7 +74,8 @@ function LazyProductSlot({
     );
   }
 
-  return <div ref={ref}>{children}</div>;
+  // w siatce karta wypełnia całą wysokość wiersza, dzięki czemu plakietki z kodem są równo na dole każdego rzędu
+  return <div ref={ref} className={viewMode === 'grid' ? 'h-full' : undefined}>{children}</div>;
 }
 
 export function ProductGrid({ products, viewMode, loading }: ProductGridProps) {

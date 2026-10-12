@@ -81,11 +81,11 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
     if (viewMode === 'grid')
         return (
             <div
-                className="flex flex-col overflow-hidden group relative"
+                className="flex flex-col h-full overflow-hidden group relative"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <Link href={`/${productSlug}`} className="block relative flex-1 min-h-0 bg-gray-100">
+                <Link href={`/${productSlug}`} className="block relative shrink-0 bg-gray-100">
                     <div className="relative w-full h-full overflow-hidden aspect-[2/3]">
                         {/* oryginały z Magento to PNG po ~0,5 MB — przez optymalizator dostajemy WebP dopasowany do kolumny */}
                         <Image
@@ -131,7 +131,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                     />
                 </Link>
 
-                <div className="px-3 pt-2.5 pb-2 flex flex-col gap-1 text-center">
+                <div className="px-3 pt-2.5 pb-2 flex flex-1 flex-col gap-1 text-center">
                     {allSizes.length > 0 && (
                         <div className="relative flex gap-[2px] flex-wrap justify-center">
                             {allSizes.map(({ size, qty }) => (
@@ -158,7 +158,8 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                         </div>
                     )}
 
-                    <Link href={`/${productSlug}`}>
+                    {/* mt-auto: tytuł, SKU i cena trzymają się dołu karty, więc kafelek bez rozmiarów (torebka) wyrównuje się do sąsiadów */}
+                    <Link href={`/${productSlug}`} className="mt-auto">
                         <h3 className="font-semibold cfont uppercase mt-4 truncate text-[14px] text-gray-900 line-clamp-2 leading-snug mt-0.5">
                             {shortName}
                         </h3>
