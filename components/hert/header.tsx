@@ -1,40 +1,45 @@
-'use client';
+"use client";
 
-import WishlistHeaderLink from '../wishlist/WishlistHeaderLink';
-import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
-import { X, ChevronDown, Menu } from 'lucide-react';
+import WishlistHeaderLink from "../wishlist/WishlistHeaderLink";
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { X, ChevronDown, Menu } from "lucide-react";
 
-import SearchBar from './searchBar';
-import { AccountModal } from './items_modal/AccountModal';
-import { SupportModal } from './items_modal/SupportModal';
-import { CartDrawerContent } from './items_modal/CartDrawer';
-import { CartIcon } from './items_modal/CartIcon';
-import { CurrencySelector } from './items_modal/CurrencySelector';
-import { AccountIcon } from './items_modal/AccountIcon';
-import Link from 'next/link';
-import LanguageSelector from './language-selector';
-import CariniiMegaMenu from './Menu';
-import TopHeader from './topHeader';
+import SearchBar from "./searchBar";
+import { AccountModal } from "./items_modal/AccountModal";
+import { SupportModal } from "./items_modal/SupportModal";
+import { CartDrawerContent } from "./items_modal/CartDrawer";
+import { CartIcon } from "./items_modal/CartIcon";
+import { CurrencySelector } from "./items_modal/CurrencySelector";
+import { AccountIcon } from "./items_modal/AccountIcon";
+import Link from "next/link";
+import LanguageSelector from "./language-selector";
+import CariniiMegaMenu from "./Menu";
+import TopHeader from "./topHeader";
 type Props = {
-  currency?: string
-}
+  currency?: string;
+};
 export default function Header({ currency }: Props) {
-
   const [isOpen, setIsOpen] = useState(false);
-  const [menuDirection, setMenuDirection] = useState<'left' | 'right'>('right');
+  const [menuDirection, setMenuDirection] = useState<"left" | "right">("right");
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const categories = [
-    { name: 'Piekarnictwo', submenu: ['Piekarnik', 'Mikser', 'Akcesoria'] },
-    { name: 'Cukiernictwo', submenu: ['Mikser do ciasta', 'Glazownica', 'Formy'] },
-    { name: 'Gastronomia', submenu: ['Kuchenka', 'Frytkownica', 'Blacha'] },
-    { name: 'Higiena', submenu: ['Fartuchy', 'Czapki', 'Rękawiczki'] },
-    { name: 'Przemysł spożywczy', submenu: ['Maszyny', 'Transportery'] },
-    { name: 'Wyposażenie obiektu', submenu: ['Mebel', 'Oświetlenie', 'Dekoracje'] },
-    { name: 'Używane', submenu: ['Piekarniki', 'Lodówki'] },
-    { name: 'Promocje %', submenu: [], className: 'text-orange-600' },
-    { name: 'Serwis', submenu: [] },
+    { name: "Piekarnictwo", submenu: ["Piekarnik", "Mikser", "Akcesoria"] },
+    {
+      name: "Cukiernictwo",
+      submenu: ["Mikser do ciasta", "Glazownica", "Formy"],
+    },
+    { name: "Gastronomia", submenu: ["Kuchenka", "Frytkownica", "Blacha"] },
+    { name: "Higiena", submenu: ["Fartuchy", "Czapki", "Rękawiczki"] },
+    { name: "Przemysł spożywczy", submenu: ["Maszyny", "Transportery"] },
+    {
+      name: "Wyposażenie obiektu",
+      submenu: ["Mebel", "Oświetlenie", "Dekoracje"],
+    },
+    { name: "Używane", submenu: ["Piekarniki", "Lodówki"] },
+    { name: "Promocje %", submenu: [], className: "text-orange-600" },
+    { name: "Serwis", submenu: [] },
   ];
   const Logo = ({ width = 160, height = 40, color = "#441C49" }) => {
     return (
@@ -68,8 +73,6 @@ export default function Header({ currency }: Props) {
   };
   useEffect(() => {
     // const checkMenuPosition = () => {
-
-
     //   // if (menuRef.current) {
     //   //   const rect = menuRef.current.getBoundingClientRect();
     //   //   if (rect.right + 200 > window.innerWidth) {
@@ -79,20 +82,19 @@ export default function Header({ currency }: Props) {
     //   //   }
     //   // }
     // };
-
     // checkMenuPosition();
   }, [setIsMenuOpen]);
 
   const handeMobileMenuToggle = () => {
-    setIsMenuOpen(false)
-  }
+    setIsMenuOpen(false);
+  };
 
   return (
-    <>      <TopHeader />
-      <header className="w-ful sticky top-0  bg-white relative z-[30]">
+    <>
+      {" "}
+      <TopHeader />
+      <header className="w-ful sticky top-0  bg-white relative z-[90]">
         {/* Top bar */}
-
-
 
         {/* Main header */}
         <div className="bg-white  py-5 sticky top-0 z-50 ">
@@ -108,18 +110,16 @@ export default function Header({ currency }: Props) {
               </button>
               <div className="text-3xl font-black text-hert tracking-tight">
                 <Link href="/">
-                  <Logo color="#00000" width={350} height={175} ></Logo>
+                  <Logo color="#00000" width={350} height={175}></Logo>
                 </Link>
               </div>
             </div>
 
             {/* Search bar - Hidden on mobile */}
-            <SearchBar type={'desktop'} />
+            <SearchBar type={"desktop"} />
 
             {/* Right section - Icons and account */}
             <div className="flex items-center space-x-1">
-
-
               {/* Account Modal */}
               <AccountModal />
 
@@ -134,15 +134,15 @@ export default function Header({ currency }: Props) {
               <CartDrawerContent />
             </div>
           </div>
-          <SearchBar type={'mobile'} />
-
+          <SearchBar type={"mobile"} />
         </div>
 
-
-        <CariniiMegaMenu isMobileMenuOpen={isMenuOpen} onMobileMenuToggle={() => handeMobileMenuToggle()}></CariniiMegaMenu>
+        <CariniiMegaMenu
+          isMobileMenuOpen={isMenuOpen}
+          onMobileMenuToggle={() => handeMobileMenuToggle()}
+        ></CariniiMegaMenu>
 
         {/* <HMenu isMobileMenuOpen={isMenuOpen} onMobileMenuToggle={setIsMenuOpen} /> */}
-
       </header>
     </>
   );
