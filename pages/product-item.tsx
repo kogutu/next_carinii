@@ -4,11 +4,11 @@ import { normalizeMediaUrl } from '@/lib/mediaUrl'
 import { useState, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Check, Copy } from 'lucide-react';
 import WishlistButton from '@/components/wishlist/WishlistButton';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/lib/api';
-import { getPromo, usePromoActive } from '@/lib/promo';
+import { CardBadgeView } from '@/components/promo/PromoViews';
+import { useAnyCardCampaign, useProductCampaigns } from '@/components/promo/PromoProvider';
 
 interface ProductItemProps {
     product: Product;
@@ -20,9 +20,9 @@ interface ProductItemProps {
 
 function ProductItemInner({ product, viewMode, loading, priority = false }: ProductItemProps) {
     const [isHovered, setIsHovered] = useState(false);
-    const [codeCopied, setCodeCopied] = useState(false);
-    // plakietka „-X% z kodem” tylko w trakcie kampanii (data/promo.json)
-    const promoActive = usePromoActive();
+    // plakietki „-X% z kodem” z kampanii ustawionych w panelu /admin (zakładka Promo)
+    const { card: cardCampaigns } = useProductCampaigns(product);
+    const anyCardCampaign = useAnyCardCampaign();
 
     if (loading) {
         return (
@@ -76,29 +76,6 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
         }))
         .sort((a, b) => Number(a.size) - Number(b.size));
 
-    const promoCode = product?.promo_code || getPromo().code;
-    const promoPercent = promoActive && product?.save_percent && product.save_percent < 100
-        ? (100 - product.save_percent)
-        : null;
-
-    const handleCopyCode = async (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        try {
-            await navigator.clipboard.writeText(promoCode);
-            setCodeCopied(true);
-            setTimeout(() => setCodeCopied(false), 2000);
-        } catch {
-            const textarea = document.createElement('textarea');
-            textarea.value = promoCode;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            setCodeCopied(true);
-            setTimeout(() => setCodeCopied(false), 2000);
-        }
-    };
 
     /* ======================== GRID ======================== */
     if (viewMode === 'grid')
@@ -211,28 +188,15 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                     )}
                 </div>
 
-                {promoPercent ? (
-                    <button
-                        onClick={handleCopyCode}
-                        className="bg-black hover:bg-gray-800 text-white text-center py-2 px-2 cursor-pointer transition-colors flex items-center justify-center gap-2"
-                    >
-                        {codeCopied ? (
-                            <>
-                                <Check className="w-3.5 h-3.5" />
-                                <span className="text-xs font-medium">Skopiowano kod!</span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="text-sm font-bold">-{promoPercent}%</span>
-                                <span className="text-xs">
-                                    z kodem: <strong>{promoCode}</strong>
-                                </span>
-                                <Copy className="w-3 h-3 opacity-60" />
-                            </>
-                        )}
-                    </button>
+                {cardCampaigns.length > 0 ? (
+                    <div className="flex flex-col gap-1">
+                        {cardCampaigns.map((campaign) => (
+                            <CardBadgeView key={campaign.id} badge={campaign.card} code={campaign.code} percent={campaign.percent} />
+                        ))}
+                    </div>
                 ) : (
-                    <div className="text-center py-2 px-2 cursor-pointer transition-colors flex items-center justify-center gap-2">&nbsp;</div>
+                    // karta bez plakietki zostawia miejsce, gdy sąsiednie je mają — siatka się wyrównuje
+                    anyCardCampaign && <div className="py-2 px-2">&nbsp;<br />&nbsp;</div>
                 )}
             </div>
         );
@@ -329,26 +293,12 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                         </div>
                     )}
 
-                    {promoPercent && (
-                        <button
-                            onClick={handleCopyCode}
-                            className="mt-2 bg-black hover:bg-gray-800 text-white text-center py-1.5 px-3 cursor-pointer transition-colors inline-flex items-center gap-2 self-start rounded-sm"
-                        >
-                            {codeCopied ? (
-                                <>
-                                    <Check className="w-3 h-3" />
-                                    <span className="text-[11px] font-medium">Skopiowano!</span>
-                                </>
-                            ) : (
-                                <>
-                                    <span className="text-xs font-bold">-{promoPercent}%</span>
-                                    <span className="text-[11px]">
-                                        z kodem: <strong>{promoCode}</strong>
-                                    </span>
-                                    <Copy className="w-3 h-3 opacity-60" />
-                                </>
-                            )}
-                        </button>
+                    {cardCampaigns.length > 0 && (
+                        <div className="mt-2 flex flex-col gap-1 self-start">
+                            {cardCampaigns.map((campaign) => (
+                                <CardBadgeView key={campaign.id} badge={campaign.card} code={campaign.code} percent={campaign.percent} className="w-auto px-3 py-1.5" />
+                            ))}
+                        </div>
                     )}
 
                     <WishlistButton

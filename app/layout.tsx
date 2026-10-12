@@ -7,6 +7,8 @@ import Footer from "@/components/hert/footer"
 import CartHydrator from "@/components/cart/CartHydrator"
 import { Providers } from "./providers"
 import CookieBanner from "@/components/consent/CookieBanner"
+import { PromoProvider } from "@/components/promo/PromoProvider"
+import { getPromoConfig } from "@/lib/siteSettings"
 import Tracking from "@/components/analytics/Tracking"
 import { SITE_URL } from "@/lib/seo"
 import JsonLd from "@/components/seo/JsonLd"
@@ -97,12 +99,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // konfiguracja promocji z panelu /admin (cache'owana w bazie na minutę)
+  const promo = await getPromoConfig()
+
   return (
     <html lang="pl">
 
       <body className={`font-sans antialiased`}>
         <Providers>
+          <PromoProvider config={promo} serverNow={Date.now()}>
           <CartHydrator />
           <div className="min-h-screen flex flex-col bg-white">
             <div id="google_translate_element" className="hidden"></div>
@@ -112,6 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
             <Footer />
           </div>
+          </PromoProvider>
         </Providers>
         <RouteListener></RouteListener>
         <Tracking />

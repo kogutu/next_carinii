@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { COOKIE_SETTINGS_EVENT, readCookieChoice, saveCookieChoice, type CookieChoice } from '@/lib/cookieConsent'
@@ -74,6 +75,8 @@ function CategoryRow({ id, title, description, checked, disabled, onChange }: Ca
 export default function CookieBanner() {
     // null = jeszcze nie sprawdzono (SSR), false = wybór już jest, true = baner widoczny
     const [bannerVisible, setBannerVisible] = useState<boolean | null>(null)
+    // w panelu /admin baner by zasłaniał pasek zapisu (panel nie zbiera danych klientek)
+    const inAdmin = usePathname()?.startsWith('/admin') ?? false
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [draft, setDraft] = useState<CookieChoice>(REJECT_OPTIONAL)
 
@@ -96,7 +99,7 @@ export default function CookieBanner() {
 
     return (
         <>
-            {bannerVisible && !settingsOpen && (
+            {bannerVisible && !settingsOpen && !inAdmin && (
                 <section
                     role="region"
                     aria-label="Zgoda na pliki cookies"
