@@ -20,7 +20,7 @@ export default function PromoTab({ onUnauthorized }: { onUnauthorized: () => voi
     const [saved, setSaved] = useState<string>('')
     const [categories, setCategories] = useState<PickerCategory[]>([])
     const [saving, setSaving] = useState(false)
-    const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
+    const [message, setMessage] = useState<{ type: 'ok' | 'warn' | 'error'; text: string } | null>(null)
 
     const serialized = useMemo(() => JSON.stringify(config), [config])
     const dirty = config !== null && serialized !== saved
@@ -84,7 +84,13 @@ export default function PromoTab({ onUnauthorized }: { onUnauthorized: () => voi
             }
             setConfig(json.config)
             setSaved(JSON.stringify(json.config))
-            setMessage({ type: 'ok', text: 'Zapisano. Zmiany są widoczne na stronie w ciągu minuty (odśwież stronę sklepu).' })
+            // nowa kampania jest domyślnie wyłączona — przypominamy, że wtedy nie ma jej na stronie
+            const off = (json.config.campaigns as Campaign[]).filter((campaign) => !campaign.enabled).map((campaign) => `„${campaign.name}”`)
+            setMessage(
+                off.length > 0
+                    ? { type: 'warn', text: `Zapisano, ale ${off.join(', ')} ${off.length > 1 ? 'są wyłączone' : 'jest wyłączona'} i nie ${off.length > 1 ? 'będą pokazywane' : 'będzie pokazywana'} na stronie. Włącz je przełącznikiem „Kampania włączona”.` }
+                    : { type: 'ok', text: 'Zapisano. Zmiany są widoczne na stronie w ciągu kilku sekund.' },
+            )
         } catch {
             setMessage({ type: 'error', text: 'Brak połączenia z serwerem. Spróbuj ponownie.' })
         } finally {
@@ -205,7 +211,7 @@ export default function PromoTab({ onUnauthorized }: { onUnauthorized: () => voi
             {/* pasek zapisu przyklejony do dołu */}
             <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
                 <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
-                    <p role="status" className={cn('text-sm', message?.type === 'error' ? 'text-destructive' : message?.type === 'ok' ? 'text-success' : 'text-muted-foreground')}>
+                    <p role="status" className={cn('text-sm', message?.type === 'error' ? 'text-destructive' : message?.type === 'warn' ? 'text-warning' : message?.type === 'ok' ? 'text-success' : 'text-muted-foreground')}>
                         {message?.text ?? (dirty ? 'Masz niezapisane zmiany.' : 'Wszystkie zmiany zapisane.')}
                     </p>
                     <button type="button" onClick={save} disabled={saving || !dirty} className={BUTTON_PRIMARY}>
