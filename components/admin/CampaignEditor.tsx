@@ -43,12 +43,25 @@ export default function CampaignEditor({ campaign, categories, index, total, onC
     return (
         <div className="rounded-xl border border-border bg-background">
             <div className="flex flex-wrap items-center gap-3 p-4">
-                <button type="button" onClick={() => setOpen(!open)} className="flex min-w-0 flex-1 items-center gap-3 text-left" aria-expanded={open}>
+                {/* przełącznik widoczny bez rozwijania: wyłączona kampania nie pokazuje się nigdzie na stronie */}
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={campaign.enabled}
+                    aria-label={`Kampania „${campaign.name}” włączona`}
+                    onClick={() => update({ enabled: !campaign.enabled })}
+                    className={cn(
+                        'inline-flex h-8 shrink-0 items-center gap-2 rounded-full border pl-1 pr-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                        campaign.enabled ? 'border-success/40 bg-success/15 text-success' : 'border-border bg-muted text-muted-foreground hover:bg-muted/70',
+                    )}
+                >
                     <span
-                        className={cn('inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-xs font-medium', campaign.enabled ? 'bg-success/15 text-success' : 'bg-muted text-muted-foreground')}
-                    >
-                        {campaign.enabled ? 'włączona' : 'wyłączona'}
-                    </span>
+                        aria-hidden="true"
+                        className={cn('size-6 rounded-full transition-colors', campaign.enabled ? 'bg-success' : 'bg-background ring-1 ring-border')}
+                    />
+                    {campaign.enabled ? 'włączona' : 'wyłączona — kliknij, aby włączyć'}
+                </button>
+                <button type="button" onClick={() => setOpen(!open)} className="flex min-w-0 flex-1 items-center gap-3 text-left" aria-expanded={open}>
                     <span className="min-w-0">
                         <span className="block truncate text-sm font-semibold text-foreground">
                             {campaign.name} <span className="font-mono text-muted-foreground">({campaign.code}, -{campaign.percent}%)</span>
