@@ -4,20 +4,23 @@ import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { ImageIcon, Loader2, Plus, RotateCcw } from "lucide-react"
-import { STATUS_LABELS, type ReturnType } from "@/components/returns/returnOptions"
+import { RECORD_TYPE_LABELS, STATUS_LABELS, type RecordType } from "@/components/returns/returnOptions"
+import WithdrawalButton from "@/components/withdrawal/WithdrawalButton"
 import { ENTER, EYEBROW, SurfaceCard } from "@/components/ui/surface"
 import { cn } from "@/lib/utils"
 
 type ReturnEntry = {
   ref: string
   orderNumber: string
-  type: ReturnType
+  type: RecordType
   status: string
   reason: string
   resolution: string
   items: { name: string; size: string; qty: number }[]
   photoCount: number
   createdAt: string
+  // chwila złożenia oświadczenia o odstąpieniu (ISO, UTC); dla zwrotów i reklamacji null
+  withdrawnAt?: string | null
 }
 
 const STATUS_TONES: Record<string, string> = {
@@ -62,10 +65,13 @@ export default function ReturnsPage() {
           <p className={EYEBROW}>Panel klienta</p>
           <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Zwroty i reklamacje</h1>
         </div>
-        <Link href="/zwrot-reklamacja" className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition-[transform,background-color] duration-150 hover:bg-menuhover active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none motion-reduce:active:scale-100">
-          <Plus className="size-4" aria-hidden="true" />
-          Nowe zgłoszenie
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <WithdrawalButton />
+          <Link href="/zwrot-reklamacja" className="surface-card inline-flex h-11 items-center gap-2 rounded-xl bg-background px-5 text-sm font-semibold text-foreground transition-[transform,background-color] duration-150 hover:bg-muted active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transition-none motion-reduce:active:scale-100">
+            <Plus className="size-4" aria-hidden="true" />
+            Zgłoś reklamację
+          </Link>
+        </div>
       </header>
 
       {state === "loading" && (
@@ -85,7 +91,7 @@ export default function ReturnsPage() {
         <SurfaceCard className="text-center sm:p-12">
           <RotateCcw className="mx-auto size-10 text-muted-foreground" aria-hidden="true" />
           <p className="mt-4 text-lg font-semibold text-foreground">Nie masz jeszcze zgłoszeń</p>
-          <p className="mt-1 text-sm text-muted-foreground">Zwrot lub reklamację zgłosisz w kilka minut, także ze zdjęciami.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Odstąpienie od umowy złożysz w dwóch krokach, a reklamację zgłosisz w kilka minut, także ze zdjęciami.</p>
         </SurfaceCard>
       )}
 
@@ -98,7 +104,7 @@ export default function ReturnsPage() {
                   <div>
                     <p className="text-lg font-semibold tabular-nums tracking-tight text-foreground">{entry.ref}</p>
                     <p className="text-sm text-muted-foreground">
-                      {entry.type === "zwrot" ? "Zwrot" : "Reklamacja"} · zamówienie{" "}
+                      {RECORD_TYPE_LABELS[entry.type] ?? "Zgłoszenie"} · zamówienie{" "}
                       <Link href={`/success/oid/${encodeURIComponent(entry.orderNumber)}`} className="text-foreground underline underline-offset-4">{entry.orderNumber}</Link>
                       {" · "}{formatDate(entry.createdAt)}
                     </p>

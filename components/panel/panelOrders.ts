@@ -42,6 +42,11 @@ export const statusTone = (status: string): StatusTone => STATUS_TONES[status] ?
 // Zwrot lub reklamację można zgłosić, gdy zamówienie dotarło do klienta (ta sama reguła co w returns/_lib.php)
 export const canReportReturn = (status: string): boolean => status === 'complete' || status === 'wyslano'
 
+// Odstąpienie od umowy (lib/withdrawal.ts) jest dostępne od złożenia zamówienia: blokujemy tylko anulowane i rozliczone zwrotem
+// (ta sama reguła co returnsWithdrawalEligibility w docs/php/returns/_lib.php)
+export const canWithdraw = (order: Pick<PanelOrder, 'status' | 'state'>): boolean =>
+    order.state !== 'canceled' && order.state !== 'closed' && order.status !== 'canceled' && order.status !== 'zwrot_pieniedzy'
+
 // Zamówienie czeka na płatność: klient może wrócić na stronę zamówienia i zapłacić
 export const isAwaitingPayment = (status: string): boolean => status === 'pending' || status === 'pending_payment'
 

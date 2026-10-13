@@ -43,7 +43,8 @@ const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 const HELP_LINKS = [
   { href: '/dostawa', title: 'Dostawa', description: 'Sposoby i koszty wysyłki', icon: Truck },
   { href: '/sposoby-platnosci', title: 'Płatności', description: 'Dostępne metody płatności', icon: CreditCard },
-  { href: '/zwrot-reklamacja', title: 'Zgłoś zwrot lub reklamację', description: 'Formularz online, ze zdjęciami', icon: RotateCcw },
+  { href: '/odstapienie-od-umowy', title: 'Odstąp od umowy tutaj', description: 'Odstąpienie online w dwóch krokach, bez konta', icon: RotateCcw },
+  { href: '/zwrot-reklamacja', title: 'Zgłoś reklamację', description: 'Formularz online, ze zdjęciami', icon: RotateCcw },
   { href: '/zwroty-reklamacje', title: 'Zasady zwrotów i reklamacji', description: 'Jak odesłać lub zareklamować produkt', icon: ScrollText },
   { href: '/regulamin', title: 'Regulamin', description: 'Zasady zakupów w sklepie', icon: ScrollText },
 ]

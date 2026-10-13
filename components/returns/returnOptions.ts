@@ -2,6 +2,15 @@
 
 export type ReturnType = 'zwrot' | 'reklamacja'
 
+// Rodzaj wpisu na liście zgłoszeń klienta: dochodzi „odstąpienie” (funkcja odstąpienia od umowy, lib/withdrawal.ts)
+export type RecordType = ReturnType | 'odstapienie'
+
+export const RECORD_TYPE_LABELS: Record<RecordType, string> = {
+    zwrot: 'Zwrot',
+    reklamacja: 'Reklamacja',
+    odstapienie: 'Odstąpienie od umowy',
+}
+
 type Option = { value: string; label: string }
 
 export const REASONS: Record<ReturnType, Option[]> = {
@@ -59,8 +68,11 @@ export type ReturnOrder = {
     daysSinceReceived: number
     returnWindowDays: number
     withinReturnWindow: boolean
+    // płatność za pobraniem: przy odstąpieniu można podać konto do zwrotu
+    isCod?: boolean
+    returnAddress?: string
     items: ReturnOrderItem[]
-    existing: { ref: string; type: ReturnType; status: string; createdAt: string; itemCount: number }[]
+    existing: { ref: string; type: RecordType; status: string; createdAt: string; itemCount: number }[]
 }
 
 export const STATUS_LABELS: Record<string, string> = {

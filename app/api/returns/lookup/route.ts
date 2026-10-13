@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
         const result = await customerApi('returns/lookup.php', {
             orderNumber,
             email,
+            // „withdrawal” = funkcja odstąpienia od umowy (dostępna od złożenia zamówienia); reszta wartości jest ignorowana
+            purpose: body.purpose === 'withdrawal' ? 'withdrawal' : '',
             customerId: caller.customerId,
             clientIp: caller.clientIp,
         })

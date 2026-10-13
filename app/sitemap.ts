@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/seo'
+import { WITHDRAW_PATH } from '@/lib/withdrawal'
 
 // Mapa strony z listy adresów sklepu (ta sama, z której korzysta routing): kategorie, produkty i strony informacyjne.
 const SLUGS_URL = 'https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=3'
@@ -27,9 +28,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: PRIORITY.home,
     }
 
+    // funkcja odstąpienia od umowy (strona Next.js, nie CMS Magento)
+    const withdrawal: MetadataRoute.Sitemap[number] = { url: `${SITE_URL}${WITHDRAW_PATH}`, changeFrequency: 'yearly', priority: 0.3 }
+
     try {
         const response = await fetch(SLUGS_URL, { next: { revalidate: 3600 } })
-        if (!response.ok) return [home]
+        if (!response.ok) return [home, withdrawal]
 
         const entries: SlugEntry[] = await response.json()
         const pages = entries
@@ -41,9 +45,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 priority: PRIORITY[entry.type],
             }))
 
-        return [home, ...pages]
+        return [home, withdrawal, ...pages]
     } catch (error) {
         console.error('[sitemap]', error)
-        return [home]
+        return [home, withdrawal]
     }
 }

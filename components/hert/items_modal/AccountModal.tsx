@@ -478,6 +478,7 @@ export function AccountModal() {
           { href: '/klient/panel/zamowienia', label: 'Moje zamówienia' },
           { href: '/ulubione', label: 'Ulubione' },
           { href: '/klient/panel/zwroty-reklamacje', label: 'Zwroty i reklamacje' },
+          { href: '/odstapienie-od-umowy', label: 'Odstąp od umowy tutaj' },
         ].map((link) => (
           <li key={link.href}>
             <a href={link.href} className="flex min-h-12 items-center px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">

@@ -37,8 +37,11 @@ foreach (returnsDb()->fetchAll(
     );
 }
 
-$eligibility = returnsEligibility($order);
+// purpose=withdrawal: funkcja odstąpienia od umowy (dostępna od złożenia zamówienia); bez tego — formularz zwrotów/reklamacji
+$withdrawal = isset($input['purpose']) && $input['purpose'] === 'withdrawal';
+$eligibility = $withdrawal ? returnsWithdrawalEligibility($order) : returnsEligibility($order);
 $days = returnsDaysSinceReceived($order);
+$withinWindow = $withdrawal ? !returnsWithdrawalOutOfWindow($order) : $days <= RETURNS_WINDOW_DAYS;
 
 returnsRespond(200, array('success' => true, 'data' => array(
     'orderNumber' => $order->getIncrementId(),
@@ -49,7 +52,9 @@ returnsRespond(200, array('success' => true, 'data' => array(
     'ineligibleReason' => $eligibility['reason'],
     'daysSinceReceived' => $days,
     'returnWindowDays' => RETURNS_WINDOW_DAYS,
-    'withinReturnWindow' => $days <= RETURNS_WINDOW_DAYS,
+    'withinReturnWindow' => $withinWindow,
+    'isCod' => returnsIsCashOnDelivery($order),
+    'returnAddress' => RETURNS_ADDRESS,
     'items' => returnsOrderItems($order),
     'existing' => $existing,
 )));

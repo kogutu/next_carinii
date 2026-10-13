@@ -14,6 +14,8 @@ import { ENTER, ENTER_DELAY, EYEBROW, SurfaceCard } from '@/components/ui/surfac
 import { formatPrice } from '@/lib/formatPrice'
 import { cn } from '@/lib/utils'
 import PhotoUploader from './PhotoUploader'
+import WithdrawalButton from '@/components/withdrawal/WithdrawalButton'
+import { RETURN_ADDRESS } from '@/lib/withdrawal'
 import { REASONS, RESOLUTIONS, type ReturnOrder, type ReturnType } from './returnOptions'
 
 type SubmitResult = {
@@ -26,10 +28,8 @@ type SubmitResult = {
     email: string
 }
 
-const TYPE_OPTIONS: { value: ReturnType; title: string; description: string }[] = [
-    { value: 'zwrot', title: 'Zwrot', description: 'Rezygnuję z zakupu. Masz 14 dni od otrzymania paczki.' },
-    { value: 'reklamacja', title: 'Reklamacja', description: 'Produkt ma wadę lub jest niezgodny z zamówieniem.' },
-]
+// Ten formularz służy reklamacjom. Rezygnacja z zakupu (zwrot) to odstąpienie od umowy — osobna funkcja „Odstąp od umowy tutaj” (lib/withdrawal.ts).
+const FORM_TYPE = 'reklamacja' as const satisfies ReturnType
 
 const ACCOUNT_PATTERN = /^(PL)?\d{26}$/i
 const PLACEHOLDER = { value: '', label: 'Wybierz…' }
@@ -51,7 +51,6 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
     const [order, setOrder] = useState<ReturnOrder | null>(null)
     const [lookup, setLookup] = useState<{ loading: boolean; error: string }>({ loading: false, error: '' })
 
-    const [type, setType] = useState<ReturnType>('zwrot')
     const [selected, setSelected] = useState<Record<number, number>>({})
     const [reason, setReason] = useState('')
     const [resolution, setResolution] = useState('')
@@ -100,12 +99,6 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sessionStatus, session?.user?.email])
 
-    const handleTypeChange = (next: ReturnType) => {
-        setType(next)
-        setReason('')
-        setResolution('')
-    }
-
     const toggleItem = (itemId: number, available: number) =>
         setSelected((current) => {
             const next = { ...current }
@@ -122,11 +115,11 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
         if (Object.keys(selected).length === 0) found.items = 'Wybierz co najmniej jeden produkt.'
         if (!reason) found.reason = 'Wybierz powód.'
         if (!resolution) found.resolution = 'Wybierz preferowane rozwiązanie.'
-        if (type === 'reklamacja' && description.trim().length < 10) found.description = 'Opisz wadę (co najmniej 10 znaków).'
+        if (description.trim().length < 10) found.description = 'Opisz wadę (co najmniej 10 znaków).'
         if (bankAccount.trim() && !ACCOUNT_PATTERN.test(bankAccount.replace(/\s+/g, ''))) found.bankAccount = 'Numer konta powinien mieć 26 cyfr.'
         if (!consent.terms) found.terms = 'Aby wysłać zgłoszenie, zaakceptuj regulamin sklepu.'
         return found
-    }, [selected, reason, resolution, description, bankAccount, type, consent.terms])
+    }, [selected, reason, resolution, description, bankAccount, consent.terms])
 
     const handleSubmit = async () => {
         setSubmitAttempted(true)
@@ -141,7 +134,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                 body: JSON.stringify({
                     orderNumber: order.orderNumber,
                     email,
-                    type,
+                    type: FORM_TYPE,
                     items: Object.entries(selected).map(([itemId, qty]) => ({ itemId: Number(itemId), qty })),
                     reason,
                     resolution,
@@ -191,7 +184,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                 <ul className="mx-auto mt-8 max-w-sm space-y-2 text-left text-sm text-muted-foreground">
                     <li>Odpowiemy na to zgłoszenie e-mailem.</li>
                     <li>Podaj numer zgłoszenia w korespondencji i na paczce, jeśli będziesz odsyłać produkt.</li>
-                    {result.type === 'zwrot' && <li>Adres do odesłania: Z.P.O. CARINII, ul. Warszawska 78, 08-450 Łaskarzew.</li>}
+                    {result.type === 'zwrot' && <li>Adres do odesłania: {RETURN_ADDRESS}.</li>}
                     {result.outOfWindow && <li>Od odbioru minął ustawowy termin 14 dni — rozpatrzymy zgłoszenie indywidualnie.</li>}
                 </ul>
 
@@ -209,8 +202,8 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
         )
     }
 
-    const reasonOptions = [PLACEHOLDER, ...REASONS[type]]
-    const resolutionOptions = [PLACEHOLDER, ...RESOLUTIONS[type]]
+    const reasonOptions = [PLACEHOLDER, ...REASONS[FORM_TYPE]]
+    const resolutionOptions = [PLACEHOLDER, ...RESOLUTIONS[FORM_TYPE]]
 
     return (
         <div className="space-y-6">
@@ -262,30 +255,13 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                             {order.firstName ? `, ${order.firstName}` : ''}.
                         </p>
 
-                        <div role="radiogroup" aria-label="Rodzaj zgłoszenia" className="grid gap-3 sm:grid-cols-2">
-                            {TYPE_OPTIONS.map((option) => (
-                                <label
-                                    key={option.value}
-                                    className={cn(
-                                        'flex cursor-pointer items-start gap-3 rounded-xl border-2 p-4 transition-colors motion-reduce:transition-none',
-                                        type === option.value ? 'border-foreground bg-muted/60' : 'border-border hover:border-foreground/50',
-                                    )}
-                                >
-                                    <input type="radio" name="returns-type" checked={type === option.value} onChange={() => handleTypeChange(option.value)} className="mt-1 size-4 shrink-0 accent-black" />
-                                    <span>
-                                        <span className="block font-semibold text-foreground">{option.title}</span>
-                                        <span className="mt-0.5 block text-pretty text-sm text-muted-foreground">{option.description}</span>
-                                    </span>
-                                </label>
-                            ))}
-                        </div>
-
-                        {type === 'zwrot' && !order.withinReturnWindow && (
-                            <p className="mt-4 flex items-start gap-2 rounded-xl bg-warning-soft px-4 py-3 text-sm text-warning">
-                                <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-                                Od odbioru zamówienia minęło ponad {order.returnWindowDays} dni. Możesz wysłać zgłoszenie — rozpatrzymy je indywidualnie.
+                        <div className="rounded-xl bg-muted/60 px-4 py-3 text-pretty text-sm text-muted-foreground">
+                            <p className="font-semibold text-foreground">Reklamacja</p>
+                            <p className="mt-0.5">Produkt ma wadę lub jest niezgodny z zamówieniem.</p>
+                            <p className="mt-2">
+                                Rezygnujesz z zakupu? To odstąpienie od umowy, które złożysz tutaj: <WithdrawalButton orderNumber={order.orderNumber} variant="link" />
                             </p>
-                        )}
+                        </div>
 
                         <ul className="mt-5 divide-y divide-border">
                             {order.items.map((item) => {
@@ -348,7 +324,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
 
                             <div>
                                 <label htmlFor="returns-description" className="mb-1.5 block text-sm font-medium text-foreground">
-                                    {type === 'reklamacja' ? 'Opis wady *' : 'Komentarz (opcjonalnie)'}
+                                    Opis wady *
                                 </label>
                                 <textarea
                                     id="returns-description"
@@ -356,7 +332,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                                     onChange={(event) => setDescription(event.target.value)}
                                     maxLength={3000}
                                     rows={5}
-                                    placeholder={type === 'reklamacja' ? 'Co się stało? Kiedy zauważyłeś wadę? Jak produkt był używany?' : 'Np. uwagi do zwrotu'}
+                                    placeholder="Co się stało? Kiedy zauważyłeś wadę? Jak produkt był używany?"
                                     aria-invalid={Boolean(showError('description'))}
                                     className={cn(
                                         'w-full rounded-xl border bg-background px-3 py-3 text-base text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-foreground',
@@ -386,7 +362,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                             step={4}
                             title="Zdjęcia"
                             complete={photos.tokens.length > 0}
-                            description={type === 'reklamacja' ? 'Dodaj zdjęcia wady: zbliżenie i cały produkt. Bardzo przyspieszy to rozpatrzenie reklamacji.' : 'Opcjonalnie — np. gdy produkt jest uszkodzony lub niezgodny z zamówieniem.'}
+                            description="Dodaj zdjęcia wady: zbliżenie i cały produkt. Bardzo przyspieszy to rozpatrzenie reklamacji."
                         />
                         <PhotoUploader disabled={submitting} onChange={(tokens, busy) => setPhotos({ tokens, busy })} />
                     </SurfaceCard>

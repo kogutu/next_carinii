@@ -4,6 +4,7 @@
 import { ENTER, EYEBROW, SurfaceCard } from '@/components/ui/surface'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import WithdrawalButton from '@/components/withdrawal/WithdrawalButton'
 import { useEffect, useRef } from "react"
 
 interface CmsPageTemplateProps {
@@ -217,15 +218,24 @@ export default function CmsPageTemplate({ slug, content }: CmsPageTemplateProps)
                 </header>
 
                 {slug.join('/') === 'zwroty-reklamacje' && (
-                    <SurfaceCard className={cn(ENTER, 'mt-10 flex flex-wrap items-center justify-between gap-4 delay-100 sm:p-6')}>
-                        <div>
-                            <p className="font-semibold text-foreground">Chcesz zgłosić zwrot lub reklamację?</p>
-                            <p className="mt-1 text-sm text-muted-foreground">Wypełnij formularz online. Możesz dodać zdjęcia, a potwierdzenie dostaniesz mailem.</p>
-                        </div>
-                        <Link href="/zwrot-reklamacja" className="inline-flex h-11 items-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-menuhover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                            Zgłoś online
-                        </Link>
-                    </SurfaceCard>
+                    <div className="mt-10 space-y-4">
+                        <SurfaceCard className={cn(ENTER, 'flex flex-wrap items-center justify-between gap-4 delay-100 sm:p-6')}>
+                            <div>
+                                <p className="font-semibold text-foreground">Rezygnujesz z zakupu?</p>
+                                <p className="mt-1 text-sm text-muted-foreground">Odstąp od umowy online w dwóch krokach, bez konta i bez podawania przyczyny. Potwierdzenie z datą i godziną dostaniesz mailem.</p>
+                            </div>
+                            <WithdrawalButton />
+                        </SurfaceCard>
+                        <SurfaceCard className={cn(ENTER, 'flex flex-wrap items-center justify-between gap-4 delay-100 sm:p-6')}>
+                            <div>
+                                <p className="font-semibold text-foreground">Chcesz zgłosić reklamację?</p>
+                                <p className="mt-1 text-sm text-muted-foreground">Wypełnij formularz online. Możesz dodać zdjęcia, a potwierdzenie dostaniesz mailem.</p>
+                            </div>
+                            <Link href="/zwrot-reklamacja" className="surface-card inline-flex h-11 items-center rounded-xl bg-background px-6 text-sm font-semibold text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                Zgłoś reklamację
+                            </Link>
+                        </SurfaceCard>
+                    </div>
                 )}
 
                 <SurfaceCard className={cn(ENTER, 'mt-6 delay-100')}>

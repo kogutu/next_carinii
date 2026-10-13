@@ -20,6 +20,8 @@ const RETURNS_THROTTLE_DIR = '/home/directseo/logs/returns_throttle';
 const RETURNS_ALLOWED_STATUSES = 'complete,wyslano';
 const RETURNS_WINDOW_DAYS = 14;      // ustawowy termin odstąpienia od umowy (informacyjnie — nie blokuje zgłoszenia)
 const RETURNS_MAX_PHOTOS = 6;
+// adres, na który klient odsyła towar (ten sam co w regulaminie i na stronie zasad zwrotów)
+const RETURNS_ADDRESS = 'Carinii – Magazyn, ul. Przemysłowa 40, 08-410 Wola Rębkowska';
 
 function returnsRespond($status, $payload)
 {
@@ -61,8 +63,44 @@ function returnsDb()
     return Mage::getSingleton('core/resource')->getConnection('core_write');
 }
 
+// Warunkowe deklaracje: do czasu odświeżenia OPcache serwera (do 5 min) mogą działać obok siebie stare skrypty,
+// które mają własne h() i returnsSendMail(), i ta biblioteka — bez „Cannot redeclare”.
+if (!function_exists('h')) {
+    function h($value)
+    {
+        return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('returnsSendMail')) {
+    function returnsSendMail($toEmail, $toName, $subject, $html)
+    {
+        try {
+            $mail = Mage::getModel('core/email');
+            $mail->setToName($toName)
+                ->setToEmail($toEmail)
+                ->setBody($html)
+                ->setSubject($subject)
+                ->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'))
+                ->setFromName('Carinii')
+                ->setType('html');
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('returns mail failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+}
+
 function returnsEnsureTable()
 {
+    static $ready = false;
+    if ($ready) {
+        return;
+    }
+    $ready = true;
+
     returnsDb()->query(
         'CREATE TABLE IF NOT EXISTS ' . RETURNS_TABLE . ' (
             id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -88,6 +126,25 @@ function returnsEnsureTable()
             KEY idx_email (email)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
     );
+
+    // kolumny oświadczeń o odstąpieniu od umowy (dodawane do istniejącej tabeli, bez ruszania starych wpisów)
+    $columns = array(
+        'full_name' => "VARCHAR(160) NOT NULL DEFAULT ''",
+        'withdrawn_at' => 'DATETIME NULL',
+        'ack_sent_at' => 'DATETIME NULL',
+        'ack_status' => "VARCHAR(12) NOT NULL DEFAULT ''",
+        'statement' => 'TEXT NULL',
+        'scope' => "VARCHAR(8) NOT NULL DEFAULT ''",
+    );
+    $existing = array();
+    foreach (returnsDb()->fetchAll('SHOW COLUMNS FROM ' . RETURNS_TABLE) as $column) {
+        $existing[$column['Field']] = true;
+    }
+    foreach ($columns as $name => $definition) {
+        if (!isset($existing[$name])) {
+            returnsDb()->query('ALTER TABLE ' . RETURNS_TABLE . ' ADD COLUMN ' . $name . ' ' . $definition);
+        }
+    }
 }
 
 // ---------- ograniczanie prób zgadywania numeru zamówienia + e-maila ----------
@@ -179,6 +236,40 @@ function returnsEligibility($order)
     );
     $reason = isset($reasons[$order->getStatus()]) ? $reasons[$order->getStatus()] : 'Dla tego zamówienia zgłoszenie online nie jest dostępne. Napisz do nas: sklep@carinii.com.pl.';
     return array('allowed' => false, 'reason' => $reason);
+}
+
+/**
+ * Odstąpienie od umowy (art. 11a dyrektywy 2011/83/UE): funkcja jest dostępna od złożenia zamówienia, więc blokujemy tylko
+ * zamówienia anulowane i już rozliczone zwrotem. Zamówienia w realizacji i przed wysyłką są dozwolone.
+ */
+function returnsWithdrawalEligibility($order)
+{
+    $status = $order->getStatus();
+    $state = $order->getState();
+
+    if ($state === 'canceled' || $status === 'canceled') {
+        return array('allowed' => false, 'reason' => 'To zamówienie zostało anulowane, więc nie ma umowy, od której można odstąpić.');
+    }
+    if ($state === 'closed' || $status === 'zwrot_pieniedzy') {
+        return array('allowed' => false, 'reason' => 'Dla tego zamówienia zwrot został już rozliczony.');
+    }
+    return array('allowed' => true, 'reason' => '');
+}
+
+/** Orientacyjnie po terminie: dotyczy tylko zamówień, które dotarły do klienta (dla pozostałych termin jeszcze nie biegnie). */
+function returnsWithdrawalOutOfWindow($order)
+{
+    if (!in_array($order->getStatus(), array('complete', 'wyslano'), true)) {
+        return false;
+    }
+    return returnsDaysSinceReceived($order) > RETURNS_WINDOW_DAYS;
+}
+
+function returnsIsCashOnDelivery($order)
+{
+    $payment = $order->getPayment();
+    $method = $payment ? (string) $payment->getMethod() : '';
+    return (bool) preg_match('/cod|cashondelivery|pobranie/i', $method);
 }
 
 /** Dni od momentu, który najlepiej przybliża odbiór paczki (w Magento nie ma przesyłek — liczymy od zakończenia zamówienia). */

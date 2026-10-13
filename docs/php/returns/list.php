@@ -20,7 +20,7 @@ if ($customerId < 1 && $email === '') {
 
 returnsEnsureTable();
 $rows = returnsDb()->fetchAll(
-    'SELECT ref, order_increment, type, status, reason, resolution, items, photos, created_at FROM ' . RETURNS_TABLE
+    'SELECT ref, order_increment, type, status, reason, resolution, items, photos, created_at, withdrawn_at FROM ' . RETURNS_TABLE
     . ' WHERE (customer_id = ? AND ? > 0) OR (email = ? AND ? <> \'\') ORDER BY id DESC LIMIT 50',
     array($customerId, $customerId, $email, $email)
 );
@@ -37,6 +37,8 @@ foreach ($rows as $row) {
         'items' => json_decode($row['items'], true) ?: array(),
         'photoCount' => count((array) json_decode($row['photos'], true)),
         'createdAt' => $row['created_at'],
+        // chwila złożenia oświadczenia o odstąpieniu (UTC); dla zwrotów i reklamacji null
+        'withdrawnAt' => $row['withdrawn_at'] ? str_replace(' ', 'T', $row['withdrawn_at']) . 'Z' : null,
     );
 }
 

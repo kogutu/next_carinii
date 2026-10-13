@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { openCookieSettings } from "@/lib/cookieConsent";
+import WithdrawalButton from "@/components/withdrawal/WithdrawalButton";
 
 const CariniiLogo = () => (
   <svg
@@ -150,6 +151,12 @@ export default function Footer() {
                       </Link>
                     </li>
                   ))}
+                  {/* przycisk odstąpienia od umowy: stale widoczny na każdej stronie (art. 11a dyrektywy 2011/83/UE) */}
+                  {section.title === "Biuro Obsługi Klienta" && (
+                    <li className="pt-2">
+                      <WithdrawalButton />
+                    </li>
+                  )}
                   {section.title === "Prywatność" && (
                     <li>
                       <button

@@ -15,6 +15,7 @@ import { SuccessStatus, paysOnDelivery } from './SuccessStatus'
 import { OrderDetails } from './OrderDetails'
 import { OrderSummaryDetails } from './OrderSummaryDetails'
 import { SuccessNextSteps } from './SuccessNextSteps'
+import WithdrawalButton from '@/components/withdrawal/WithdrawalButton'
 
 interface OrderData {
   orderId: string
@@ -159,6 +160,17 @@ export function SuccessPageContent({ orderData: initialData, sessionid, tracking
               paysOnDelivery={paysOnDelivery(orderData.paymentMethodCode)}
             />
             <OrderDetails orderData={orderData as any} />
+
+            {/* prawo odstąpienia od umowy: funkcja dostępna od złożenia zamówienia, z tego miejsca startuje z numerem zamówienia */}
+            <section aria-labelledby="withdrawal-title" className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-muted/60 p-5">
+              <div>
+                <h2 id="withdrawal-title" className="text-sm font-semibold text-foreground">Prawo odstąpienia od umowy</h2>
+                <p className="mt-1 text-pretty text-sm text-muted-foreground">
+                  Masz 14 dni na odstąpienie od umowy bez podawania przyczyny. Zrobisz to online w dwóch krokach, bez konta.
+                </p>
+              </div>
+              <WithdrawalButton orderNumber={orderData.incrementId} />
+            </section>
 
             <section className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-muted/60 p-5">
               <div className="flex items-start gap-3">

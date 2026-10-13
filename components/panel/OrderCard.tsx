@@ -3,7 +3,8 @@ import { ArrowUpRight, PackageCheck, RotateCcw } from 'lucide-react'
 import { SurfaceCard } from '@/components/ui/surface'
 import { formatPrice } from '@/lib/formatPrice'
 import { cn } from '@/lib/utils'
-import { canReportReturn, formatOrderDate, isAwaitingPayment, statusTone, type PanelOrder, type StatusTone } from './panelOrders'
+import { canReportReturn, canWithdraw, formatOrderDate, isAwaitingPayment, statusTone, type PanelOrder, type StatusTone } from './panelOrders'
+import { WITHDRAW_LABEL, withdrawHref } from '@/lib/withdrawal'
 
 const TONE_CLASSES: Record<StatusTone, string> = {
     success: 'bg-success-soft text-success',
@@ -76,10 +77,15 @@ export default function OrderCard({ order }: OrderCardProps) {
                     {isAwaitingPayment(order.status) ? 'Zapłać za zamówienie' : 'Szczegóły zamówienia'}
                     <ArrowUpRight className="size-4" aria-hidden="true" />
                 </Link>
+                {canWithdraw(order) && (
+                    <Link href={withdrawHref(order.increment_id)} className={cn(ACTION_CLASS, 'bg-primary text-primary-foreground hover:bg-menuhover')}>
+                        <RotateCcw className="size-4" aria-hidden="true" />
+                        {WITHDRAW_LABEL}
+                    </Link>
+                )}
                 {canReportReturn(order.status) && (
                     <Link href={`/zwrot-reklamacja?order=${encodeURIComponent(order.increment_id)}`} className={cn(ACTION_CLASS, 'surface-card bg-background text-foreground hover:bg-muted')}>
-                        <RotateCcw className="size-4" aria-hidden="true" />
-                        Zwrot lub reklamacja
+                        Zgłoś reklamację
                     </Link>
                 )}
             </div>

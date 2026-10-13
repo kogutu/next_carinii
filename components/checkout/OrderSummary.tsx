@@ -6,6 +6,8 @@ import PayButton from '@/components/payments/PayButton'
 import { useEffect, useRef, useState } from 'react'
 import { Trash2, Plus, Minus, ShoppingBasket } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { WITHDRAW_LABEL, WITHDRAW_PATH } from '@/lib/withdrawal'
 import DiscountCode from './DiscountCode'
 import UndoRemoveBar from './UndoRemoveBar'
 import type { CheckoutData } from '@/hooks/useCheckoutValidation'
@@ -510,6 +512,12 @@ export default function OrderSummary({
                     }}
                     termsError={termsError}
                 />
+
+                {/* informacja o prawie odstąpienia i miejscu funkcji (art. 11a dyrektywy 2011/83/UE) */}
+                <p className="text-pretty text-xs text-muted-foreground">
+                    Masz 14 dni na odstąpienie od umowy bez podawania przyczyny. Skorzystasz z przycisku{' '}
+                    <Link href={WITHDRAW_PATH} className="underline underline-offset-4">{WITHDRAW_LABEL}</Link> w stopce sklepu, na stronie zamówienia i w panelu klienta.
+                </p>
 
                 {/* Error Message */}
                 {submitError && (

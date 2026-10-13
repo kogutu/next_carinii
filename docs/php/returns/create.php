@@ -19,30 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     returnsFail(405, 'Dozwolona tylko metoda POST');
 }
 
-function returnsSendMail($toEmail, $toName, $subject, $html)
-{
-    try {
-        $mail = Mage::getModel('core/email');
-        $mail->setToName($toName)
-            ->setToEmail($toEmail)
-            ->setBody($html)
-            ->setSubject($subject)
-            ->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'))
-            ->setFromName('Carinii')
-            ->setType('html');
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        error_log('returns mail failed: ' . $e->getMessage());
-        return false;
-    }
-}
-
-function h($value)
-{
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-}
-
 $input = returnsInput();
 $clientIp = returnsClientIp($input);
 $customerId = isset($input['customerId']) ? (int) $input['customerId'] : 0;
@@ -247,7 +223,7 @@ $customerHtml = '<div style="font-family:Arial,sans-serif;font-size:14px;line-he
     . '<p>Numer zgłoszenia: <b style="font-size:18px">' . h($ref) . '</b><br>Zamówienie: ' . h($order->getIncrementId()) . ' · ' . h($typeLabel) . '</p>'
     . '<ul>' . $rowsHtml . '</ul>'
     . '<p>Odpowiemy na to zgłoszenie e-mailem. Podaj numer zgłoszenia w korespondencji oraz na paczce, jeśli będziesz odsyłać produkt.</p>'
-    . ($type === 'zwrot' ? '<p>Adres do odesłania: <b>Z.P.O. CARINII, ul. Warszawska 78, 08-450 Łaskarzew</b></p>' : '')
+    . ($type === 'zwrot' ? '<p>Adres do odesłania: <b>' . h(RETURNS_ADDRESS) . '</b></p>' : '')
     . '<p style="color:#666">Pytania? Napisz na sklep@carinii.com.pl lub zadzwoń: +48 25 748 42 00 (pn–pt 8:00–16:00).</p></div>';
 
 returnsSendMail($order->getCustomerEmail(), returnsFirstName($order), 'Zgłoszenie ' . $ref . ' zostało przyjęte', $customerHtml);
