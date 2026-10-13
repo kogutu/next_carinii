@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { buildSkuPercentMap, normalizeSku, type SkuTier } from '@/lib/promoConfig'
-import { formatSkuLists, parseSkuLists } from '@/lib/promoSkuLists'
+import { formatSkuLists, parseSkuLists, type ParsedSkuLists } from '@/lib/promoSkuLists'
 import { cn } from '@/lib/utils'
 import { BUTTON_OUTLINE, BUTTON_PRIMARY, Field, INPUT } from './fields'
 
@@ -19,7 +19,8 @@ const plural = (count: number): string => (count === 1 ? 'produkt' : count % 10 
 // Rabaty per produkt: wklejasz kod ze starego sklepu (var p40 = ["SKU", ...]; var p30 = [...]), a panel zamienia go na rabaty
 export default function SkuListsEditor({ tiers, percent, onApply, onClear }: SkuListsEditorProps) {
     const [text, setText] = useState('')
-    const [applied, setApplied] = useState<string | null>(null)
+    // ostatnio zastosowane listy: po zastosowaniu pole się czyści, a raport zostaje jako potwierdzenie
+    const [lastApplied, setLastApplied] = useState<ParsedSkuLists | null>(null)
     const [lookup, setLookup] = useState('')
 
     const parsed = useMemo(() => (text.trim() ? parseSkuLists(text) : null), [text])
@@ -29,13 +30,23 @@ export default function SkuListsEditor({ tiers, percent, onApply, onClear }: Sku
     const lookupSku = normalizeSku(lookup)
     const lookupResult = lookupSku ? (savedMap.get(lookupSku) ?? null) : undefined
 
-    const apply = () => {
-        if (!parsed || parsed.tiers.length === 0) return
-        onApply({ tiers: parsed.tiers, defaultPercent: parsed.defaultPercent })
-        setApplied(
-            `Zastosowano ${parsed.skuCount} ${plural(parsed.skuCount)}${parsed.defaultPercent ? `, rabat podstawowy ${parsed.defaultPercent}%` : ''}. Zapisz zmiany na dole strony.`,
-        )
+    // raport: to, co jeszcze czeka w polu, albo to, co przed chwilą zastosowano
+    const report = parsed ?? lastApplied
+    const isApplied = parsed === null && lastApplied !== null
+
+    const applyParsed = (result: ParsedSkuLists) => {
+        if (result.tiers.length === 0) return
+        onApply({ tiers: result.tiers, defaultPercent: result.defaultPercent })
+        setLastApplied(result)
         setText('')
+    }
+
+    // Wklejenie kodu od razu zastępuje listy w kampanii: nie trzeba pamiętać o dodatkowym kliknięciu
+    const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+        const result = parseSkuLists(event.clipboardData.getData('text'))
+        if (result.tiers.length === 0) return
+        event.preventDefault()
+        applyParsed(result)
     }
 
     return (
@@ -58,70 +69,77 @@ export default function SkuListsEditor({ tiers, percent, onApply, onClear }: Sku
                         placeholder={'var p40 = ["B10743-O17-000-000-MO1", "B10557-T82-000-000-SC1"];\nvar p30 = ["B10747-T89-000-000-MO1"];\nvar p = 20;'}
                         onChange={(event) => {
                             setText(event.target.value)
-                            setApplied(null)
+                            setLastApplied(null)
                         }}
+                        onPaste={handlePaste}
+                        // wpisany ręcznie kod też się stosuje, gdy przejdziesz dalej (np. klikniesz „Zapisz zmiany”)
+                        onBlur={() => parsed && applyParsed(parsed)}
                         className={cn(INPUT, 'h-auto py-2 font-mono text-xs')}
                     />
                 )}
             </Field>
 
-            {parsed && (
-                <div className="rounded-xl border border-border bg-background p-4 text-sm">
-                    {parsed.tiers.length === 0 ? (
+            {report && (
+                <div className={cn('rounded-xl border p-4 text-sm', isApplied ? 'border-success/40 bg-success/10' : 'border-border bg-background')}>
+                    {report.tiers.length === 0 ? (
                         <p role="status" className="text-warning">
                             Nie znalazłem żadnej listy w formacie <code className="font-mono text-xs">var p40 = [&quot;SKU&quot;, …]</code>. Sprawdź, czy wkleiłeś cały kod.
                         </p>
                     ) : (
                         <div className="space-y-2" role="status">
-                            <p className="font-medium text-foreground">
-                                Rozpoznano {parsed.skuCount} {plural(parsed.skuCount)} na {parsed.lists.length} {parsed.lists.length === 1 ? 'liście' : 'listach'}:
+                            <p className={cn('font-medium', isApplied ? 'text-success' : 'text-foreground')}>
+                                {isApplied ? 'Zastosowano w kampanii' : 'Rozpoznano'} {report.skuCount} {plural(report.skuCount)} na {report.lists.length} {report.lists.length === 1 ? 'liście' : 'listach'}:
                             </p>
                             <ul className="flex flex-wrap gap-2">
-                                {parsed.lists.map((list) => (
+                                {report.lists.map((list) => (
                                     <li key={list.name} className="rounded-full bg-muted px-3 py-1 text-xs text-foreground">
                                         <span className="font-mono font-semibold">{list.name}</span> → -{list.percent}%: {list.unique}
                                         {list.entries > list.unique + list.invalid && <span className="text-muted-foreground"> (scalono {list.entries - list.unique - list.invalid} powtórzeń)</span>}
                                     </li>
                                 ))}
                             </ul>
-                            {parsed.defaultPercent && <p className="text-muted-foreground">Rabat podstawowy z kodu (var p = {parsed.defaultPercent}): {parsed.defaultPercent}% — ustawię go w kampanii.</p>}
-                            {parsed.conflicts.length > 0 && (
-                                <p className="text-warning">
-                                    {parsed.conflicts.length} {plural(parsed.conflicts.length)} jest na kilku listach z różnym rabatem — obowiązuje niższy ({parsed.conflicts.slice(0, 3).join(', ')}
-                                    {parsed.conflicts.length > 3 ? ', …' : ''}).
+                            {report.defaultPercent && (
+                                <p className="text-muted-foreground">
+                                    Rabat podstawowy z kodu (var p = {report.defaultPercent}): {report.defaultPercent}%{isApplied ? ' — ustawiony w kampanii.' : ' — ustawię go w kampanii.'}
                                 </p>
                             )}
-                            {parsed.lists.some((list) => list.invalid > 0) && (
-                                <p className="text-warning">Pominąłem {parsed.lists.reduce((sum, list) => sum + list.invalid, 0)} wpisów, które nie wyglądają na SKU.</p>
+                            {report.conflicts.length > 0 && (
+                                <p className="text-warning">
+                                    {report.conflicts.length} {plural(report.conflicts.length)} jest na kilku listach z różnym rabatem — obowiązuje niższy ({report.conflicts.slice(0, 3).join(', ')}
+                                    {report.conflicts.length > 3 ? ', …' : ''}).
+                                </p>
                             )}
+                            {report.lists.some((list) => list.invalid > 0) && (
+                                <p className="text-warning">Pominąłem {report.lists.reduce((sum, list) => sum + list.invalid, 0)} wpisów, które nie wyglądają na SKU.</p>
+                            )}
+                            <p className={isApplied ? 'font-medium text-foreground' : 'text-warning'}>
+                                {isApplied
+                                    ? 'Żeby rabaty były widoczne w sklepie, kliknij „Zapisz zmiany” na dole strony.'
+                                    : 'To jeszcze nie jest zastosowane — kliknij „Zastosuj listy” (albo wyjdź z pola).'}
+                            </p>
                         </div>
                     )}
                 </div>
             )}
 
             <div className="flex flex-wrap items-center gap-3">
-                <button type="button" onClick={apply} disabled={!parsed || parsed.tiers.length === 0} className={BUTTON_PRIMARY}>
+                <button type="button" onClick={() => parsed && applyParsed(parsed)} disabled={!parsed || parsed.tiers.length === 0} className={BUTTON_PRIMARY}>
                     Zastosuj listy
                 </button>
-                {applied && (
-                    <p role="status" className="text-sm text-success">
-                        {applied}
-                    </p>
-                )}
             </div>
 
             {savedCount > 0 && (
                 <div className="space-y-3 rounded-xl bg-muted/60 p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <p className="text-sm font-medium text-foreground">
-                            Zapisane listy: {savedCount} {plural(savedCount)} z własnym rabatem
+                            Listy w kampanii: {savedCount} {plural(savedCount)} z własnym rabatem
                         </p>
                         <button
                             type="button"
                             onClick={() => {
                                 if (window.confirm('Usunąć wszystkie listy SKU z tej kampanii? Produkty dostaną rabat podstawowy.')) {
                                     onClear()
-                                    setApplied(null)
+                                    setLastApplied(null)
                                 }
                             }}
                             className={cn(BUTTON_OUTLINE, 'h-9 px-3 text-destructive')}
@@ -155,7 +173,7 @@ export default function SkuListsEditor({ tiers, percent, onApply, onClear }: Sku
                     )}
 
                     <details className="text-sm">
-                        <summary className="cursor-pointer text-muted-foreground underline underline-offset-4 hover:text-foreground">Pokaż zapisane listy jako kod</summary>
+                        <summary className="cursor-pointer text-muted-foreground underline underline-offset-4 hover:text-foreground">Pokaż listy z kampanii jako kod</summary>
                         <textarea readOnly rows={8} value={formatSkuLists(tiers)} onFocus={(event) => event.currentTarget.select()} className={cn(INPUT, 'mt-2 h-auto py-2 font-mono text-xs')} />
                     </details>
                 </div>
