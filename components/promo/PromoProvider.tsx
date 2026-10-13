@@ -3,9 +3,11 @@
 import { createContext, useContext, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import {
     DEFAULT_PROMO_CONFIG,
+    buildSkuPercentMap,
     campaignIsLive,
     isWithinWindow,
     matchingCampaigns,
+    percentForProduct,
     type Campaign,
     type PromoConfig,
     type PromoProductLike,
@@ -16,9 +18,11 @@ import {
 // tutaj razem z czasem serwera: dzięki temu pierwszy render w przeglądarce jest identyczny jak ten z serwera, a zaraz
 // po hydracji wszystko przelicza się według zegara klientki (okna dat kampanii).
 
-type PromoContextValue = { config: PromoConfig; serverNow: number }
+// skuPercents: dla każdej kampanii (po id) mapa SKU -> rabat z jej list. Budujemy ją raz na zmianę konfiguracji,
+// a nie przy każdej karcie produktu.
+type PromoContextValue = { config: PromoConfig; serverNow: number; skuPercents: Map<string, Map<string, number>> }
 
-const PromoContext = createContext<PromoContextValue>({ config: DEFAULT_PROMO_CONFIG, serverNow: 0 })
+const PromoContext = createContext<PromoContextValue>({ config: DEFAULT_PROMO_CONFIG, serverNow: 0, skuPercents: new Map() })
 
 type PromoProviderProps = { config: PromoConfig; serverNow: number; children: ReactNode }
 
@@ -62,7 +66,15 @@ export function PromoProvider({ config: serverConfig, serverNow, children }: Pro
     }, [serverConfig])
 
     const config = liveConfig ?? serverConfig
-    const value = useMemo(() => ({ config, serverNow }), [config, serverNow])
+    const value = useMemo(
+        () => ({
+            config,
+            serverNow,
+            // skuTiers bywa niezdefiniowane w konfiguracji z cache'u zapisanej przed dodaniem tego pola
+            skuPercents: new Map(config.campaigns.filter((campaign) => (campaign.skuTiers?.length ?? 0) > 0).map((campaign) => [campaign.id, buildSkuPercentMap(campaign.skuTiers)])),
+        }),
+        [config, serverNow],
+    )
     return <PromoContext.Provider value={value}>{children}</PromoContext.Provider>
 }
 
@@ -98,17 +110,23 @@ export const useAnyCardCampaign = (): boolean => {
     return useMemo(() => config.campaigns.some((campaign) => campaign.card.enabled && campaignIsLive(campaign, now)), [config, now])
 }
 
+/** Kampania, która obejmuje produkt, razem z rabatem właściwym dla tego produktu (z listy SKU albo podstawowym). */
+export type ProductPromo = { campaign: Campaign; percent: number }
+
 /** Kampanie, które teraz obejmują produkt — osobno dla plakietek na liście i dla boksu na karcie produktu. */
-export const useProductCampaigns = (product: PromoProductLike | null | undefined): { card: Campaign[]; productBox: Campaign[] } => {
-    const config = usePromoConfig()
+export const useProductCampaigns = (product: PromoProductLike | null | undefined): { card: ProductPromo[]; productBox: ProductPromo[] } => {
+    const { config, skuPercents } = useContext(PromoContext)
     const now = usePromoNow()
 
     return useMemo(() => {
         if (!product || config.campaigns.length === 0) return { card: [], productBox: [] }
-        const matching = matchingCampaigns(config, product, now)
+        const matching = matchingCampaigns(config, product, now).map((campaign) => ({
+            campaign,
+            percent: percentForProduct(campaign, skuPercents.get(campaign.id), product),
+        }))
         return {
-            card: matching.filter((campaign) => campaign.card.enabled),
-            productBox: matching.filter((campaign) => campaign.productBox.enabled),
+            card: matching.filter(({ campaign }) => campaign.card.enabled),
+            productBox: matching.filter(({ campaign }) => campaign.productBox.enabled),
         }
-    }, [config, now, product])
+    }, [config, skuPercents, now, product])
 }

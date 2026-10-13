@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 // Proste pola formularza panelu /admin (bez dodatkowych bibliotek).
 
-const INPUT =
+export const INPUT =
     'h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50'
 
 type FieldProps = {

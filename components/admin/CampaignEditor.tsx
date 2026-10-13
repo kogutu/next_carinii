@@ -6,6 +6,7 @@ import type { Campaign, PriceMode } from '@/lib/promoConfig'
 import { CardBadgeView, ProductBoxView } from '@/components/promo/PromoViews'
 import { cn } from '@/lib/utils'
 import CategoryPicker, { type PickerCategory } from './CategoryPicker'
+import SkuListsEditor from './SkuListsEditor'
 import { BUTTON_OUTLINE, ColorField, DateTimeField, Field, NumberField, TextAreaField, TextField, ToggleField } from './fields'
 
 type CampaignEditorProps = {
@@ -35,10 +36,14 @@ export default function CampaignEditor({ campaign, categories, index, total, onC
     const updateCard = (patch: Partial<Campaign['card']>) => update({ card: { ...campaign.card, ...patch } })
     const updateBox = (patch: Partial<Campaign['productBox']>) => update({ productBox: { ...campaign.productBox, ...patch } })
 
+    const skuCount = campaign.skuTiers.reduce((sum, tier) => sum + tier.skus.length, 0)
     const scope = [
         PRICE_MODES.find((mode) => mode.value === campaign.target.priceMode)?.label,
         campaign.target.categories.length === 0 ? 'wszystkie kategorie' : `${campaign.target.categories.length} kat.`,
-    ].join(' · ')
+        skuCount > 0 ? `${skuCount} SKU z własnym rabatem` : null,
+    ]
+        .filter(Boolean)
+        .join(' · ')
 
     return (
         <div className="rounded-xl border border-border bg-background">
@@ -94,7 +99,14 @@ export default function CampaignEditor({ campaign, categories, index, total, onC
                     <div className="grid gap-4 sm:grid-cols-2">
                         <TextField label="Nazwa kampanii (tylko w panelu)" value={campaign.name} onChange={(name) => update({ name })} maxLength={80} className="sm:col-span-2" />
                         <TextField label="Kod rabatowy" value={campaign.code} onChange={(code) => update({ code: code.toUpperCase() })} maxLength={30} hint="Litery, cyfry, - i _. Kod musi istnieć w Magento — sklep go tam sprawdza." />
-                        <NumberField label="Rabat (%) pokazywany na plakietkach" value={campaign.percent} onChange={(percent) => update({ percent })} min={1} max={99} />
+                        <NumberField
+                            label="Rabat podstawowy (%) pokazywany na plakietkach"
+                            value={campaign.percent}
+                            onChange={(percent) => update({ percent })}
+                            min={1}
+                            max={99}
+                            hint="Dostają go produkty bez własnego rabatu z list SKU (niżej)."
+                        />
                         <DateTimeField label="Od kiedy" value={campaign.startsAt} onChange={(startsAt) => update({ startsAt })} hint="Puste = od razu." />
                         <DateTimeField label="Do kiedy" value={campaign.endsAt} onChange={(endsAt) => update({ endsAt })} hint="Puste = bez końca." />
                         <div className="sm:col-span-2">
@@ -134,6 +146,14 @@ export default function CampaignEditor({ campaign, categories, index, total, onC
                             {() => <CategoryPicker categories={categories} value={campaign.target.categories} onChange={(selected) => update({ target: { ...campaign.target, categories: selected } })} />}
                         </Field>
                     </div>
+
+                    {/* rabat per produkt (listy SKU) */}
+                    <SkuListsEditor
+                        tiers={campaign.skuTiers}
+                        percent={campaign.percent}
+                        onApply={({ tiers, defaultPercent }) => update({ skuTiers: tiers, ...(defaultPercent ? { percent: defaultPercent } : {}) })}
+                        onClear={() => update({ skuTiers: [] })}
+                    />
 
                     {/* plakietka na liście */}
                     <div className="space-y-4">

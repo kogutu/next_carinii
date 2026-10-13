@@ -191,8 +191,8 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
 
                 {cardCampaigns.length > 0 ? (
                     <div className="flex flex-col gap-1">
-                        {cardCampaigns.map((campaign) => (
-                            <CardBadgeView key={campaign.id} badge={campaign.card} code={campaign.code} percent={campaign.percent} />
+                        {cardCampaigns.map(({ campaign, percent }) => (
+                            <CardBadgeView key={campaign.id} badge={campaign.card} code={campaign.code} percent={percent} />
                         ))}
                     </div>
                 ) : (
@@ -296,8 +296,8 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
 
                     {cardCampaigns.length > 0 && (
                         <div className="mt-2 flex flex-col gap-1 self-start">
-                            {cardCampaigns.map((campaign) => (
-                                <CardBadgeView key={campaign.id} badge={campaign.card} code={campaign.code} percent={campaign.percent} className="w-auto px-3 py-1.5" />
+                            {cardCampaigns.map(({ campaign, percent }) => (
+                                <CardBadgeView key={campaign.id} badge={campaign.card} code={campaign.code} percent={percent} className="w-auto px-3 py-1.5" />
                             ))}
                         </div>
                     )}

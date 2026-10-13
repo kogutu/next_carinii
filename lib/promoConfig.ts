@@ -49,6 +49,12 @@ export type ProductBox = {
     accent: string
 }
 
+// Rabat per produkt: produkty z listy (po SKU) dostają własny rabat zamiast podstawowego z kampanii
+export type SkuTier = {
+    percent: number
+    skus: string[]
+}
+
 export type Campaign = {
     id: string
     name: string
@@ -56,7 +62,10 @@ export type Campaign = {
     startsAt: string | null
     endsAt: string | null
     code: string
+    // rabat podstawowy: dla produktów spoza list SKU
     percent: number
+    // listy SKU z własnym rabatem (kod rabatowy zostaje wspólny, zmienia się tylko wyświetlany rabat)
+    skuTiers: SkuTier[]
     target: PromoTarget
     card: CardBadge
     productBox: ProductBox
@@ -69,6 +78,12 @@ export type PromoConfig = {
 
 export const MAX_CAMPAIGNS = 30
 export const MAX_TARGET_CATEGORIES = 300
+// Listy SKU trafiają do każdej strony (konfiguracja jest w layoucie), więc mają twardy limit
+export const MAX_CAMPAIGN_SKUS = 3000
+
+/** SKU w jednej postaci (wielkie litery, bez spacji), żeby „b10747-t89…” i „B10747-T89…” były tym samym. */
+export const SKU_PATTERN = /^[A-Za-z0-9._/-]{1,60}$/
+export const normalizeSku = (value: unknown): string => (typeof value === 'string' || typeof value === 'number' ? String(value).trim().toUpperCase() : '')
 
 export const DEFAULT_TOP_BAR: TopBarConfig = {
     enabled: false,
@@ -115,6 +130,7 @@ export const newCampaign = (id: string): Campaign => ({
     endsAt: null,
     code: 'KOD',
     percent: 30,
+    skuTiers: [],
     target: { priceMode: 'all', categories: [] },
     card: { ...DEFAULT_CARD_BADGE },
     productBox: { ...DEFAULT_PRODUCT_BOX },
@@ -158,6 +174,40 @@ const normalizeCategories = (value: unknown): PromoCategory[] => {
     return result
 }
 
+/**
+ * Listy SKU -> poprawne, bez powtórzeń. Gdy ten sam SKU jest na kilku listach, obowiązuje NIŻSZY rabat
+ * (nie obiecujemy klientce więcej, niż daje najniższa lista). Kolejność w obrębie listy zostaje, listy idą od największego rabatu.
+ */
+export const normalizeSkuTiers = (value: unknown): SkuTier[] => {
+    if (!Array.isArray(value)) return []
+
+    const lowest = new Map<string, number>()
+    const order: string[] = []
+    for (const tier of value) {
+        const percent = Math.round(Number(tier?.percent))
+        if (!Number.isFinite(percent) || percent < 1 || percent > 99 || !Array.isArray(tier?.skus)) continue
+        for (const raw of tier.skus) {
+            const sku = normalizeSku(raw)
+            if (!SKU_PATTERN.test(sku)) continue
+            const known = lowest.get(sku)
+            if (known === undefined) {
+                if (lowest.size >= MAX_CAMPAIGN_SKUS) continue
+                order.push(sku)
+                lowest.set(sku, percent)
+            } else if (percent < known) {
+                lowest.set(sku, percent)
+            }
+        }
+    }
+
+    const byPercent = new Map<number, string[]>()
+    for (const sku of order) {
+        const percent = lowest.get(sku) as number
+        byPercent.set(percent, [...(byPercent.get(percent) ?? []), sku])
+    }
+    return [...byPercent.entries()].sort((a, b) => b[0] - a[0]).map(([percent, skus]) => ({ percent, skus }))
+}
+
 const normalizeTopBar = (value: any): TopBarConfig => {
     const d = DEFAULT_TOP_BAR
     return {
@@ -188,6 +238,7 @@ const normalizeCampaign = (value: any, fallbackId: string): Campaign => {
         endsAt: isoDate(value?.endsAt),
         code: code(value?.code, base.code),
         percent: Number.isFinite(percent) && percent >= 1 && percent <= 99 ? percent : base.percent,
+        skuTiers: normalizeSkuTiers(value?.skuTiers),
         target: { priceMode, categories: normalizeCategories(value?.target?.categories) },
         card: {
             enabled: bool(value?.card?.enabled, base.card.enabled),
@@ -236,6 +287,7 @@ export const isWithinWindow = (startsAt: string | null, endsAt: string | null, n
 }
 
 export type PromoProductLike = {
+    sku?: unknown
     cids?: unknown
     categories?: unknown
     has_special_price?: unknown
@@ -264,5 +316,16 @@ export const campaignIsLive = (campaign: Campaign, now: number): boolean => camp
 export const matchingCampaigns = (config: PromoConfig, product: PromoProductLike, now: number): Campaign[] =>
     config.campaigns.filter((campaign) => campaignIsLive(campaign, now) && productMatchesTarget(campaign.target, product))
 
-export const fillTemplate = (template: string, values: { code: string; percent: number }): string =>
+/** SKU -> rabat z list kampanii (do szybkiego wyszukiwania przy renderowaniu kart). */
+export const buildSkuPercentMap = (tiers: SkuTier[]): Map<string, number> => {
+    const map = new Map<string, number>()
+    for (const tier of tiers) for (const sku of tier.skus) map.set(sku, tier.percent)
+    return map
+}
+
+/** Rabat pokazywany dla produktu: z listy SKU, a bez wpisu — podstawowy rabat kampanii. */
+export const percentForProduct = (campaign: Campaign, skuPercents: Map<string, number> | undefined, product: PromoProductLike): number =>
+    skuPercents?.get(normalizeSku(product.sku)) ?? campaign.percent
+
+export const fillTemplate =(template: string, values: { code: string; percent: number }): string =>
     template.replace(/\{code\}/g, values.code).replace(/\{percent\}/g, String(values.percent))

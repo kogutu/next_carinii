@@ -9,8 +9,8 @@ const PromoBadge = ({ product }: { product: any }) => {
 
   return (
     <div className="flex flex-col items-start gap-2">
-      {productBox.map((campaign) => (
-        <ProductBoxView key={campaign.id} box={campaign.productBox} code={campaign.code} percent={campaign.percent} />
+      {productBox.map(({ campaign, percent }) => (
+        <ProductBoxView key={campaign.id} box={campaign.productBox} code={campaign.code} percent={percent} />
       ))}
     </div>
   );
