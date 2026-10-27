@@ -205,7 +205,7 @@ export default function ShoppingListsPage() {
                     <h1 className="text-2xl font-bold text-gray-900">Moje listy zakupowe</h1>
                     <p className="text-gray-600 mt-1">Zarządzaj swoimi listami zakupowymi ({totalItems} produktów)</p>
                 </div>
-                <Button onClick={() => setShowCreateDialog(true)} className="gap-2 bg-hert hover:bg-hert/90">
+                <Button onClick={() => setShowCreateDialog(true)} className="gap-2 bg-sobianek hover:bg-sobianek/90">
                     <Plus className="h-4 w-4" />
                     Nowa lista
                 </Button>
@@ -222,7 +222,7 @@ export default function ShoppingListsPage() {
                         <p className="text-gray-600 mb-6 max-w-md">
                             Utwórz swoją pierwszą listę zakupową aby łatwo zarządzać produktami, które chcesz kupić.
                         </p>
-                        <Button onClick={() => setShowCreateDialog(true)} className="gap-2 bg-hert hover:bg-hert/90">
+                        <Button onClick={() => setShowCreateDialog(true)} className="gap-2 bg-sobianek hover:bg-sobianek/90">
                             <Plus className="h-4 w-4" />
                             Utwórz pierwszą listę
                         </Button>
@@ -288,7 +288,7 @@ export default function ShoppingListsPage() {
                                     <Button
                                         onClick={() => handleAddAllToCart(list)}
                                         size="sm"
-                                        className="w-full gap-2 bg-hert hover:bg-hert/90"
+                                        className="w-full gap-2 bg-sobianek hover:bg-sobianek/90"
                                     >
                                         <ShoppingCart className="h-4 w-4" />
                                         Dodaj wszystko do koszyka
@@ -330,7 +330,7 @@ export default function ShoppingListsPage() {
                                                         <Button
                                                             onClick={() => handleAddToCart(item)}
                                                             size="sm"
-                                                            className="text-xs h-7 bg-hert hover:bg-hert/90"
+                                                            className="text-xs h-7 bg-sobianek hover:bg-sobianek/90"
                                                         >
                                                             Do koszyka
                                                         </Button>
@@ -379,7 +379,7 @@ export default function ShoppingListsPage() {
                         <Button
                             onClick={handleCreateList}
                             disabled={!newListName.trim() || actionLoading}
-                            className="bg-hert hover:bg-hert/90"
+                            className="bg-sobianek hover:bg-sobianek/90"
                         >
                             {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Utwórz listę
@@ -413,7 +413,7 @@ export default function ShoppingListsPage() {
                         <Button
                             onClick={handleEditList}
                             disabled={!editListName.trim() || actionLoading}
-                            className="bg-hert hover:bg-hert/90"
+                            className="bg-sobianek hover:bg-sobianek/90"
                         >
                             {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Zapisz zmiany

@@ -61,7 +61,7 @@ export default function ManagerSection({ product, setIsInquiryOpen, setIsPriceOp
                     <Button
                         onClick={() => setIsInquiryOpen(true)}
                         variant="outline"
-                        className="border-2 text-sm py-6 bg-hert  text-white hover:bg-hhert cursor-pointer"
+                        className="border-2 text-sm py-6 bg-sobianek  text-white hover:bg-hhert cursor-pointer"
 
                     >
                         Zapytaj o produkt

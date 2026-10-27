@@ -57,7 +57,7 @@ export function CurrencySelectorClient() {
                             <button
                                 key={curr.code}
                                 onClick={() => handleChange(curr.code)}
-                                className={`w-full px-4 py-2 text-sm font-medium flex items-center justify-between hover:bg-purple-50 transition ${currency === curr.code ? 'bg-purple-50 text-hert' : 'text-gray-700'
+                                className={`w-full px-4 py-2 text-sm font-medium flex items-center justify-between hover:bg-gray-50 transition ${currency === curr.code ? 'bg-gray-50 text-hert' : 'text-gray-700'
                                     }`}
                             >
                                 <div className="flex items-center gap-2">

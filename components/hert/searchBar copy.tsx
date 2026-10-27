@@ -69,7 +69,7 @@ export default function SearchBar({ type }: { type: string }) {
 
     const isMobile = type === 'mobile';
     const containerClass = isMobile
-        ? 'flex mt-4 md:hidden flex-grow mx-2 relative'
+        ? 'flex  md:hidden flex-grow mx-2 relative'
         : 'hidden  md:flex max-w-[400px] flex-grow mx-2 relative';
 
     return (
@@ -93,7 +93,7 @@ export default function SearchBar({ type }: { type: string }) {
                     </button>
                 )}
 
-                <button className="absolute right-[2px] top-[3px] bg-hert text-white p-2 rounded-full w-9 h-9 flex items-center justify-center hover:opacity-90 transition">
+                <button className="absolute right-[2px] top-[3px] bg-sobianek text-white p-2 rounded-full w-9 h-9 flex items-center justify-center hover:opacity-90 transition">
                     <Search size={16} />
                 </button>
 
@@ -118,7 +118,7 @@ export default function SearchBar({ type }: { type: string }) {
                                     <button
                                         key={result.id}
                                         onClick={() => handleResultClick(result)}
-                                        className="w-full px-4 py-3 hover:bg-purple-50 transition flex gap-3 items-start text-left"
+                                        className="w-full px-4 py-3 hover:bg-gray-50 transition flex gap-3 items-start text-left"
                                     >
                                         {/* Product Image */}
                                         <div className="flex-shrink-0">

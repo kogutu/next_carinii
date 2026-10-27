@@ -73,7 +73,7 @@ export default function CategoryCards() {
 
               <a
                 href={category.href}
-                className="inline-block w-fit text-white bg-hert hover:bg-purple-800 px-8 py-2 rounded text-xs font-bold transition-colors"
+                className="inline-block w-fit text-white bg-sobianek hover:bg-gray-800 px-8 py-2 rounded text-xs font-bold transition-colors"
               >
                 Sprawdź
               </a>
