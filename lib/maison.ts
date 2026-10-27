@@ -7,6 +7,7 @@ import {
     type MaisonCategory,
     type MaisonProduct,
     type MaisonScope,
+    withRetouched,
 } from "@/lib/maisonShared"
 
 const INCLUDE_FIELDS = [
@@ -20,9 +21,6 @@ const FILTERS: Record<MaisonScope, string> = {
     kozaki: `cids_all:=[${MAISON_CATEGORY_ID}] && cids_all:!=[${MAISON_BOTKI_ID}]`,
 }
 
-// Pliki B<numer>-M-<numer>.jpg to packshoty na białym tle; reszta to zdjęcia z sesji. Sesja idzie przed packshotem.
-const isPackshot = (img: string) => /\/B\d+-M-[^/]*\.jpe?g$/i.test(img)
-
 const modelNumber = (sku: string) => Number(sku.slice(1, 4)) || 0
 
 const toProduct = (doc: any): MaisonProduct => {
@@ -32,9 +30,11 @@ const toProduct = (doc: any): MaisonProduct => {
         .sort((a, b) => Number(a.size) - Number(b.size))
     const special = Number(doc.special_price)
     // zdjęcia z galerii są oryginałami; image_small to miniatura 500 px, która na ekranie Retina wygląda miękko
-    const gallery: string[] = (doc.imgs ?? []).map((src: string) => normalizeMediaUrl(src)).filter(Boolean)
-    const session = gallery.filter((src) => !isPackshot(src))
-    const image = session[0] ?? gallery[0] ?? normalizeMediaUrl(doc.image_small || doc.image_main || "")
+    // sesja idzie przed packshotem; po retuszu adresy zdjęć są podmienione, ale packshot rozpoznajemy po oryginale
+    const gallery = withRetouched(doc.sku, (doc.imgs ?? []).map((src: string) => normalizeMediaUrl(src)).filter(Boolean))
+    const session = gallery.filter((photo) => !photo.packshot).map((photo) => photo.src)
+    const lead = gallery.find((photo) => !photo.packshot) ?? gallery[0]
+    const image = session[0] ?? gallery[0]?.src ?? normalizeMediaUrl(doc.image_small || doc.image_main || "")
     const imageHover = session[1] ?? normalizeMediaUrl(doc.image_thumbnail || "") ?? ""
 
     const name = String(doc.name ?? "").split("CARINII")[0].trim()
@@ -47,6 +47,7 @@ const toProduct = (doc: any): MaisonProduct => {
         // krótki opis bywa powtórzeniem nazwy — wtedy nie pokazujemy go drugi raz
         tagline: shortdesc.toLowerCase() === name.toLowerCase() ? "" : shortdesc,
         image,
+        imageIsPackshot: lead?.packshot ?? false,
         imageHover: imageHover || image,
         price: Number(doc.price) || 0,
         specialPrice: doc.has_special_price && special > 0 ? special : null,
@@ -58,7 +59,7 @@ const toProduct = (doc: any): MaisonProduct => {
 }
 
 const rank = (product: MaisonProduct) => [
-    isPackshot(product.image) ? 1 : 0,
+    product.imageIsPackshot ? 1 : 0,
     product.category === "kozaki" ? 0 : 1,
     modelNumber(product.sku),
 ] as const

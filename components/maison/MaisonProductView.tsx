@@ -17,7 +17,7 @@ import ExpressCheckout from "@/components/express/ExpressCheckout"
 import TrustmateWidget from "@/components/trustmate/TrustmateWidget"
 import { TRUSTMATE_HYDRA_TOKEN } from "@/lib/trustmate"
 import { normalizeMediaUrl } from "@/lib/mediaUrl"
-import { formatMaisonPrice, MAISON_PATHS, type MaisonProduct } from "@/lib/maisonShared"
+import { formatMaisonPrice, MAISON_PATHS, withRetouched, type MaisonProduct } from "@/lib/maisonShared"
 import type { CartItem } from "@/stores/cartZustand"
 import SizeSwatchBase from "@/pages/product/SizeSwatch"
 
@@ -41,9 +41,6 @@ type MaisonProductViewProps = {
     onReviewsEmpty: () => void
 }
 
-// Packshot (zdjęcie na białym tle) pokazujemy w całości, zdjęcia z sesji wypełniają kadr.
-const isPackshot = (img: string) => /\/B\d+-M-[^/]*\.jpe?g$/i.test(img)
-
 const GALLERY_SIZES = "(min-width: 1024px) 45vw, 82vw"
 
 export default function MaisonProductView({
@@ -61,7 +58,10 @@ export default function MaisonProductView({
     reviewsEmpty,
     onReviewsEmpty,
 }: MaisonProductViewProps) {
-    const images: string[] = (product.imgs ?? []).map((img: string | { src: string }) => normalizeMediaUrl(typeof img === "string" ? img : img.src))
+    const images = withRetouched(
+        product.sku,
+        (product.imgs ?? []).map((img: string | { src: string }) => normalizeMediaUrl(typeof img === "string" ? img : img.src)),
+    )
     const category = (product.cids_all ?? []).map(String).includes("345") ? "botki" : "kozaki"
     const categoryLabel = category === "botki" ? "Botki" : "Kozaki"
     const shortdesc = String(product.shortdesc ?? "").trim()
@@ -90,8 +90,8 @@ export default function MaisonProductView({
 
                 <div className="mz-pdp-grid">
                     <div className="mz-gallery" aria-label={`Zdjęcia: ${name}`}>
-                        {images.map((src, index) => (
-                            <figure key={src} className={isPackshot(src) ? "mz-pack" : undefined}>
+                        {images.map(({ src, packshot }, index) => (
+                            <figure key={src} className={packshot ? "mz-pack" : undefined}>
                                 <Image
                                     src={src}
                                     alt={`${name} — zdjęcie ${index + 1}`}
