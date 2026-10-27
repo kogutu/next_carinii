@@ -265,6 +265,7 @@ export default function SizeSwatch({
   size_qty = { roz35: 0, roz36: 2, roz37: 2, roz38: 2, roz39: 1, roz40: 0, roz41: 0 },
   sku = "Carinii B7718-R24",
   theme = "default",
+  selectedSize: controlledSize,
 } = {}) {
   const maison = theme === "maison";
   const [selectedSize, setSelectedSize] = useState(null);
@@ -312,7 +313,8 @@ export default function SizeSwatch({
           <div className={maison ? "mz-size-grid" : "grid grid-cols-4  md:grid-cols-5 lg:grid-cols-6 gap-2.5"}>
             {sizes.map((size) => {
               const available = size.qty > 0;
-              const selected = selectedSize === size.key;
+              // w motywie Maison zaznaczenie może pochodzić z zewnątrz (pasek „Dodaj do koszyka” przy przewijaniu)
+              const selected = maison && controlledSize !== undefined ? controlledSize === size.label : selectedSize === size.key;
 
               var last = false;
               if (size.qty <= 1 && size.qty > 0) last = true

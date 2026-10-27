@@ -1,6 +1,7 @@
 'use client'
 
 import type React from "react"
+import { useEffect, useRef, useState } from "react"
 import "./maison.css"
 import Image from "next/image"
 import Link from "next/link"
@@ -19,7 +20,7 @@ import type { CartItem } from "@/stores/cartZustand"
 import SizeSwatchBase from "@/pages/product/SizeSwatch"
 
 // SizeSwatch nie ma typów propsów (plik z dawnego prototypu) — zawężamy tutaj, żeby nie rozlewać any
-const SizeSwatch = SizeSwatchBase as React.ComponentType<{ theme: string; setVariant: (variant: any) => void; size_qty: unknown; sku: string; image_thumbnail?: string }>
+const SizeSwatch = SizeSwatchBase as React.ComponentType<{ theme: string; setVariant: (variant: any) => void; size_qty: unknown; sku: string; image_thumbnail?: string; selectedSize?: string | null }>
 import PromoBadge from "@/pages/product/promo-badge"
 
 type MaisonProductViewProps = {
@@ -66,6 +67,31 @@ export default function MaisonProductView({
     const tagline = shortdesc.toLowerCase() === name.toLowerCase() ? "" : shortdesc
     const onSale = Boolean(product.has_special_price) && Number(product.final_price) < Number(product.price)
     const specEntries = Object.entries(specs)
+
+    // Wybrany rozmiar jest wspólny dla siatki rozmiarów i dolnego paska zakupu, który pojawia się po przewinięciu
+    const [selectedSize, setSelectedSize] = useState<string | null>(null)
+    const [stickyVisible, setStickyVisible] = useState(false)
+    const addAnchor = useRef<HTMLDivElement>(null)
+    const sizes = Object.entries((product.size_qty ?? {}) as Record<string, number>)
+        .map(([key, qty]) => ({ label: key.replace("roz", ""), qty: Number(qty) }))
+        .sort((a, b) => Number(a.label) - Number(b.label))
+
+    const pickSize = (variant: { size: string }) => {
+        setSelectedSize(variant.size)
+        setVariant(variant)
+    }
+
+    // Pasek pokazujemy, gdy główny przycisk „Dodaj do koszyka” zniknął nad górną krawędzią ekranu
+    useEffect(() => {
+        const anchor = addAnchor.current
+        if (!anchor || !("IntersectionObserver" in window)) return
+        const observer = new IntersectionObserver(
+            ([entry]) => setStickyVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0),
+            { threshold: 0 },
+        )
+        observer.observe(anchor)
+        return () => observer.disconnect()
+    }, [])
 
     return (
         <div className={`maison ${geistMono.variable}`}>
@@ -127,7 +153,8 @@ export default function MaisonProductView({
                         <div>
                             <SizeSwatch
                                 theme="maison"
-                                setVariant={setVariant}
+                                setVariant={pickSize}
+                                selectedSize={selectedSize}
                                 size_qty={product.size_qty || []}
                                 sku={product.sku}
                                 image_thumbnail={product.image_main}
@@ -135,7 +162,7 @@ export default function MaisonProductView({
                         </div>
 
                         {!product.hide_price && (
-                            <div>
+                            <div ref={addAnchor}>
                                 {errorVariant && <p role="alert" className="mz-error">Wybierz rozmiar</p>}
                                 <button type="button" className="mz-add" onClick={onAddToCart}>
                                     <ShoppingCart className="mr-3 inline size-4 align-[-3px]" aria-hidden="true" />
@@ -190,6 +217,36 @@ export default function MaisonProductView({
                     </section>
                 )}
             </div>
+
+            {!product.hide_price && (
+                <div className="mz-sticky" data-visible={stickyVisible} aria-hidden={!stickyVisible}>
+                    <div className="mz-sticky-inner mz-wrap">
+                        <div className="mz-sticky-info">
+                            <span className="mz-sticky-name">{name}</span>
+                            <span>{product.final_price ? formatMaisonPrice(Number(product.final_price)) : ""}</span>
+                        </div>
+                        <div className="mz-sticky-sizes" role="group" aria-label="Rozmiar">
+                            {sizes.map((size) => (
+                                <button
+                                    key={size.label}
+                                    type="button"
+                                    className="mz-size"
+                                    aria-pressed={selectedSize === size.label}
+                                    data-off={size.qty <= 0}
+                                    disabled={size.qty <= 0}
+                                    tabIndex={stickyVisible ? 0 : -1}
+                                    onClick={() => pickSize({ size: size.label, sku: product.sku } as { size: string })}
+                                >
+                                    {size.label}
+                                </button>
+                            ))}
+                        </div>
+                        <button type="button" className="mz-add" tabIndex={stickyVisible ? 0 : -1} onClick={onAddToCart}>
+                            {errorVariant && !selectedSize ? "Wybierz rozmiar" : "Dodaj do koszyka"}
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <section id="opinie" aria-label="Opinie klientów" className={reviewsEmpty ? "hidden" : "mz-reviews"}>
                 <div className="mz-wrap" style={{ maxWidth: 1280, marginInline: "auto" }}>
