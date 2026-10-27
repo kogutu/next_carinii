@@ -116,7 +116,7 @@ export default function StickyBuyBar({ sku, name, priceLabel, sizeQty, selectedS
                         type="button"
                         tabIndex={visible ? 0 : -1}
                         onClick={onAdd}
-                        className="h-12 w-full rounded-xl !bg-[#ff4d79] px-8 text-sm font-semibold text-primary-foreground transition-colors hover:!bg-[#e63e68] lg:w-auto"
+                        className="h-12 w-full rounded-xl !bg-hcar px-8 text-sm font-semibold text-primary-foreground transition-colors hover:!bg-hcar/90 lg:w-auto"
                     >
                         {addLabel}
                     </button>

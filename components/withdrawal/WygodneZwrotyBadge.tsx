@@ -8,12 +8,12 @@ type WygodneZwrotyBadgeProps = {
     className?: string
 }
 
-// Informacja dla klienta, że zwrot paczki obsługuje Wygodne Zwroty. Pokazuje się tylko wtedy, gdy usługa jest włączona
-// (NEXT_PUBLIC_WZ_RETURNS=on, to samo, co odblokowuje przycisk nadania paczki w formularzu odstąpienia) —
-// nie reklamujemy funkcji, której klient nie może jeszcze użyć.
-export default function WygodneZwrotyBadge({ tone = 'light', className }: WygodneZwrotyBadgeProps) {
-    if (process.env.NEXT_PUBLIC_WZ_RETURNS !== 'on') return null
+// Informacja dla klienta, że zwroty obsługuje Wygodne Zwroty — widoczna zawsze. Zdanie o nadaniu paczki online dodajemy
+// dopiero po włączeniu integracji (NEXT_PUBLIC_WZ_RETURNS=on, to samo, co odblokowuje przycisk nadania paczki w formularzu
+// odstąpienia) — nie obiecujemy funkcji, której klient nie może jeszcze użyć.
+const SHIPMENT_ENABLED = process.env.NEXT_PUBLIC_WZ_RETURNS === 'on'
 
+export default function WygodneZwrotyBadge({ tone = 'light', className }: WygodneZwrotyBadgeProps) {
     const dark = tone === 'dark'
 
     return (
@@ -32,7 +32,7 @@ export default function WygodneZwrotyBadge({ tone = 'light', className }: Wygodn
             <span className="min-w-0 text-left normal-case tracking-normal">
                 <span className="block text-sm font-semibold">Zwroty w oparciu o system Wygodne Zwroty</span>
                 <span className={cn('block text-xs', dark ? 'text-[#a8a8a8]' : 'text-gray-600')}>
-                    Zgłoś odstąpienie online i nadaj zwrot paczki w kilku krokach.
+                    {SHIPMENT_ENABLED ? 'Zgłoś odstąpienie online i nadaj zwrot paczki w kilku krokach.' : 'Masz 14 dni na odstąpienie od umowy — zgłosisz je online, bez podawania przyczyny.'}
                 </span>
             </span>
         </Link>

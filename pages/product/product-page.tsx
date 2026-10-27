@@ -763,7 +763,7 @@ export default function ProductPage({ product, seemore, maisonMore = [] }: { pro
                                     <div className="w-full space-y-3">
                                         <PayButton
                                             align="center"
-                                            className="h-12 text-base !bg-[#ff4d79] hover:!bg-[#e63e68]"
+                                            className="h-12 text-base !bg-hcar hover:!bg-hcar/90"
                                             onClick={handleAddToCart}
                                             disabled={product.is_configurable && getAttributesArray().some((attr) => !selectedAttributes[attr.code])}
                                         >
