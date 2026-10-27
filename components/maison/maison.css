@@ -316,7 +316,38 @@
 .mz-spec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 10px 16px; margin: 0; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
 .mz-spec dt { color: var(--mz-muted); }
 .mz-spec dd { margin: 0; }
+/* panel opinii jest biały (widżet Trustmate ma jasny styl); bez opinii zwija się do zera, żeby nie było białego pasa */
 .mz-reviews { background: #fff; color: #000; margin-top: clamp(64px, 8vw, 120px); padding: clamp(32px, 4vw, 64px) 0; text-transform: none; letter-spacing: normal; }
+.mz-reviews:not(:has(.tm-hydra, .tm-widget)) { height: 0; margin: 0; padding: 0; overflow: hidden; }
+
+/* ── Ciemny nagłówek i stopka globalne na stronie produktu Maison ── */
+body:has(.mz-pdp) { background: #000; }
+body:has(.mz-pdp) header,
+body:has(.mz-pdp) header .bg-white,
+body:has(.mz-pdp) header nav,
+body:has(.mz-pdp) header [class*="bg-stone"],
+body:has(.mz-pdp) header [class*="bg-muted"],
+body:has(.mz-pdp) header [class*="bg-gray"] { background-color: #000 !important; }
+body:has(.mz-pdp) header * { border-color: #2a2a2a !important; }
+body:has(.mz-pdp) header *:not(.text-rose-600) { color: #fff !important; }
+body:has(.mz-pdp) header .text-rose-600 { color: #ff4d79 !important; }
+body:has(.mz-pdp) header svg[viewBox="0 0 767.3 159"] { fill: #fff; }
+body:has(.mz-pdp) header nav img,
+body:has(.mz-pdp) header img[src*="logotyp_black"] { filter: invert(1); }
+body:has(.mz-pdp) header input { background: #141414 !important; color: #fff !important; }
+body:has(.mz-pdp) header input::placeholder { color: #a8a8a8; }
+
+body:has(.mz-pdp) footer { background: #000 !important; border-top: 1px solid #2a2a2a; }
+body:has(.mz-pdp) footer * { color: #a8a8a8 !important; border-color: #2a2a2a !important; }
+body:has(.mz-pdp) footer h3,
+body:has(.mz-pdp) footer a:hover { color: #fff !important; }
+body:has(.mz-pdp) footer [class*="bg-[#"] { background-color: #000 !important; }
+body:has(.mz-pdp) footer a[href="/"] svg { fill: #fff; }
+body:has(.mz-pdp) footer a[aria-label] { background-color: #1a1a1a !important; }
+body:has(.mz-pdp) footer img { filter: grayscale(1) invert(1); opacity: 0.6; }
+body:has(.mz-pdp) footer a.bg-primary { background-color: #fff !important; }
+body:has(.mz-pdp) footer a.bg-primary * { color: #000 !important; }
+body:has(.mz-pdp) footer a.bg-primary { color: #000 !important; }
 .mz-more-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid var(--mz-line); padding-top: 20px; margin: clamp(80px, 10vw, 160px) 0 clamp(32px, 4vw, 56px); }
 .mz-more-h h2 { margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.3em; }
 .mz-pdp-more { padding-bottom: clamp(80px, 10vw, 140px); }
@@ -325,3 +356,5 @@
 .mz-r23 { aspect-ratio: 2 / 3; }
 .mz-r45 { aspect-ratio: 4 / 5; }
 .mz-ed .mz-bleed img { aspect-ratio: 3 / 2; }
+body:has(.mz-pdp) header svg [stroke],
+body:has(.mz-pdp) header svg[stroke] { stroke: #fff !important; }

@@ -198,7 +198,6 @@ export default function MaisonProductView({
                         token={TRUSTMATE_HYDRA_TOKEN}
                         productId={String(product.id ?? product.pid)}
                         lazy
-                        minHeight={240}
                         onEmpty={onReviewsEmpty}
                     />
                 </div>

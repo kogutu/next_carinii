@@ -11,7 +11,7 @@ import {
 
 const INCLUDE_FIELDS = [
     "sku", "name", "slug", "image_small", "image_thumbnail", "image_main", "price", "special_price",
-    "has_special_price", "new", "size_qty", "shortdesc", "typ", "cids_all", "model",
+    "has_special_price", "new", "size_qty", "shortdesc", "typ", "cids_all", "model", "imgs",
 ].join(",")
 
 const FILTERS: Record<MaisonScope, string> = {
@@ -31,7 +31,11 @@ const toProduct = (doc: any): MaisonProduct => {
         .map((key) => ({ size: key.replace("roz", ""), qty: Number(sizeQty[key]) || 0 }))
         .sort((a, b) => Number(a.size) - Number(b.size))
     const special = Number(doc.special_price)
-    const image = normalizeMediaUrl(doc.image_small || doc.image_main || "")
+    // zdjęcia z galerii są oryginałami; image_small to miniatura 500 px, która na ekranie Retina wygląda miękko
+    const gallery: string[] = (doc.imgs ?? []).map((src: string) => normalizeMediaUrl(src)).filter(Boolean)
+    const session = gallery.filter((src) => !isPackshot(src))
+    const image = session[0] ?? gallery[0] ?? normalizeMediaUrl(doc.image_small || doc.image_main || "")
+    const imageHover = session[1] ?? normalizeMediaUrl(doc.image_thumbnail || "") ?? ""
 
     const name = String(doc.name ?? "").split("CARINII")[0].trim()
     const shortdesc = String(doc.shortdesc ?? "").trim()
@@ -43,7 +47,7 @@ const toProduct = (doc: any): MaisonProduct => {
         // krótki opis bywa powtórzeniem nazwy — wtedy nie pokazujemy go drugi raz
         tagline: shortdesc.toLowerCase() === name.toLowerCase() ? "" : shortdesc,
         image,
-        imageHover: normalizeMediaUrl(doc.image_thumbnail || "") || image,
+        imageHover: imageHover || image,
         price: Number(doc.price) || 0,
         specialPrice: doc.has_special_price && special > 0 ? special : null,
         isNew: doc.new === "1" || doc.new === 1,

@@ -159,7 +159,7 @@ function MobileDrawer({
                                     onClick={onClose}
                                 >
                                     {item.logo ? (
-                                        <img src={item.logo} alt={item.label} width={172} height={11} className="h-auto w-[172px] shrink-0" />
+                                        <img src={item.logo} alt={item.label} width={172} height={11} className="maison-blink h-auto w-[172px] shrink-0" />
                                     ) : (
                                         <>
                                             {item.icon && (
@@ -458,6 +458,9 @@ export default function CariniiMegaMenu({ isMobileMenuOpen = false, onMobileMenu
             <style>{`
         @keyframes slideContent { from { opacity:0; transform:translateX(10px); } to { opacity:1; transform:translateX(0); } }
         .anim-slide { animation: slideContent 0.28s cubic-bezier(0.16,1,0.3,1) both; }
+        @keyframes maisonBlink { 0%, 55%, 100% { opacity: 1; } 75% { opacity: 0.15; } }
+        .maison-blink { animation: maisonBlink 1.8s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .maison-blink { animation: none; } }
       `}</style>
 
             <div className="relative z-5" >
@@ -498,7 +501,7 @@ export default function CariniiMegaMenu({ isMobileMenuOpen = false, onMobileMenu
                                         }`}
                                 >
                                     {item.logo ? (
-                                        <img src={item.logo} alt={item.label} width={172} height={11} className="h-auto w-[120px] shrink-0 xl:w-[172px]" />
+                                        <img src={item.logo} alt={item.label} width={172} height={11} className="maison-blink h-auto w-[120px] shrink-0 xl:w-[172px]" />
                                     ) : (
                                         <>
                                             {item.icon && (
