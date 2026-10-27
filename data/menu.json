@@ -17,6 +17,11 @@
             "icon": "https://sklep.carinii.com.pl/media/wysiwyg/znaczek_ns.png"
         },
         {
+            "label": "Maison Carinii",
+            "href": "/maison",
+            "logo": "/maison/logotyp_black.svg"
+        },
+        {
             "label": "Obuwie",
             "href": "/obuwie.html",
             "isMegaMenu": true,

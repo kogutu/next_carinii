@@ -164,6 +164,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         'new',
         'categories',
         'cids',
+        'cids_all',
         'size_qty',
         'promo_code',
         'save_percent'

@@ -60,6 +60,8 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
     const displayPrice = hasSpecialPrice ? specialPrice : price;
     const isNew = product?.new === '1' || product?.categories?.includes('NOWOŚCI');
     const sku = product?.sku || '';
+    // znaczek Maison (sygnet „M”) na zdjęciu produktów z kolekcji Maison Carinii — jak znaczki serii przy innych butach
+    const isMaison = Array.isArray((product as any)?.cids_all) && (product as any).cids_all.map(String).includes('344');
     const shortName = product?.name?.split('CARINII')[0]?.trim() || product?.name;
 
     const sizeQty = product?.size_qty || {};
@@ -117,6 +119,9 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                         <span className="absolute top-2.5 left-2.5 bg-black text-white text-[10px] font-bold uppercase px-2.5 py-1 tracking-widest z-10">
                             NEW
                         </span>
+                    )}
+                    {isMaison && (
+                        <img src="/maison/znaczek.png" alt="Maison Carinii" width={24} height={29} className="absolute bottom-2.5 left-2.5 z-10 h-7 w-auto bg-white/90 p-1" />
                     )}
                     {lastItems > 2 && (
                         <span className={`flex items-center gap-2 bg-hcar text-white text-[10px] font-bold px-2 py-1 uppercase left-2.5 m-auto absolute
@@ -238,6 +243,9 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                         <span className="absolute top-2 left-2 bg-black text-white text-[10px] font-bold uppercase px-2 py-1 tracking-widest z-10">
                             NEW
                         </span>
+                    )}
+                    {isMaison && (
+                        <img src="/maison/znaczek.png" alt="Maison Carinii" width={20} height={24} className="absolute bottom-2 left-2 z-10 h-6 w-auto bg-white/90 p-1" />
                     )}
                     {lastItems > 2 && (
                         <span className="flex items-center gap-2 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase m-auto rounded-xl absolute top-9">

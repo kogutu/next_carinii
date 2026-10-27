@@ -22,6 +22,8 @@ interface MenuItem {
     label: string;
     href: string;
     icon?: string;
+    // pozycja z samym logotypem zamiast tekstu (Maison Carinii)
+    logo?: string;
     highlight?: boolean;
     isMegaMenu?: boolean;
     categories?: Category[];
@@ -156,10 +158,16 @@ function MobileDrawer({
                                         }`}
                                     onClick={onClose}
                                 >
-                                    {item.icon && (
-                                        <img src={item.icon} alt="" className="w-6 h-6 rounded-full object-cover" />
+                                    {item.logo ? (
+                                        <img src={item.logo} alt={item.label} width={172} height={11} className="h-auto w-[172px] shrink-0" />
+                                    ) : (
+                                        <>
+                                            {item.icon && (
+                                                <img src={item.icon} alt="" className="w-6 h-6 rounded-full object-cover" />
+                                            )}
+                                            {item.label}
+                                        </>
                                     )}
-                                    {item.label}
                                 </Link>
                             );
                         }
@@ -359,7 +367,7 @@ function DesktopMegaPanel({
                                     </span>
                                     <Link
                                         href={activeCategory.href}
-                                        className="inline-block px-8 py-3 bg-stone-900 text-stone-100 text-xs font-medium tracking-widest uppercase no-underline rounded hover:bg-amber-800 transition-colors duration-300"
+                                        className="inline-block px-8 py-3 bg-stone-900 text-stone-100 text-[11px] xl:text-xs font-medium tracking-wide xl:tracking-widest uppercase no-underline rounded hover:bg-amber-800 transition-colors duration-300"
                                     >
                                         Przejdź do kategorii
                                     </Link>
@@ -374,7 +382,7 @@ function DesktopMegaPanel({
                             </div>
                             <Link
                                 href={activeCategory.href}
-                                className="block text-center py-3.5 bg-stone-900 text-stone-100 text-xs font-medium tracking-widest uppercase no-underline rounded hover:bg-amber-800 transition-colors duration-300"
+                                className="block text-center py-3.5 bg-stone-900 text-stone-100 text-[11px] xl:text-xs font-medium tracking-wide xl:tracking-widest uppercase no-underline rounded hover:bg-amber-800 transition-colors duration-300"
                             >
                                 Zobacz kolekcję
                             </Link>
@@ -470,7 +478,7 @@ export default function CariniiMegaMenu({ isMobileMenuOpen = false, onMobileMenu
                                         onMouseLeave={closeMega}
                                     >
                                         <button
-                                            className="flex items-center gap-1 px-4 xl:px-5 py-4 text-xs font-medium tracking-widest uppercase text-stone-700 hover:text-amber-800 transition-colors duration-300 bg-transparent border-none cursor-pointer"
+                                            className="flex items-center gap-1 px-2.5 xl:px-4 py-4 text-[11px] xl:text-xs font-medium tracking-wide xl:tracking-widest uppercase text-stone-700 hover:text-amber-800 transition-colors duration-300 bg-transparent border-none cursor-pointer"
 
                                         >
                                             {item.label}
@@ -483,16 +491,22 @@ export default function CariniiMegaMenu({ isMobileMenuOpen = false, onMobileMenu
                                 <Link
                                     key={i}
                                     href={item.href}
-                                    className={`flex items-center gap-1.5 px-4 xl:px-5 py-4 text-xs font-medium tracking-widest uppercase no-underline transition-colors duration-300 whitespace-nowrap
+                                    className={`flex items-center gap-1.5 px-2.5 xl:px-4 py-4 text-[11px] xl:text-xs font-medium tracking-wide xl:tracking-widest uppercase no-underline transition-colors duration-300 whitespace-nowrap
                     ${item.highlight
                                             ? "text-rose-600 font-semibold hover:opacity-70"
                                             : "text-stone-700 hover:text-amber-800"
                                         }`}
                                 >
-                                    {item.icon && (
-                                        <img src={item.icon} alt="" className="w-5 h-5 rounded-full object-cover" />
+                                    {item.logo ? (
+                                        <img src={item.logo} alt={item.label} width={172} height={11} className="h-auto w-[120px] shrink-0 xl:w-[172px]" />
+                                    ) : (
+                                        <>
+                                            {item.icon && (
+                                                <img src={item.icon} alt="" className="w-5 h-5 rounded-full object-cover" />
+                                            )}
+                                            {item.label}
+                                        </>
                                     )}
-                                    {item.label}
                                 </Link>
                             );
                         })}
