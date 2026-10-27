@@ -388,3 +388,10 @@ body:has(.mz-pdp) header svg[stroke] { stroke: #fff !important; }
   .mz-sticky .mz-add { min-width: 0; padding-inline: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { .mz-sticky { transition: none; } }
+
+/* ── Akcent różowy (#ff4d79) na przycisku „Dodaj do koszyka” i numerach rozmiarów — jak .text-rose-600 w nagłówku ── */
+.maison .mz-size { color: #ff4d79 !important; border-color: #ff4d79 !important; }
+.maison .mz-size[aria-pressed="true"] { background: #ff4d79 !important; color: #000 !important; }
+.maison .mz-size[data-off="true"] { color: var(--mz-off) !important; border-color: var(--mz-line) !important; }
+.maison .mz-add { background: #ff4d79 !important; border-color: #ff4d79 !important; color: #000 !important; }
+.maison .mz-add:hover { background: #000 !important; color: #ff4d79 !important; }

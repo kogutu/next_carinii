@@ -3,7 +3,7 @@
 import WishlistButton from '@/components/wishlist/WishlistButton'
 import PayButton from '@/components/payments/PayButton'
 import { PayPoIcon } from '@/components/payments/BrandIcons'
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -47,6 +47,7 @@ import { normalizeMediaUrl } from "@/lib/mediaUrl";
 import TrustmateWidget from "@/components/trustmate/TrustmateWidget";
 import { TRUSTMATE_HORNET_TOKEN, TRUSTMATE_HYDRA_TOKEN } from "@/lib/trustmate";
 import MaisonProductView from "@/components/maison/MaisonProductView";
+import StickyBuyBar from "@/components/product/StickyBuyBar";
 import { isMaisonProduct, type MaisonProduct } from "@/lib/maisonShared";
 
 // Wspólne pola produktu w zdarzeniach analitycznych: ID produktu głównego (jak w Magento), adres, zdjęcie, kategorie
@@ -224,6 +225,9 @@ export default function ProductPage({ product, seemore, maisonMore = [] }: { pro
         !_.isEmpty(product?.size_qty) ? true : false
     )
     const [errorVariant, setErorrVariant] = useState<boolean>(false)
+    // wybrany rozmiar wspólny dla siatki rozmiarów i dolnego paska zakupu; kotwica = blok z głównym przyciskiem „Dodaj do koszyka”
+    const [selectedSize, setSelectedSize] = useState<string | null>(null)
+    const addAnchor = useRef<HTMLDivElement>(null)
     const [inquiryForm, setInquiryForm] = useState<FormData>(INITIAL_FORM)
     const [priceForm, setPriceForm] = useState<FormData>(INITIAL_FORM)
     const [submittedInquiry, setSubmittedInquiry] = useState<boolean>(false)
@@ -700,8 +704,9 @@ export default function ProductPage({ product, seemore, maisonMore = [] }: { pro
                         </div>
                         <div className="mt-4">
                             <SizeSwatch
+                                selectedSize={selectedSize}
                                 setVariant={(variant: Variant) => {
-                                    console.log(variant);
+                                    setSelectedSize(variant.size);
                                     setVariant(variant);
                                     setErorrVariant(false);
                                 }}
@@ -746,7 +751,7 @@ export default function ProductPage({ product, seemore, maisonMore = [] }: { pro
                         {!product.hide_price && (
 
                             <>
-                                <div className="flex flex-wrap  justify-between items-center">
+                                <div ref={addAnchor} className="flex flex-wrap  justify-between items-center">
 
 
                                     {errorVariant && (
@@ -812,6 +817,23 @@ export default function ProductPage({ product, seemore, maisonMore = [] }: { pro
                 </section>
 
             </div>
+
+            {!product.hide_price && (
+                <StickyBuyBar
+                    name={name}
+                    priceLabel={product.final_price ? formatPrice(product.final_price) : ''}
+                    sizeQty={product.size_qty as unknown as Record<string, number>}
+                    selectedSize={selectedSize}
+                    onPickSize={(size) => {
+                        setSelectedSize(size)
+                        setVariant({ size, sku: product.sku } as unknown as Variant)
+                        setErorrVariant(false)
+                    }}
+                    onAdd={handleAddToCart}
+                    errorVariant={errorVariant}
+                    anchorRef={addAnchor}
+                />
+            )}
 
             <div className=" mt-16 w-full h-px my-8 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
 
