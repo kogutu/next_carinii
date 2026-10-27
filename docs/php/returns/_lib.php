@@ -147,6 +147,39 @@ function returnsEnsureTable()
     }
 }
 
+/** Tabele integracji z Wygodnymi Zwrotami (webhooki): zdarzenia do deduplikacji oraz ostatni znany stan zwrotu. Bez danych osobowych klienta. */
+function returnsEnsureWzTables()
+{
+    static $ready = false;
+    if ($ready) {
+        return;
+    }
+    $ready = true;
+
+    returnsDb()->query(
+        'CREATE TABLE IF NOT EXISTS carinii_wz_events (
+            event_id VARCHAR(64) NOT NULL PRIMARY KEY,
+            received_at DATETIME NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+    );
+    returnsDb()->query(
+        'CREATE TABLE IF NOT EXISTS carinii_wz_returns (
+            return_id VARCHAR(64) NOT NULL PRIMARY KEY,
+            order_increment VARCHAR(50) NOT NULL,
+            order_id INT UNSIGNED NULL,
+            status VARCHAR(80) NOT NULL DEFAULT \'\',
+            carrier VARCHAR(40) NOT NULL DEFAULT \'\',
+            tracking_number VARCHAR(80) NOT NULL DEFAULT \'\',
+            shipment_status VARCHAR(40) NOT NULL DEFAULT \'\',
+            estimated_refund VARCHAR(20) NOT NULL DEFAULT \'\',
+            currency VARCHAR(8) NOT NULL DEFAULT \'\',
+            last_occurred_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            KEY idx_order (order_increment)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+    );
+}
+
 // ---------- ograniczanie prób zgadywania numeru zamówienia + e-maila ----------
 
 function returnsThrottleFile($key)

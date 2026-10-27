@@ -21,6 +21,9 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const ACCOUNT_PATTERN = /^(PL)?\d{26}$/i
 const PICKER_PLACEHOLDER = { value: '', label: 'Wybierz zamówienie…' }
 
+// „Nadaj paczkę przez Wygodne Zwroty” pokazujemy dopiero po skonfigurowaniu integracji (docs/wygodne-zwroty.md)
+const SHIPMENT_ENABLED = process.env.NEXT_PUBLIC_WZ_RETURNS === 'on'
+
 const SECONDARY_BUTTON =
     'inline-flex h-12 items-center justify-center rounded-xl bg-background px-6 text-sm font-semibold text-foreground surface-card transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
 
@@ -53,6 +56,7 @@ export default function WithdrawalForm({ initialOrder = '' }: WithdrawalFormProp
     const [submitting, setSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState('')
     const [result, setResult] = useState<WithdrawalResult | null>(null)
+    const [shipment, setShipment] = useState<{ loading: boolean; error: string }>({ loading: false, error: '' })
 
     const stepRef = useRef<HTMLDivElement>(null)
     const firstRender = useRef(true)
@@ -215,6 +219,27 @@ export default function WithdrawalForm({ initialOrder = '' }: WithdrawalFormProp
         }
     }
 
+    const startShipment = async () => {
+        if (!result) return
+        setShipment({ loading: true, error: '' })
+        try {
+            const response = await fetch('/api/withdrawal/shipment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderNumber: result.orderNumber, ref: result.ref, email: effectiveEmail }),
+            })
+            const json = await response.json().catch(() => null)
+            if (!response.ok || !json?.success || !json?.data?.redirectUrl) {
+                setShipment({ loading: false, error: json?.message ?? 'Nie udało się otworzyć formularza nadania. Spróbuj ponownie.' })
+                return
+            }
+            // przycisk zostaje w stanie „ładowanie” do czasu przejścia na stronę Wygodnych Zwrotów
+            window.location.assign(json.data.redirectUrl)
+        } catch {
+            setShipment({ loading: false, error: 'Nie udało się otworzyć formularza nadania. Sprawdź połączenie i spróbuj ponownie.' })
+        }
+    }
+
     const showError = (field: string) => (attempted ? formErrors[field] : undefined)
 
     // ---------- krok 3: oświadczenie złożone ----------
@@ -271,6 +296,24 @@ export default function WithdrawalForm({ initialOrder = '' }: WithdrawalFormProp
                         <li>Podaj numer {result.ref} na paczce lub w korespondencji.</li>
                         <li>Płatność zwrócimy nie później niż w ciągu {WITHDRAW_DAYS} dni od otrzymania oświadczenia, tą samą metodą, której użyto przy zakupie.</li>
                     </ul>
+
+                    {/* logistyka zwrotu: kod nadania w punkcie, bez etykiety (Wygodne Zwroty, Partner API) — włączana flagą po skonfigurowaniu kluczy */}
+                    {SHIPMENT_ENABLED && (
+                        <div className="mx-auto mt-8 max-w-md rounded-xl bg-muted/60 p-4 text-left">
+                            <p className="text-sm font-semibold text-foreground">Nadaj paczkę bez drukowania etykiety</p>
+                            <p className="mt-1 text-pretty text-sm text-muted-foreground">
+                                Wybierz punkt nadania (np. Paczkomat, punkt DPD, DHL lub GLS) w formularzu Wygodnych Zwrotów. Koszt nadania przesyłki pokaże formularz. Możesz też odesłać paczkę samodzielnie na adres powyżej.
+                            </p>
+                            <PayButton align="center" isLoading={shipment.loading} loadingLabel="Otwieram formularz…" onClick={startShipment} className="mt-4">
+                                Nadaj paczkę przez Wygodne Zwroty
+                            </PayButton>
+                            {shipment.error && (
+                                <p role="alert" className="mt-3 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                                    {shipment.error}
+                                </p>
+                            )}
+                        </div>
+                    )}
 
                     <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                         {sessionStatus === 'authenticated' && (
