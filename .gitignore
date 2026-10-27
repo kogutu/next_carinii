@@ -53,7 +53,6 @@ next-env.d.ts
 *.tar.gz
 *.rar
 *.7z
-*.mp4
 *.mov
 *.avi
 *.bin
