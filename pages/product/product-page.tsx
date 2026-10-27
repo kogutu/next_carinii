@@ -46,6 +46,8 @@ import { absoluteUrl } from "@/lib/seo";
 import { normalizeMediaUrl } from "@/lib/mediaUrl";
 import TrustmateWidget from "@/components/trustmate/TrustmateWidget";
 import { TRUSTMATE_HORNET_TOKEN, TRUSTMATE_HYDRA_TOKEN } from "@/lib/trustmate";
+import MaisonProductView from "@/components/maison/MaisonProductView";
+import { isMaisonProduct, type MaisonProduct } from "@/lib/maisonShared";
 
 // Wspólne pola produktu w zdarzeniach analitycznych: ID produktu głównego (jak w Magento), adres, zdjęcie, kategorie
 const trackingBase = (product: any) => ({
@@ -196,7 +198,7 @@ const INITIAL_FORM: FormData = {
 const PRIMARY_COLOR = '#431c49'
 const ACCENT_COLOR = '#e2b87f'
 
-export default function ProductPage({ product, seemore }: { product: Product, seemore: Product[] }) {
+export default function ProductPage({ product, seemore, maisonMore = [] }: { product: Product, seemore: Product[], maisonMore?: MaisonProduct[] }) {
 
     // === ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURN ===
 
@@ -592,6 +594,36 @@ export default function ProductPage({ product, seemore }: { product: Product, se
         if (e.key === 'Escape') setIsLightboxOpen(false)
     }
 
+
+    // produkty strefy Maison (kategoria 344) mają własną, ekskluzywną kartę produktu
+    if (isMaisonProduct(product)) {
+        return (
+            <MaisonProductView
+                product={product}
+                name={name}
+                descriptionHtml={cleanHTML}
+                specs={productSpecs}
+                setVariant={(selected: Variant) => {
+                    setVariant(selected)
+                    setErorrVariant(false)
+                }}
+                errorVariant={errorVariant}
+                onAddToCart={handleAddToCart}
+                onAddPaypo={() => {
+                    if (_.isEmpty(variant) && hasVariant) {
+                        setErorrVariant(true)
+                        return
+                    }
+                    handleAddToCartPaypo()
+                }}
+                getExpressItems={getExpressItems}
+                onBlockedClick={() => setErorrVariant(true)}
+                more={maisonMore}
+                reviewsEmpty={reviewsEmpty}
+                onReviewsEmpty={() => setReviewsEmpty(true)}
+            />
+        )
+    }
 
     return (
         <main className="min-h-screen  py-8" style={{ '--primary-color': PRIMARY_COLOR, '--accent-color': ACCENT_COLOR } as React.CSSProperties}>

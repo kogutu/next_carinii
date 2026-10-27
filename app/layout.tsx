@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from "@/components/hert/header"
 import Footer from "@/components/hert/footer"
+import SiteChrome from "@/components/maison/SiteChrome"
 import CartHydrator from "@/components/cart/CartHydrator"
 import { Providers } from "./providers"
 import CookieBanner from "@/components/consent/CookieBanner"
@@ -112,11 +113,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <CartHydrator />
           <div className="min-h-screen flex flex-col bg-white">
             <div id="google_translate_element" className="hidden"></div>
-            <Header />
+            <SiteChrome><Header /></SiteChrome>
             <main className="flex-1 relative">
               {children}
             </main>
-            <Footer />
+            <SiteChrome><Footer /></SiteChrome>
           </div>
           </PromoProvider>
         </Providers>

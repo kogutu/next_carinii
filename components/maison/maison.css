@@ -1,0 +1,327 @@
+/* Strefa Maison Carinii: czerń i biel, jeden krój (Geist Mono), bez zaokrągleń i kolorów akcentowych.
+   Wszystko pod .maison, żeby nic nie wyciekało do reszty sklepu. */
+
+.maison {
+  --mz-bg: #000000;
+  --mz-fg: #ffffff;
+  --mz-muted: #a8a8a8;
+  --mz-line: #2a2a2a;
+  --mz-tile: #141414;
+  --mz-off: #5a5a5a;
+  color-scheme: dark;
+  background: var(--mz-bg);
+  color: var(--mz-fg);
+  font-family: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.maison *,
+.maison *::before,
+.maison *::after { border-radius: 0; }
+.maison a { color: var(--mz-fg); text-decoration: none; }
+.maison a:hover { color: var(--mz-muted); }
+.maison a:focus-visible,
+.maison button:focus-visible { outline: 1px solid var(--mz-fg); outline-offset: 4px; }
+.maison img { display: block; max-width: 100%; }
+.maison :where(button) { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; }
+.maison-main { flex: 1; }
+
+.mz-wrap {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ── Nagłówek ─────────────────────────────────────────────── */
+.mz-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding-block: clamp(14px, 2vw, 28px);
+  position: relative;
+  z-index: 40;
+}
+.mz-top--flat { border-bottom: 1px solid var(--mz-line); }
+.mz-top--overlay {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0));
+}
+.mz-top nav,
+.mz-top .mz-tools { display: flex; gap: clamp(14px, 2.6vw, 40px); align-items: center; }
+.mz-top .mz-tools { justify-content: flex-end; }
+.mz-top nav a,
+.mz-top .mz-tools a,
+.mz-top .mz-tools button {
+  font-size: clamp(10px, 0.9vw, 12px);
+  letter-spacing: 0.24em;
+  padding-block: 12px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  color: var(--mz-fg);
+  white-space: nowrap;
+}
+.mz-top nav a:hover,
+.mz-top nav a[aria-current],
+.mz-top .mz-tools a:hover,
+.mz-top .mz-tools button:hover { color: var(--mz-fg); border-bottom-color: var(--mz-fg); }
+.mz-top-logo img { height: clamp(12px, 1.3vw, 18px); width: auto; }
+@media (max-width: 560px) {
+  .mz-top .mz-tools .mz-hide-sm { display: none; }
+  .mz-top nav { gap: 14px; }
+}
+
+/* ── Film ─────────────────────────────────────────────────── */
+.mz-film { position: relative; background: #000; }
+.mz-film video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; max-width: 100%; }
+.mz-film-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding-block: 16px; }
+.mz-film-bar button {
+  letter-spacing: 0.14em;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--mz-fg);
+  padding: 12px 0;
+  cursor: pointer;
+  min-height: 44px;
+}
+.mz-cta {
+  display: inline-block;
+  font-size: clamp(10px, 1vw, 13px);
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--mz-fg);
+}
+.maison a.mz-cta:hover { color: var(--mz-fg); opacity: 0.8; }
+.mz-hero-cta {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4vw, 56px);
+  transform: translateX(-50%);
+  z-index: 2;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Wstęp ────────────────────────────────────────────────── */
+.mz-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(40px, 5vw, 64px);
+  text-align: center;
+  padding-block: clamp(56px, 7vw, 96px) clamp(64px, 8vw, 112px);
+}
+.mz-intro img { width: clamp(200px, 22vw, 300px); height: auto; }
+.mz-intro p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-wrap: pretty;
+}
+
+/* ── Nagłówki sekcji ──────────────────────────────────────── */
+.mz-collect-h { display: flex; justify-content: center; padding-block: 0 clamp(40px, 5vw, 72px); }
+.mz-collect-h h2 { margin: 0; font-size: clamp(13px, 1.6vw, 22px); font-weight: 500; letter-spacing: 0.3em; text-align: center; text-wrap: balance; }
+.mz-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-block: clamp(48px, 6vw, 88px) clamp(32px, 4vw, 56px); }
+.mz-head h1 { margin: 0; font-size: clamp(13px, 1.6vw, 22px); font-weight: 500; letter-spacing: 0.3em; }
+.mz-head span { color: var(--mz-muted); font-size: clamp(9px, 0.9vw, 12px); }
+
+/* ── Wyróżnione modele na stronie głównej ─────────────────── */
+.mz-featured {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-block: 0 clamp(56px, 6vw, 96px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(48px, 6vw, 88px) clamp(24px, 10vw, 160px);
+}
+.mz-more { display: flex; justify-content: center; padding-block: 0 clamp(96px, 10vw, 160px); }
+
+/* ── Karta produktu (lista) ───────────────────────────────── */
+.mz-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(40px, 5vw, 72px) clamp(8px, 1.4vw, 20px);
+  padding-block: 0 clamp(96px, 10vw, 160px);
+}
+@media (min-width: 760px) { .mz-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .mz-list { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1900px) { .mz-list { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+.mz-card { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.mz-card-media { position: relative; display: block; aspect-ratio: 2 / 3; background: var(--mz-tile); overflow: hidden; }
+.mz-card-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease; }
+.mz-card-media img + img { opacity: 0; }
+.mz-card:hover .mz-card-media img:first-child:not(:only-child) { opacity: 0; }
+.mz-card:hover .mz-card-media img + img { opacity: 1; }
+.mz-card-flag {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 1;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--mz-fg);
+  mix-blend-mode: difference;
+}
+.mz-card-body { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.mz-card-row { display: flex; justify-content: space-between; gap: 12px; }
+.mz-card-name { min-width: 0; line-height: 1.7; text-wrap: pretty; }
+.mz-card-price { white-space: nowrap; }
+.mz-card-old { color: var(--mz-muted); text-decoration: line-through; margin-right: 8px; }
+.mz-card-note { color: var(--mz-muted); margin: 0; font-size: 11px; letter-spacing: 0.06em; }
+.mz-sizes { display: flex; flex-wrap: wrap; gap: 6px; margin: auto 0 0; padding: 12px 0 0; list-style: none; }
+.mz-sizes li { min-width: 30px; box-sizing: border-box; padding: 5px 0; text-align: center; border: 1px solid var(--mz-fg); font-size: 10px; letter-spacing: 0.04em; }
+.mz-sizes li.off { color: var(--mz-off); border-color: var(--mz-line); text-decoration: line-through; }
+@media (max-width: 560px) {
+  .mz-card-row { flex-direction: column; gap: 4px; }
+  .mz-card { gap: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .mz-card-media img { transition: none; } }
+
+.mz-filter { display: flex; gap: clamp(14px, 2.6vw, 40px); padding-block: 0 clamp(24px, 3vw, 40px); }
+.mz-filter button {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 12px 0;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: clamp(10px, 0.9vw, 12px);
+  letter-spacing: 0.24em;
+}
+.mz-filter button:hover,
+.mz-filter button[aria-pressed="true"] { border-bottom-color: var(--mz-fg); }
+.mz-empty { padding-block: 0 96px; color: var(--mz-muted); }
+
+/* ── Kampania (siatka edytorska) ──────────────────────────── */
+.mz-ed {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(8px, 1.4vw, 20px);
+  row-gap: clamp(56px, 9vw, 140px);
+  padding-block: clamp(40px, 6vw, 96px) clamp(96px, 12vw, 180px);
+}
+.mz-ed figure { margin: 0; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.mz-ed figure img { width: 100%; height: auto; object-fit: cover; }
+.mz-ed figcaption { font-size: clamp(9px, 0.8vw, 11px); color: var(--mz-muted); }
+.mz-ed .mz-label { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid var(--mz-line); padding-top: 20px; }
+.mz-ed .mz-label h2 { margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.3em; }
+.mz-ed .mz-txt { display: flex; flex-direction: column; justify-content: flex-end; gap: 20px; min-width: 0; }
+.mz-ed .mz-txt h3 { margin: 0; font-size: clamp(14px, 2.2vw, 30px); font-weight: 300; line-height: 1.25; letter-spacing: 0.08em; text-wrap: balance; }
+.mz-ed .mz-txt p { margin: 0; font-size: clamp(10px, 1vw, 13px); line-height: 1.9; letter-spacing: 0.03em; text-transform: none; color: var(--mz-muted); max-width: 40ch; }
+.mz-ed .mz-bleed { grid-column: 1 / -1; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))) calc(-1 * max(16px, env(safe-area-inset-right, 0px))); }
+.mz-ed .mz-statement { grid-column: 2 / 12; text-align: center; font-size: clamp(18px, 4.6vw, 64px); font-weight: 300; letter-spacing: 0.14em; line-height: 1.15; margin: 0; text-wrap: balance; }
+@media (max-width: 700px) {
+  .mz-ed > figure,
+  .mz-ed > .mz-txt { grid-column: 1 / -1 !important; margin-top: 0 !important; }
+}
+
+/* ── Stopka ───────────────────────────────────────────────── */
+.mz-foot { border-top: 1px solid var(--mz-line); padding-block: 32px; color: var(--mz-muted); font-size: 11px; }
+.mz-foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; }
+.mz-foot-links { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.mz-foot a,
+.mz-foot button { color: var(--mz-muted); background: none; border: 0; padding: 4px 0; cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; text-align: left; }
+.mz-foot a:hover,
+.mz-foot button:hover { color: var(--mz-fg); }
+
+/* ── Karta produktu (strona produktu) ─────────────────────── */
+.mz-pdp { padding-block: clamp(24px, 3vw, 40px) 0; }
+.mz-crumbs { display: flex; flex-wrap: wrap; gap: 10px; color: var(--mz-muted); font-size: 10px; letter-spacing: 0.24em; padding-bottom: clamp(24px, 3vw, 48px); }
+.mz-crumbs a { color: var(--mz-muted); }
+.mz-crumbs a:hover { color: var(--mz-fg); }
+.mz-pdp-grid { display: grid; gap: clamp(32px, 5vw, 80px); align-items: start; }
+@media (min-width: 1024px) { .mz-pdp-grid { grid-template-columns: minmax(0, 1fr) minmax(360px, 440px); } }
+.mz-gallery { display: grid; gap: clamp(8px, 1.4vw, 20px); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.mz-gallery figure { margin: 0; position: relative; aspect-ratio: 2 / 3; background: var(--mz-tile); overflow: hidden; }
+.mz-gallery figure:first-child { grid-column: 1 / -1; aspect-ratio: 3 / 4; }
+.mz-gallery img { width: 100%; height: 100%; object-fit: cover; }
+.mz-gallery .mz-pack { background: #fff; }
+.mz-gallery .mz-pack img { object-fit: contain; }
+@media (max-width: 1023px) {
+  .mz-gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 8px; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding-inline: max(16px, env(safe-area-inset-left, 0px)); scrollbar-width: none; }
+  .mz-gallery::-webkit-scrollbar { display: none; }
+  .mz-gallery figure,
+  .mz-gallery figure:first-child { flex: 0 0 82%; aspect-ratio: 2 / 3; scroll-snap-align: start; }
+}
+.mz-buy { display: flex; flex-direction: column; gap: 28px; }
+.mz-eyebrow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: var(--mz-muted); font-size: 10px; letter-spacing: 0.3em; }
+.mz-title { margin: 0; font-weight: 300; font-size: clamp(18px, 2vw, 26px); line-height: 1.35; letter-spacing: 0.1em; text-wrap: balance; }
+.mz-tagline { margin: 0; color: var(--mz-muted); font-size: 11px; line-height: 1.8; letter-spacing: 0.12em; }
+.mz-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; font-weight: 300; font-size: clamp(20px, 2.2vw, 28px); letter-spacing: 0.06em; }
+.mz-price .mz-card-old { font-size: 14px; margin: 0; }
+.mz-omnibus { color: var(--mz-muted); font-size: 10px; letter-spacing: 0.06em; line-height: 1.7; text-transform: none; }
+.mz-rule { border: 0; border-top: 1px solid var(--mz-line); margin: 0; }
+.mz-label-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; font-size: 10px; letter-spacing: 0.24em; color: var(--mz-muted); }
+.mz-size-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.mz-size {
+  min-width: 52px;
+  padding: 14px 0;
+  background: none;
+  border: 1px solid var(--mz-line);
+  color: var(--mz-fg);
+  cursor: pointer;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.mz-size:hover { border-color: var(--mz-fg); }
+.mz-size[aria-pressed="true"] { background: var(--mz-fg); color: var(--mz-bg); border-color: var(--mz-fg); }
+.mz-size[data-off="true"] { color: var(--mz-off); text-decoration: line-through; }
+.mz-size[data-off="true"]:hover { border-color: var(--mz-line); cursor: not-allowed; }
+.mz-size[data-last="true"]::after { content: ""; }
+.mz-hint { color: var(--mz-muted); font-size: 10px; letter-spacing: 0.08em; margin: 12px 0 0; text-transform: none; line-height: 1.7; }
+.mz-error { margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--mz-fg); font-size: 11px; letter-spacing: 0.14em; text-align: center; }
+.mz-add {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 24px;
+  background: var(--mz-fg);
+  color: var(--mz-bg);
+  border: 1px solid var(--mz-fg);
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.mz-add:hover { background: var(--mz-bg); color: var(--mz-fg); }
+.mz-add:disabled { opacity: 0.4; cursor: not-allowed; }
+/* zgody i opisy szybkiej płatności to tekst prawny — czytelny, bez wersalików */
+.mz-secondary { display: flex; flex-direction: column; gap: 12px; text-transform: none; letter-spacing: normal; }
+.maison .mz-secondary button { border-radius: 0; text-transform: none; letter-spacing: 0.02em; }
+.mz-fav { display: flex; justify-content: center; }
+.mz-details { border-top: 1px solid var(--mz-line); }
+.mz-details details { border-bottom: 1px solid var(--mz-line); }
+.mz-details summary { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; cursor: pointer; list-style: none; font-size: 11px; letter-spacing: 0.24em; }
+.mz-details summary::-webkit-details-marker { display: none; }
+.mz-details summary::after { content: "+"; font-size: 16px; line-height: 1; }
+.mz-details details[open] summary::after { content: "−"; }
+.mz-details .mz-detail-body { padding: 0 0 24px; text-transform: none; letter-spacing: 0.03em; line-height: 1.9; font-size: 13px; color: #d4d4d4; }
+.mz-detail-body p { margin: 0 0 1em; }
+.mz-detail-body ul { margin: 0 0 1em; padding-left: 1.2em; list-style: disc; }
+.mz-detail-body a { text-decoration: underline; text-underline-offset: 3px; }
+.mz-spec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 10px 16px; margin: 0; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.mz-spec dt { color: var(--mz-muted); }
+.mz-spec dd { margin: 0; }
+.mz-reviews { background: #fff; color: #000; margin-top: clamp(64px, 8vw, 120px); padding: clamp(32px, 4vw, 64px) 0; text-transform: none; letter-spacing: normal; }
+.mz-more-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid var(--mz-line); padding-top: 20px; margin: clamp(80px, 10vw, 160px) 0 clamp(32px, 4vw, 56px); }
+.mz-more-h h2 { margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.3em; }
+.mz-pdp-more { padding-bottom: clamp(80px, 10vw, 140px); }
+.mz-pdp-more .mz-list { padding-block: 0; }
+
+.mz-r23 { aspect-ratio: 2 / 3; }
+.mz-r45 { aspect-ratio: 4 / 5; }
+.mz-ed .mz-bleed img { aspect-ratio: 3 / 2; }

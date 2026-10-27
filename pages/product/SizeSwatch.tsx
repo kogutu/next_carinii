@@ -264,7 +264,9 @@ export default function SizeSwatch({
   image_thumbnail = "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80",
   size_qty = { roz35: 0, roz36: 2, roz37: 2, roz38: 2, roz39: 1, roz40: 0, roz41: 0 },
   sku = "Carinii B7718-R24",
+  theme = "default",
 } = {}) {
+  const maison = theme === "maison";
   const [selectedSize, setSelectedSize] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerSize, setDrawerSize] = useState(null);
@@ -284,6 +286,8 @@ export default function SizeSwatch({
       setDrawerSize(size.label);
       setDrawerOpen(true);
     }
+    // w strefie Maison niedostępny rozmiar tylko otwiera zapis na powiadomienie — nie trafia do koszyka
+    if (maison && size.qty <= 0) return;
     setVariant({ "size": size.label, "sku": sku });
   };
 
@@ -294,12 +298,18 @@ export default function SizeSwatch({
       <div >
 
 
-        <b><span className="text-red-600">*</span> Wybierz swój rozmiar:</b>
-        <div className="h-px bg-gray-100 mx-6" />
+        {maison ? (
+          <div className="mz-label-row"><span>Rozmiar</span></div>
+        ) : (
+          <>
+            <b><span className="text-red-600">*</span> Wybierz swój rozmiar:</b>
+            <div className="h-px bg-gray-100 mx-6" />
+          </>
+        )}
 
         {/* Size grid */}
-        <div className="py-6 ">
-          <div className="grid grid-cols-4  md:grid-cols-5 lg:grid-cols-6 gap-2.5">
+        <div className={maison ? "" : "py-6 "}>
+          <div className={maison ? "mz-size-grid" : "grid grid-cols-4  md:grid-cols-5 lg:grid-cols-6 gap-2.5"}>
             {sizes.map((size) => {
               const available = size.qty > 0;
               const selected = selectedSize === size.key;
@@ -314,7 +324,8 @@ export default function SizeSwatch({
                 >
                   <button
                     onClick={() => handleSizeClick(size)}
-                    className={`size-btn w-full h-12  text-sm font-medium cursor-pointer relative ${selected
+                    {...(maison ? { type: "button", "aria-pressed": selected, "data-off": !available, "data-last": last } : {})}
+                    className={maison ? "mz-size" : `size-btn w-full h-12  text-sm font-medium cursor-pointer relative ${selected
                       ? "size-selected bg-hcar border-2 border-hcar text-white font-semibold"
                       : available
                         ? "bg-white border border-hborder text-hert"
@@ -322,10 +333,10 @@ export default function SizeSwatch({
                       }`}
                   >
                     {size.label}
-                    {(last && size.qty > 0) && (
+                    {!maison && (last && size.qty > 0) && (
                       <span className="bg-hcar absolute top-1 right-1 w-1.5 h-1.5" />
                     )}
-                    {!available && (
+                    {!maison && !available && (
                       <span className="absolute top-1/2 left-1/2 w-[70%] h-px bg-gray-300 -translate-x-1/2 -translate-y-1/2 -rotate-[20deg] opacity-70" />
                     )}
                   </button>
@@ -336,13 +347,15 @@ export default function SizeSwatch({
         </div>
 
         {/* Size guide */}
-        <div className=" pb-6 flex items-center gap-1.5">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" className="stroke-hborder" strokeWidth="1.5">
-            <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5M20.25 16.5V18a2.25 2.25 0 01-2.25 2.25h-1.5M3.75 16.5V18a2.25 2.25 0 002.25 2.25h1.5" strokeLinecap="round" />
-          </svg>
+        <div className={maison ? "mt-4" : " pb-6 flex items-center gap-1.5"}>
+          {!maison && (
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" className="stroke-hborder" strokeWidth="1.5">
+              <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5M20.25 16.5V18a2.25 2.25 0 01-2.25 2.25h-1.5M3.75 16.5V18a2.25 2.25 0 002.25 2.25h1.5" strokeLinecap="round" />
+            </svg>
+          )}
           <button
             onClick={() => setGuideOpen(true)}
-            className="link-guide text-xs text-hborder underline underline-offset-2 cursor-pointer transition-colors"
+            className={maison ? "text-[10px] tracking-[0.2em] uppercase text-[#a8a8a8] underline underline-offset-4 cursor-pointer hover:text-white transition-colors" : "link-guide text-xs text-hborder underline underline-offset-2 cursor-pointer transition-colors"}
           >
             Przewodnik po rozmiarach
           </button>

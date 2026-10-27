@@ -18,6 +18,8 @@ import { sanitizeProductHtml } from "@/lib/sanitizeHtml"
 import JsonLd from "@/components/seo/JsonLd"
 import { breadcrumbSchema, categoryCrumbs, productSchema } from "@/lib/structuredData"
 import { getTrustmateRating } from "@/lib/trustmate"
+import { getMaisonProducts } from "@/lib/maison"
+import { isMaisonProduct } from "@/lib/maisonShared"
 import {
   getCachedCategory,
   getCachedProduct,
@@ -215,7 +217,12 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
         notFound()
       }
 
-      const seeMoreProducts = await getSeeMoreProducts(product)
+      // produkt z kolekcji Maison pokazuje inne modele Maison zamiast ogólnych „Nieprzegap”
+      const isMaison = isMaisonProduct(product)
+      const [seeMoreProducts, maisonMore] = await Promise.all([
+        isMaison ? Promise.resolve([]) : getSeeMoreProducts(product),
+        isMaison ? getMaisonProducts("all", product.sku).then((items) => items.slice(0, 4)) : Promise.resolve([]),
+      ])
 
       // HTML z opisów czyścimy tutaj, po stronie serwera (bez jsdom)
       const safeProduct = {
@@ -241,7 +248,7 @@ export default async function DynamicPage({ params, searchParams }: PageProps) {
               breadcrumbSchema([...crumbs, { name: product.name, path: `/${product.slug}` }]),
             ]}
           />
-          <ProductPage product={safeProduct} seemore={seeMoreProducts} />
+          <ProductPage product={safeProduct} seemore={seeMoreProducts} maisonMore={maisonMore} />
         </>
       )
     }

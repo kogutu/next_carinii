@@ -58,6 +58,10 @@ const nextConfig: NextConfig = {
     return [
       // stara strona kontaktowa z Magento — kontakt jest pod /kontakt
       { source: '/contact', destination: '/kontakt', permanent: true },
+      // dawne kategorie Maison z Magento — strefa Maison ma własne strony (tymczasowe przekierowanie na czas wdrożenia)
+      { source: '/maison-carinii.html', destination: '/maison', permanent: false },
+      { source: '/maison-carinii/kozaki.html', destination: '/maison/kozaki', permanent: false },
+      { source: '/maison-carinii/botki.html', destination: '/maison/botki', permanent: false },
     ]
   },
   experimental: {

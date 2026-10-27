@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/seo'
 import { WITHDRAW_PATH } from '@/lib/withdrawal'
+import { MAISON_PATHS } from '@/lib/maisonShared'
 
 // Mapa strony z listy adresów sklepu (ta sama, z której korzysta routing): kategorie, produkty i strony informacyjne.
 const SLUGS_URL = 'https://sklep.carinii.com.pl/directseo/nextjs/slugs.php?t=3'
@@ -31,23 +32,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // funkcja odstąpienia od umowy (strona Next.js, nie CMS Magento)
     const withdrawal: MetadataRoute.Sitemap[number] = { url: `${SITE_URL}${WITHDRAW_PATH}`, changeFrequency: 'yearly', priority: 0.3 }
 
+    // strefa Maison (strony Next.js); dawne kategorie maison-carinii* z Magento przekierowują tutaj
+    const maison: MetadataRoute.Sitemap = Object.values(MAISON_PATHS).map((path) => ({ url: `${SITE_URL}${path}`, changeFrequency: 'daily', priority: 0.8 }))
+
     try {
         const response = await fetch(SLUGS_URL, { next: { revalidate: 3600 } })
-        if (!response.ok) return [home, withdrawal]
+        if (!response.ok) return [home, withdrawal, ...maison]
 
         const entries: SlugEntry[] = await response.json()
         const pages = entries
             .filter((entry) => entry.path && ['category', 'product', 'cms_page'].includes(entry.type))
             .filter((entry) => entry.type !== 'cms_page' || !EXCLUDED_CMS.test(entry.path))
+            .filter((entry) => !/^maison-carinii/i.test(entry.path))
             .map((entry) => ({
                 url: `${SITE_URL}/${entry.path.replace(/^\/+/, '')}`,
                 changeFrequency: FREQUENCY[entry.type],
                 priority: PRIORITY[entry.type],
             }))
 
-        return [home, withdrawal, ...pages]
+        return [home, withdrawal, ...maison, ...pages]
     } catch (error) {
         console.error('[sitemap]', error)
-        return [home, withdrawal]
+        return [home, withdrawal, ...maison]
     }
 }
