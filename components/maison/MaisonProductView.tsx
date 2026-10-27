@@ -9,6 +9,7 @@ import { ShoppingCart } from "lucide-react"
 import { geistMono } from "./font"
 import MaisonProductCard from "./MaisonProductCard"
 import StickyBuyBar from "@/components/product/StickyBuyBar"
+import WygodneZwrotyBadge from "@/components/withdrawal/WygodneZwrotyBadge"
 import WishlistButton from "@/components/wishlist/WishlistButton"
 import PayButton from "@/components/payments/PayButton"
 import { PayPoIcon } from "@/components/payments/BrandIcons"
@@ -161,6 +162,8 @@ export default function MaisonProductView({
                                 </div>
                             </div>
                         )}
+
+                        <WygodneZwrotyBadge tone="dark" />
 
                         <div className="mz-details">
                             {descriptionHtml && (

@@ -48,6 +48,7 @@ import TrustmateWidget from "@/components/trustmate/TrustmateWidget";
 import { TRUSTMATE_HORNET_TOKEN, TRUSTMATE_HYDRA_TOKEN } from "@/lib/trustmate";
 import MaisonProductView from "@/components/maison/MaisonProductView";
 import StickyBuyBar from "@/components/product/StickyBuyBar";
+import WygodneZwrotyBadge from "@/components/withdrawal/WygodneZwrotyBadge";
 import { isMaisonProduct, type MaisonProduct } from "@/lib/maisonShared";
 
 // Wspólne pola produktu w zdarzeniach analitycznych: ID produktu głównego (jak w Magento), adres, zdjęcie, kategorie
@@ -789,6 +790,8 @@ export default function ProductPage({ product, seemore, maisonMore = [] }: { pro
                                     />
                                 </div></>
                         )}
+
+                        <WygodneZwrotyBadge />
 
                         <div className="relprss">
                             <ReletaedProducts products={product.rel || []} />

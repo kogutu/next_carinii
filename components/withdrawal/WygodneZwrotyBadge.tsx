@@ -1,0 +1,41 @@
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
+import { WITHDRAW_PATH } from '@/lib/withdrawal'
+
+type WygodneZwrotyBadgeProps = {
+    // dark: czarne tło (strefa Maison), light: reszta sklepu
+    tone?: 'light' | 'dark'
+    className?: string
+}
+
+// Informacja dla klienta, że zwrot paczki obsługuje Wygodne Zwroty. Pokazuje się tylko wtedy, gdy usługa jest włączona
+// (NEXT_PUBLIC_WZ_RETURNS=on, to samo, co odblokowuje przycisk nadania paczki w formularzu odstąpienia) —
+// nie reklamujemy funkcji, której klient nie może jeszcze użyć.
+export default function WygodneZwrotyBadge({ tone = 'light', className }: WygodneZwrotyBadgeProps) {
+    if (process.env.NEXT_PUBLIC_WZ_RETURNS !== 'on') return null
+
+    const dark = tone === 'dark'
+
+    return (
+        <Link
+            href={WITHDRAW_PATH}
+            className={cn(
+                'group flex items-center gap-3 border px-4 py-3 transition-colors',
+                dark ? 'border-[#2a2a2a] text-white hover:border-white' : 'rounded-xl border-gray-200 bg-white text-gray-900 hover:border-gray-900',
+                className,
+            )}
+        >
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
+                <path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z" />
+                <path d="M3 7.5 12 12l9-4.5M12 12v9" />
+                <path d="M8 5.2 17 9.7" />
+            </svg>
+            <span className="min-w-0 text-left normal-case tracking-normal">
+                <span className="block text-sm font-semibold">Wygodne Zwroty</span>
+                <span className={cn('block text-xs', dark ? 'text-[#a8a8a8]' : 'text-gray-600')}>
+                    Zwrot paczki bez kłopotu: zgłoś odstąpienie online i nadaj zwrot w kilku krokach.
+                </span>
+            </span>
+        </Link>
+    )
+}
