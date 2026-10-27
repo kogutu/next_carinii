@@ -18,6 +18,7 @@ export default function MaisonFooter() {
                     <Link href="/">Sklep Carinii</Link>
                     <Link href="/kontakt">Kontakt</Link>
                     <Link href="/regulamin">Regulamin</Link>
+                    <Link href="/odstapienie-od-umowy">Anuluj / zwróć zamówienie</Link>
                     <Link href="/polityka-prywatnosci">Polityka prywatności</Link>
                     <button type="button" onClick={openCookieSettings}>Ustawienia cookies</button>
                     <WithdrawalButton variant="link" className="!text-[11px] !font-normal !uppercase !tracking-[0.08em] !text-[#a8a8a8] !no-underline hover:!text-white" />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { preconnect } from "react-dom";
 import home from "@/data/home.json";
+import { getHomeBlock } from "@/lib/homeBlock";
 import LazyVideo from "@/components/home/LazyVideo";
 import ProductsCarouselProducts from "@/components/hert/products-carouse-products";
 
@@ -196,13 +197,20 @@ function MagdaVideo({ section }: { section: any }) {
 export default async function HomePage() {
   preconnect("https://wsrv.nl");
   preconnect("https://media-02.carinii.com.pl");
-  const newestProducts = await getNewestProducts();
+  const [newestProducts, block] = await Promise.all([
+    getNewestProducts(),
+    getHomeBlock(),
+  ]);
+  // Układ strony idzie z bloku CMS Magento (id 856). Pierwszy baner z bloku jest „hero”; stary hero z wideo na telefonie
+  // zostaje tylko dla zapasowej kopii (gdy sklep nie odpowiada).
+  const fromMagento = block.source === "magento";
+  const firstBanner = block.sections.findIndex((s) => s.type === "banner");
 
   return (
     <>
-      <HeroVideo />
+      {!fromMagento && <HeroVideo />}
 
-      {(home as any).sections.map((section: any, i: number) => {
+      {block.sections.map((section: any, i: number) => {
         if (section.type === "banner") {
           return (
             <HomeBanner
@@ -211,6 +219,7 @@ export default async function HomePage() {
               mob={section.mob}
               desk={section.desk}
               alt={section.alt}
+              eager={fromMagento && i === firstBanner}
             />
           );
         }

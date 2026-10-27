@@ -52,6 +52,7 @@ const footerNavigation = {
       { label: "Sposoby płatności", href: "/sposoby-platnosci" },
       { label: "Sposoby wysyłki", href: "/dostawa" },
       { label: "Zwroty i reklamacje", href: "/zwroty-reklamacje" },
+      { label: "Anuluj / zwróć zamówienie", href: "/odstapienie-od-umowy" },
       { label: "Śledzenie przesyłki", href: "/dostawa" },
     ],
   },

@@ -25,15 +25,14 @@ export default function WygodneZwrotyBadge({ tone = 'light', className }: Wygodn
                 className,
             )}
         >
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
-                <path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z" />
-                <path d="M3 7.5 12 12l9-4.5M12 12v9" />
-                <path d="M8 5.2 17 9.7" />
-            </svg>
+            {/* logo na białej płytce, żeby czarny napis i kolory marki były czytelne także na czarnym tle strefy Maison */}
+            <span className="flex shrink-0 items-center rounded-md bg-white px-2 py-1.5">
+                <img src="/wygodne-zwroty/logo.svg" alt="Wygodne Zwroty" width={216} height={52} className="h-6 w-auto" />
+            </span>
             <span className="min-w-0 text-left normal-case tracking-normal">
-                <span className="block text-sm font-semibold">Wygodne Zwroty</span>
+                <span className="block text-sm font-semibold">Zwroty w oparciu o system Wygodne Zwroty</span>
                 <span className={cn('block text-xs', dark ? 'text-[#a8a8a8]' : 'text-gray-600')}>
-                    Zwrot paczki bez kłopotu: zgłoś odstąpienie online i nadaj zwrot w kilku krokach.
+                    Zgłoś odstąpienie online i nadaj zwrot paczki w kilku krokach.
                 </span>
             </span>
         </Link>
