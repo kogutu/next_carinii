@@ -2,6 +2,7 @@ import type { CartItem } from '@/stores/cartZustand'
 import type { WalletContact } from './contact'
 import type { ExpressShippingOption } from './shipping'
 import { recordConsent } from '@/lib/consentClient'
+import { sizeLabel } from '@/lib/sizeLabel'
 
 // Szybka płatność tworzy zamówienie z danych portfela: odbiorca = płatnik, dokument = paragon, płatność „Płatność kartą”.
 const VAT_RATE = 0.23
@@ -109,7 +110,7 @@ export const createExpressOrder = async (payload: ExpressOrderPayload, items: Ca
     if (!res.ok || !result.success || !result.externalOrderId) {
         const unavailable = items.find((item) => String(item.variantId) === String(result.errItemId))
         const detail = unavailable
-            ? `: ${unavailable.name.split('CARINII--')[0].trim()}${unavailable.variant?.size ? ` roz. ${unavailable.variant.size}` : ''}`
+            ? `: ${unavailable.name.split('CARINII--')[0].trim()}${unavailable.variant?.size ? ` roz. ${sizeLabel(unavailable.sku, unavailable.variant.size)}` : ''}`
             : ''
         throw new ExpressOrderError((result.message || 'Nie udało się złożyć zamówienia') + detail)
     }

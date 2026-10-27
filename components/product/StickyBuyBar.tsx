@@ -2,8 +2,11 @@
 
 import { useEffect, useState, type RefObject } from 'react'
 import { cn } from '@/lib/utils'
+import { isSizeShown, sizeLabel } from '@/lib/sizeLabel'
 
 type StickyBuyBarProps = {
+    // SKU modelu — po nim rozpoznajemy rękawiczki (etykiety rozmiarów S/M/L)
+    sku?: string
     name: string
     priceLabel: string
     // size_qty z Typesense: { roz36: 2, roz37: 0, ... }
@@ -20,7 +23,7 @@ type StickyBuyBarProps = {
 }
 
 // Dolny pasek zakupu na stronie produktu: po przewinięciu poza główny przycisk klientka nadal może wybrać rozmiar i dodać do koszyka.
-export default function StickyBuyBar({ name, priceLabel, sizeQty, selectedSize, onPickSize, onAdd, errorVariant, anchorRef, variant = 'light' }: StickyBuyBarProps) {
+export default function StickyBuyBar({ sku, name, priceLabel, sizeQty, selectedSize, onPickSize, onAdd, errorVariant, anchorRef, variant = 'light' }: StickyBuyBarProps) {
     const [visible, setVisible] = useState(false)
     const maison = variant === 'maison'
 
@@ -36,7 +39,7 @@ export default function StickyBuyBar({ name, priceLabel, sizeQty, selectedSize, 
     }, [anchorRef])
 
     const sizes = Object.entries(sizeQty ?? {})
-        .map(([key, qty]) => ({ label: key.replace('roz', ''), qty: Number(qty) }))
+        .filter(([key]) => isSizeShown(sku, key.replace('roz', ''))).map(([key, qty]) => ({ label: key.replace('roz', ''), qty: Number(qty) }))
         .sort((a, b) => Number(a.label) - Number(b.label))
 
     const addLabel = errorVariant && !selectedSize ? 'Wybierz rozmiar' : 'Dodaj do koszyka'
@@ -61,7 +64,7 @@ export default function StickyBuyBar({ name, priceLabel, sizeQty, selectedSize, 
                                 tabIndex={visible ? 0 : -1}
                                 onClick={() => onPickSize(size.label)}
                             >
-                                {size.label}
+                                {sizeLabel(sku, size.label)}
                             </button>
                         ))}
                     </div>
@@ -104,7 +107,7 @@ export default function StickyBuyBar({ name, priceLabel, sizeQty, selectedSize, 
                                         : 'cursor-not-allowed border-gray-200 text-gray-300 line-through',
                             )}
                         >
-                            {size.label}
+                            {sizeLabel(sku, size.label)}
                         </button>
                     ))}
                 </div>
@@ -113,7 +116,7 @@ export default function StickyBuyBar({ name, priceLabel, sizeQty, selectedSize, 
                         type="button"
                         tabIndex={visible ? 0 : -1}
                         onClick={onAdd}
-                        className="h-12 w-full rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground transition-colors hover:bg-menuhover lg:w-auto"
+                        className="h-12 w-full rounded-xl !bg-[#ff4d79] px-8 text-sm font-semibold text-primary-foreground transition-colors hover:!bg-[#e63e68] lg:w-auto"
                     >
                         {addLabel}
                     </button>

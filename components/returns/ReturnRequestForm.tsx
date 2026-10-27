@@ -17,6 +17,7 @@ import PhotoUploader from './PhotoUploader'
 import WithdrawalButton from '@/components/withdrawal/WithdrawalButton'
 import { RETURN_ADDRESS } from '@/lib/withdrawal'
 import { REASONS, RESOLUTIONS, type ReturnOrder, type ReturnType } from './returnOptions'
+import { sizeLabel } from '@/lib/sizeLabel'
 
 type SubmitResult = {
     ref: string
@@ -281,7 +282,7 @@ export default function ReturnRequestForm({ initialOrder = '' }: ReturnRequestFo
                                                 <span className="min-w-0">
                                                     <span className="line-clamp-2 text-balance text-sm font-medium text-foreground">{item.name.split('CARINII--')[0]}</span>
                                                     <span className="mt-1 block text-xs tabular-nums text-muted-foreground">
-                                                        {item.size && <>Rozmiar {item.size} · </>}
+                                                        {item.size && <>Rozmiar {sizeLabel(item.sku, item.size)} · </>}
                                                         {formatPrice(item.price)}
                                                     </span>
                                                     {unavailable && <span className="mt-1 block text-xs text-warning">Zgłoszone wcześniej</span>}

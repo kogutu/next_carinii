@@ -14,6 +14,7 @@ import { ENTER, ENTER_DELAY, EYEBROW, SurfaceCard } from '@/components/ui/surfac
 import { formatPrice } from '@/lib/formatPrice'
 import { cn } from '@/lib/utils'
 import { CONFIRM_LABEL, RETURN_ADDRESS, WITHDRAW_DAYS, type WithdrawalResult } from '@/lib/withdrawal'
+import { sizeLabel } from '@/lib/sizeLabel'
 
 type Step = 'form' | 'review' | 'done'
 
@@ -401,7 +402,7 @@ export default function WithdrawalForm({ initialOrder = '' }: WithdrawalFormProp
                                                 <span className="min-w-0">
                                                     <span className="line-clamp-2 text-balance text-sm font-medium text-foreground">{entry.name.split('CARINII--')[0]}</span>
                                                     <span className="mt-1 block text-xs tabular-nums text-muted-foreground">
-                                                        {entry.size && <>Rozmiar {entry.size} · </>}
+                                                        {entry.size && <>Rozmiar {sizeLabel(entry.sku, entry.size)} · </>}
                                                         {formatPrice(entry.price)}
                                                     </span>
                                                     {unavailable && <span className="mt-1 block text-xs text-warning">Objęte wcześniejszym zgłoszeniem</span>}

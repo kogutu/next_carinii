@@ -152,10 +152,13 @@ export default function Footer() {
                       </Link>
                     </li>
                   ))}
-                  {/* przycisk odstąpienia od umowy: stale widoczny na każdej stronie (art. 11a dyrektywy 2011/83/UE) */}
+                  {/* funkcja odstąpienia od umowy: stale widoczna na każdej stronie (art. 11a dyrektywy 2011/83/UE), wyglądem jak pozostałe linki stopki */}
                   {section.title === "Biuro Obsługi Klienta" && (
-                    <li className="pt-2">
-                      <WithdrawalButton />
+                    <li>
+                      <WithdrawalButton
+                        variant="link"
+                        className="!font-normal !text-[#6b6560] !no-underline transition-colors duration-200 hover:!text-[#c9a96e]"
+                      />
                     </li>
                   )}
                   {section.title === "Prywatność" && (

@@ -18,6 +18,7 @@ import ExpressWalletButtons, { type ExpressWallet } from './ExpressWalletButtons
 import ConsentFields from '@/components/consent/ConsentFields'
 import { recordConsent } from '@/lib/consentClient'
 import { trackBeginCheckout } from '@/lib/analytics'
+import { sizeLabel } from '@/lib/sizeLabel'
 
 // 'netto' = ceny w koszyku są netto (trzeba dodać VAT do brutto)
 // 'brutto' = ceny w koszyku są brutto (trzeba odjąć VAT do netto)
@@ -276,7 +277,7 @@ export default function OrderSummary({
 
                     errMsg = errMsg + `: 
                     ` + errIt.name;
-                    if (errIt.variant) errMsg = errMsg + " roz." + errIt.variant.size
+                    if (errIt.variant) errMsg = errMsg + " roz." + sizeLabel(errIt.sku, errIt.variant.size)
                 }
                 throw new Error(errMsg || 'Błąd podczas wysyłania zamówienia')
             }
@@ -371,7 +372,7 @@ export default function OrderSummary({
                                 <p className="mt-0.5 text-xs text-muted-foreground">{item.sku}</p>
                                 {item.variant.size && (
                                     <div className="mb-2 mt-1 flex justify-between gap-4 text-xs text-muted-foreground">
-                                        Rozmiar : {item.variant.size}
+                                        Rozmiar : {sizeLabel(item.sku, item.variant.size)}
 
                                     </div>
                                 )}

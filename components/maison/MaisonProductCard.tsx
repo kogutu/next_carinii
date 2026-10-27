@@ -14,6 +14,8 @@ export default function MaisonProductCard({ product, priority = false }: MaisonP
     const href = `/${product.slug}`
     const hasHover = product.imageHover && product.imageHover !== product.image
     const lastPieces = product.sizes.filter((size) => size.qty > 0 && size.qty < 2).length
+    // wszystkie rozmiary wyprzedane: rząd zostaje (żeby karty miały równą wysokość), ale jest niewidoczny
+    const noSizeAvailable = product.sizes.every((size) => size.qty <= 0)
 
     return (
         <article className="mz-card">
@@ -37,7 +39,7 @@ export default function MaisonProductCard({ product, priority = false }: MaisonP
                     </span>
                 </div>
                 {product.sizes.length > 0 && (
-                    <ul className="mz-sizes" aria-label="Rozmiary">
+                    <ul className="mz-sizes" aria-label="Rozmiary" aria-hidden={noSizeAvailable} style={noSizeAvailable ? { opacity: 0 } : undefined}>
                         {product.sizes.map((size) => (
                             <li
                                 key={size.size}

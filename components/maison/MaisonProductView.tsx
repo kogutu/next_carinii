@@ -208,6 +208,7 @@ export default function MaisonProductView({
 
             {!product.hide_price && (
                 <StickyBuyBar
+                    sku={product.sku}
                     variant="maison"
                     name={name}
                     priceLabel={product.final_price ? formatMaisonPrice(Number(product.final_price)) : ""}

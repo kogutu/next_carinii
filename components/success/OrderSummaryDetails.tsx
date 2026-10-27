@@ -1,6 +1,7 @@
 import { EYEBROW } from '@/components/ui/surface'
 import { formatPrice } from '@/lib/formatPrice'
 import { cn } from '@/lib/utils'
+import { sizeLabel } from '@/lib/sizeLabel'
 
 type SummaryItem = {
   name: string
@@ -76,7 +77,7 @@ export function OrderSummaryDetails({
                 <div>
                   <p className="line-clamp-3 text-balance text-sm font-medium text-foreground">{item.name}</p>
                   <p className="mt-1 text-xs tabular-nums text-muted-foreground">
-                    {size && <>Rozmiar {size} · </>}
+                    {size && <>Rozmiar {sizeLabel(item.sku, size)} · </>}
                     Ilość: {item.quantity}
                   </p>
                 </div>

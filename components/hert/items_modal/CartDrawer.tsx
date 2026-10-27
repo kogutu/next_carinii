@@ -12,6 +12,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import DiscountCode from '@/components/checkout/DiscountCode'
 import ExpressCheckout from '@/components/express/ExpressCheckout'
 import { useEffect } from 'react'
+import { sizeLabel } from '@/lib/sizeLabel'
 
 export function CartDrawerContent() {
   const open = useCartStore((state: any) => state.showMiniCart)
@@ -156,7 +157,7 @@ export function CartDrawerContent() {
                       <p className="mt-0.5 truncate text-xs text-muted-foreground">{item.sku}</p>
                       {item.variant?.size && (
                         <p className="mt-1 text-xs text-muted-foreground">
-                          Rozmiar: <span className="font-semibold text-foreground">{item.variant.size}</span>
+                          Rozmiar: <span className="font-semibold text-foreground">{sizeLabel(item.sku, item.variant.size)}</span>
                         </p>
                       )}
                     </div>

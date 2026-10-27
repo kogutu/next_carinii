@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ConsentFields, { EMPTY_CONSENT, type ConsentState } from "@/components/consent/ConsentFields";
 import { recordConsent } from "@/lib/consentClient";
+import { isGloveSku, isSizeShown, sizeLabel } from "@/lib/sizeLabel";
 
 /* ── Brand colors as CSS vars + custom utility classes + keyframes ── */
 const brandCSS = `
@@ -268,12 +269,13 @@ export default function SizeSwatch({
   selectedSize: controlledSize,
 } = {}) {
   const maison = theme === "maison";
+  const isGlove = isGloveSku(sku);
   const [selectedSize, setSelectedSize] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [drawerSize, setDrawerSize] = useState(null);
+  const [drawerSize, setDrawerSize] = useState<string | null>(null);
   const [guideOpen, setGuideOpen] = useState(false);
 
-  const sizes = Object.entries(size_qty).map(([key, qty]) => ({
+  const sizes = Object.entries(size_qty).filter(([key]) => isSizeShown(sku, key.replace("roz", ""))).map(([key, qty]) => ({
     label: key.replace("roz", ""),
     qty,
     key,
@@ -284,7 +286,7 @@ export default function SizeSwatch({
     if (size.qty > 0) {
       setSelectedSize(size.key);
     } else {
-      setDrawerSize(size.label);
+      setDrawerSize(sizeLabel(sku, size.label));
       setDrawerOpen(true);
     }
     // w strefie Maison niedostępny rozmiar tylko otwiera zapis na powiadomienie — nie trafia do koszyka
@@ -334,7 +336,7 @@ export default function SizeSwatch({
                         : "size-unavail  border border-gray-200 text-gray-300"
                       }`}
                   >
-                    {size.label}
+                    {sizeLabel(sku, size.label)}
                     {!maison && (last && size.qty > 0) && (
                       <span className="bg-hcar absolute top-1 right-1 w-1.5 h-1.5" />
                     )}
@@ -349,7 +351,7 @@ export default function SizeSwatch({
         </div>
 
         {/* Size guide */}
-        <div className={maison ? "mt-4" : " pb-6 flex items-center gap-1.5"}>
+        {!isGlove && <div className={maison ? "mt-4" : " pb-6 flex items-center gap-1.5"}>
           {!maison && (
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" className="stroke-hborder" strokeWidth="1.5">
               <path d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5M20.25 16.5V18a2.25 2.25 0 01-2.25 2.25h-1.5M3.75 16.5V18a2.25 2.25 0 002.25 2.25h1.5" strokeLinecap="round" />
@@ -361,7 +363,7 @@ export default function SizeSwatch({
           >
             Przewodnik po rozmiarach
           </button>
-        </div>
+        </div>}
       </div>
 
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} size={drawerSize} onSubmit={(data) => recordConsent({ source: "size-alert", email: data.email, terms: true, marketing: data.marketing, context: { sku, size: data.size } })} />

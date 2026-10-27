@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import WishlistButton from '@/components/wishlist/WishlistButton';
 import { cn } from '@/lib/utils';
+import CollectionBadge from '@/components/product/CollectionBadge';
+import { isSizeShown, sizeLabel } from '@/lib/sizeLabel';
 import type { Product } from '@/lib/api';
 import { CardBadgeView } from '@/components/promo/PromoViews';
 import { useAnyCardCampaign, useProductCampaigns } from '@/components/promo/PromoProvider';
@@ -60,15 +62,13 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
     const displayPrice = hasSpecialPrice ? specialPrice : price;
     const isNew = product?.new === '1' || product?.categories?.includes('NOWOŚCI');
     const sku = product?.sku || '';
-    // znaczek Maison (sygnet „M”) na zdjęciu produktów z kolekcji Maison Carinii — jak znaczki serii przy innych butach
-    const isMaison = Array.isArray((product as any)?.cids_all) && (product as any).cids_all.map(String).includes('344');
     const shortName = product?.name?.split('CARINII')[0]?.trim() || product?.name;
 
     const sizeQty = product?.size_qty || {};
 
     let lastItems = 0;
     for (let r in sizeQty) {
-        if (sizeQty[r] < 2) lastItems++;
+        if (sizeQty[r] > 0 && sizeQty[r] < 2) lastItems++; // wyprzedane (0) nie liczą się, tak jak przy znaczkach ■ przy rozmiarach
     }
 
     const allSizes = Object.keys(sizeQty)
@@ -76,8 +76,11 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
             size: key.replace('roz', ''),
             qty: sizeQty[key],
         }))
-        .sort((a, b) => Number(a.size) - Number(b.size));
+        .filter(({ size }) => isSizeShown(sku, size)).sort((a, b) => Number(a.size) - Number(b.size));
 
+
+    // wszystkie rozmiary wyprzedane: rząd zostaje (karty w siatce mają równą wysokość), ale jest niewidoczny
+    const noSizeAvailable = allSizes.every(({ qty }) => !(qty > 0));
 
     /* ======================== GRID ======================== */
     if (viewMode === 'grid')
@@ -120,9 +123,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                             NEW
                         </span>
                     )}
-                    {isMaison && (
-                        <img src="/maison/znaczek.png" alt="Maison Carinii" width={24} height={29} className="absolute bottom-2.5 left-2.5 z-10 h-7 w-auto bg-white/90 p-1" />
-                    )}
+                    <CollectionBadge categories={(product as any)?.categories} cids={(product as any)?.cids_all} placement="grid" />
                     {lastItems > 2 && (
                         <span className={`flex items-center gap-2 bg-hcar text-white text-[10px] font-bold px-2 py-1 uppercase left-2.5 m-auto absolute
                             ${isNew ? 'top-9' : 'top-2.5'}`}>
@@ -138,7 +139,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
 
                 <div className="px-3 pt-2.5 pb-2 flex flex-1 flex-col gap-1 text-center">
                     {allSizes.length > 0 && (
-                        <div className="relative flex gap-[2px] flex-wrap justify-center">
+                        <div className={cn('relative flex gap-[2px] flex-wrap justify-center', noSizeAvailable && 'opacity-0')} aria-hidden={noSizeAvailable}>
                             {allSizes.map(({ size, qty }) => (
                                 <span
                                     key={size}
@@ -149,7 +150,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                                             : 'text-gray-300 border-gray-200 opacity-50 line-through'
                                     )}
                                 >
-                                    {size}
+                                    {sizeLabel(sku, size)}
                                     {(qty < 2 && qty > 0) && (
                                         <>
                                             <span className="text-hcar text-[7px] absolute top-0 right-0">■</span>
@@ -244,9 +245,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                             NEW
                         </span>
                     )}
-                    {isMaison && (
-                        <img src="/maison/znaczek.png" alt="Maison Carinii" width={20} height={24} className="absolute bottom-2 left-2 z-10 h-6 w-auto bg-white/90 p-1" />
-                    )}
+                    <CollectionBadge categories={(product as any)?.categories} cids={(product as any)?.cids_all} placement="list" />
                     {lastItems > 2 && (
                         <span className="flex items-center gap-2 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase m-auto rounded-xl absolute top-9">
                             <span>ostatnie sztuki</span>
@@ -256,7 +255,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
 
                 <div className="flex flex-col justify-center flex-1 py-3 pr-4 relative">
                     {allSizes.length > 0 && (
-                        <div className="flex gap-[3px] flex-wrap mb-2">
+                        <div className={cn('flex gap-[3px] flex-wrap mb-2', noSizeAvailable && 'opacity-0')} aria-hidden={noSizeAvailable}>
                             {allSizes.map(({ size, qty }) => (
                                 <span
                                     key={size}
@@ -267,7 +266,7 @@ function ProductItemInner({ product, viewMode, loading, priority = false }: Prod
                                             : 'text-gray-300 border-gray-200 bg-gray-50 line-through'
                                     )}
                                 >
-                                    {size}
+                                    {sizeLabel(sku, size)}
                                 </span>
                             ))}
                         </div>
