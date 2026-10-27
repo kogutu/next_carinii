@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { PageKindProvider } from '@/components/skeletons/PageKindContext'
 import { getCachedPageType } from './metadata'
 
 type SlugLayoutProps = {
@@ -9,13 +10,14 @@ type SlugLayoutProps = {
 // Nieznany adres musi zwrócić prawdziwe HTTP 404. Strona (page.tsx) jest strumieniowana pod loading.tsx,
 // więc status 200 wychodzi, zanim zdąży zadziałać notFound() z samej strony. Ten layout leży nad loading.tsx
 // i rozstrzyga istnienie adresu przed wysłaniem odpowiedzi; lista adresów jest cache'owana (1 h), a wynik
-// getCachedPageType trafia do page.tsx bez ponownego liczenia.
+// getCachedPageType trafia do page.tsx bez ponownego liczenia. Typ strony przekazujemy też do szkieletu ładowania.
 export default async function SlugLayout({ children, params }: SlugLayoutProps) {
     const { slug } = await params
 
-    if (!(await getCachedPageType(slug))) {
+    const pageType = await getCachedPageType(slug)
+    if (!pageType) {
         notFound()
     }
 
-    return children
+    return <PageKindProvider kind={pageType.type}>{children}</PageKindProvider>
 }
