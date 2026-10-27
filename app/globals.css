@@ -931,6 +931,13 @@ body {
   margin-top: 0 !important;
 }
 
+/* Strona nie może mieć poziomego paska przewijania na żadnej szerokości ekranu. clip (nie hidden) nie tworzy
+   kontenera przewijania, więc nie psuje elementów sticky; karuzele i tabele mają własne przewijanie. */
+html,
+body {
+  overflow-x: clip;
+}
+
 
 
 .htmlInsert {

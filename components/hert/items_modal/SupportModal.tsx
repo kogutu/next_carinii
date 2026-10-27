@@ -306,7 +306,7 @@ export function SupportModal() {
 
   if (!isDesktop) {
     return (
-      <div className="flex gap-2">
+      <div className="flex gap-0 min-[360px]:gap-2">
         <div className="w-[55px] flex">
           <LanguageSelector></LanguageSelector>
         </div>

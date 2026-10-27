@@ -45,7 +45,7 @@ export default function Header({ currency }: Props) {
     return (
       <svg
         width={width}
-        className="max-w-[128px] min-[400px]:max-w-[160px] sm:max-w-[250px]"
+        className="max-w-[100px] min-[360px]:max-w-[128px] min-[400px]:max-w-[160px] sm:max-w-[250px]"
         viewBox="0 0 767.3 159"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -98,15 +98,15 @@ export default function Header({ currency }: Props) {
 
         {/* Main header */}
         <div className="bg-white  py-5 sticky top-0 z-50 ">
-          <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-3 min-[360px]:px-4 flex items-center justify-between">
             {/* Logo */}
             {/* Mobile menu toggle */}
-            <div className="flex items-center gap-2">
+            <div className="flex min-w-0 items-center gap-1 min-[360px]:gap-2">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="md:hidden flex items-center"
               >
-                {isMenuOpen ? <X size={34} /> : <Menu size={34} />}
+                {isMenuOpen ? <X size={34} className="max-[359px]:size-7" /> : <Menu size={34} className="max-[359px]:size-7" />}
               </button>
               <div className="text-3xl font-black text-hert tracking-tight">
                 <Link href="/">
@@ -119,7 +119,7 @@ export default function Header({ currency }: Props) {
             <SearchBar type={"desktop"} />
 
             {/* Right section - Icons and account */}
-            <div className="flex items-center space-x-1">
+            <div className="flex shrink-0 items-center space-x-0 min-[360px]:space-x-1">
               {/* Account Modal */}
               <AccountModal />
 
